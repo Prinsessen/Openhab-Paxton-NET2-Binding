@@ -36,8 +36,8 @@ if [ ! -d ".git" ]; then
     exit 1
 fi
 
-# Check for changes
-if git diff --quiet && git diff --cached --quiet; then
+# Check for changes (including untracked files)
+if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
     log_message "No changes to commit"
     exit 0
 fi
