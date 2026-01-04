@@ -1,0 +1,109 @@
+# Changelog
+
+All notable changes to this OpenHAB configuration will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to semantic versioning for configuration changes.
+
+## [Unreleased]
+
+## [1.0.0] - 2026-01-04
+
+### Added
+- Complete OpenHAB 5 configuration for openhab5.agesen.dk
+- Multi-phase energy management system with EM24/EM111 Modbus meters
+- SMA solar inverter integration with real-time monitoring
+- Solar optimization rules for automated appliance scheduling
+- Mitsubishi heat pump control via MQTT with JSON interface
+- Nilan ventilation system with Modbus control
+- Texecom alarm system integration via UDP
+- Network-based presence detection with 5-minute grace period
+- GPS tracking via Traccar MQTT integration
+- RFID reader integration for access control
+- Paxton Net2 door access system
+- PTZ camera automation and presets
+- Hue smart lighting integration
+- Modbus-controlled smarthouse lighting
+- Dishwasher automation on excess solar power
+- Vacuum robot (Xiaomi) integration
+- Custom HTML dashboards for visualization
+- RRD4j persistence for charts
+- InfluxDB integration for long-term data storage
+- Comprehensive transform files (MAP/JS/JSONPATH/SCALE)
+- Python scripts for external integrations
+- Automated backup scripts
+- Custom icons for UI
+
+### Configuration Files
+- Items: Energy meters, HVAC, security, presence, lighting, appliances
+- Things: Modbus bridges, MQTT brokers, HTTP endpoints
+- Rules: Energy optimization, HVAC control, security automation, presence detection
+- Sitemaps: Main UI (myhouse.sitemap)
+- Persistence: RRD4j and InfluxDB configurations
+- Transforms: 80+ transformation files for data conversion
+- HTML: 40+ custom dashboards and visualizations
+- Scripts: Paxton door control, PTZ camera automation, backup utilities
+
+### Integrations
+- Modbus TCP for energy meters and lighting
+- MQTT for heat pumps, GPS tracking, and IoT sensors
+- HTTP/REST for cameras, weather, and calendar
+- UDP for Texecom alarm system
+
+### Documentation
+- Comprehensive README.md with architecture overview
+- Configuration patterns and naming conventions
+- Installation and setup instructions
+- Troubleshooting guide
+- Development guidelines
+
+### Security
+- Exec command whitelist configuration
+- PIN-protected Google Assistant alarm integration
+- Token-based authentication for door access
+
+---
+
+## Version History Format
+
+### Types of Changes
+- **Added** - New features or configurations
+- **Changed** - Changes to existing functionality
+- **Deprecated** - Features that will be removed in future releases
+- **Removed** - Removed features or configurations
+- **Fixed** - Bug fixes
+- **Security** - Security-related changes
+
+### Commit Message Convention
+Use conventional commit messages for automatic changelog generation:
+```
+feat: Add new heat pump integration
+fix: Correct energy calculation in Solar.rules
+docs: Update README with troubleshooting section
+refactor: Reorganize Mitsubishi items
+chore: Update dependencies
+```
+
+---
+
+## Maintenance Notes
+
+### Configuration Backups
+- Item files backed up to `items/Backup/`
+- Deprecated configs in `Unused Item Files/` and `Offline/`
+- Automated backups via `/etc/openhab/scripts/OHbackup.sh`
+
+### Testing Checklist
+Before committing major changes:
+- [ ] Test rules in OpenHAB console
+- [ ] Verify item states in UI
+- [ ] Check logs for errors
+- [ ] Validate Modbus/MQTT connections
+- [ ] Test presence detection
+- [ ] Verify energy calculations
+- [ ] Test security system arm/disarm
+
+---
+
+[Unreleased]: https://github.com/Prinsessen/Openhab5.1-Private/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Prinsessen/Openhab5.1-Private/releases/tag/v1.0.0
