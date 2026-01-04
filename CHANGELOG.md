@@ -7,6 +7,21 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-04 22:48:25
+- Modified: CHANGELOG.md
+- Added: GIT_AUTOPUSH_SETUP.md
+- Modified: README.md
+- Added: scripts/git-autopush.sh
+- Added: services/openhab-git-autopush.service
+- Added: services/openhab-git-autopush.timer
+
+## [Unreleased]
+
+### Auto-updated - 2026-01-04 22:45:21
+
+
+## [Unreleased]
+
 ## [1.0.0] - 2026-01-04
 
 ### Added
