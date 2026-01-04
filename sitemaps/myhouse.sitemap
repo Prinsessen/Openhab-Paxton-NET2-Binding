@@ -1,5 +1,5 @@
 // Nanna Agesen
-sitemap myhouse label="Nanna Agesen"
+sitemap myhouse label="Nanna Sloth Agesen"
 {
 	Frame label="Kirkegade 50" {
 		Text item=CurrentDate label="System Date" icon="time"
