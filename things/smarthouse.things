@@ -1,0 +1,1016 @@
+Bridge modbus:tcp:endpointSmarthouse [ host="192.168.100.86", port=502, id=1, connectMaxTries=1, timeBetweenTransactionsMillis=1 ] {
+
+
+// # Smarthouse Light/Outlets	
+
+	Bridge poller Smarthouse_Light [ start=4000, length=37, refresh=5000, type="holding" ] {
+	    
+	         Thing data Light_GF_Alrum_Pendel [ readStart="4000", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="4000", writeValueType="int16", writeType="holding", writeTransform="JS(multiply1.js)" ]
+	    
+	         Thing data Light_GF_Kokken_Deko [ readStart="4003", readValueType="uint16", writeStart="4003", 
+writeValueType="int16", writeType="holding" ]
+	    
+	         Thing data Light_GF_Kokken_Stikk [ readStart="4005", readValueType="uint16", writeStart="4005", writeValueType="int16",writeType="holding" ]
+	    
+	         Thing data Light_GF_Guestroom [ readStart="4006", readValueType="uint16", writeStart="4006", writeValueType="int16",writeType="holding" ]
+
+		 Thing data Light_GF_Wineroom [ readStart="4007", readValueType="uint16", writeStart="4007", writeValueType="int16", writeType="holding" ]
+	    
+	         Thing data Light_GF_Lauge [ readStart="4008", readValueType="uint16", writeStart="4008", writeValueType="int16", writeType="holding" ]
+
+	         Thing data Light_GF_Gang [ readStart="4009", readValueType="uint16", writeStart="4009", 
+writeValueType="int16", writeType="holding" ]
+	    
+	         Thing data Light_GF_Toilet1_Loft [ readStart="4010", readValueType="uint16", writeStart="4010", writeValueType="int16",writeType="holding" ]
+	    
+	         Thing data Light_GF_Stue_Ryg [ readStart="4012", readValueType="uint16", writeStart="4012", writeValueType="int16",writeType="holding" ]
+
+		 Thing data Light_GF_Stue_Tree [ readStart="4013", readValueType="uint16", writeStart="4013", writeValueType="int16", writeType="holding" ]
+	    
+	       //  Thing data Light_GF_Stue_VP [ readStart="4014", readValueType="uint16", writeStart="4014", writeValueType="int16", writeType="holding" ]
+
+	         Thing data Light_GF_Stue_Luceplan [ readStart="4015", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="4015", writeValueType="int16", writeType="holding", writeTransform="JS(multiply1.js)" ]
+	    
+	         Thing data Light_GF_Udestue [ readStart="4016", readValueType="uint16", writeStart="4016", writeValueType="int16",writeType="holding" ]
+
+		 Thing data Light_GF_Sove_TV [ readStart="4019", readValueType="uint16", writeStart="4019", writeValueType="int16",writeType="holding" ]
+
+		Thing data Light_GF_Bryggers_Loft [ readStart="4034", readValueType="uint16", writeStart="4034", writeValueType="int16", writeType="holding" ]
+
+	         Thing data Light_gGC [ readStart="4020", readValueType="uint16", writeStart="4020", writeValueType="int16",writeType="holding" ]
+	    
+	         Thing data Light_GC_Teknik_Loft [ readStart="4021", readValueType="uint16", writeStart="4021", writeValueType="int16",writeType="holding" ]
+
+		 Thing data Light_GC_Anna_Loft [ readStart="4023", readValueType="uint16", writeStart="4023", writeValueType="int16", writeType="holding" ]
+	    
+	         Thing data Light_GC_Kontor_Loft [ readStart="4024", readValueType="uint16", writeStart="4024", writeValueType="int16", writeType="holding" ]
+
+	         Thing data Light_GC_Kontor_Pendel [ readStart="4025", readValueType="uint16", writeStart="4025", 
+writeValueType="int16", writeType="holding" ]
+	    
+	         Thing data Light_GC_Bryggers_Loft [ readStart="4026", readValueType="uint16", writeStart="4026", writeValueType="int16", writeType="holding" ]
+
+		 Thing data Light_GA_Vaerksted_Loft [ readStart="4030", readValueType="uint16", writeStart="4030", writeValueType="int16",writeType="holding" ]
+
+		 Thing data Light_GA_Bil_Loft [ readStart="4031", readValueType="uint16", writeStart="4031", writeValueType="int16",writeType="holding" ]
+
+		 Thing data Light_GF_Flowerpot_Stue [ readStart="4035", readValueType="uint16", writeStart="4035", writeValueType="int16",writeType="holding" ]
+		  
+	         }
+
+
+
+// #Smarthouse Temperateur Read	
+
+	Bridge poller Temperature_GF_Toilet [ start=1132, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Toilet [ readStart="1132", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+	
+
+	Bridge poller Temperature_GF_Sove [ start=1222, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Sove [ readStart="1222", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GF_Stue [ start=848, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Stue [ readStart="848", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GF_Udestue [ start=990, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Udestue [ readStart="990", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GF_Alrum [ start=604, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Alrum [ readStart="604", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GF_Kokken [ start=2318, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Kokken [ readStart="2318", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GF_Lauge [ start=732, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Lauge [ readStart="732", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GF_Guestroom [ start=668, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Guestroom [ readStart="668", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GF_Wineroom [ start=540, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GF_Wineroom [ readStart="540", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GC_Anna [ start=1494, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GC_Anna [ readStart="1494", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_GC_Kontor [ start=1662, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GC_Kontor [ readStart="1662", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+        Bridge poller Temperature_GC_Bryggers [ start=1726, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_GC_Bryggers [ readStart="1726", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+	
+	Bridge poller Temperature_Have [ start=1860, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_Have [ readStart="1860", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	Bridge poller Temperature_Teknik [ start=3844, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_Teknik [ readStart="3844", readValueType="uint32_swap", readTransform="JS(divide10.js)" ]
+		 }
+	Bridge poller CO2_Sove [ start=3632, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data CO2_Sove [ readStart="3632", readValueType="int32_swap" ]
+		 }
+
+	Bridge poller Humid_Sove [ start=3636, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Humid_Sove [ readStart="3636", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+	Bridge poller Temperature_Panasonic [ start=7977, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Temperature_Panasonic [ readStart="7977", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
+		 }
+
+	
+// #K104 BDD-INCON4 (Teknikskab Alarm Arm, Fordør nøgle, fordør åben)	
+	
+	Bridge poller K104_BDD [ start=3422, length=3, refresh=5000, type="input" ] {
+	    
+	         Thing data Window_GF_Bryggers_Door [ readStart="3424", readValueType="uint16", readTransform="JS(mbinvert.js)" ]
+		 }
+
+
+// #K115 BDD-INCON4 (Badeværelse Øst/vest/soveværelse nord/alrum havedør)
+
+	Bridge poller K115_BDD [ start=3436, length=4, refresh=5000, type="input" ] {
+	    
+	         Thing data Window_GF_Toilet1 [readStart="3436",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+		
+		 Thing data Window_GF_Toilet2 [readStart="3437",readValueType="uint16",readTransform="JS(mbinvert.js)"]		 
+
+		 Thing data Window_GF_Sove_Vindue2 [readStart="3438",readValueType="uint16",readTransform="JS(mbinvert.js)" ]	
+
+		 Thing data Window_GF_Alrum_Door_Vest [readStart="3439",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+		 }
+	
+
+// #K20 BDD-INCON4 (Soveværelse vindue vest/kontor kælder vindue)
+
+	Bridge poller K20_BDD [ start=2864, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Window_GF_Sove_Vindue1 [readStart="2864",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+		
+		 Thing data Window_GC_Kontor_Vindue [readStart="2865",readValueType="uint16",readTransform="JS(mbinvert.js)"]
+		 }	
+
+
+// #K96 BDD-INCON4 (Udestue Vindue/Dør)
+
+	Bridge poller K96_BDD [ start=3374, length=2, refresh=5000, type="input" ] {
+	    
+	         Thing data Window_GF_Udestue_Window [readStart="3374",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+		
+		 Thing data Window_GF_Udestue_Door [readStart="3375",readValueType="uint16",readTransform="JS(mbinvert.js)"] 
+		 }	
+	
+	
+// #K95 BDD-INCON4 (Gildesal Øst/Midt/Stue vindue syd/Gildesal vest)
+
+	Bridge poller K95_BDD [ start=3364, length=4, refresh=5000, type="input" ] {
+	    
+	         Thing data Window_GC_Anna_Vindue1 [readStart="3364",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+		
+		 Thing data Window_GC_Anna_Vindue2 [readStart="3365",readValueType="uint16",readTransform="JS(mbinvert.js)"] 
+
+		 Thing data Window_GF_Stue_Vindue [readStart="3366",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+		
+		 Thing data Window_GC_Anna_Vindue3 [readStart="3367",readValueType="uint16",readTransform="JS(mbinvert.js)"] 
+		 }	
+	
+// #Smarthouse Sluk Alt	
+
+	Bridge poller sluk_alt [ start=1920, length=1, refresh=5000, type="holding" ] {
+	    
+	         Thing data smarthouse_sluk_alt [ readStart="1920", readValueType="uint16", writeStart="1920", writeValueType="int16",writeType="holding" ]
+		 }		
+
+	
+
+// #Smarthouse EM-24 Energi Analyzer Grid Measuring (Address 3506-3628) (174)	
+
+	Bridge poller Energy_1 [ start=3506, length=104, refresh=5000, type="input" ] {
+	    
+	         Thing data EM24_Energi_24_AL1 [readStart="3506",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		
+	  	 Thing data EM24_Energi_24_AL2 [readStart="3508",readValueType="uint32_swap",readTransform="JS(divide1000.js)"] 
+	
+		 Thing data EM24_Energi_24_AL3 [readStart="3510",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		 
+		 Thing data EM24_Energi_24_kWh [readStart="3572",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kWh1 [readStart="3580",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kWh2 [readStart="3584",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kWh3 [readStart="3588",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kW  [readStart="3604",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]		 
+
+		 Thing data EM24_Energi_24_kW_L1 [readStart="3592",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kW_L2 [readStart="3596",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kW_L3  [readStart="3600",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+		 
+		 Thing data EM24_Energi_24_kVA  [readStart="3568",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]		 
+
+		 Thing data EM24_Energi_24_kVA_L1 [readStart="3556",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kVA_L2 [readStart="3560",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Energi_24_kVA_L3
+[readStart="3564",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+		 
+		 Thing data EM24_Energi_24_HZ 
+[readStart="3514",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Energi_24_V_L1_L2  [readStart="3530",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+		 
+		 Thing data EM24_Energi_24_V_L1_N [readStart="3532",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]		 
+
+		 Thing data EM24_Energi_24_V_L2_L3 [readStart="3534",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Energi_24_V_L2_N [readStart="3536",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Energi_24_V_L3_L1 [readStart="3538",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Energi_24_V_L3_N [readStart="3540",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+		 }
+	
+// #Smarthouse EM-24 Energi Analyzer Solar Measuring (Address 3930-4052) (174)	
+
+	Bridge poller Energy_2 [ start=3930, length=104, refresh=5000, type="input" ] {
+	    
+	         Thing data EM24_Solar_Energi_24_AL1 [readStart="3930",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		
+	  	 Thing data EM24_Solar_Energi_24_AL2 [readStart="3932",readValueType="uint32_swap",readTransform="JS(divide1000.js)"] 
+	
+		 Thing data EM24_Solar_Energi_24_AL3 [readStart="3934",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		 
+		 Thing data EM24_Solar_Energi_24_kWh [readStart="3996",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kWh1 [readStart="4004",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kWh2 [readStart="4008",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kWh3 [readStart="4012",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kW  [readStart="4028",readValueType="uint64_swap",readTransform="JS(smalimits10000.js)" ]		 
+
+		 Thing data EM24_Solar_Energi_24_kW_L1 [readStart="4016",readValueType="uint64_swap",readTransform="JS(smalimits10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kW_L2 [readStart="4020",readValueType="uint64_swap",readTransform="JS(smalimits10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kW_L3  [readStart="4024",readValueType="uint64_swap",readTransform="JS(smalimits10000.js)" ]
+		 
+		 Thing data EM24_Solar_Energi_24_kVA  [readStart="3992",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]		 
+
+		 Thing data EM24_Solar_Energi_24_kVA_L1 [readStart="3980",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kVA_L2 [readStart="3984",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_kVA_L3 [readStart="3988",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_HZ [readStart="3938",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_V_L1_L2  [readStart="3954",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+		 
+		 Thing data EM24_Solar_Energi_24_V_L1_N [readStart="3956",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]		 
+
+		 Thing data EM24_Solar_Energi_24_V_L2_L3 [readStart="3958",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_V_L2_N [readStart="3960",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_V_L3_L1 [readStart="3962",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Solar_Energi_24_V_L3_N [readStart="3964",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+		 }
+	
+
+
+// #Smarthouse EM-24 Energi Analyzer Hotwater Boiler Measuring (Address 4134-4256) (174)	
+
+	Bridge poller Energy_3 [ start=4134, length=104, refresh=5000, type="input" ] {
+	    
+	         Thing data EM24_Boiler_Energi_24_AL1 [readStart="4134",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		
+	  	 Thing data EM24_Boiler_Energi_24_AL2 [readStart="4136",readValueType="uint32_swap",readTransform="JS(divide1000.js)"] 
+	
+		 Thing data EM24_Boiler_Energi_24_AL3 [readStart="4138",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		 
+		 Thing data EM24_Boiler_Energi_24_kWh [readStart="4200",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kWh1 [readStart="4208",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kWh2 [readStart="4212",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kWh3 [readStart="4216",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kW  [readStart="4232",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]		 
+
+		 Thing data EM24_Boiler_Energi_24_kW_L1 [readStart="4220",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kW_L2 [readStart="4224",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kW_L3  [readStart="4228",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+		 
+		 Thing data EM24_Boiler_Energi_24_kVA  [readStart="4196",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]		 
+
+		 Thing data EM24_Boiler_Energi_24_kVA_L1 [readStart="4184",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kVA_L2 [readStart="4188",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_kVA_L3 [readStart="4192",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_HZ [readStart="4142",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_V_L1_L2  [readStart="4158",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+		 
+		 Thing data EM24_Boiler_Energi_24_V_L1_N [readStart="4160",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]		 
+
+		 Thing data EM24_Boiler_Energi_24_V_L2_L3 [readStart="4162",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_V_L2_N [readStart="4164",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_V_L3_L1 [readStart="4166",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		 Thing data EM24_Boiler_Energi_24_V_L3_N [readStart="4168",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+		 }
+	
+
+
+// #Smarthouse EM-111 Energi Analyzer - Server (Address 8081) (22)
+
+	Bridge poller EM111_Server [ start=8081, length=24, refresh=5000, type="input" ] {
+	    
+	         Thing data EM111_Energi_srv_A [readStart="8081",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		
+		 Thing data EM111_Energi_srv_HZ [readStart="8083",readValueType="uint32_swap",readTransform="JS(divide10.js)"] 
+
+		 Thing data EM111_Energi_srv_V [readStart="8087",readValueType="uint32_swap",readTransform="JS(divide10.js)" ] 
+		 
+		 Thing data EM111_Energi_srv_kWh [readStart="8093",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ] 
+
+		 Thing data EM111_Energi_srv_kW [readStart="8101",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ] 
+
+		 Thing data EM111_Energi_srv_kVA [readStart="8089",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ] 
+		 }	
+	
+
+// #Smarthouse EM-111 Energi Analyzer - Nilan Vent (Address 9816) (22)
+
+	Bridge poller EM111_Nilan [ start=9816, length=24, refresh=5000, type="input" ] {
+	    
+	         Thing data EM111_Energi_nilan_A [readStart="9816",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		
+		 Thing data EM111_Energi_nilan_HZ [readStart="9818",readValueType="uint32_swap",readTransform="JS(divide10.js)"] 
+
+		 Thing data EM111_Energi_nilan_V [readStart="9822",readValueType="uint32_swap",readTransform="JS(divide10.js)" ] 
+
+		 Thing data EM111_Energi_nilan_kWh [readStart="9828",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ]
+		
+		 Thing data EM111_Energi_nilan_kW [readStart="9836",readValueType="uint64_swap",readTransform="JS(divide10000.js)"] 
+
+		 Thing data EM111_Energi_nilan_kVA [readStart="9824",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ] 
+		 }	
+
+// #Smarthouse EM-111 Energi Analyzer - Server Køl Vent (Address 9712) (22)
+
+	Bridge poller EM111_Cool [ start=9712, length=24, refresh=5000, type="input" ] {
+	    
+	         Thing data EM111_Energi_cool_A [readStart="9712",readValueType="uint32_swap",readTransform="JS(divide1000.js)" ]
+		
+		 Thing data EM111_Energi_cool_HZ [readStart="9714",readValueType="uint32_swap",readTransform="JS(divide10.js)"] 
+
+		 Thing data EM111_Energi_cool_V [readStart="9718",readValueType="uint32_swap",readTransform="JS(divide10.js)" ] 
+	
+		 Thing data EM111_Energi_cool_kWh [readStart="9724",readValueType="uint64_swap",readTransform="JS(divide10000.js)"] 
+
+		 Thing data EM111_Energi_cool_kW [readStart="9732",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ] 
+
+		 Thing data EM111_Energi_cool_kVA [readStart="9720",readValueType="uint64_swap",readTransform="JS(divide10000.js)" ] 
+		 }	
+
+
+	
+
+
+// #Smarthouse UDV Humidity Sensor
+
+
+	Bridge poller Udv_humidity [ start=3828, length=2, refresh=5000, type="input" ] {
+	    
+	        Thing data Udv_humidity [readStart="3828",readValueType="uint32_swap",readTransform="JS(divide10.js)", writeStart="3828", writeValueType="int32_swap",writeType="holding", writeTransform="JS(multiply10.js)" ]
+		}
+
+
+
+// #Smarthouse Hotwater Boiler Temperature
+
+
+	Bridge poller Boil_Temperature [ start=3666, length=4, refresh=5000, type="input" ] {
+	    
+	        Thing data Boiler_Top [readStart="3666",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+
+		Thing data Boiler_Bottom [readStart="3668",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
+		}
+				
+// #Smarthouse Heating Mode Day/Night / Reading Stue, as it is the same for all rooms 2300 evening to 0600 morning
+
+
+	Bridge poller Heat_Mode [ start=601, length=2, refresh=5000, type="input" ] {
+	    
+	        Thing data Heat_Mode [readStart="601",readValueType="uint16" ]
+
+		
+		}
+
+
+// #Smarthouse Varmesetpunkt Stue
+
+	Bridge poller Setpoint_Stue [ start=845, length=4, refresh=5000, type="holding" ] {
+	    
+	         Thing data Setpoint_Stue [ readStart="845", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="845", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		 Thing data Setpoint_Stue_T2 [ readStart="847", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="847", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+		 }
+
+// #Smarthouse Varmesetpunkt Alrum
+
+	Bridge poller Setpoint_Alrum [ start=601, length=4, refresh=5000, type="holding" ] {
+	    
+	         Thing data Setpoint_Alrum [ readStart="601", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="601", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		 Thing data Setpoint_Alrum_T2 [ readStart="603", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="603", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+		 }
+
+// #Smarthouse Varmesetpunkt Bathroom
+
+	Bridge poller Setpoint_Bad [ start=1129, length=4, refresh=5000, type="holding" ] {
+	    
+	         Thing data Setpoint_Bad [ readStart="1129", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1129", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		 Thing data Setpoint_Bad_T2 [ readStart="1131", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1131", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+		 }
+
+// #Smarthouse Varmesetpunkt Soveværelse
+
+	Bridge poller Setpoint_Sove [ start=1219, length=4, refresh=5000, type="holding" ] {
+	    
+	         Thing data Setpoint_Sove [ readStart="1219", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1219", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		 Thing data Setpoint_Sove_T2 [ readStart="1221", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1221", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+		 }
+
+// #Smarthouse Varmesetpunkt Kokken
+
+	Bridge poller Setpoint_Kokken [ start=2347, length=4, refresh=5000, type="holding" ] {
+	    
+	         Thing data Setpoint_Kokken [ readStart="2347", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="2347", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		 Thing data Setpoint_Kokken_T2 [ readStart="2349", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="2349", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+		 }
+
+
+// #Smarthouse Varmesetpunkt Udestue
+
+	Bridge poller Setpoint_Udestue [ start=987, length=4, refresh=5000, type="holding" ] {
+	    
+	        Thing data Setpoint_Udestue [ readStart="987", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="987", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		Thing data Setpoint_Udestue_T2 [ readStart="989", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="989", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+    	    	}
+
+// #Smarthouse Varmesetpunkt Guestroom
+
+	Bridge poller Setpoint_Guestroom [ start=537, length=4, refresh=5000, type="holding" ] {
+	    
+	        Thing data Setpoint_Guestroom [ readStart="537", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="537", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		Thing data Setpoint_Guestroom_T2 [ readStart="539", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="539", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+    	    	}
+
+// #Smarthouse Varmesetpunkt Anna
+
+	Bridge poller Setpoint_Anna [ start=1491, length=4, refresh=5000, type="holding" ] {
+	    
+	        Thing data Setpoint_Anna [ readStart="1491", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1491", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		Thing data Setpoint_Anna_T2 [ readStart="1493", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1493", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+    	    	}
+
+// #Smarthouse Varmesetpunkt Wineroom
+
+	Bridge poller Setpoint_Wineroom [ start=665, length=4, refresh=5000, type="holding" ] {
+	    
+	        Thing data Setpoint_Wineroom [ readStart="665", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="665", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		Thing data Setpoint_Wineroom_T2 [ readStart="667", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="667", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+    	    	}
+
+// #Smarthouse Varmesetpunkt Lauge
+
+	Bridge poller Setpoint_Lauge [ start=729, length=4, refresh=5000, type="holding" ] {
+	    
+	        Thing data Setpoint_Lauge [ readStart="729", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="729", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		Thing data Setpoint_Lauge_T2 [ readStart="731", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="731", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+    	    	}
+
+// #Smarthouse Varmesetpunkt Kontor
+
+	Bridge poller Setpoint_Kontor [ start=1659, length=4, refresh=5000, type="holding" ] {
+	    
+	        Thing data Setpoint_Kontor [ readStart="1659", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1659", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		Thing data Setpoint_Kontor_T2 [ readStart="1661", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1661", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+    	    	}
+
+// #Smarthouse Varmesetpunkt Bryggers
+
+	Bridge poller Setpoint_Bryggers [ start=1723, length=4, refresh=5000, type="holding" ] {
+	    
+	        Thing data Setpoint_Bryggers [ readStart="1723", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1723", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+	
+		Thing data Setpoint_Bryggers_T2 [ readStart="1725", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1725", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+    	    	}
+
+// #Smarthouse Panasonic HAVAC Setpoint
+
+	Bridge poller Setpoint_Panasonic [ start=4037, length=2, refresh=5000, type="holding" ] {
+	    
+	         Thing data Setpoint_Panasonic [ readStart="4037", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4037", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		 }
+
+// #Smarthouse Panasonic HAVAC Heat Mode / Heat/Cool
+
+	Bridge poller Mode_Panasonic [ start=4036, length=1, refresh=5000, type="holding" ] {
+	    
+	         Thing data Mode_Panasonic [ readStart="4036", readValueType="uint16", writeStart="4036", writeValueType="int16", writeType="holding" ]
+
+		 }
+
+// #Smarthouse Panasonic HAVAC Fan Speed 
+
+	Bridge poller Fan_Panasonic [ start=3802, length=4, refresh=5000, type="holding" ] {
+	    
+		Thing data Fan_Panasonic [ readStart="3802", readValueType="uint64_swap", writeStart="3802", writeValueType="int64_swap", writeType="holding" ]
+
+		 }
+
+// #Smarthouse Panasonic HAVAC Heating/cooling Setpoints  
+
+	Bridge poller Setpoints_Mitsubishi [ start=4037, length=12, refresh=5000, type="holding" ] {
+	    
+		Thing data Heat_SP1_Mitsubishi [ readStart="4037", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4037", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)"]
+
+		Thing data Heat_SP2_Mitsubishi [ readStart="4039", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4039", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)"]
+
+		Thing data Cool_SP1_Mitsubishi [ readStart="4043", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4043", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)"]
+
+		Thing data Cool_SP2_Mitsubishi [ readStart="4045", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4045", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)"]
+
+		 }
+   
+// #Smarthouse Heating Valve ON/OFF Indicator - K9-BH4-Re16A8
+	
+	Bridge poller Smarthouse_Heat_Valve1 [ start=2718, length=4, refresh=5000, type="holding" ] {
+	    
+	       Thing data Heating_GC_Bryggers   [ readStart="2718", readValueType="uint16" ]
+	       Thing data Heating_GC_Anna 	[ readStart="2719", readValueType="uint16" ]
+	       Thing data Heating_GC_Kontor 	[ readStart="2720", readValueType="uint16" ] 
+	       Thing data Heating_GF_Toilet 	[ readStart="2721", readValueType="uint16" ]	           
+	       }
+
+// #Smarthouse Heating Valve ON/OFF Indicator - K17-BH4-Re16A8
+	
+	Bridge poller Smarthouse_Heat_Valve2 [ start=2838, length=8, refresh=5000, type="holding" ] {
+	    
+	       Thing data Heating_GF_Lauge      [ readStart="2838", readValueType="uint16" ]
+	       Thing data Heating_GF_Stue 	[ readStart="2842", readValueType="uint16" ]
+	       Thing data Heating_GF_Udestue 	[ readStart="2843", readValueType="uint16" ] 
+	       Thing data Heating_GF_Sove 	[ readStart="2844", readValueType="uint16" ]	
+	       Thing data Heating_GF_Alrum 	[ readStart="2845", readValueType="uint16" ]	           
+	       }
+
+
+
+
+
+
+// #Smarthouse Motorventil Over Bad
+
+	Bridge poller Smarthouse_Motorventil [ start=3712, length=1, refresh=5000, type="holding" ] {
+	    
+	         Thing data Smarthouse_Motorventil [ readStart="3712", readValueType="uint16", writeStart="3712",
+writeValueType="int16", writeType="holding" ]
+		 }
+
+// #Smarthouse Multimedia Dummy
+
+	Bridge poller Smarthouse_Multimedia [ start=3898, length=1, refresh=5000, type="holding" ] {
+	    
+	         Thing data Smarthouse_Multimedia [ readStart="3898", readValueType="uint16", writeStart="3898",
+writeValueType="int16", writeType="holding" ]
+		 }
+
+// # Smarthouse Udvendig Lux Komperator ON/OFF	
+
+	Bridge poller Smarthouse_LUX [ start=2180, length=2, refresh=2500, type="holding" ] {
+	    
+	         Thing data Smarthouse_LUX [ readStart="2180", readValueType="uint16" ]
+}
+
+// # Smarthouse Udvendig Lux Value	
+
+	Bridge poller Smarthouse_LUX_Value [ start=2181, length=2, refresh=2500, type="input" ] {
+	    
+	         Thing data Smarthouse_LUX_Value [ readStart="2181", readValueType="uint32_swap" ]
+
+}
+
+// # Smarthouse PIR Driveway	
+
+	Bridge poller Smarthouse_PIR_Driveway [ start=2210, length=1, refresh=2500, type="holding" ] {
+	    
+	         Thing data Smarthouse_PIR_Driveway [ readStart="2210", readValueType="uint16" ]
+
+}
+
+
+// # Smarthouse Udvendig Belysning	
+
+	Bridge poller Smarthouse_Udv_Driveway [ start=2262, length=2, refresh=2500, type="holding" ] {
+
+		 Thing data Light_Have_Driveway [ readStart="2262", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="2262", writeValueType="int16",writeType="holding", writeTransform="JS(multiply1.js)" ]
+
+ }
+
+// #Smarthouse District Heation
+
+	Bridge poller District_Heation [ start=2802, length=1, refresh=5000, type="holding" ] {
+	    
+	         Thing data District_Heation [ readStart="2802", readValueType="uint16", writeStart="2802",
+writeValueType="int16", writeType="holding" ]
+
+}
+
+// #Smarthouse District Heation Setpoint
+			    
+Bridge poller District_Heation_Setpoint [ start=3501, length=2, refresh=5000, type="holding" ] {
+	    
+	         Thing data District_Heation_Setpoint [ readStart="3501", readValueType="int32_swap", readTransform="JS(divide10.js)", writeStart="3501", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+}		
+
+// #Smarthouse Alarm system
+			    
+Bridge poller Alarm_System [ start=3598, length=14, refresh=5000, type="holding" ] {
+	    
+	         Thing data Alarm_Arm [ readStart="3598", readValueType="uint16", writeStart="3598", writeValueType="int16", writeType="holding" ]
+
+ 		Thing data Alarm_Disarm [ readStart="3610", readValueType="uint16", writeStart="3610", writeValueType="int16", writeType="holding" ]
+}
+
+	         
+Bridge poller Tyverialarm_Info [ start=2004, length=1, refresh=5000, type="holding" ] {
+	    
+	         Thing data Alarm_Status [ readStart="2004", readValueType="uint16", writeStart="2004", writeValueType="int16", writeType="holding" ]
+	         
+}
+
+
+// #Smartlight Function - DALI T8 -
+			    
+Bridge poller Smartlight_Seng_Led [ start=4700, length=42, refresh=5000, type="input" ] {
+	    
+	         Thing data Smartlight_Seng_Led [ readStart="4702", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="4738", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Sove_Bord [ start=4742, length=77, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Sove_Bord [ readStart="4801", readValueType="uint16", writeStart="4742", writeValueType="int32_swap", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Stue_Led [ start=5242, length=77, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Stue_Led [ readStart="5301", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="5242", writeValueType="int16", writeType="holding" ]
+
+		 Thing data Light_GF_Stue_Led_Constant [ readStart="5308", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="5242", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Kokken_Led [ start=5742, length=77, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Kokken_Loft [ readStart="5801", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="5742", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Flowerpot [ start=6242, length=77, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Flowerpot_Kokken [ readStart="6301", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="6242", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Kokken_Skabe [ start=6742, length=77, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Kokken_Skabe [ readStart="6801", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="6742", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Alrum_Loft [ start=7242, length=77, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Alrum_Loft [ readStart="7301", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="7242", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Toilet_Led [ start=8212, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Toilet_Led [ readStart="8214", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="8212", writeValueType="int16", writeType="holding" ]
+
+		 Thing data Light_GF_Toilet_Led_Constant [ readStart="8221", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="8212", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Toilet_Spegl [ start=11712, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Toilet_Spegl [ readStart="11714", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="11712", writeValueType="int16", writeType="holding" ]
+
+		 Thing data Light_GF_Toilet_Spegl_Constant [ readStart="11721", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="11712", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Sove_Loft [ start=8712, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Sove_Loft [ readStart="8714", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="8712", writeValueType="int16", writeType="holding" ]
+
+}
+
+Bridge poller Smartlight_Garage [ start=12212, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Smartlight_Garage [ readStart="12214", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="12212", writeValueType="int16", writeType="holding" ]
+		 
+}
+
+
+Bridge poller Smartlight_Have_Downlight_West [ start=9212, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_Have_Downlight_West [ readStart="9214", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="9212", writeValueType="int16", writeType="holding" ]
+}
+
+Bridge poller Smartlight_Have_Downlight_East [ start=10212, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_Have_Downlight_East [ readStart="10214", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="10212", writeValueType="int16", writeType="holding" ]
+}
+
+Bridge poller Smartlight_SG_Door [ start=12712, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data SG_Door [ readStart="12714", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="12712", writeValueType="int16", writeType="holding" ]
+}
+
+Bridge poller Smartlight_Have_House [ start=11212, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_Have_House [ readStart="11214", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="11212", writeValueType="int16", writeType="holding" ]
+}
+
+Bridge poller Smartlight_Toilet1_Bald [ start=10712, length=25, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Toilet1_Bald [ readStart="10714", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="10712", writeValueType="int16", writeType="holding" ]
+}
+
+// # Smarthouse Energi Timers	
+
+	Bridge poller Smarthouse_Energi_Timer [ start=202, length=2, refresh=2500, type="input" ] {
+	    
+	         Thing data Light_GC_Teknik_Timer [ readStart="202", readValueType="uint32_swap", readTransform="JS(divide1.js)" ]
+
+}
+
+// # SmartLight Stue - Details, no turn on/off, thats in another Thing
+
+Bridge poller Smartlight_Stue_Led_Details [ start=5299, length=24, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Stue_Led_Lux [ readStart="5309", readValueType="uint16", readTransform="JS(divide1.js)" ]
+
+		 Thing data Light_GF_Stue_Led_Energy [ readStart="5312", readValueType="uint32_swap", readTransform="JS(divide1.js)" ]
+	
+		 Thing data Light_GF_Stue_Led_Virtualoff [ readStart="5299.7", readValueType="bit" ]
+		
+		 Thing data Light_GF_Stue_Led_Dimmermode [ readStart="5299.1", readValueType="bit" ]
+
+		 Thing data Light_GF_Stue_Led_Presence [ readStart="5300.2", readValueType="bit" ]
+
+}
+
+// # SmartLight Toilet LED - Details, no turn on/off, thats in another Thing
+
+Bridge poller Smartlight_Toilet_Led_Details [ start=8212, length=24, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Toilet_Led_Lux [ readStart="8222", readValueType="uint16", readTransform="JS(divide1.js)" ]
+
+		 Thing data Light_GF_Toilet_Led_Energy [ readStart="8225", readValueType="uint32_swap", readTransform="JS(divide1.js)" ]
+	
+		 Thing data Light_GF_Toilet_Led_Virtualoff [ readStart="8212.7", readValueType="bit" ]
+		
+		 Thing data Light_GF_Toilet_Led_Dimmermode [ readStart="8212.1", readValueType="bit" ]
+
+		 Thing data Light_GF_Toilet_Led_Presence [ readStart="8213.2", readValueType="bit" ]
+
+}
+
+// # SmartLight Toilet Spegl - Details, no turn on/off, thats in another Thing
+
+Bridge poller Smartlight_Toilet_Spegl_Details [ start=11712, length=24, refresh=5000, type="input" ] {
+	    
+	         Thing data Light_GF_Toilet_Spegl_Lux [ readStart="11722", readValueType="uint16", readTransform="JS(divide1.js)" ]
+
+		 Thing data Light_GF_Toilet_Spegl_Energy [ readStart="11725", readValueType="uint32_swap", readTransform="JS(divide1.js)" ]
+	
+		 Thing data Light_GF_Toilet_Spegl_Virtualoff [ readStart="11712.7", readValueType="bit" ]
+		
+		 Thing data Light_GF_Toilet_Spegl_Dimmermode [ readStart="11712.1", readValueType="bit" ]
+
+		 Thing data Light_GF_Toilet_Spegl_Presence [ readStart="11713.2", readValueType="bit" ]
+
+
+
+}
+
+// # SmartLight Stue - Luxmeter value for above smartlight function
+
+//Bridge poller Smartlight_Stue_Led_Lux [ start=226, length=2, refresh=5000, type="input" ] {
+	    
+//	         Thing data Light_GF_Stue_Led_Lux [ readStart="226", readValueType="uint32_swap", readTransform="JS(divide1.js)" ]
+//}
+
+// # Smarthouse Light/Outlets	
+
+	Bridge poller Smarthouse_Moon [ start=2148, length=1, refresh=5000, type="holding" ] {
+	    	
+	         Thing data Smarthouse_Moon [ readStart="2148", readValueType="uint16", writeStart="2148", 
+writeValueType="int16", writeType="holding" ]
+
+}
+// #Smarthouse Fresh Water Inlet Counter (Address 2944 Uint64) (4)	
+
+	Bridge poller Water [ start=2944, length=4, refresh=5000, type="holding" ] {
+	    
+	         
+		 Thing data Fresh_Water [readStart="2944",readValueType="uint64_swap"]
+
+}
+// #Smarthouse Fresh Water Inlet Counter Daily (Address 1838 Uint64) (4)	
+
+	Bridge poller Water_Day [ start=1838, length=4, refresh=5000, type="holding" ] {
+	    
+	         
+		 Thing data Fresh_Water_Day [readStart="1838",readValueType="uint64_swap" ]
+
+}
+// #Smarthouse Fresh Water Tap Test (Address 2996 Uint64) (4)	
+
+	Bridge poller Water_Test [ start=2996, length=4, refresh=5000, type="holding" ] {
+
+	    	 Thing data Water_Test [ readStart="2996", readValueType="uint64_swap" ]
+	         
+}		 
+
+// # Smarthouse Fresh Water Tap Test Reset	
+
+	Bridge poller Water_reset [ start=3518, length=1, refresh=5000, type="holding" ] {
+	 	
+		Thing data Freshwater_reset [ readStart="3518", readValueType="uint16", writeStart="3518", writeValueType="int16", writeType="holding" ]   
+	       
+
+}
+
+// #Smarthouse Fresh Water Inlet Sensor (Address 2238 Uint32 - Water gauge at 672,144 at time of installing Pulse Input) (2)	
+
+	Bridge poller Freshwater_Sensor [ start=2238, length=2, refresh=5000, type="input" ] {
+	    
+	         
+		 Thing data Water_Sensor [readStart="2238",readValueType="uint32_swap" ]
+
+}
+
+
+// #Smarthouse Telegram PIR Active (Address 220 Uint16 - PIR active send Telegram activation	
+
+	Bridge poller PIR_Telegram [ start=220, length=1, refresh=5000, type="holding" ] {
+	    
+	         
+		 Thing data PIR_Telegram [ readStart="220", readValueType="uint16", writeStart="220", writeValueType="int16", writeType="holding" ] 
+
+}
+
+// #Smarthouse Telegram PIR Timer (Address 2035 Uint32 - PIR active send Telegram activation timer
+
+	Bridge poller PIR_Telegram_Timer [ start=2035, length=2, refresh=5000, type="input" ] {
+	    
+	         
+		 Thing data PIR_Telegram_Timer [readStart="2035",readValueType="uint32_swap" ]
+}
+
+
+// #Smarthouse House Energy Day (Address 3038 Uint64) (4)	
+
+	Bridge poller House_Energy_Day [ start=3038, length=4, refresh=5000, type="holding" ] {
+	    
+	         
+		 Thing data House_Energy_Day [readStart="3038",readValueType="uint64_swap", readTransform="JS(divide10000.js)" ]
+
+}
+
+// #Smarthouse Solarplant Energy Day (Address 3668 Uint64) (4)	
+
+	Bridge poller Solar_Energy_Day [ start=3668, length=4, refresh=5000, type="holding" ] {
+	    
+	         
+		 Thing data Solar_Energy_Day [readStart="3668",readValueType="uint64_swap", readTransform="JS(divide10000.js)" ]
+
+}
+
+// #Smarthouse House Energy Week (Address 3070 Uint64) (4)	
+
+	Bridge poller House_Energy_Week [ start=3070, length=4, refresh=5000, type="holding" ] {
+	    
+	         
+		 Thing data House_Energy_Week [readStart="3070",readValueType="uint64_swap", readTransform="JS(divide10000.js)" ]
+
+}
+
+// #Smarthouse HSolarplant Energy Week (Address 3680 Uint64) (4)	
+
+	Bridge poller Solar_Energy_Week [ start=3680, length=4, refresh=5000, type="holding" ] {
+	    
+	         
+		 Thing data Solar_Energy_Week [readStart="3680",readValueType="uint64_swap", readTransform="JS(divide10000.js)" ]
+
+}		 
+
+// # Garage Port End Stops	
+
+	Bridge poller Garage_Endstops [ start=496, length=2, refresh=5000, type="input" ] {
+
+	 	Thing data Garage_Port_Topstop [readStart="496",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+	        Thing data Garage_Port_Bundstop [readStart="497",readValueType="uint16",readTransform="JS(mbinvert.js)" ]
+}
+
+// #Smarthouse Energy Crisis - Disable Outdoor Light
+
+	Bridge poller Energy_Crisis [ start=4190, length=2, refresh=5000, type="holding" ] {
+	    
+	         Thing data Energy_Crisis [ readStart="4190", readValueType="uint16", writeStart="4190",
+writeValueType="int16", writeType="holding" ]
+
+}
+// #Smarthouse Ventilation Serverroom / Setpoint
+
+	Bridge poller Vent_Server_SP1 [ start=4123, length=2, refresh=5000, type="holding" ] {
+	    
+Thing data Vent_Server_SP1 [ readStart="4123", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4123", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+}
+// # Smarthouse Ventilation Analoug Output Status	
+
+	Bridge poller Vent_Server_Aout [ start=4180, length=2, refresh=5000, type="holding" ] {
+
+	 	Thing data Vent_Server_Aout [readStart="4180",readValueType="uint32_swap", readTransform="JS(divide10.js)"]
+	        
+}
+		 
+
+// # VP Kugle push button for the HUE bulb to follow the VP status
+
+	Bridge poller Smartlight_VP_HUE_Bulp [ start=13212, length=42, refresh=5000, type="input" ] {
+	    
+	         Thing data Smartlight_VP_HUE_Bulp [ readStart="13214", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="13212", writeValueType="int16", writeType="holding" ]
+}
+}

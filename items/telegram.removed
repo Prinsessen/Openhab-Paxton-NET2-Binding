@@ -1,0 +1,8 @@
+String      Telegram_MessageText            "Last Message Text [%s]"                                {channel = "telegram:telegramBot:Telegram_Bot:lastMessageText"}
+DateTime    Telegram_MessageDate            "Last Message Date [%1$td.%1$tm.%1$tY, %1$tH:%1$tM]"    {channel = "telegram:telegramBot:Telegram_Bot:lastMessageDate"}
+String      Telegram_MessageName            "Last Message Name [%s]"                                {channel = "telegram:telegramBot:Telegram_Bot:lastMessageName"}
+String      Telegram_MessageUser            "lastMessageUsername [%s]"                              {channel = "telegram:telegramBot:Telegram_Bot:lastMessageUsername"}
+String      Telegram_ChatID                 "Chat ID [%s]"                                          {channel = "telegram:telegramBot:Telegram_Bot:chatId"}
+String      Telegram_ReplyID                "Reply ID [%s]"                                         {channel = "telegram:telegramBot:Telegram_Bot:replyId"}
+Number      PIR_Telegram_Timer              "Telegram Timer[%s]"
+String      PIR_Telegram_Timer_converted    "Telegram Timer [%s]"

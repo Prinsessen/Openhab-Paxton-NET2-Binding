@@ -1,0 +1,85 @@
+// SMA BUG Remember to read the lenght of 4 when trying to access U32 and I32 registers
+
+Bridge modbus:tcp:inverter [ host="192.168.100.141", port=502, id=3, connectMaxTries=3] {
+
+// SMA Inverter Power Section West & Total
+	Bridge poller power_a              [ start=30769, length=20, refresh=5000, type="input" ] {
+	       Thing data currentA_input   [ readStart="30769", readValueType="int32", readTransform="JS(smalimits1000.js)" ]
+	       Thing data voltageA_input   [ readStart="30771", readValueType="int32", readTransform="JS(smalimits100.js)" ]
+	       Thing data power_a          [ readStart="30773", readValueType="int32", readTransform="JS(smalimits1000.js)" ]
+	       Thing data Active_Power     [ readStart="30775", readValueType="int32", readTransform="JS(smalimits1000.js)" ]
+	       Thing data power_L1         [ readStart="30777", readValueType="int32", readTransform="JS(smalimits1000.js)" ]
+	       Thing data power_L2         [ readStart="30779", readValueType="int32", readTransform="JS(smalimits1000.js)" ]
+	       Thing data power_L3         [ readStart="30781", readValueType="int32", readTransform="JS(smalimits1000.js)" ]
+	       Thing data volt_G1          [ readStart="30783", readValueType="uint32", readTransform="JS(smalimits100.js)" ]
+	       Thing data volt_G2          [ readStart="30785", readValueType="uint32", readTransform="JS(smalimits100.js)" ]
+	       Thing data volt_G3          [ readStart="30787", readValueType="uint32", readTransform="JS(smalimits100.js)" ]
+  	 }
+
+
+
+// SMA Inverter Power Section East
+	Bridge poller power_b              [ start=30957, length=8, refresh=5000, type="input" ] {
+        	Thing data currentB_input   [ readStart="30957", readValueType="int32", readTransform="JS(smalimits1000.js)" ]
+	      	Thing data voltageB_input   [ readStart="30959", readValueType="int32", readTransform="JS(smalimits100.js)" ]
+	      	Thing data power_b          [ readStart="30961", readValueType="int32", readTransform="JS(smalimits1000.js)" ] 
+   	 }
+
+
+// SMA Inverter Day Yield
+	Bridge poller Day_Yield [ start=30517, length=4, refresh=5000, type="input" ]
+
+		 {
+	    
+	    	 Thing data Day_Yield [ readStart="30517", readValueType="uint64", readTransform="JS(divide1000.js)" ]
+	    
+	   	 	   	 }
+
+// SMA Inverter Total Yield
+	Bridge poller Total_Yield [ start=30529, length=4, refresh=5000, type="input" ]
+
+		 {
+	    
+	    	 Thing data Total_Yield [ readStart="30529", readValueType="uint32", readTransform="JS(divide1000.js)" ]
+	    
+	   	 	   	 }
+
+// SMA Inverter Status
+	Bridge poller SMA_Status           [ start=30201, length=36, refresh=6000, type="input" ] {
+               Thing data SMA_Status       [ readStart="30201", readValueType="int32" ]
+               Thing data Grid_Contactor   [ readStart="30217", readValueType="int32" ]
+
+               Thing data Max_Power        [ readStart="30231", readValueType="int32" ]
+               Thing data Set_Max_Power    [ readStart="30233", readValueType="int32" ]
+
+  	 }
+
+
+
+// SMA Inverter Operation
+	Bridge poller SMA_Status_Operate [ start=40029, length=4, refresh=5000, type="holding" ]
+
+		 {
+	    
+	    	 Thing data SMA_Status_Operate [ readStart="40029", readValueType="uint32" ]
+	    
+	   	 	   	 }
+
+// SMA Inverter Country Standard
+	Bridge poller SMA_Country [ start=40109, length=4, refresh=5000, type="holding" ]
+
+		 {
+	    
+	    	 Thing data SMA_Country [ readStart="40109", readValueType="uint32" ]
+	    
+	   	 	   	 }
+
+
+}
+
+
+
+
+
+
+

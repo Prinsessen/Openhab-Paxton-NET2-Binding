@@ -1,0 +1,40 @@
+//Optimized for OpenHAB 5.0
+
+rule "Arming and Disarming Alarmsystem"
+    when
+        Item Alarm_System_Arm_Disarm received update
+    then
+        // Check that the trigger item has a valid state before acting
+        if (Alarm_System_Arm_Disarm.state == NULL || Alarm_System_Arm_Disarm.state == UNDEF) {
+            logWarn("Alarm System", "Alarm_System_Arm_Disarm state is invalid (NULL/UNDEF). Rule skipped.")
+            return;
+        }
+        
+        // Logic for arming the system (when the state is ON)
+        if (Alarm_System_Arm_Disarm.state == ON) {
+            logInfo("Alarm System", "Alarm system arming sequence initiated.")
+            sendCommand(Alarm_System_Arm_Dummy, ON)
+            sendCommand(smarthouse_sluk_alt, ON) // Command to turn everything off
+
+        // Logic for disarming the system (when the state is OFF)
+        } else if (Alarm_System_Arm_Disarm.state == OFF) {
+            logInfo("Alarm System", "Alarm system disarming sequence initiated.")
+            sendCommand(Alarm_System_Disarm_Dummy, ON)
+        }
+    end
+
+//Optimized for OpenHAB 5.0
+
+// Rule to keep the dummy button in sync, if the AIA system is disarmed by Paxton Door Unit
+rule "Dummy button sync"
+    when
+        Item Alarmsystem_Info changed to 0
+    then
+        // When 'changed to 0' is used in the 'when' clause, the 'if' check inside 
+        // the 'then' block is technically redundant but kept for absolute clarity/safety.
+        
+        if (Alarmsystem_Info.state == 0) {
+            logInfo("Dummy Button Sync", "Alarmsystem_Info changed to 0. Setting Alarm_System_Arm_Disarm to OFF.")
+            sendCommand(Alarm_System_Arm_Disarm, OFF)
+        }
+    end

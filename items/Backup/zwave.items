@@ -1,0 +1,17 @@
+Number	Illumination_Stue	"Illumination Stue [%.1f %%]"	(GF_Stue)	{ channel="zwave:device:dea33231:node3:sensor_luminance" }	
+
+Number	Humidity_Stue	"Humidity Stue [%.2f %%r.H]" <humidity>	 (GF_Stue)			{ channel="zwave:device:dea33231:node3:sensor_relhumidity" }
+
+Number	Temperature_Stue "Temperatur Stue [%.2f °C]" <thermometer1>	(GF_Stue)			{ channel="zwave:device:dea33231:node3:sensor_temperature" }
+
+Number Window_GF_Alrum_Door_Syd 	"Alrum Teresse Dør Syd [MAP(da.map):%s]"    <vindue> 	    (GF_Alrum, Windows)
+{ channel="zwave:device:dea33231:node3:sensor_door" }
+
+//Number	Switch_Stue	"Door Stue [%.1f] " (GF_Stue)					{ channel="zwave:device:dea33231:node3:sensor_door" }
+
+Number	Battery_Stue	"Battery Stue [%.1f]"	(GF_Stue)
+{ channel="zwave:device:dea33231:node3:battery-level" }
+				          
+
+
+

@@ -1,0 +1,29 @@
+Number:Temperature      WeatherOutdoorTemp        "Outdoor Temp (°C)"                                                   {channel="ipobserver:weatherstation:c053db1186:temperatureOutdoor"}
+Number:Dimensionless    WeatherOutdoorHumidity    "Outdoor Humidity"                                                    {channel="ipobserver:weatherstation:c053db1186:humidityOutdoor"}
+Number:Angle            WeatherWindDir            "Wind Direction"                                                      {channel="ipobserver:weatherstation:c053db1186:windDirection"}
+Number:Angle            WeatherWindDir1           "Wind Direction [SCALE(wind.scale):%s]"                               {channel="ipobserver:weatherstation:c053db1186:windDirection"}
+Number                  WeatherWindSpeed          "Wind Speed"                                                          {channel="ipobserver:weatherstation:c053db1186:windSpeed"}
+Number                  WeatherWindGust           "Wind Gust"                                                           {channel="ipobserver:weatherstation:c053db1186:windGust"}
+Number                  WeatherSolarRad           "Solar Radiation"                                                     {channel="ipobserver:weatherstation:c053db1186:solarRadiation"}
+Number                  WeatherUVIndex            "UV Index"                                                            {channel="ipobserver:weatherstation:c053db1186:uvIndex"}
+Number:Length           WeatherRainHourly         "Rain Hourly (mm)"                                                    {channel="ipobserver:weatherstation:c053db1186:rainHourlyRate"}
+Number                  WeatherRainDaily          "Rain Last 24 hours (mm)"                                             {channel="ipobserver:weatherstation:c053db1186:rainToday"}
+Number:Length           WeatherRainWeekly         "Rain this week (mm)"                                                 {channel="ipobserver:weatherstation:c053db1186:rainForWeek"}
+Number:Length           WeatherRainMonthly        "Rain this month (mm)"                                                {channel="ipobserver:weatherstation:c053db1186:rainForMonth"}
+Number:Length           WeatherRainYearly         "Rain this year (mm)"                                                 {channel="ipobserver:weatherstation:c053db1186:rainForYear"}
+String                  WeatherBatteryOut         "Battery Outdoor Status"                                              {channel="ipobserver:weatherstation:c053db1186:batteryOutdoor"}
+Number:Time             WeatherResponse           "Response (ms)"                                                       {channel="ipobserver:weatherstation:c053db1186:responseTime"}
+// Switch WeatherReboot "Reboot Station" {channel="ipobserver:weatherstation:c053db1186:reboot"}
+String                  WeatherTime               "Time of last update"                                                 {channel="ipobserver:weatherstation:c053db1186:lastUpdatedTime"}
+Number:Pressure         WeatherAbsPressure        "Absolute Pressure"                                                   {channel="ipobserver:weatherstation:c053db1186:pressureAbsolute"}
+Number:Pressure         WeatherRelPressure        "Relative Pressure"                                                   {channel="ipobserver:weatherstation:c053db1186:pressureRelative"}
+Number:Temperature      WeatherIndoorTemp         "Indoor Temp (°C)"                                                    {channel="ipobserver:weatherstation:c053db1186:temperatureIndoor"}
+Number:Dimensionless    WeatherIndoorHumidity     "In door Humidity"                                                    {channel="ipobserver:weatherstation:c053db1186:humidityIndoor"}
+Number:Angle            WeatherWindDirDeg         "Wind Direction"                                                      {channel="ipobserver:weatherstation:c053db1186:windDirection"}
+String                  WeatherBatteryIn          "Battery Indoor Status"                                               {channel="ipobserver:weatherstation:c053db1186:batteryIndoor"}
+Number                  WeatherWindSpeedAvg       "Average wind speed"                                                  {channel="ipobserver:weatherstation:c053db1186:windAverageSpeed"}
+Number                  WeatherWindGustMax        "Recent max wind gust speed"                                          {channel="ipobserver:weatherstation:c053db1186:windMaxGust"}
+Number                  WindSpeedMax              "Wind Speed Max [%.1f m/s]"
+DateTime                dateWindSpeedMax          "Date Speed Max [%1$tA, %1$td.%1$tm.%1$tY - %1$tT] "    <calendar>
+Number                  WindGustMax               "Wind Gust Max [%.1f m/s]"
+DateTime                dateWindGustMax           "Date Gust Max [%1$tA, %1$td.%1$tm.%1$tY - %1$tT] "     <calendar>

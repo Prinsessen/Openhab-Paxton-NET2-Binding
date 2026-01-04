@@ -1,0 +1,33 @@
+// Nilan Ventilation
+DateTime    Nilan_error                           "Last read error - Nilan [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"                       (gDeviceerror)    {channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_RunSet:lastReadError"}
+DateTime    Nilan_success                         "Last read success - Nilan [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"                     (gDeviceerror)    {channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_RunSet:lastReadSuccess"}
+// Smarthouse Kirkegade 50
+DateTime    Smarthouse_error                      "Last read error - Smarthouse [%1$td.%1$tm.%1$ty - %1$tH:%1$tM] }"                (gDeviceerror)    {channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Gang:lastReadError"}
+DateTime    Smarthouse_success                    "Last read success - Smarthouse [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"                (gDeviceerror)    {channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Gang:lastReadSuccess"}
+// SMA Inverter
+DateTime    SMA_error                             "Last read error - SMA Inverter [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"                (gDeviceerror)    {channel="modbus:data:inverter:power_a:power_a:lastReadError"}
+DateTime    SMA_success                           "Last read success - SMA Inverter [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"              (gDeviceerror)    {channel="modbus:data:inverter:power_a:power_a:lastReadSuccess"}
+// METZ Output Module
+DateTime    Metz_error                            "Last read error - METZ Output [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"                 (gDeviceerror)    {channel="modbus:data:Metz:metz_out1:metz_out1:lastReadError"}
+DateTime    Metz_success                          "Last read success - METZ Output [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"               (gDeviceerror)    {channel="modbus:data:Metz:metz_out1:metz_out1:lastReadSuccess"}
+// Carbondioxide Sensor
+DateTime    carbondioxide_error                   "Last read error - Carbondioxide [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"               (gDeviceerror)    {channel="modbus:data:endpointCarbon:nilan_input_carbondioxide:nilan_input_carbondioxide:lastReadError"}
+DateTime    carbondioxide_success                 "Last read success - Carbondioxide [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"             (gDeviceerror)    {channel="modbus:data:endpointCarbon:nilan_input_carbondioxide:nilan_input_carbondioxide:lastReadSuccess"}
+// Kamstrup 603 
+DateTime    kampstrup_error                       "Last read error - Multical 603 [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"                (gDeviceerror)    {channel="modbus:data:kamstrup:multical603:Flow_1:lastReadError"}
+DateTime    kampstrup_success                     "Last read success - Multical 603 [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"              (gDeviceerror)    {channel="modbus:data:kamstrup:multical603:Flow_1:lastReadSuccess"}
+// Smarthouse Terndrupvej 81
+DateTime    Smarthouse_error_Terndrupvej          "Last read error - Smarthouse Terndrupvej [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"      (gDeviceerror)    {channel="modbus:data:endpointTerndrupvej:Light_Smartlight_Grovlager:Light_Grovlager:lastReadError"}
+DateTime    Smarthouse_success_Terndrupvej        "Last read success - Smarthouse Terndrupvej [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"    (gDeviceerror)    {channel="modbus:data:endpointTerndrupvej:Light_Smartlight_Grovlager:Light_Grovlager:lastReadSuccess"}
+// Mitsubishi Living
+DateTime    Mitsubishi_living_error               "Last read error - Mitsubishi Livingroom [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"       (gDeviceerror)    {channel="modbus:data:endpointMitsubishi:Mitsubishi_holding_registers:Mitsubishi_Drive_On_Off:lastReadError"}
+DateTime    Mitsubishi_living_success             "Last read success - Mitsubishi Livingroom [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]"     (gDeviceerror)    {channel="modbus:data:endpointMitsubishi:Mitsubishi_holding_registers:Mitsubishi_Drive_On_Off:lastReadSuccess"}
+
+Switch      Smarthouse_error_Dummy                                                                                                   { expire="15m,command=OFF" }                                                                         
+Switch      Nilan_error_Dummy                                                                                                        { expire="15m,command=OFF" }                  
+Switch      SMA_error_Dummy                                                                                                          { expire="15m,command=OFF" }                
+Switch      Metz_error_Dummy                                                                                                         { expire="15m,command=OFF" } 
+Switch      carbondioxide_error_Dummy                                                                                                { expire="15m,command=OFF" }                
+Switch      kampstrup_error_Dummy                                                                                                    { expire="15m,command=OFF" }                
+Switch      Smarthouse_error_Terndrupvej_Dummy                                                                                       { expire="15m,command=OFF" }                
+Switch      Mitsubishi_living_Dummy                                                                                                  { expire="15m,command=OFF" }                

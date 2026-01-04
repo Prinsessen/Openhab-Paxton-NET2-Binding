@@ -1,0 +1,36 @@
+// Imports are no longer needed for standard functionality in openHAB 5 Rules DSL
+
+// *******************************************************************
+// RULE CALCULATION BOUGHT ENERGY
+// NOT FINISHED - STARTED 6/9/2022
+// *******************************************************************
+// Optimized for Openhab 5
+
+rule "Total Energy Bought From Grid Present Day"
+when
+    // Ensure these items have persistence configured (e.g., influxdb)
+    Item EM24_Energi_24_kW changed
+    or
+    Item EM24_Solar_Energi_24_kW changed
+then
+    // Explicitly cast the state to a Number for comparison
+    val Number energyGridState = EM24_Energy_Grid.state as Number
+
+    if (energyGridState >= 0) {
+        // Use ZonedDateTime for the start of the day (Java Time API)
+        val startOfDay = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
+
+        // Calculate the delta since the start of today
+        // Note: MeterPower needs to be the item you are persisting and tracking the delta for.
+        val deltaValue = MeterPower.deltaSince(startOfDay)
+
+        if (deltaValue !== null) {
+            // Use idiomatic method calls for postUpdate and persist
+            Bought_Energy.postUpdate(deltaValue)
+            // .persist() is an action, not a method on an item, use the global action or a persistence rule
+            // The item is already configured to persist in "influxdb" as per the comment in the original rule.
+        } else {
+            logWarn("Energy Calculation", "Delta calculation returned NULL, maybe persistence is down or item has no data yet.")
+        }
+    }
+end

@@ -1,0 +1,69 @@
+import java.time.ZonedDateTime // Required for Java Time API operations
+
+// Openhab 5 Optimized
+// Statistics on EM24 Grid Meter
+
+rule "Power Statistics Grid"
+when
+    // Cron adjusted for standard openHAB format
+    Time cron "0 0 23 * * ?" // Runs at 11:00 PM every day
+	
+then
+    // Use idiomatic syntax and casting
+    MeterPower.postUpdate(EM24_Energi_24_kWh.state as Number)
+    
+    // Use ZonedDateTime and ensure persistence returns a value
+    val ZonedDateTime nowZoned = ZonedDateTime.now()
+    
+    val dayDelta = MeterPower.deltaSince(nowZoned.minusDays(1))
+    if (dayDelta !== null) LastDayPower.postUpdate(dayDelta)
+    
+    val weekDelta = MeterPower.deltaSince(nowZoned.minusWeeks(1))
+    if (weekDelta !== null) LastWeekPower.postUpdate(weekDelta)
+    
+    val monthDelta = MeterPower.deltaSince(nowZoned.minusMonths(1))
+    if (monthDelta !== null) LastMonthPower.postUpdate(monthDelta)
+    
+    val yearDelta = MeterPower.deltaSince(nowZoned.minusYears(1))
+    if (yearDelta !== null) LastYearPower.postUpdate(yearDelta)
+
+    // Log the states using .state
+    logInfo("rules","Meter Power Update: " + MeterPower.state)
+    logInfo("rules","Yesterday Power Update: " + LastDayPower.state)
+    logInfo("rules","Last Week Power Update: " + LastWeekPower.state)
+    
+    // Persistence actions remain valid if configured in services/influxdb.cfg
+    LastDayPower.persist("influxdb") 
+    LastWeekPower.persist("influxdb") 
+end
+
+rule "Update Today Power Grid"
+when
+    Item EM24_Energi_24_kWh changed
+then
+    // Use idiomatic syntax and casting
+    MeterPower.postUpdate(EM24_Energi_24_kWh.state as Number)
+    
+    // Use ZonedDateTime for start of day
+    val startOfDay = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0)
+    
+    val todayDelta = MeterPower.deltaSince(startOfDay)
+    if (todayDelta !== null) {
+        TodayPower.postUpdate(todayDelta)
+        TodayPower.persist("influxdb")
+    }
+end
+
+rule "Power Hour" 
+when
+    Time cron "0 0 * * * ?" // Runs at the start of every hour
+then
+    val nowZoned = ZonedDateTime.now()
+    val hourDelta = MeterPower.deltaSince(nowZoned.minusHours(1))
+    
+    if (hourDelta !== null) {
+        LastHourPower.postUpdate(hourDelta)
+        LastHourPower.persist("influxdb")
+        logInfo("rules", "Hourly Power: " + LastHourPower.state)
+    }
+end

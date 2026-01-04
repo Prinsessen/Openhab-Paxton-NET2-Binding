@@ -1,0 +1,4 @@
+ON={"power":"ON"}
+OFF={"power":"OFF"}
+1={"power":"ON"}
+0={"power":"OFF"}

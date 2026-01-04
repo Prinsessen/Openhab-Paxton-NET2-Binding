@@ -1,0 +1,2 @@
+String    carbondioxide_generated_time           "SystemTid [%s]"       <clock>    (gCarbondioxide)
+Number    carbondioxide_generated_chartperiod    "Graf Periode [%d]"    <line>     (gCarbondioxide)

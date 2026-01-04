@@ -1,0 +1,17 @@
+String      current_event_name           "Current event [%s]"                              <schedule>    {channel="icalendar:calendar:nanna:current_title"}
+DateTime    current_event_until          "Current until [%1$tT, %1$tY-%1$tm-%1$td]"        <schedule>    {channel="icalendar:calendar:nanna:current_end"}
+String      next_event_name              "Next event [%s]"                                 <schedule>    {channel="icalendar:calendar:nanna:next_title"}
+DateTime    next_event_at                "Next at [%1$tT, %1$tY-%1$tm-%1$td]"              <schedule>    {channel="icalendar:calendar:nanna:next_start"}
+String      first_event_name_tomorrow    "First event [%s]"                                <schedule>    {channel="icalendar:eventfilter:feedd0d0:result_0#title"}
+DateTime    first_event_at_tomorrow      "First at [%1$tT, %1$tY-%1$tm-%1$td]"             <schedule>    {channel="icalendar:eventfilter:feedd0d0:result_0#begin"}
+Switch      Calendar_Test_Switch         "Test Switch [%s]"                                <schedule>    {channel="icalendar:calendar:nanna:current_presence"}
+String      CalendarName1                "Now [%s]"                                        <schedule>    {channel="icalendar:calendar:nanna:current_title"}
+DateTime    CalendarTimeStart1           "Starts [%1$ta, %1$te %1$tb %1$tl:%1$tM%1$tp]"    <schedule>    {channel="icalendar:calendar:nanna:current_start"}
+DateTime    CalendarTimeEnd1             "Ends [%1$ta, %1$te %1$tb %1$tl:%1$tM%1$tp]"      <schedule>    {channel="icalendar:calendar:nanna:current_end"}
+String      CalendarName2                "Coming up [%s]"                                  <schedule>    {channel="icalendar:calendar:nanna:next_title"}
+DateTime    CalendarTimeStart2           "Starts [%1$ta, %1$te %1$tb %1$tl:%1$tM%1$tp]"    <schedule>    {channel="icalendar:calendar:nanna:next_start"}
+DateTime    CalendarTimeEnd2             "Ends [%1$ta, %1$te %1$tb %1$tl:%1$tM%1$tp]"      <schedule>    {channel="icalendar:calendar:nanna:next_end"}
+Switch      MeetingBegins                "Meeting begins 1"                                <schedule>
+Switch      MeetingBegins1               "Meeting begins 2"                                <schedule>
+Switch      MeetingBegins2               "Meeting begins 3"                                <schedule>
+Number      Calendar_Test_Temperature    "Temperature test [%.1f]"                         <schedule>

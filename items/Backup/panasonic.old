@@ -1,0 +1,17 @@
+Switch Panasonic_Dummy	      "Heatpump OFF/ON [%s]"
+Switch Panasonic_Override     "Override heatpump automation [%s]"
+Number Panasonic_RunSet	      "Panasonic ON/OFF"						(gPanasonic)
+Number Panasonic_Mode         "Mode"                          	<settings> 			(gPanasonic)
+Number Panasonic_Fan	      "Fan [%s]"	                <fan>				(gPanasonic)
+Number Panasonic_Temp	      "Set Temp [%d °C]"                <temperature>			(gPanasonic)
+Number Panasonic_Vsswing      "Vertical swing [%s]"             <flow>				(gPanasonic)
+Number Panasonic_Hsswing      "Horizontal swing [%s]"           <flow>				(gPanasonic)
+
+
+Number Panasonic_Avrg_Energy	"Average waste energy (Start > - 1kW) [%.3f kW]"  <energy>
+Number Panasonic_Avrg_Energy1	"Average waste energy (Start > - 1kW) [%.3f kW]"  <energy>	
+// Number Panasonic_Dummy1						
+// Number Panasonic_Dummy2						
+
+
+

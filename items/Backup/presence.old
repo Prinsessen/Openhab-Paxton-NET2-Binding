@@ -1,0 +1,66 @@
+Switch 	      Presence_Nanna_PhoneHome  "Nanna Hjemme" <present>   (gPresentNanna, gPresence, gPresent)			{ mqttitude="mosquitto:owntracks/nanna/android/event:-hus" }
+
+String        location_NannaPhone       "Nanna's Location [%s]"                (gLocations)                                   
+{mqtt="<[mosquitto:owntracks/nanna/android:state:JS(mqtt-coordinates.js)]"}
+
+String        ownTracks_NannaRaw        "Nanna Raw Data [%s]"             						
+{mqtt="<[mosquitto:owntracks/nanna/android:state:default]"}
+
+Number        ownTracks_NannaLat        "Nanna's Latitude [%.3f °]"      <latitude>
+Number        ownTracks_NannaLon        "Nanna's Longitude [%.3f °]"     <longitude>
+Number        ownTracks_NannaAcc        "Nanna's Accuracy [%d m]"        <accuracy>
+Number        ownTracks_NannaBatt       "Nanna's Battery [%s %%]"        <battery>
+
+
+Switch 	      Presence_Verso_PhoneHome  "Toyota Verso Indkørsel" <present>   (gPresentVerso, gPresence, gPresent)			{ mqttitude="mosquitto:owntracks/nanna/NannaCar/event:hus" }
+
+String        location_Verso       "Toyota Verso's Location [%s]"                (gLocations)                                   
+{mqtt="<[mosquitto:owntracks/nanna/NannaCar:state:JS(mqtt-coordinates.js)]"}
+
+String        ownTracks_VersoRaw        "Toyota Verso Raw Data [%s]"             						
+{mqtt="<[mosquitto:owntracks/nanna/NannaCar:state:default]"}
+
+Number        ownTracks_VersoLat        "Toyota Verso's Latitude [%.3f °]"      <latitude>
+Number        ownTracks_VersoLon        "Toyota Verso's Longitude [%.3f °]"     <longitude>
+Number        ownTracks_VersoAcc        "Toyota Verso's Accuracy [%d m]"        <accuracy>
+Number        ownTracks_VersoBatt       "Toyota Verso's Battery [%s %%]"        <battery>
+
+
+
+Switch        Presence_Anna_PhoneHome 	"Anna Hjemme"       	 <present> (gPresentAnna, gPresence, gPresent)           {mqttitude="mosquitto:owntracks/nanna/anna/event:hus" }
+
+String        location_AnnaPhone        "Anna's Location [%s]"            	(gLocations)                                  
+{mqtt="<[mosquitto:owntracks/nanna/anna:state:JS(mqtt-coordinates.js)]"}
+
+String        ownTracks_AnnaRaw        "Anna Raw Data [%s]"             
+{mqtt="<[mosquitto:owntracks/nanna/anna:state:default]"}
+
+Number        ownTracks_AnnaLat        "Anna's Latitude [%.3f °]"      <latitude>
+Number        ownTracks_AnnaLon        "Anna's Longitude [%.3f °]"     <longitude>
+Number        ownTracks_AnnaAcc        "Anna's Accuracy [%d m]"        <accuracy>
+Number        ownTracks_AnnaBatt       "Anna's Battery [%s %%]"        <battery>
+
+
+Switch        Presence_Kenneth_PhoneHome "Kenneth Hjemme"       	 <present> (gPresentKenneth, gPresence, gPresent)           {mqttitude="mosquitto:owntracks/nanna/kenneth/event:hus" }
+
+String        location_KennethPhone     "Kenneth's Location [%s]"            	(gLocations)                                  
+{mqtt="<[mosquitto:owntracks/nanna/kenneth:state:JS(mqtt-coordinates.js)]"}
+
+String        ownTracks_KennethRaw        "Kenneth Raw Data [%s]"             
+{mqtt="<[mosquitto:owntracks/nanna/kenneth:state:default]"}
+
+Number        ownTracks_KennethLat        "Kenneth's Latitude [%.3f °]"      <latitude>
+Number        ownTracks_KennethLon        "Kenneth's Longitude [%.3f °]"     <longitude>
+Number        ownTracks_KennethAcc        "Kenneth's Accuracy [%d m]"        <accuracy>
+Number        ownTracks_KennethBatt       "Kenneth's Battery [%s %%]"        <battery>
+
+Number 	      latitude		  "Latitude [%s %%]" 
+Number 	      longitude 	  "longitude [%s %%]"
+String 	      device		  "Device [%s]"
+String 	      device_model	  "Device Model [%s]" 
+String 	      device_type	  "Device Type [%s]"
+String	      id		  "Device ID [%s]"
+String        trigger		  "Trigger [%s]"
+String	      timestamp		  "Time Stamp [%s]"
+
+

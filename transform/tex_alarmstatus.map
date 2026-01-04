@@ -1,0 +1,8 @@
+0=Disarmed
+1=Armed
+2=Alarm being enabled
+3=Alarm triggered
+4=Failure alarming
+-=Unknown
+=Unknown
+NULL=Unknown

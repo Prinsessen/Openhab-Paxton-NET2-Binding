@@ -1,0 +1,25 @@
+Player spotifyTrackPlayer   "Player"               {channel="spotify:player:user1:trackPlayer"}
+String spotifyDevices       "Active device [%s]"   {channel="spotify:player:user1:devices"}
+Switch spotifyDeviceShuffle "Shuffle mode"         {channel="spotify:player:user1:deviceShuffle"}
+String spotifyTrackRepeat   "Repeat mode: [%s]"    {channel="spotify:player:user1:trackRepeat"}
+String spotifyTrackProgress "Track progress: [%s]" {channel="spotify:player:user1:trackProgress"}
+String spotifyTrackDuration "Track duration: [%s]" {channel="spotify:player:user1:trackDuration"}
+String spotifyTrackName     "Track Name: [%s]"     {channel="spotify:player:user1:trackName"}
+String spotifyAlbumName     "Album Name: [%s]"     {channel="spotify:player:user1:albumName"}
+String spotifyArtistName    "Artist Name: [%s]"    {channel="spotify:player:user1:artistName"}
+Image  spotifyAlbumImage    "Album Art"            {channel="spotify:player:user1:albumImage"}
+String spotifyPlaylists     "Playlists [%s]"       {channel="spotify:player:user1:playlists"}
+String spotifyPlayName      "Playlist [%s]"        {channel="spotify:player:user1:playlistName"}
+
+
+
+String device1DeviceName    {channel="spotify:device:user1:device1:deviceName"}
+Player device1Player        {channel="spotify:device:user1:device1:devicePlayer"}
+Dimmer device1DeviceVolume  {channel="spotify:device:user1:device1:deviceVolume"}
+Switch device1DeviceShuffle {channel="spotify:device:user1:device1:deviceShuffle"}
+String device2DeviceName    {channel="spotify:device:user1:device2:deviceName"}
+Player device2Player        {channel="spotify:device:user1:device2:devicePlayer"}
+Dimmer device2DeviceVolume  {channel="spotify:device:user1:device2:deviceVolume"}
+Switch device2DeviceShuffle {channel="spotify:device:user1:device2:deviceShuffle"}
+
+

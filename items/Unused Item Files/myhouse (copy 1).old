@@ -1,0 +1,655 @@
+Group gGA 		"Garage"	                        <garage>            [ "home-group" ]
+Group gGF 	    	"Stue Plan"                     	<groundfloor>	    [ "home-group" ]
+Group gGC 	    	"Kælder"	                        <cellar>    	    [ "home-group" ]
+Group Have 	    	"Have"		                        <garden>            [ "home-group" ]
+Group Weather 		"Weather"                       	<sun>	    	    [ "home-group" ]
+Group gNilan2 		"Nilan"	                        	<climate-on>	    [ "home-group" ]
+Group gEnergi		"Energi"               	                <electricity>       [ "home-group" ]
+Group gHpSensor		"HeatPump"                              <electricity>       [ "home-group" ]
+Group gCoSensor		"Co2"                                   <carbon_dioxide>    [ "home-group" ]
+
+
+Group Status 
+Group Shutters
+
+
+Group GF_Stue	 	"Stue"	 	                    <video> 	    	(gGF)			
+Group GF_Alrum	 	"Spisestue" 	                <party> 	    	(gGF)			
+Group GF_Kokken 	"Køkken" 		                <kitchen> 	    	(gGF)		
+Group GF_Toilet 	"Badeværelse" 		            <bath> 		    	(gGF)		
+Group GF_Toilet1	"Børne Badeværelse"             <bath> 		    	(gGF)			
+Group GF_Gang		"Børne Gang"	                <corridor> 	    	(gGF)			
+Group GF_Sove	 	"Sove Værelse" 	                <bedroom> 	    	(gGF)			
+Group GF_Udestue    "Udestue"                       <office>            (gGF)				
+Group GF_Alexander  "Alexander"    	                <boy_3>             (gGF)			
+Group GF_Claudia    "Claudia"      		            <girl_1>            (gGF)			
+Group GF_Julie      "Julie"                         <girl_2>            (gGF)				
+Group GF_Bryggers   "Bryggers"                      <corridor>          (gGF)				
+
+
+Group GC_Anna       "Anna"		                    <girl_3>	    	(gGC)
+Group GC_Kontor	    "Kontor"	                    <office>	    	(gGC)
+Group GC_Bryggers   "Bryggers"	                    <corridor>	    	(gGC)
+Group GC_Teknik	    "Teknikrum"	                    <electricity>	    (gGC)
+
+Group GA_Bil 		"Parkering" 	                <garage_detached> 	(gGA)
+Group GA_Vaerksted 	"Værksted" 	                    <pantry> 	    	(gGA)
+
+Group Energi_24		"EM24 - Energimåler - Grid "		    <electricity>		(gEnergi)
+Group Energi_2_24	"EM24 - Energimåler - Solar "		    <electricity>		(gEnergi)
+Group Energi_3_24	"EM24 - Energimåler - Hotwater Boiler "	<electricity>		(gEnergi)
+Group Energi_srv	"EM111 - Energimåler Server"		    <electricity>		(gEnergi)	
+Group Energi_nilan	"EM111 - Energimåler Nilan"		        <electricity>		(gEnergi)
+Group Energi_cool	"EM111 - Energimåler Server Cool"	    <electricity>		(gEnergi)
+Group District_Heat	"District Heating - Multical 603 "	    <electricity>		(gEnergi)
+		
+
+/* active groups */
+Group:Switch:OR(ON, OFF) 		Lights 		"Sluk Alt [(%d)]" 					            (All)
+Group:Switch:OR(ON, OFF) 		Heating 	"Heating valve status [(%d)]"	<heating>   	(All)
+Group:Number:AVG 		    	Temperature	"Gns. Rum Temperatur [%.1f °C]" <thermometer1>	(Status)
+Group:Contact:OR(OPEN, CLOSED) 	Windows 	"Døre & Vinduer [(%d)]"		    <contact>	    (All)
+
+/* Google Assistant Thermostat */  
+
+
+Group       Stue_Thermostat       "Stue Thermostat"   		 (Thermostats)     [ "Thermostat" ]   
+Group       Alrum_Thermostat      "Alrum Thermostat"  		 (Thermostats)     [ "Thermostat" ]  
+Group       Bad_Thermostat        "Bad Thermostat"    		 (Thermostats)     [ "Thermostat" ]  
+Group       Sove_Thermostat       "Bedroom Thermostat"		 (Thermostats)     [ "Thermostat" ] 
+Group       Udestue_Thermostat	  "Udestue Thermostat" 		 (Thermostats)     [ "Thermostat" ]  
+
+/* Google Assistant Thermostat */  
+
+String Stue_mode 	(Stue_Thermostat)	[ "homekit:TargetHeatingCoolingMode" ]
+String Alrum_mode 	(Alrum_Thermostat)	[ "homekit:TargetHeatingCoolingMode" ]
+String Bad_mode 	(Bad_Thermostat)	[ "homekit:TargetHeatingCoolingMode" ]
+String Sove_mode 	(Sove_Thermostat)	[ "homekit:TargetHeatingCoolingMode" ]
+String Udestue_mode	(Udestue_Thermostat)	[ "homekit:TargetHeatingCoolingMode" ]
+
+
+
+/* Energy */
+Number EM24_Energi_24_AL1		"Strøm L1 [%.3f A]"		        <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_AL1:number", autoupdate="false" }
+
+Number EM24_Energi_24_AL2		"Strøm L2 [%.3f A]"	        	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_AL2:number", autoupdate="false" }
+
+Number EM24_Energi_24_AL3		"Strøm L3 [%.3f A]"		        <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_AL3:number", autoupdate="false" }
+
+Number EM24_Energi_24_kWh		"System kWh [%.2f kWh]"		    <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kWh:number", autoupdate="false" }
+
+Number EM24_Energi_24_kWh_L1	"System kWh L1 [%.1f kWh]"	    <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kWh1:number", autoupdate="false" }
+
+Number EM24_Energi_24_kWh_L2	"System kWh L2 [%.1f kWh]"	    <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kWh2:number", autoupdate="false" }
+
+Number EM24_Energi_24_kWh_L3	"System kWh L3 [%.1f kWh]"  	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kWh3:number", autoupdate="false" }
+
+Number EM24_Energi_24_kW		"System Effekt (P) [%.3f kW]"	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kW:number", autoupdate="false" }
+
+Number EM24_Energi_24_kW1		"Effekt L1 (P) [%.3f kW]"		<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kW_L1:number", autoupdate="false" }
+
+Number EM24_Energi_24_kW2		"Effekt L2 (P) [%.3f kW]"		<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kW_L2:number", autoupdate="false" }
+
+Number EM24_Energi_24_kW3		"Effekt L3 (P) [%.3f kW]"		<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kW_L3:number", autoupdate="false" }
+
+Number EM24_Energi_24_kVA		"System Effekt (S) [%.3f kVA]"	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kVA:number", autoupdate="false" }
+
+Number EM24_Energi_24_kVA_L1	"Effekt L1 (S) [%.3f kVA]"  	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kVA_L1:number", autoupdate="false" }
+
+Number EM24_Energi_24_kVA_L2	"Effekt L2 (S) [%.3f kVA]"	    <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kVA_L2:number", autoupdate="false" }
+
+Number EM24_Energi_24_kVA_L3	"Effekt L3 (S) [%.3f kVA]"	    <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kVA_L3:number", autoupdate="false" }
+
+Number EM24_Energi_24_HZ		"Frekvens [%.1f HZ]"	    	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_HZ:number", autoupdate="false" }
+
+Number EM24_Energi_24_V_L1_L2	"Spænding L1-L2 [%.1f V]"	    <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_V_L1_L2:number", autoupdate="false" }
+
+Number EM24_Energi_24_V_L1_N	"Spænding L1-N [%.1f V]"    	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_V_L1_N:number", autoupdate="false" }
+
+Number EM24_Energi_24_V_L2_L3	"Spænding L2-L3 [%.1f V]"   	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_V_L2_L3:number", autoupdate="false" }
+
+Number EM24_Energi_24_V_L2_N	"Spænding L2-N [%.1f V]"    	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_V_L2_N:number", autoupdate="false" }
+
+Number EM24_Energi_24_V_L3_L1	"Spænding L3-L1 [%.1f V]"	    <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_V_L3_L1:number", autoupdate="false" }
+
+Number EM24_Energi_24_V_L3_N	"Spænding L3-N [%.1f V]"    	<electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_V_L3_N:number", autoupdate="false" }
+
+Number MeterPower	        	"Meter Power [%.1f kWh]"        <electricity>	
+
+Number LastHourPower    		"Last Hour Power [%.3f kWh]"     <electricity>	
+
+Number LastDayPower	        	"Last Day Power [%.1f kWh]"      <electricity>	
+
+Number LastWeekPower	    	"Last Week Power [%.1f kWh]"     <electricity>	
+
+Number LastMonthPower	    	"Last Month Power [%.1f kWh]"    <electricity>	
+
+Number LastYearPower	    	"Last Year Power [%.1f kWh]"      <electricity>	
+
+Number TodayPower	        	"Today Power [%.1f kWh]"          <electricity>	
+
+Number House_Energy_Day 		"House Day kWh [%.1f kWh]"	 <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:House_Energy_Day:House_Energy_Day:number", autoupdate="false" }
+
+Number House_Energy_Week		"House Week kWh [%.1f kWh]"	 <electricity>	(Energi_24, EM24)		{ channel="modbus:data:endpointSmarthouse:House_Energy_Week:House_Energy_Week:number", autoupdate="false" }	
+
+Number Energy_Balance_Day		"Energy Bought Today [%.1f kWh]"	 <money>	
+
+
+
+Number EM24_Solar_Energi_24_AL1		"Solar Current L1 [%.3f A]"		        <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_AL1:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_AL2		"Solar Current L2 [%.3f A]"	        	<electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_AL2:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_AL3		"Solar Current L3 [%.3f A]"		        <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_AL3:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kWh		"Solar Total kWh [%.1f kWh]"		    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kWh:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kWh_L1	"Solar Total kWh L1 [%.1f kWh]"	        <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kWh1:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kWh_L2	"Solar Total kWh L2 [%.1f kWh]"	        <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kWh2:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kWh_L3	"Solar Total kWh L3 [%.1f kWh]"  	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kWh3:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kW		"Solar Effect (P) [%.3f kW]"	        <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kW:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kW1		"Solar Effect L1 (P) [%.3f kW]"		    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kW_L1:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kW2		"Solar Effect L2 (P) [%.3f kW]"		    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kW_L2:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kW3		"Solar Effect L3 (P) [%.3f kW]"		    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kW_L3:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kVA		"Solar Effect Effekt (S) [%.3f kVA]"	<electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kVA:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kVA_L1	"Solar Effect L1 (S) [%.3f kVA]"  	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kVA_L1:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kVA_L2	"Solar Effect L2 (S) [%.3f kVA]"	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kVA_L2:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_kVA_L3	"Solar Effect L3 (S) [%.3f kVA]"	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_kVA_L3:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_HZ		"Solar Frequency [%.1f HZ]"	    	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_HZ:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_V_L1_L2	"Solar Voltage L1-L2 [%.1f V]"	        <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_V_L1_L2:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_V_L1_N	"Solar Voltage L1-N [%.1f V]"    	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_V_L1_N:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_V_L2_L3	"Solar Voltage L2-L3 [%.1f V]"   	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_V_L2_L3:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_V_L2_N	"Solar Voltage L2-N [%.1f V]"    	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_V_L2_N:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_V_L3_L1	"Solar Voltage L3-L1 [%.1f V]"	        <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_V_L3_L1:number", autoupdate="false" }
+
+Number EM24_Solar_Energi_24_V_L3_N	"Solar Voltage L3-N [%.1f V]"    	    <electricity>	(Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Energy_2:EM24_Solar_Energi_24_V_L3_N:number", autoupdate="false" }
+
+Number MeterPower_Solar			    "Meter Power [%.1f kWh]"                <electricity>	
+
+Number LastDayPower_Solar		    "Last Day Power [%.1f kWh]"             <electricity>	
+
+Number LastWeekPower_Solar		    "Last Week Power [%.1f kWh]"            <electricity>	
+
+Number LastMonthPower_Solar		    "Last Month Power [%.1f kWh]"           <electricity>	
+
+Number LastYearPower_Solar		    "Last Year Power [%.1f kWh]"            <electricity>	
+
+Number TodayPower_Solar			    "Today Power [%.1f kWh]"                <electricity>
+
+Number Solar_Energy_Day		    "Produced by solarplant today [%.1f kWh]"	    <electricity>  (Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Solar_Energy_Day:Solar_Energy_Day:number", autoupdate="false" }	
+
+Number Solar_Energy_Week	    "Produced by solarplant this week [%.1f kWh]"	    <electricity>  (Energi_2_24, EM24_Solar)		{ channel="modbus:data:endpointSmarthouse:Solar_Energy_Week:Solar_Energy_Week:number", autoupdate="false" }	
+	
+
+
+
+
+Number EM24_Boil_Energi_24_AL1		"Boiler Current L1 [%.3f A]"		    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_AL1:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_AL2		"Boiler Current L2 [%.3f A]"	        <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_AL2:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_AL3		"Boiler Current L3 [%.3f A]"		    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_AL3:number", autoupdate="false" }
+
+Number EM24_boil_Energi_24_kWh		"Boiler Total kWh [%.1f kWh]"		    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kWh:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kWh_L1	"Boiler Total kWh L1 [%.1f kWh]"	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kWh1:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kWh_L2	"Boiler Total kWh L2 [%.1f kWh]"	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kWh2:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kWh_L3	"Boiler Total kWh L3 [%.1f kWh]"  	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kWh3:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kW		"Boiler Effect (P) [%.3f kW]"	        <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kW:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kW1		"Boiler Effect L1 (P) [%.3f kW]"		<electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kW_L1:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kW2		"Boiler Effect L2 (P) [%.3f kW]"		<electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kW_L2:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kW3		"Boiler Effect L3 (P) [%.3f kW]"		<electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kW_L3:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kVA		"Boiler Effect (S) [%.3f kVA]"	        <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kVA:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kVA_L1	"Boiler Effect L1 (S) [%.3f kVA]"  	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kVA_L1:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kVA_L2	"Boiler Effect L2 (S) [%.3f kVA]"	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kVA_L2:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_kVA_L3	"Boiler Effect L3 (S) [%.3f kVA]"	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_kVA_L3:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_HZ		"Boiler Frequency [%.1f HZ]"	    	<electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_HZ:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_V_L1_L2	"Boiler Voltage L1-L2 [%.1f V]"	        <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_V_L1_L2:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_V_L1_N	"Boiler Voltage L1-N [%.1f V]"    	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_V_L1_N:number", autoupdate="false" }
+
+Number EM24_boil_Energi_24_V_L2_L3	"Boiler Voltage L2-L3 [%.1f V]"   	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_V_L2_L3:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_V_L2_N	"Boiler Voltage L2-N [%.1f V]"    	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_V_L2_N:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_V_L3_L1	"Boiler Voltage L3-L1 [%.1f V]"	        <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_V_L3_L1:number", autoupdate="false" }
+
+Number EM24_Boil_Energi_24_V_L3_N	"Boiler Voltage L3-N [%.1f V]"    	    <electricity>	(Energi_3_24, EM24_Boiler)		{ channel="modbus:data:endpointSmarthouse:Energy_3:EM24_Boiler_Energi_24_V_L3_N:number", autoupdate="false" }
+
+
+
+Number EM24_Energy_Grid			    "Energy Grid/Solar Feed (P) [%.3f kW]"  <electricity>	
+
+Number EM24_Energy_Balance_Phase1	"Balance Phase 1 (P) [%.3f kW]"         <electricity>	
+
+Number EM24_Energy_Balance_Phase2	"Balance Phase 2 (P) [%.3f kW]"         <electricity>	
+
+Number EM24_Energy_Balance_Phase3	"Balance Phase 3 (P) [%.3f kW]"         <electricity>	
+
+Number EM24_Boil_Charge			    "Energy Avaliable For Boiler (P) [%.3f kW]"   <electricity>	
+
+Number EM24_Boil_Charge_Avrg		"Avrage Energy Avaliable For Boiler (P) [%.3f kW]"   <electricity>	
+
+
+
+Number EM111_Energi_srv_A		"Strøm [%.3f A]"		        <electricity>	(Energi_srv, EM111)	    { channel="modbus:data:endpointSmarthouse:EM111_Server:EM111_Energi_srv_A:number", autoupdate="false" }
+Number EM111_Energi_srv_HZ		"Frekvens [%.1f Hz]"	    	<electricity>	(Energi_srv, EM111)	    { channel="modbus:data:endpointSmarthouse:EM111_Server:EM111_Energi_srv_HZ:number", autoupdate="false" }
+Number EM111_Energi_srv_V		"Spænding [%.1f V]"		        <electricity>	(Energi_srv, EM111)	    { channel="modbus:data:endpointSmarthouse:EM111_Server:EM111_Energi_srv_V:number", autoupdate="false" }
+Number EM111_Energi_srv_kWh		"Total kWh [%.1f kWh]"	    	<electricity>	(Energi_srv, EM111)	    { channel="modbus:data:endpointSmarthouse:EM111_Server:EM111_Energi_srv_kWh:number", autoupdate="false" }
+Number EM111_Energi_srv_kW		"Total kW (P) [%.3f kW]"		<electricity>	(Energi_srv, EM111)		{ channel="modbus:data:endpointSmarthouse:EM111_Server:EM111_Energi_srv_kW:number", autoupdate="false" }
+Number EM111_Energi_srv_kVA		"Total kVA (S) [%.3f kVA]"  	<electricity>	(Energi_srv, EM111)	    { channel="modbus:data:endpointSmarthouse:EM111_Server:EM111_Energi_srv_kVA:number", autoupdate="false" }
+
+
+
+
+Number EM111_Energi_nilan_A		"Strøm [%.3f A]"		        <electricity>	(Energi_nilan, EM111)	{ channel="modbus:data:endpointSmarthouse:EM111_Nilan:EM111_Energi_nilan_A:number", autoupdate="false" }
+Number EM111_Energi_nilan_HZ	"Frekvens [%.1f Hz]"	    	<electricity>	(Energi_nilan, EM111)	{ channel="modbus:data:endpointSmarthouse:EM111_Nilan:EM111_Energi_nilan_HZ:number", autoupdate="false" }
+Number EM111_Energi_nilan_V		"Spænding [%.1f V]"		        <electricity>	(Energi_nilan, EM111)	{ channel="modbus:data:endpointSmarthouse:EM111_Nilan:EM111_Energi_nilan_V:number", autoupdate="false" }
+Number EM111_Energi_nilan_kWh	"Total kWh [%.1f kWh]"	    	<electricity>	(Energi_nilan, EM111)	{ channel="modbus:data:endpointSmarthouse:EM111_Nilan:EM111_Energi_nilan_kWh:number", autoupdate="false" }
+Number EM111_Energi_nilan_kW	"Total Kw (P) [%.3f kW]"		<electricity>	(Energi_nilan, EM111)	{ channel="modbus:data:endpointSmarthouse:EM111_Nilan:EM111_Energi_nilan_kW:number", autoupdate="false" }
+Number EM111_Energi_nilan_kVA	"Total kVA (S) [%.3f kVA]"  	<electricity>	(Energi_nilan, EM111)	{ channel="modbus:data:endpointSmarthouse:EM111_Nilan:EM111_Energi_nilan_kVA:number", autoupdate="false" }
+
+Number EM111_Energi_cool_A		"Strøm  [%.3f A]"		        <electricity>	(Energi_cool, EM111,gHpSensor)		{ channel="modbus:data:endpointSmarthouse:EM111_Cool:EM111_Energi_cool_A:number", autoupdate="false" }
+Number EM111_Energi_cool_HZ		"Frekvens [%.1f Hz]"	    	<electricity>	(Energi_cool, EM111)		{ channel="modbus:data:endpointSmarthouse:EM111_Cool:EM111_Energi_cool_HZ:number", autoupdate="false" }
+Number EM111_Energi_cool_V		"Spænding [%.1f V]"		        <electricity>	(Energi_cool, EM111)		{ channel="modbus:data:endpointSmarthouse:EM111_Cool:EM111_Energi_cool_V:number", autoupdate="false" }
+Number EM111_Energi_cool_kWh	"Total kWh [%.1f kWh]"	    	<electricity>	(Energi_cool, EM111)		{ channel="modbus:data:endpointSmarthouse:EM111_Cool:EM111_Energi_cool_kWh:number", autoupdate="false" }
+Number EM111_Energi_cool_kW		"Total kW (P) [%.3f kW]"		<electricity>	(Energi_cool, EM111)		{ channel="modbus:data:endpointSmarthouse:EM111_Cool:EM111_Energi_cool_kW:number", autoupdate="false" }
+Number EM111_Energi_cool_kVA	"Total kVA (S) [%.3f kVA]"  	<electricity>	(Energi_cool, EM111)		{ channel="modbus:data:endpointSmarthouse:EM111_Cool:EM111_Energi_cool_kVA:number", autoupdate="false" }
+
+Number Udv_humidity		    	"Humidity Outdoor [%.2f %%r.H]"        <humidity> (Temp, Udsugning, gAirSensor, gHumSensor)	{ channel="modbus:data:endpointSmarthouse:Udv_humidity:Udv_humidity:number", autoupdate="false" }
+Number Nilan_Input_RH_Avrg		"Average Humidity [%.2f %%r.H]"   <humidity>	(Temp, Udsugning, gAirSensor, gHumSensor)
+Number Nilan_Input_RH_Trig		"Trigger (Humidity > Trigger = Hastighed 4) [%.2f %%r.H]" <humidity>	(Temp, Udsugning, gAirSensor, gHumSensor)
+
+/* Heat Work Mode */
+Number Heat_Mode	        "Heat Work Mode [MAP(Heat_mode.map):%s]"               	 <thermometer1> (GF_Stue)        { channel="modbus:data:endpointSmarthouse:Heat_Mode:Heat_Mode:number", autoupdate="false" }
+
+
+/* Heat Setpoint */
+
+Number Setpoint_Stue 		"Setpunkt Stue T1 [%.1f °C]"      <thermometer1> (Stue_Thermostat, GF_Stue)   [ "TargetTemperature" ]   { channel="modbus:data:endpointSmarthouse:Setpoint_Stue:Setpoint_Stue:number", autoupdate="false" }
+
+
+Number Setpoint_Stue_T2	        "Setpunkt Stue T2 [%.1f °C]"      <thermometer1> (GF_Stue)       { channel="modbus:data:endpointSmarthouse:Setpoint_Stue:Setpoint_Stue_T2:number", autoupdate="false" }
+
+Number Setpoint_Alrum	        "Setpunkt Alrum T1 [%.1f °C]"	  <thermometer1> (Alrum_Thermostat, GF_Alrum)   [ "TargetTemperature" ]      { channel="modbus:data:endpointSmarthouse:Setpoint_Alrum:Setpoint_Alrum:number", autoupdate="false" }
+Number Setpoint_Alrum_T2	"Setpunkt Alrum T2 [%.1f °C]"	                 <thermometer1> (GF_Alrum)       { channel="modbus:data:endpointSmarthouse:Setpoint_Alrum:Setpoint_Alrum_T2:number", autoupdate="false" }
+
+
+Number Setpoint_Bad	        "Setpunkt Badeværelse T1 [%.1f °C]"   <thermometer1> (Bad_Thermostat, GF_Toilet)  [ "TargetTemperature" ]    { channel="modbus:data:endpointSmarthouse:Setpoint_Bad:Setpoint_Bad:number", autoupdate="false" }
+Number Setpoint_Bad_T2	        "Setpunkt Badeværelse T2 [%.1f °C]"        	 <thermometer1> (GF_Toilet)        { channel="modbus:data:endpointSmarthouse:Setpoint_Bad:Setpoint_Bad_T2:number", autoupdate="false" }
+
+Number Setpoint_Sove	        "Setpunkt Soveværelse T1 [%.1f °C]" <thermometer1> (Sove_Thermostat, GF_Sove)   [ "TargetTemperature" ]        { channel="modbus:data:endpointSmarthouse:Setpoint_Sove:Setpoint_Sove:number", autoupdate="false" }
+
+Number Setpoint_Sove_T2	        "Setpunkt Soveværelse T2 [%.1f °C]"	         <thermometer1> (GF_Sove)          { channel="modbus:data:endpointSmarthouse:Setpoint_Sove:Setpoint_Sove_T2:number", autoupdate="false" }
+
+
+Number Setpoint_Kokken	        "Setpunkt Køkken T1 [%.1f °C]"	                 <thermometer1> (GF_Kokken)           { channel="modbus:data:endpointSmarthouse:Setpoint_Kokken:Setpoint_Kokken:number", autoupdate="false" }
+Number Setpoint_Kokken_T2	        "Setpunkt Køkken T2 [%.1f °C]"	             <thermometer1> (GF_Kokken)        { channel="modbus:data:endpointSmarthouse:Setpoint_Kokken:Setpoint_Kokken_T2:number", autoupdate="false" }
+
+
+Number Setpoint_Udestue	        "Setpunkt UdeStue T2 [%.1f °C]"	             <thermometer1> (Udestue_Thermostat, GF_Udestue)   [ "TargetTemperature" ]     { channel="modbus:data:endpointSmarthouse:Setpoint_Udestue:Setpoint_Udestue:number", autoupdate="false" }
+Number Setpoint_Udestue_T2	"Setpunkt UdeStue T2 [%.1f °C]"	             <thermometer1> (GF_Udestue)       { channel="modbus:data:endpointSmarthouse:Setpoint_Udestue:Setpoint_Udestue_T2:number", autoupdate="false" }
+
+
+Number Setpoint_Anna	        "Setpunkt Anna T1[%.1f °C]"	                 <thermometer1> (GC_Anna)    	   { channel="modbus:data:endpointSmarthouse:Setpoint_Anna:Setpoint_Anna:number", autoupdate="false" }
+Number Setpoint_Anna_T2	        "Setpunkt Anna T2[%.1f °C]"	                 <thermometer1> (GC_Anna)          { channel="modbus:data:endpointSmarthouse:Setpoint_Anna:Setpoint_Anna_T2:number", autoupdate="false" }
+
+
+Number Setpoint_Claudia	        "Setpunkt Claudia T1 [%.1f °C]"	             <thermometer1> (GF_Claudia)           { channel="modbus:data:endpointSmarthouse:Setpoint_Claudia:Setpoint_Claudia:number", autoupdate="false" }
+Number Setpoint_Claudia_T2	 "Setpunkt Claudia T2 [%.1f °C]"	             <thermometer1> (GF_Claudia)       { channel="modbus:data:endpointSmarthouse:Setpoint_Claudia:Setpoint_Claudia_T2:number", autoupdate="false" }
+
+
+Number Setpoint_Julie	        "Setpunkt Julie T1 [%.1f °C]"	                 <thermometer1> (GF_Julie) 	  { channel="modbus:data:endpointSmarthouse:Setpoint_Julie:Setpoint_Julie:number", autoupdate="false" }
+Number Setpoint_Julie_T2	"Setpunkt Julie T2 [%.1f °C]"	                 <thermometer1> (GF_Julie)         { channel="modbus:data:endpointSmarthouse:Setpoint_Julie:Setpoint_Julie_T2:number", autoupdate="false" }
+
+Number Setpoint_Alexander       "Setpunkt Alexander T1 [%.1f °C]"	             <thermometer1> (GF_Alexander)     { channel="modbus:data:endpointSmarthouse:Setpoint_Alexander:Setpoint_Alexander:number", autoupdate="false" }
+Number Setpoint_Alexander_T2    "Setpunkt Alexander T2[%.1f °C]"	             <thermometer1> (GF_Alexander)     { channel="modbus:data:endpointSmarthouse:Setpoint_Alexander:Setpoint_Alexander_T2:number", autoupdate="false" }
+
+
+Number Setpoint_Kontor          "Setpunkt Kontor T1 [%.1f °C]"	                 <thermometer1> (GC_Kontor)        { channel="modbus:data:endpointSmarthouse:Setpoint_Kontor:Setpoint_Kontor:number", autoupdate="false" }
+Number Setpoint_Kontor_T2       "Setpunkt Kontor T2 [%.1f °C]"	                 <thermometer1> (GC_Kontor)        { channel="modbus:data:endpointSmarthouse:Setpoint_Kontor:Setpoint_Kontor_T2:number", autoupdate="false" }
+
+Number Setpoint_Bryggers        "Setpunkt Bryggers T1 [%.1f °C]"	             <thermometer1> (GC_Bryggers)   { channel="modbus:data:endpointSmarthouse:Setpoint_Bryggers:Setpoint_Bryggers:number", autoupdate="false" }
+Number Setpoint_Bryggers_T2        "Setpunkt Bryggers T2 [%.1f °C]"	             <thermometer1> (GC_Bryggers)      { channel="modbus:data:endpointSmarthouse:Setpoint_Bryggers:Setpoint_Bryggers_T2:number", autoupdate="false" }
+
+Number Setpoint_Panasonic        "Setpunkt Panasonic [%.0f °C]"	   	          <thermometer1> (GC_Alrum)  	 { channel="modbus:data:endpointSmarthouse:Setpoint_Panasonic:Setpoint_Panasonic:number", autoupdate="false" }
+
+Number Mode_Panasonic            "Run Mode Panasonic [MAP(Panasonic_Mode.map):%s]"	   	          <thermometer1> (GC_Alrum)    { channel="modbus:data:endpointSmarthouse:Mode_Panasonic:Mode_Panasonic:number", autoupdate="false" }
+
+Number Fan_Panasonic      	  "Fan Speed Panasonic [%.0f]"	   	          <thermometer1> (GC_Alrum)    { channel="modbus:data:endpointSmarthouse:Fan_Panasonic:Fan_Panasonic:number", autoupdate="false" }
+
+Number Heat_SP1_Mitsubishi	  "Heat Setpoint 1 [%.2f °C]"	   	          <thermometer1> (GC_Alrum)    { channel="modbus:data:endpointSmarthouse:Setpoints_Mitsubishi:Heat_SP1_Mitsubishi:number", autoupdate="false" }
+
+Number Heat_SP2_Mitsubishi	  "Heat Setpoint 2 [%.2f °C]"	   	          <thermometer1> (GC_Alrum)    { channel="modbus:data:endpointSmarthouse:Setpoints_Mitsubishi:Heat_SP2_Mitsubishi:number", autoupdate="false" }
+
+Number Cool_SP1_Mitsubishi	  "Cool Setpoint 1 [%.2f °C]"	   	          <thermometer1> (GC_Alrum)    { channel="modbus:data:endpointSmarthouse:Setpoints_Mitsubishi:Cool_SP1_Mitsubishi:number", autoupdate="false" }
+
+Number Cool_SP2_Mitsubishi	  "Cool Setpoint 2 [%.2f °C]"	   	          <thermometer1> (GC_Alrum)    { channel="modbus:data:endpointSmarthouse:Setpoints_Mitsubishi:Cool_SP2_Mitsubishi:number", autoupdate="false" }
+
+
+/* Lights */
+
+
+Dimmer Light_GF_Stue_Led 	    	"Stue [%d %%]"	                         (GF_Stue, Lights)  ["Lighting"]
+{ channel="modbus:data:endpointSmarthouse:Smartlight_Stue_Led:Light_GF_Stue_Led:dimmer", autoupdate="false" }
+Number Light_GF_Stue_Led_Constant 	"LED Loft [%d Lux]"	                         (GF_Stue, Lights)  ["Lighting"] { channel="modbus:data:endpointSmarthouse:Smartlight_Stue_Led:Light_GF_Stue_Led_Constant:number", autoupdate="false" }
+
+Dimmer Light_GF_Stue_Luceplan   	"Luceplan [%d %%]"	                         (GF_Stue, Lights)  ["Lighting"]               { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Stue_Luceplan:dimmer", autoupdate="false" }
+
+Switch Light_GF_Stue_VP 	    	"VP Kugle [%s]"              	<light>	         (GF_Stue, Lights) ["Lighting"]  { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Stue_VP:switch", autoupdate="false" }
+Switch Light_GF_Stue_Ryg 	    	"Rygsøjle [%s]"              	<light>	         (GF_Stue, Lights)  ["Lighting"]               { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Stue_Ryg:switch", autoupdate="false" }
+Switch Light_GF_Stue_Tree 	    	"Juletræ [%s]"          	<light>	         (GF_Stue, Lights)  ["Lighting"]               { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Stue_Tree:switch", autoupdate="false" }
+Dimmer Light_GF_Alrum_Loft	    	"LED Loft [%d %%]" 	                         (GF_Alrum, Lights)  ["Lighting"]              { channel="modbus:data:endpointSmarthouse:Smartlight_Alrum_Loft:Light_GF_Alrum_Loft:dimmer", autoupdate="false" }
+Dimmer Light_GF_Alrum_Pendel    	"Luceplan Pendel [%d %%]"	                 (GF_Alrum, Lights)  ["Lighting"]              { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Alrum_Pendel:dimmer", autoupdate="false" }
+Dimmer Light_GF_Kokken_Loft	    	"LED Loft [%d %%]" 		                     (GF_Kokken, Lights)  ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smartlight_Kokken_Led:Light_GF_Kokken_Loft:dimmer", autoupdate="false" }
+Dimmer Light_GF_Kokken_Skabe    	"Skabe [%d %%]" 		                     (GF_Kokken, Lights) ["Lighting"]              { channel="modbus:data:endpointSmarthouse:Smartlight_Kokken_Skabe:Light_GF_Kokken_Skabe:dimmer", autoupdate="false" }
+Switch Light_GF_Kokken_Stikk    	"Aut. Stik" 	            <light>	         (GF_Kokken, Lights)    ["Lighting"]           { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Kokken_Stikk:switch", autoupdate="false" }
+Switch Light_GF_Kokken_Deko     	"Emhætte Deko [%s]" 	            <light>          (GF_Kokken, Lights)  ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Kokken_Deko:switch", autoupdate="false" }
+Dimmer Light_GF_Flowerpot_Kokken 	"Flowerpot [%d %%]" 	                     (GF_Kokken, Lights)  ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smartlight_Flowerpot:Light_GF_Flowerpot_Kokken:dimmer", autoupdate="false" }
+Dimmer Light_GF_Sove_Seng	    	"LED Seng [%d %%]"	 	                     (GF_Sove, Lights)  ["Lighting"]        { channel="modbus:data:endpointSmarthouse:Smartlight_Seng_Led:Smartlight_Seng_Led:dimmer", autoupdate="false" }
+Dimmer Light_GF_Sove_Loft	    	"LED Loft [%d %%]"     		                 (GF_Sove, Lights) ["Lighting"]                { channel="modbus:data:endpointSmarthouse:Smartlight_Sove_Loft:Light_GF_Sove_Loft:dimmer", autoupdate="false" }
+Switch Light_GF_Sove_Bord	    	"Bordlampe [%s]"                 <light>          (GF_Sove, Lights)     ["Lighting"]            { channel="modbus:data:endpointSmarthouse:Smartlight_Sove_Bord:Light_GF_Sove_Bord:switch", autoupdate="false" }
+Switch Light_GF_Sove_TV	 	    	"TV [%s]"	             <screen> 		 (GF_Sove, Lights) ["switchable"]               { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Sove_TV:switch", autoupdate="false" }
+Dimmer Light_GF_Toilet_Led 	    	"LED Loft [%d %%]" 	                         (GF_Toilet, Lights)  ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Led:Light_GF_Toilet_Led:dimmer", autoupdate="false" }
+Number Light_GF_Toilet_Led_Constant 	"Toilet Loft [%d Lux]"	                         (GF_Toilet, Lights)  ["Lighting"] { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Led:Light_GF_Toilet_Led_Constant:number", autoupdate="false" }
+Dimmer Light_GF_Toilet_Spegl    	"Spegl" 	                <light>	         (GF_Toilet, Lights) ["Lighting"]              { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Spegl:Light_GF_Toilet_Spegl:dimmer", autoupdate="false" }
+Number Light_GF_Toilet_Spegl_Constant 	"Spegl [%d Lux]"	                         (GF_Toilet, Lights)  ["Lighting"] { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Spegl:Light_GF_Toilet_Spegl_Constant:number", autoupdate="false" }
+
+// Dimmer Light_GF_Stue_Luceplan   	"Luceplan [%d %%]"	                         (GF_Stue, Lights)  ["Lighting"]
+// { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Stue_Luceplan:dimmer", autoupdate="false" }
+
+Switch Light_GF_Udestue 	    	"Luceplan Armatur"          <light>	         (GF_Udestue, Lights) ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Udestue:switch", autoupdate="false" }
+Switch Light_GF_Bryggers 	    	"Loft Lys"	                <light>	         (GF_Bryggers, Lights) ["Lighting"]            { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Bryggers_Loft:switch", autoupdate="false" }
+Switch Light_GF_Alexander 	    	"LED Loft" 	                <light>          (GF_Alexander, Lights) ["Lighting"]           { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Alexander:switch", autoupdate="false" }
+Switch Light_GF_Claudia 	    	"LED Loft" 	                <light>          (GF_Claudia, Lights)  ["Lighting"]            { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Claudia:switch", autoupdate="false" }
+Switch Light_GF_Julie	 	    	"LED Loft" 	                <light>	         (GF_Julie, Lights)  ["Lighting"]              { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Julie:switch", autoupdate="false" }
+Switch Light_GF_Gang	 	    	"LED Loft" 	                <light>          (GF_Gang, Lights)  ["Lighting"]               { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Gang:switch", autoupdate="false" }
+Switch Light_GF_Toilet1_Loft    	"LED Loft" 		            <light>	 (GF_Toilet1, Lights) ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Toilet1_Loft:switch", autoupdate="false" }
+Dimmer Light_GF_Toilet1_Bald    	"Baldekin [%d %%]" 		                     (GF_Toilet1, Lights) ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet1_Bald:Light_GF_Toilet1_Bald:dimmer", autoupdate="false" }
+Dimmer Light_GA_Bil_Loft 	    	"Loft Belysning"            <light>	         (GA_Bil, Lights)  ["Lighting"]                { channel="modbus:data:endpointSmarthouse:Smartlight_Garage:Smartlight_Garage:dimmer", autoupdate="false" }
+Switch Light_GA_Vaerksted_Loft  	"Loft Belysning"	        <light>	         (GA_Vaerksted, Lights)  ["Lighting"]          { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GA_Vaerksted_Loft:switch", autoupdate="false" }
+Switch Light_gGC		 	        "Trappe" 	                <light>	 (gGC, Lights)  ["Lighting"]                   { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_gGC:switch", autoupdate="false" }
+Switch Light_GC_Anna_Loft		    "Loft Belysning"            <light>          (GC_Anna, Lights)   ["Lighting"]              { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GC_Anna_Loft:switch", autoupdate="false" }
+Switch Light_GC_Anna_Spot	    	"Biograf Lys"	            <light>          (GC_Anna, Lights)   ["Lighting"]              { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GC_Anna_Loft:switch", autoupdate="false" }
+Switch Light_GC_Bryggers_Loft	    "Loft Belysning"	        <light>	         (GC_Bryggers, Lights)	["Lighting"]
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GC_Bryggers_Loft:switch", autoupdate="false" }
+Switch Light_GC_Kontor_Loft	    	"Loft Belysning"            <light>          (GC_Kontor, Lights)  ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GC_Kontor_Loft:switch", autoupdate="false" }
+Switch Light_GC_Kontor_Pendel   	"Nedhængt Armatur" 	        <light>	         (GC_Kontor, Lights)  ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GC_Kontor_Pendel:switch", autoupdate="false" }
+Switch Light_GC_Teknik_Loft		    "Loft Belysning"            <light>          (GC_Teknik, Lights)  ["Lighting"]             { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GC_Teknik_Loft:switch", autoupdate="false" }
+Dimmer Light_Have_Downlight_West	"Downlight Udhæng West [%d %%]" 	         (Have, Lights)    ["Lighting"]                { channel="modbus:data:endpointSmarthouse:Smartlight_Have_Downlight_West:Light_Have_Downlight_West:dimmer", autoupdate="false" }
+Dimmer Light_Have_Downlight_East	"Downlight Udhæng East [%d %%]" 	         (Have, Lights)   ["Lighting"]                 { channel="modbus:data:endpointSmarthouse:Smartlight_Have_Downlight_East:Light_Have_Downlight_East:dimmer", autoupdate="false" }
+Dimmer SG_Door	"SG Frontdoor [%d %%]" 	         (Have, Lights)   ["Lighting"]                
+{ channel="modbus:data:endpointSmarthouse:Smartlight_SG_Door:SG_Door:dimmer", autoupdate="false" }
+Dimmer Light_Have_Driveway		    "Lys indkørsel [%d %%]" 	                 (Have, Lights)  ["Lighting"]                  { channel="modbus:data:endpointSmarthouse:Smarthouse_Udv_Driveway:Light_Have_Driveway:dimmer", autoupdate="false" }
+Dimmer Light_Have_House			"SG House [%d %%]" 	         (Have, Lights)    ["Lighting"]         
+{ channel="modbus:data:endpointSmarthouse:Smartlight_Have_House:Light_Have_House:dimmer", autoupdate="false" }
+Switch Light_GF_Flowerpot_Stue		"Flowerpot [%s]"                 <light>          (GF_Stue, Lights)  ["Lighting"]           { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Flowerpot_Stue:switch", autoupdate="false" }
+Switch Smarthouse_Moons		 	 "Moon"	        <brightness>	(GF_Stue, Lights)	["Lighting"]	                
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Moon:Smarthouse_Moon:switch", autoupdate="false" }
+
+/* Light Indicator */
+
+
+/* Heating Valves */
+
+Number Heating_GF_Sove	 	"Soveværelse [MAP(valve.map):%s]" 	<valve>		(GF_Sove, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve2:Heating_GF_Sove:number", autoupdate="false" }
+
+Number Heating_GF_Toilet 	"Badeværelse [MAP(valve.map):%s]"	<valve>	(GF_Toilet, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve1:Heating_GF_Toilet:number", autoupdate="false" }
+
+Number Heating_GF_Stue	 	"Stue [MAP(valve.map):%s]" 		<valve>   	(GF_Stue, Heating) 
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve2:Heating_GF_Stue:number", autoupdate="false" }
+
+Number Heating_GF_Kokken 	"Køkken [MAP(valve.map):%s]" 		<valve>	(GF_Kokken, Heating)
+
+Number Heating_GF_Alrum 	"Spisestue [MAP(valve.map):%s]" 		<valve>   	(GF_Alrum, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve2:Heating_GF_Alrum:number", autoupdate="false" }
+
+Number Heating_GF_Udestue 	"Udestue [MAP(valve.map):%s]" 		<valve>   	(GF_Udestue, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve2:Heating_GF_Udestue:number", autoupdate="false" }
+
+Number Heating_GF_Alexander	"Alexander [MAP(valve.map):%s]" 	<valve>   	(GF_Alexander, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve2:Heating_GF_Alexander:number", autoupdate="false" }
+
+Number Heating_GF_Claudia 	"Claudia [MAP(valve.map):%s]" 		<valve>   	(GF_Claudia, Heating)
+
+Number Heating_GF_Julie 	"Julie [MAP(valve.map):%s] " 		<valve>   	(GF_Julie, Heating)
+
+Number Heating_GC_Anna	 	"Anna [MAP(valve.map):%s]" 		<valve>   	(GC_Anna, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve1:Heating_GC_Anna:number", autoupdate="false" }
+
+Number Heating_GC_Kontor	"Kontor [MAP(valve.map):%s]"	 	<valve>   	(GC_Kontor, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve1:Heating_GC_Kontor:number", autoupdate="false" }
+
+Number Heating_GC_Bryggers	"Bryggers [MAP(valve.map):%s]"	 	<valve>   	(GC_Bryggers, Heating)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Heat_Valve1:Heating_GC_Bryggers:number", autoupdate="false" }
+
+
+/* SmartLight - Detail section Stue LED */
+
+Number Smartlight_Lux_Stue     	       "LUX Niveau  [%.1f Lux]"	<thermometer1>	(Lux, GF_Stue)      { channel="modbus:data:endpointSmarthouse:Smartlight_Stue_Led_Details:Light_GF_Stue_Led_Lux:number", autoupdate="false" }
+
+Number Smartlight_Stue_Timer   	       "Energi Timer [%.1f s]"		<thermometer1>	(Timer, GF_Stue)      { channel="modbus:data:endpointSmarthouse:Smartlight_Stue_Led_Details:Light_GF_Stue_Led_Energy:number", autoupdate="false" }
+
+Number Smartlight_Stue_Virtualoff      "Virtual Off [MAP(on_off.map):%s]"		<thermometer1>	(Virtualoff, GF_Stue)      { channel="modbus:data:endpointSmarthouse:Smartlight_Stue_Led_Details:Light_GF_Stue_Led_Virtualoff:number", autoupdate="false" }
+
+Number Smartlight_Stue_Dimmermode      "Mode [MAP(dimmermode.map):%s]"		<thermometer1>	(Dimmermode, GF_Stue)      { channel="modbus:data:endpointSmarthouse:Smartlight_Stue_Led_Details:Light_GF_Stue_Led_Dimmermode:number", autoupdate="false" }
+
+Number Smartlight_Stue_Presence        "Is Room Presence [MAP(presence.map):%s]"		<thermometer1>	(Presence, GF_Stue)      { channel="modbus:data:endpointSmarthouse:Smartlight_Stue_Led_Details:Light_GF_Stue_Led_Presence:number", autoupdate="false" }
+
+
+/* SmartLight - Detail section Toilet LED */
+
+Number Smartlight_Toilet_Led_Lux            "LUX Niveau  [%.1f Lux]"	<thermometer1>	(Lux, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Led_Details:Light_GF_Toilet_Led_Lux:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Led_Timer   	 "Energi Timer [%.1f s]"		<thermometer1>	(Timer, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Led_Details:Light_GF_Toilet_Led_Energy:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Led_Virtualoff      "Virtual Off [MAP(on_off.map):%s]"		<thermometer1>	(Virtualoff, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Led_Details:Light_GF_Toilet_Led_Virtualoff:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Led_Dimmermode      "Mode [MAP(dimmermode.map):%s]"		<thermometer1>	(Dimmermode, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Led_Details:Light_GF_Toilet_Led_Dimmermode:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Led_Presence        "Is Room Presence [MAP(presence.map):%s]"		<thermometer1>	(Presence, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Led_Details:Light_GF_Toilet_Led_Presence:number", autoupdate="false" }
+
+
+/* SmartLight - Detail section Toilet LED */
+
+Number Smartlight_Toilet_Spegl_Lux            "LUX Niveau  [%.1f Lux]"	<thermometer1>	(Lux, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Spegl_Details:Light_GF_Toilet_Spegl_Lux:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Spegl_Timer   	      "Energi Timer [%.1f s]"		<thermometer1>	(Timer, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Spegl_Details:Light_GF_Toilet_Spegl_Energy:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Spegl_Virtualoff      "Virtual Off [MAP(on_off.map):%s]"		<thermometer1>	(Virtualoff, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Spegl_Details:Light_GF_Toilet_Spegl_Virtualoff:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Spegl_Dimmermode      "Mode [MAP(dimmermode.map):%s]"		<thermometer1>	(Dimmermode, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Spegl_Details:Light_GF_Toilet_Spegl_Dimmermode:number", autoupdate="false" }
+
+Number Smartlight_Toilet_Spegl_Presence        "Is Room Presence [MAP(presence.map):%s]"	<thermometer1>	(Presence, GF_Toilet)      { channel="modbus:data:endpointSmarthouse:Smartlight_Toilet_Spegl_Details:Light_GF_Toilet_Spegl_Presence:number", autoupdate="false" }
+			
+
+
+/* Rollershutters */
+/* Rollershutter Shutter_GF_Toilet 		"Toilet"		(GF_Toilet, Shutters) /*
+/* Rollershutter Shutter_GF_Kokken 		"Kitchen"		(GF_Kokken, Shutters)/*
+/* Rollershutter Shutter_GF_Stue	 	"Stue"			(GF_Stue, Shutters)/*
+
+Switch Shutter_all
+
+/* Indoor Temperatures/Co2/Humid */
+
+
+Number Temperature_GF_Sove 	 "Temperatur Soveværelse [%.1f °C]"	<thermometer1>	(Sove_Thermostat, Temperature, GF_Sove)  [ "CurrentTemperature" ]   { channel="modbus:data:endpointSmarthouse:Temperature_GF_Sove:Temperature_GF_Sove:number", autoupdate="false" }
+
+Number Co2_Sove 		 "CO2 Level Soveværelse [%.0f ppm]"	<carbon_dioxide> (CO2, GF_Sove, gCoSensor)     { channel="modbus:data:endpointSmarthouse:CO2_Sove:CO2_Sove:number", autoupdate="false" }
+
+Number Humid_Sove 		 "Luftfugtighed Soveværelse [%.1f %%r.H]" <humidity> (Humid, GF_Sove, gHumSensor)      { channel="modbus:data:endpointSmarthouse:Humid_Sove:Humid_Sove:number", autoupdate="false" }
+
+Number Temperature_GF_Toilet 	"Temperatur Badeværelse [%.1f °C]"	<thermometer1>	(Bad_Thermostat, Temperature, GF_Toilet)  [ "CurrentTemperature" ]   { channel="modbus:data:endpointSmarthouse:Temperature_GF_Toilet:Temperature_GF_Toilet:number", autoupdate="false" }
+
+Number Temperature_GF_Stue  	"Temperatur Stue [%.1f °C]"  <thermometer1> (Stue_Thermostat, Temperature, GF_Stue)   [ "CurrentTemperature" ]     { channel="modbus:data:endpointSmarthouse:Temperature_GF_Stue:Temperature_GF_Stue:number", autoupdate="false" }
+
+Number Temperature_GF_Udestue 	"Temperatur Udestue [%.1f °C]"		<thermometer1>	(Udestue_Thermostat, Temperature, GF_Udestue)   [ "CurrentTemperature" ]  { channel="modbus:data:endpointSmarthouse:Temperature_GF_Udestue:Temperature_GF_Udestue:number", autoupdate="false" }
+Number Temperature_GF_Alrum 	"Temperatur Alrum [%.1f °C]"		<thermometer1>	(Alrum_Thermostat, Temperature, GF_Alrum)  [ "CurrentTemperature" ]    { channel="modbus:data:endpointSmarthouse:Temperature_GF_Alrum:Temperature_GF_Alrum:number", autoupdate="false" }
+Number Temperature_GF_Kokken 	"Temperatur Køkken [%.1f °C]"		<thermometer1>	(Temperature, GF_Kokken)     { channel="modbus:data:endpointSmarthouse:Temperature_GF_Kokken:Temperature_GF_Kokken:number", autoupdate="false" }
+Number Temperature_GF_Alexander	"Temperatur Alexander[%.1f °C]"		<thermometer1>	(Temperature, GF_Alexander)    { channel="modbus:data:endpointSmarthouse:Temperature_GF_Alexander:Temperature_GF_Alexander:number", autoupdate="false" }
+Number Temperature_GF_Claudia 	"Temperatur Claudia [%.1f °C]"		<thermometer1>	(Temperature, GF_Claudia)    { channel="modbus:data:endpointSmarthouse:Temperature_GF_Claudia:Temperature_GF_Claudia:number", autoupdate="false" }
+Number Temperature_GF_Julie 	"Temperatur Julie [%.1f °C]"		<thermometer1>	(Temperature, GF_Julie)       { channel="modbus:data:endpointSmarthouse:Temperature_GF_Julie:Temperature_GF_Julie:number", autoupdate="false" }
+Number Temperature_GC_Anna 	    "Temperatur Anna [%.1f °C]"		 <thermometer1>	(Temperature, GC_Anna)       { channel="modbus:data:endpointSmarthouse:Temperature_GC_Anna:Temperature_GC_Anna:number", autoupdate="false" }
+Number Temperature_GC_Kontor 	"Temperatur Kontor [%.1f °C]"		<thermometer1>  (Temperature, GC_Kontor)       { channel="modbus:data:endpointSmarthouse:Temperature_GC_Kontor:Temperature_GC_Kontor:number", autoupdate="false" }
+Number Temperature_GC_Bryggers 	"Temperatur Bryggers [%.1f °C]"		<thermometer1>  (Temperature, GC_Bryggers)  
+{ channel="modbus:data:endpointSmarthouse:Temperature_GC_Bryggers:Temperature_GC_Bryggers:number", autoupdate="false" }
+Number Temperature_Have     	"Temperatur Udvendig [%.1f °C]"		<thermometer1>   (Temperature, Have)        
+{ channel="modbus:data:endpointSmarthouse:Temperature_Have:Temperature_Have:number", autoupdate="false" }
+Number Temperature_Teknik   	"Temperatur Teknikrum [%.1f °C]"	<thermometer1>   (Temperature, GC_Teknik, gHpSensor, gHeatpump) 
+{ channel="modbus:data:endpointSmarthouse:Temperature_Teknik:Temperature_Teknik:number", autoupdate="false" }
+Number Temperature_Panasonic   	"Temperatur Panasonic [%.1f °C]"	<thermometer1>   (Temperature, GF_Alrum)  
+{ channel="modbus:data:endpointSmarthouse:Temperature_Panasonic:Temperature_Panasonic:number", autoupdate="false" }
+
+Number Weather_Max		"Maximum Temperatur Udvendig [%.1f °C]"		<thermometer1>   (Have)
+Number Weather_Min		"Minimum Temperatur Udvendig [%.1f °C]"		<thermometer1>   (Have)
+
+/* Hotwater Boiler */
+
+
+Number Boiler_Top "Hotwater Boiler Top [%.1f °C]"	<thermometer1>	(Temperature)      { channel="modbus:data:endpointSmarthouse:Boil_Temperature:Boiler_Top:number", autoupdate="false" }
+
+Number Boiler_Bottom "Hotwater Boiler Bottom [%.1f °C]"	<thermometer1>	(Temperature)      { channel="modbus:data:endpointSmarthouse:Boil_Temperature:Boiler_Bottom:number", autoupdate="false" }
+
+Number metz_out1_10v "Eurotherm 0-10V [%.1f V]"	<electricity>
+
+Number Boiler_Energy_New "Boiler Energy Compsumption Total [%.1f kWh]"	<electricity>
+
+Contact District_Heating     "District Heation On/Off [MAP(da.map):%s]"  <flow>
+{ channel="modbus:data:endpointSmarthouse:District_Heation:District_Heation:contact", autoupdate="false"  }
+
+Number District_Heation_Setpoint        "District_Heation_Setpoint [%.1f °C]"	             <thermometer1>     { channel="modbus:data:endpointSmarthouse:District_Heation_Setpoint:District_Heation_Setpoint:number", autoupdate="false" }
+
+Number Boiler_Energy_Diff "Boiler/Solar Difference  [%.1f kW]"	<electricity>
+
+
+/* Alarm System */
+
+Switch Alarm_System_Arm_Dummy		"Arm Alarmsystem"     <light>                                   { channel="modbus:data:endpointSmarthouse:Alarm_System:Alarm_Arm:switch", autoupdate="false" }
+
+Switch Alarm_System_Disarm_Dummy	"Disarm Alarmsystem"     <light>                                   { channel="modbus:data:endpointSmarthouse:Alarm_System:Alarm_Disarm:switch", autoupdate="false" }
+
+Switch Alarm_System_Arm_Disarm		"Arming Alarmsystem [%s]"     <light> 
+
+Number Alarmsystem_Info			"Alarmsystem Info [MAP(Alarmsystem.map):%s]" 
+{ channel="modbus:data:endpointSmarthouse:Tyverialarm_Info:Alarm_Status:number", autoupdate="false" }   
+
+Switch Smarthouse_PIR_Driveway		"PIR Driveway"     <light>                                   { channel="modbus:data:endpointSmarthouse:Smarthouse_PIR_Driveway:Smarthouse_PIR_Driveway:switch", autoupdate="false" }
+
+
+                            
+	
+/* Energi Timers */
+
+Number Light_GC_Teknik_Timer   		"Energi Timer [%.1f S]"                  <time>			(GC_Teknik)          { channel="modbus:data:endpointSmarthouse:Smarthouse_Energi_Timer:Light_GC_Teknik_Timer:number", autoupdate="false" }		
+
+
+/* Fresh Water Inlet */
+
+Number Fresh_Water   			"Freshwater total inlet [%.0f l]"             	     <tap>		          { channel="modbus:data:endpointSmarthouse:Water:Fresh_Water:number", autoupdate="false" }
+
+Number Fresh_Water_Day   		"Freshwater daily inlet [%.0f l]"             	     <tap>		          { channel="modbus:data:endpointSmarthouse:Water_Day:Fresh_Water_Day:number", autoupdate="false" }
+
+Number Fresh_Water_Sensor   		"Freshwater sensor [%.0f l]"             	     <tap>		          { channel="modbus:data:endpointSmarthouse:Freshwater_Sensor:Water_Sensor:number", autoupdate="false" }
+
+Number Fresh_Water_Test   		"Tap test [%.0f l]"         		    	     <tap>		          { channel="modbus:data:endpointSmarthouse:Water_Test:Water_Test:number", autoupdate="false" }
+
+Switch Tap_Test_Reset   	    	"Reset tap test"            			     <tap>	         	  { channel="modbus:data:endpointSmarthouse:Water_reset:Freshwater_reset:switch", autoupdate="false" }
+
+Switch Fresh_Water_Day_Alarm            "Freshwater inlet [MAP(Water.map):%s]"		     <tap> 
+
+
+/* Windows */
+
+Contact Window_GF_Bryggers_Door     "Fordør [MAP(da.map):%s]"                   <dor>			(GF_Bryggers, Windows)          { channel="modbus:data:endpointSmarthouse:K104_BDD:Window_GF_Bryggers_Door:contact", autoupdate="false"  }
+Contact Window_GF_Kokken 	    	"Køkken Vindue [MAP(da.map):%s]"            <vindue>		(GF_Kokken, Windows)
+Contact Window_GF_Stue_Vindue   	"Stue Vindue [MAP(da.map):%s]"	            <vindue>		(GF_Stue, Windows)              { channel="modbus:data:endpointSmarthouse:K95_BDD:Window_GF_Stue_Vindue:contact", autoupdate="false"  }
+Contact Window_GF_Toilet1 	    	"Badeværelse Vindue Øst [MAP(da.map):%s]"   <vindue> 	    (GF_Toilet, Windows)            { channel="modbus:data:endpointSmarthouse:K115_BDD:Window_GF_Toilet1:contact", autoupdate="false"}
+Contact Window_GF_Toilet2	    	"Badeværelse Vindue Vest [MAP(da.map):%s]"  <vindue>        (GF_Toilet, Windows)            { channel="modbus:data:endpointSmarthouse:K115_BDD:Window_GF_Toilet2:contact", autoupdate="false"}
+Contact Window_GF_Udestue_Door 		"Udestue Havedør [MAP(da.map):%s]"          <vindue>		(GF_Udestue, Windows)           { channel="modbus:data:endpointSmarthouse:K96_BDD:Window_GF_Udestue_Door:contact", autoupdate="false"}
+Contact Window_GF_Udestue_Window	"Udestue Vindue [MAP(da.map):%s]"           <vindue>		(GF_Udestue, Windows)           { channel="modbus:data:endpointSmarthouse:K96_BDD:Window_GF_Udestue_Window:contact", autoupdate="false"}
+// Contact Window_GF_Alrum_Door_Syd 	"Alrum Teresse Dør Syd [MAP(da.map):%s]"    <vindue> 	    (GF_Alrum, Windows)
+Contact Window_GF_Alrum_Door_Vest 	"Alrum Terasse Dør Vest[MAP(da.map):%s]"    <vindue> 	    (GF_Alrum, Windows)             {channel="modbus:data:endpointSmarthouse:K115_BDD:Window_GF_Alrum_Door_Vest:contact", autoupdate="false"}
+Contact Window_GF_Alrum_Vindue	 	"Alrum Vindue Syd [MAP(da.map):%s]"         <vindue>		(GF_Alrum, Windows)
+Contact Window_GF_Sove_Vindue1	 	"Soveværelse Vindue Vest [MAP(da.map):%s]"  <vindue>    	(GF_Sove, Windows)              { channel="modbus:data:endpointSmarthouse:K20_BDD:Window_GF_Sove_Vindue1:contact", autoupdate="false"}
+Contact Window_GF_Sove_Vindue2	 	"Soveværelse Vindue Nord [MAP(da.map):%s]"  <vindue>    	(GF_Sove, Windows)              { channel="modbus:data:endpointSmarthouse:K115_BDD:Window_GF_Sove_Vindue2:contact", autoupdate="false"}
+Contact Window_GC_Anna_Vindue1	 	"Anna Vindue Øst [MAP(da.map):%s]"          <vindue>		(GC_Anna, Windows)              { channel="modbus:data:endpointSmarthouse:K95_BDD:Window_GC_Anna_Vindue1:contact", autoupdate="false"}
+Contact Window_GC_Anna_Vindue2	 	"Anna Vindue Midt [MAP(da.map):%s]"         <vindue>		(GC_Anna, Windows)              { channel="modbus:data:endpointSmarthouse:K95_BDD:Window_GC_Anna_Vindue2:contact", autoupdate="false"}
+Contact Window_GC_Anna_Vindue3	 	"Anna Vindue Vest [MAP(da.map):%s]"         <vindue>		(GC_Anna, Windows)              { channel="modbus:data:endpointSmarthouse:K95_BDD:Window_GC_Anna_Vindue3:contact", autoupdate="false"}
+Contact Window_GC_Kontor_Vindue	 	"Kontor Kælder Vindue [MAP(da.map):%s]"     <vindue>	    (GC_Kontor, Windows)            { channel="modbus:data:endpointSmarthouse:K20_BDD:Window_GC_Kontor_Vindue:contact", autoupdate="false"}
+
+Group Weather_ChartNumber
+Number Weather_Temperature 		    "Udendørs Temperatur [%.1f °C]"	        	<thermometer1>   (Weather, Weather_Chart)        { channel="yahooweather:weather:0987f307:temperature" } 
+Number Weather_Temp_Max 	    	"Dagens Maximum [%.1f °C]"	            	<thermometer1>   (Weather, Weather_Chart) 
+Number Weather_Temp_Min 	    	"Dagens Minimum [%.1f °C]"	            	<thermometer1>   (Weather, Weather_Chart) 
+Number Weather_Chart_Period	    	"Diagram Periode"
+DateTime Weather_LastUpdate	    	"Sidste Update [%1$ta %1$tR]"	        	<clock>
+
+
+Switch smarthouse_sluk_alt	    	"Sluk Alt"				             			(GF_Bryggers)	["switchable"] 	{ channel="modbus:data:endpointSmarthouse:sluk_alt:smarthouse_sluk_alt:switch", autoupdate="false" }
+Switch smarthouse_Multimedia		"Multimedia"				                            	(GF_Stue)                       { channel="modbus:data:endpointSmarthouse:Smarthouse_Multimedia:Smarthouse_Multimedia:switch", autoupdate="false" }
+Switch smarthouse_lux		    	"LUX Komperator ON/OFF"	                	<brightness>	(Have)		                	{ channel="modbus:data:endpointSmarthouse:Smarthouse_LUX:Smarthouse_LUX:switch", autoupdate="false" }
+Number smarthouse_lux_Value		    "Udvendig LUX Niveau [%.1f Lux]"	        <brightness>	(Have)		                	{ channel="modbus:data:endpointSmarthouse:Smarthouse_LUX_Value:Smarthouse_LUX_Value:number", autoupdate="false" }
+
+Number Wind_Direction		    "Vindretning [SCALE(wind.scale):%s]"	        <windsock>	(Have)		                		      { channel="modbus:data:Wind:Wind_Direction:wind_direction:number", autoupdate="false" }
+
+Switch PIR_Telegram		    	"PIR Active "	                				               
+{ channel="modbus:data:endpointSmarthouse:PIR_Telegram:PIR_Telegram:switch", autoupdate="false" }
+
+Number PIR_Telegram_Timer		    "PIR active timer [%d Sec]"	        <brightness>	(Have)		                	{ channel="modbus:data:endpointSmarthouse:PIR_Telegram_Timer:PIR_Telegram_Timer:number", autoupdate="false" }
+
+
+	
+// Switch LightsLava			"Lava"						(Have)
+
+// switch Scene_Lighting		"Lava Scene"					(Have)
+
+
+/* Demo items */
+DateTime CurrentDate			"Dato [%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"	<calendar> { channel="ntp:ntp:local:dateTime" }
+
+//Switch DemoSwitch		        	"Switch"
+//Dimmer DimmedLight		    	"Dimmer [%d %%]"			                	<slider>
+//Color  RGBLight		        	"RGB Light"				                    	<slider>
+//Rollershutter DemoShutter	 	    "Roller Shutter"
+//Dimmer DemoBlinds		        	"Blinds [%d %%]"	                			<rollershutter>
+//Number Scene_General		    	"Scene"					                    	<sofa>
+//Number Radio_Station			    "Radio"					                    	<network>
+//Dimmer Volume 			    	"Volume [%.1f %%]"
+//Number Temperature_Setpoint		"Temperature [%.1f °C]" 		            	<thermometer1>
+//Location DemoLocation			    "Kirkegade 50, 9460 Brovst"
+
+
+
+
+

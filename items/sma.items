@@ -1,0 +1,28 @@
+// SMA Inverter DC Side
+Number    SMA_Power_A             "Active power west[%.3f kW]"                                     <energy>         (gSolar)    {channel="modbus:data:inverter:power_a:power_a:number"}
+//Number SMA_Power_A_Raw		"Active power west[%.3f kW]"    	<energy>	(gSolar)		{ channel="modbus:data:inverter:power_a:power_a:number" }
+Number    SMA_Power_B             "Active power east[%.3f kW]"                                     <energy>         (gSolar)    {channel="modbus:data:inverter:power_b:power_b:number"}
+//Number SMA_Power_B_Raw		"Active power east[%.3f kW]"    	<energy>	(gSolar)	{ channel="modbus:data:inverter:power_b:power_b:number" }
+// SMA Inverter AC SIDE
+Number    SMA_Daily_Yield         "Daily yield[%.3f kWh]"                                          <energy>         (gSolar)    {channel="modbus:data:inverter:Day_Yield:Day_Yield:number"}
+Number    SMA_Total_Yield         "Total yield[%.3f kWh]"                                          <energy>         (gSolar)    {channel="modbus:data:inverter:Total_Yield:Total_Yield:number"}
+// Number SMA_Active_Power_Raw	"Active power[%.3f kW]"    	<energy>	(gSolar)	{ channel="modbus:data:inverter:power_a:Active_Power:number" }
+Number    SMA_Active_Power        "Active power[%.3f kW]"                                          <energy>         (gSolar)    {channel="modbus:data:inverter:power_a:Active_Power:number"}
+Number    SMA_Grid_Contactor      "Utility grid contactor[MAP(Grid.map):%s]"                       <health_care>    (gSolar)    {channel="modbus:data:inverter:SMA_Status:Grid_Contactor:number"}
+Number    SMA_Status              "Inverter status[MAP(SMA_Status.map):%s]"                        <health_care>    (gSolar)    {channel="modbus:data:inverter:SMA_Status:SMA_Status:number"}
+Number    MaxPower                "Max Power [%s W]"                                               <Energy>                     {channel="modbus:data:inverter:SMA_Status:Max_Power:number"}
+Number    SetMaxPower             "Max Power Set [%s W]"                                           <Energy>                     {channel="modbus:data:inverter:SMA_Status:Set_Max_Power:number"}
+Number    SMA_Status_Operation    "Inverter operation status [MAP(SMA_Status_Operate.map):%s]"     <health_care>    (gSolar)    {channel="modbus:data:inverter:SMA_Status_Operate:SMA_Status_Operate:number"}
+Number    SMA_Country             "Inverter Country Setting [MAP(SMA_Country_Standard.map):%s]"    <health_care>    (gSolar)    {channel="modbus:data:inverter:SMA_Country:SMA_Country:number"}
+// Number SMA_Ground_Fault	"GFDI – Ground Fault Detection Interruption [MAP(SMA_GFDI.map):%s] " <health_care> (gSolar)		
+Number    DCCur_input_A           "Current input west [%s A]"                                      <solarpanel>                 {channel="modbus:data:inverter:power_a:currentA_input:number"}
+Number    DCVolt_input_A          "Voltage input west [%s V]"                                      <solarpanel>                 {channel="modbus:data:inverter:power_a:voltageA_input:number"}
+Number    DCCur_input_B           "Current input east [%s A]"                                      <solarpanel>                 {channel="modbus:data:inverter:power_b:currentB_input:number"}
+Number    DCVolt_input_B          "Voltage input east [%s V]"                                      <solarpanel>                 {channel="modbus:data:inverter:power_b:voltageB_input:number"}
+//Number    ActivePower             "Active Power [%s W]"                                            <solarpanel>                 {channel="modbus:data:inverter:power_a:active_power:number"}
+Number    PowerL1                 "Active Power L1 [%s kW]"                                        <solarpanel>                 {channel="modbus:data:inverter:power_a:power_L1:number"}
+Number    PowerL2                 "Active Power L2 [%s kW]"                                        <solarpanel>                 {channel="modbus:data:inverter:power_a:power_L2:number"}
+Number    PowerL3                 "Active Power L3 [%s kW]"                                        <solarpanel>                 {channel="modbus:data:inverter:power_a:power_L3:number"}
+Number    voltG1                  "Grid voltage phase L1 [%s V]"                                   <solarpanel>                 {channel="modbus:data:inverter:power_a:volt_G1:number"}
+Number    voltG2                  "Grid voltage phase L2 [%s V]"                                   <solarpanel>                 {channel="modbus:data:inverter:power_a:volt_G2:number"}
+Number    voltG3                  "Grid voltage phase L3 [%s V]"                                   <solarpanel>                 {channel="modbus:data:inverter:power_a:volt_G3:number"}

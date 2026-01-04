@@ -1,0 +1,283 @@
+Group gGA 		"Garage"	<garage>	[ "home-group" ]
+Group gGF 		"Stue Plan"	<groundfloor>	[ "home-group" ]
+Group gGC 		"Kælder"	<cellar>	[ "home-group" ]
+Group Have 		"Have"		<garden>	[ "home-group" ]
+Group Weather 		"Weather"	<sun>		[ "home-group" ]
+Group gNilan2 		"Nilan"		<climate-on>	[ "home-group" ]
+Group gEnergi		"Energi"        <energy>	[ "home-group" ]
+
+Group Status 
+Group Shutters
+
+
+Group GF_Stue	 	"Stue"	 		<video> 		(gGF)
+Group GF_Alrum	 	"Spisestue" 		<party> 		(gGF)
+Group GF_Kokken 	"Køkken" 		<kitchen> 		(gGF)
+Group GF_Toilet 	"Badeværelse" 		<bath> 			(gGF)
+Group GF_Toilet1	"Børne Badeværelse" 	<bath> 			(gGF)
+Group GF_Gang		"Børne Gang"	 	<corridor> 		(gGF)
+Group GF_Sove	 	"Sove Værelse" 		<bedroom> 		(gGF)
+Group GF_Udestue        "Udestue"       	<office>      	        (gGF)
+Group GF_Alexander      "Alexander"    	        <boy_3>       	        (gGF)
+Group GF_Claudia        "Claudia"      		<girl_1>        	(gGF)
+Group GF_Julie          "Julie"         	<girl_2>        	(gGF)
+Group GF_Bryggers       "Bryggers"      	<corridor>        	(gGF)
+
+Group GC_Anna           "Anna"		<girl_3>		(gGC)
+Group GC_Kontor	        "Kontor"	<office>		(gGC)
+Group GC_Bryggers       "Bryggers "	<corridor>		(gGC)
+Group GC_Teknik	        "Teknikrum"	<energy>		(gGC)
+
+Group GA_Bil 		"Parkering" 	<garage_detached> 	(gGA)
+Group GA_Vaerksted 	"Værksted" 	<pantry> 		(gGA)
+
+Group Energi_24		"EM24 - Energimåler"			<energy>		(gEnergi)
+Group Energi_srv	"EM111 - Energimåler Server"		<energy>		(gEnergi)	
+Group Energi_nilan	"EM111 - Energimåler Nilan"		<energy>		(gEnergi)
+Group Energi_cool	"EM111 - Energimåler Server Cool"	<energy>		(gEnergi)
+
+/* active groups */
+Group:Switch:OR(ON, OFF) 		Lights 		"Sluk Alt [(%d)]" 					(All)
+Group:Switch:OR(ON, OFF) 		Heating 	"Antal Aktive Varme Enheder [(%d)]"	<heating> 	(All)
+Group:Number:AVG 			Temperature	"Gns. Rum Temperatur [%.1f °C]" 	<temperature>	(Status)
+Group:Contact:OR(OPEN, CLOSED) 		Windows 	"Åbne Døre & Vinduer [(%d)]"		<contact>	(All)
+
+/* HAVAC */
+Switch Nilan_Control_Drift		"ON/OFF" 					(gNilan){modbus="slave10:0"}
+Number Nilan_Control_Ventset	 	"Ventilations Trin [%s]"	<fan>		(gNilan){modbus="slave10:2"}
+Number Nilan_Control_Modeset	 	"Ventilations Tilstand [%s]"	<settings>	(gNilan){modbus="slave10:1"}
+
+Number Nilan_Temp_Panel			"Temperatur Panel [%.2f °C]" <temperature_hot> 
+(Temp, Panel){modbus=">[slave11:0:transformation=JS(multiply100.js)], <[slave11:0:transformation=JS(divide100.js)]"}
+
+Number Nilan_Temp_Udsugning		"Temperatur Udsugning [%.2f °C]" <temperature_hot> (Temp, Udsugning){modbus=">[slave11:3:transformation=JS(multiply100.js)], <[slave11:3:transformation=JS(divide100.js)]"}
+
+Number Nilan_Temp_Afkast		"Temperatur Afkast [%.2f °C]" <temperature_hot> (Temp, Afkast){modbus=">[slave11:4:transformation=JS(multiply100.js)], <[slave11:4:transformation=JS(divide100.js)]"}
+
+Number Nilan_Temp_Inlet			"Temperatur Indblæsning [%.2f °C]" <temperature_hot> (Temp, Inlet){modbus=">[slave11:7:transformation=JS(multiply100.js)], <[slave11:7:transformation=JS(divide100.js)]"}
+
+Number Nilan_Temp_Outdoor		"Temperatur Indtræk [%.2f °C]" <temperature_hot> (Temp, Outdoor){modbus=">[slave11:8:transformation=JS(multiply100.js)], <[slave11:8:transformation=JS(divide100.js)]"}
+
+Number Nilan_Temp_Luftfugtighed		"Luftfugtighed [%.2f r.H]" <humidity> (Temp, Luftfugtighed){modbus=">[slave11:21:transformation=JS(multiply100.js)], <[slave11:21:transformation=JS(divide100.js)]"}
+
+Number Nilan_Fan_Exhaust		"Udblæsnings Ventilator [%.1f Pct.]" 
+<flow> (Fan, Exhaust){modbus=">[slave12:0:transformation=JS(multiply100.js)], <[slave12:0:transformation=JS(divide100.js)]"}
+
+Number Nilan_Fan_Inlet			"Indblæsnings Ventilator [%.1f Pct.]" 
+<flow> (Fan, Inlet){modbus=">[slave12:1:transformation=JS(multiply100.js)], <[slave12:1:transformation=JS(divide100.js)]"}
+
+/* Energy */
+Number EM24_Energi_24_AL1		"Strøm Forbrug Fase1 [%.3f A]"	<energy>	(Energi_24, EM24)		{modbus=">[slave20:0:transformation=JS(multiply1000.js)],<[slave20:0:transformation=JS(divide1000.js)]"}
+Number EM24_Energi_24_AL2		"Strøm Forbrug Fase2 [%.3f A]"	<energy>	(Energi_24, EM24)		{modbus=">[slave20:2:transformation=JS(multiply1000.js)],<[slave20:2:transformation=JS(divide1000.js)]"}
+Number EM24_Energi_24_AL3		"Strøm Forbrug Fase3 [%.3f A]"	<energy>	(Energi_24, EM24)		{modbus=">[slave20:4:transformation=JS(multiply1000.js)],<[slave20:4:transformation=JS(divide1000.js)]"}
+
+Number EM111_Energi_srv_A		"Strøm Forbrug [%.3f A]"	<energy>	(Energi_srv, EM111)		{modbus=">[slave21:0:transformation=JS(multiply1000.js)],<[slave21:0:transformation=JS(divide1000.js)]"}
+Number EM111_Energi_srv_HZ		"Frekvens [%.1f Hz]"		<energy>	(Energi_srv, EM111)		{modbus=">[slave21:2:transformation=JS(multiply10.js)],<[slave21:2:transformation=JS(divide10.js)]"}
+Number EM111_Energi_srv_V		"Spænding [%.1f V]"		<energy>	(Energi_srv, EM111)		{modbus=">[slave21:6:transformation=JS(multiply10.js)],<[slave21:6:transformation=JS(divide10.js)]"}
+
+Number EM111_Energi_nilan_A		"Strøm Forbrug [%.3f A]"	<energy>	(Energi_nilan, EM111)		{modbus=">[em111_nilan:0:transformation=JS(multiply1000.js)],<[em111_nilan:0:transformation=JS(divide1000.js)]"}
+Number EM111_Energi_nilan_HZ		"Frekvens [%.1f Hz]"		<energy>	(Energi_nilan, EM111)		{modbus=">[em111_nilan:2:transformation=JS(multiply10.js)],<[em111_nilan:2:transformation=JS(divide10.js)]"}
+Number EM111_Energi_nilan_V		"Spænding [%.1f V]"		<energy>	(Energi_nilan, EM111)		{modbus=">[em111_nilan:6:transformation=JS(multiply10.js)],<[em111_nilan:6:transformation=JS(divide10.js)]"}
+
+Number EM111_Energi_cool_A		"Strøm Forbrug [%.3f A]"	<energy>	(Energi_cool, EM111)		{modbus=">[em111_server_cool:0:transformation=JS(multiply1000.js)],<[em111_server_cool:0:transformation=JS(divide1000.js)]"}
+Number EM111_Energi_cool_HZ		"Frekvens [%.1f Hz]"		<energy>	(Energi_cool, EM111)		{modbus=">[em111_server_cool:2:transformation=JS(multiply10.js)],<[em111_server_cool:2:transformation=JS(divide10.js)]"}
+Number EM111_Energi_cool_V		"Spænding [%.1f V]"		<energy>	(Energi_cool, EM111)		{modbus=">[em111_server_cool:6:transformation=JS(multiply10.js)],<[em111_server_cool:6:transformation=JS(divide10.js)]"}
+
+
+Number Udv_humidity			"Luftfugtighed Udvendig [%.2f r.H]" <humidity> (Temp, Udsugning, gAirSensor, gHumSensor)	{modbus=">[smarthouse_udv_humidity:0:transformation=JS(multiply10.js)], <[smarthouse_udv_humidity:0:transformation=JS(divide10.js)]"}
+
+/* Lights */
+Dimmer Light_GF_Stue_Led 		"LED Loft"		(GF_Stue, Lights){modbus=">[slave1:27:transformation=JS(multiply1.js)], <[slave1:27:transformation=JS(divide1.js)]"}
+
+Dimmer Light_GF_Stue_Luceplan 		"Luceplan"		(GF_Stue, Lights){modbus=">[slave1:15:transformation=JS(multiply1.js)], <[slave1:15:transformation=JS(divide1.js)]"}
+
+Dimmer Light_GF_Stue_Spot 		"4 Spot"		(GF_Stue, Lights)
+Switch Light_GF_Stue_VP 		"VP Kugle"		(GF_Stue, Lights)
+{modbus="slave1:14"}
+Switch Light_GF_Stue_Ryg 		"Rygsøjle"		(GF_Stue, Lights){modbus="slave1:12"}
+Switch Light_GF_Stue_Tree 		"Juletræ etc."		(GF_Stue, Lights)
+{modbus="slave1:13"}
+
+Dimmer Light_GF_Alrum_Loft	 	"LED Loft" 		(GF_Alrum, Lights){modbus=">[slave1:1:transformation=JS(multiply1.js)], <[slave1:1:transformation=JS(divide1.js)]"}
+
+Dimmer Light_GF_Alrum_Pendel 		"Luceplan Pendel"	(GF_Alrum, Lights){modbus=">[slave1:0:transformation=JS(multiply1.js)], <[slave1:0:transformation=JS(divide1.js)]"}
+
+
+Dimmer Light_GF_Kokken_Loft	 	"LED Loft" 		(GF_Kokken, Lights){modbus=">[slave1:4:transformation=JS(multiply1.js)], <[slave1:4:transformation=JS(divide1.js)]"}
+
+Dimmer Light_GF_Kokken_Skabe 		"Skabe" 		(GF_Kokken, Lights){modbus=">[slave1:11:transformation=JS(multiply1.js)], <[slave1:11:transformation=JS(divide1.js)]"}
+
+Switch Light_GF_Kokken_Stikk 		"Aut. Stik" 		(GF_Kokken, Lights){modbus="slave1:5"}
+Switch Light_GF_Kokken_Deko 		"Emhætte Deko" 		(GF_Kokken, Lights){modbus="slave1:3"}
+
+Dimmer Light_GF_Sove_Seng	 	"LED Seng"	 	(GF_Sove, Lights){modbus=">[slave1:18:transformation=JS(multiply1.js)], <[slave1:18:transformation=JS(divide1.js)]"}
+
+Dimmer Light_GF_Sove_Loft	 	"LED Loft" 		(GF_Sove, Lights){modbus=">[slave1:32:transformation=JS(multiply1.js)], <[slave1:32:transformation=JS(divide1.js)]"}
+
+Switch Light_GF_Sove_Bord	 	"Bordlampe"	 	(GF_Sove, Lights)
+{modbus="slave1:28"}
+Switch Light_GF_Sove_TV	 		"TV"	 		(GF_Sove, Lights){modbus="slave1:19"}
+
+Dimmer Light_GF_Toilet_Led 		"LED Loft" 		(GF_Toilet, Lights){modbus=">[slave1:33:transformation=JS(multiply1.js)], <[slave1:33:transformation=JS(divide1.js)]"}
+
+Switch Light_GF_Toilet_Spegl 		"Spegl" 		(GF_Toilet, Lights)
+{modbus="slave1:17"}
+Switch Light_GF_Udestue 		"Luceplan Armatur" 	(GF_Udestue, Lights)
+{modbus="slave1:16"}
+
+Switch Light_GF_Bryggers 		"Loft Lys"	 	(GF_Bryggers, Lights){modbus="slave1:2"}
+Switch Light_GF_Alexander 		"LED Loft" 		(GF_Alexander, Lights)
+{modbus="slave1:8"}
+Switch Light_GF_Claudia 		"LED Loft" 		(GF_Claudia, Lights){modbus="slave1:6"}
+Switch Light_GF_Julie	 		"LED Loft" 		(GF_Julie, Lights){modbus="slave1:7"}
+Switch Light_GF_Gang	 		"LED Loft" 		(GF_Gang, Lights){modbus="slave1:9"}
+Switch Light_GF_Toilet1_Loft		"LED Loft" 		(GF_Toilet1, Lights)
+{modbus="slave1:10"}
+Dimmer Light_GF_Toilet1_Bald		"Baldekin" 		(GF_Toilet1, Lights){modbus=">[slave1:29:transformation=JS(multiply1.js)], <[slave1:29:transformation=JS(divide1.js)]"}
+
+Switch Light_GA_Bil_Loft 		"Loft Belysning"	(GA_Bil, Lights)
+{modbus="slave1:31"}
+Switch Light_GA_Vaerksted_Loft 		"Loft Belysning"	(GA_Vaerksted, Lights)
+{modbus="slave1:30"}
+
+Switch Light_gGC		 	"Trappe" 		(gGC, Lights){modbus="slave1:20"}
+Switch Light_GC_Anna_Loft		"Loft Belysning" 	(GC_Anna, Lights)
+{modbus="slave1:23"}
+Switch Light_GC_Anna_Spot		"Biograf Lys"	 	(GC_Anna, Lights)
+{modbus="slave1:22"}
+Switch Light_GC_Kontor_Loft		"Loft Belysning" 	(GC_Kontor, Lights){modbus="slave1:24"}
+Switch Light_GC_Kontor_Pendel		"Nedhængt Armatur" 	(GC_Kontor, Lights)
+{modbus="slave1:25"}
+Switch Light_GC_Teknik_Loft		"Loft Belysning"	(GC_Teknik, Lights)
+{modbus="slave1:21"}
+Switch Light_GC_Bryggers_Loft		"Loft Belysning"	(GC_Bryggers, Lights)
+{modbus="slave1:26"}
+
+
+/* Light Indicator */
+
+
+/* Heating */
+Switch Heating_GF_Sove	 	"Varme Kontrol Soveværelse" 		<heating>	(GF_Sove, Heating)
+Switch Heating_GF_Toilet 	"Varme Kontrol Badeværelse"	 	<heating>	(GF_Toilet, Heating)
+Switch Heating_GF_Stue	 	"Varme Kontrol Stue" 			<heating>	(GF_Stue, Heating)
+Switch Heating_GF_Kokken 	"Varme Kontrol Køkken" 			<heating>	(GF_Kokken, Heating)
+Switch Heating_GF_Alrum 	"Varme Kontrol ALrum" 			<heating>	(GF_Alrum, Heating)
+Switch Heating_GF_Udestue 	"Varme Kontrol Udestue" 		<heating>	(GF_Udestue, Heating)
+Switch Heating_GF_Alexander 	"Varme Kontrol Alexander" 		<heating>	(GF_Alexander, Heating)
+Switch Heating_GF_Claudia 	"Varme Kontrol Claudia" 		<heating>	(GF_Claudia, Heating)
+Switch Heating_GF_Julie 	"Varme kontrol Julie" 			<heating>	(GF_Julie, Heating)
+Switch Heating_GC_Anna	 	"Varme kontrol Anna" 			<heating>	(GC_Anna, Heating)
+Switch Heating_GC_Kontor	"Varme kontrol Kontor"	 		<heating>	(GC_Kontor, Heating)
+Switch Heating_GC_Bryggers	"Varme kontrol Bryggers"	 	<heating>	(GC_Bryggers, Heating)
+/* Heating Control */
+
+			
+
+/* Rollershutters */
+/* Rollershutter Shutter_GF_Toilet 		"Toilet"		(GF_Toilet, Shutters) /*
+/* Rollershutter Shutter_GF_Kokken 		"Kitchen"		(GF_Kokken, Shutters)/*
+/* Rollershutter Shutter_GF_Stue	 	"Stue"			(GF_Stue, Shutters)/*
+
+Switch Shutter_all
+
+/* Indoor Temperatures */
+
+
+Number Temperature_GF_Sove 	"Temperatur Soveværelse [%.1f °C]"	<temperature>	(Temperature, GF_Sove){modbus=">[slave51:0:transformation=JS(multiply10.js)], <[slave51:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Toilet 	"Temperatur Badeværelse [%.1f °C]"	<temperature>	(Temperature, GF_Toilet){modbus=">[slave50:0:transformation=JS(multiply10.js)], <[slave50:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Stue 	"Temperatur Stue [%.1f °C]"		<temperature>	(Temperature, GF_Stue) {modbus=">[slave52:0:transformation=JS(multiply10.js)], <[slave52:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Udestue 	"Temperatur Udestue [%.1f °C]"		<temperature>	(Temperature, GF_Udestue) {modbus=">[slave53:0:transformation=JS(multiply10.js)], <[slave53:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Alrum 	"Temperatur ALrum [%.1f °C]"		<temperature>	(Temperature, GF_Alrum) {modbus=">[slave54:0:transformation=JS(multiply10.js)], <[slave54:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Kokken 	"Temperatur Køkken [%.1f °C]"		<temperature>	(Temperature, GF_Kokken) {modbus=">[slave55:0:transformation=JS(multiply10.js)], <[slave55:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Alexander	"Temperatur Alexander[%.1f °C]"		<temperature>	(Temperature, GF_Alexander) {modbus=">[slave56:0:transformation=JS(multiply10.js)], <[slave56:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Claudia 	"Temperatur Claudia [%.1f °C]"		<temperature>	(Temperature, GF_Claudia) {modbus=">[slave57:0:transformation=JS(multiply10.js)], <[slave57:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GF_Julie 	"Temperatur Julie [%.1f °C]"		<temperature>	(Temperature, GF_Julie) {modbus=">[slave58:0:transformation=JS(multiply10.js)], <[slave58:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GC_Anna 	"Temperatur Anna [%.1f °C]"		<temperature>	(Temperature, GC_Anna) {modbus=">[slave59:0:transformation=JS(multiply10.js)], <[slave59:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GC_Kontor 	"Temperatur Kontor [%.1f °C]"		<temperature>  (Temperature, GC_Kontor) {modbus=">[slave60:0:transformation=JS(multiply10.js)],<[slave60:0:transformation=JS(divide10.js)]"}
+
+Number Temperature_GC_Bryggers 	"Temperatur Bryggers [%.1f °C]"		<temperature>  (Temperature, GC_Bryggers)
+
+/* Windows */
+Contact Window_GF_Bryggers_Door 	"Fordør [MAP(da.map):%s]"			(GF_Bryggers, Windows){modbus="<[slave103:2:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Kokken 		"Køkken Vindue [MAP(da.map):%s]"		(GF_Kokken, Windows)
+Contact Window_GF_Stue_Vindue		"Stue Vindue [MAP(da.map):%s]"			(GF_Stue, Windows){modbus="<[slave102:2:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Toilet1 		"Badeværelse Vindue Øst [MAP(da.map):%s]"	(GF_Toilet, Windows){modbus="<[slave104:0:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Toilet2		"Badeværelse Vindue Vest [MAP(da.map):%s]"	(GF_Toilet, Windows){modbus="<[slave104:1:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Udestue_Door 		"Udestue Havedør [MAP(da.map):%s]"		(GF_Udestue, Windows){modbus="<[slave100:1:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Udestue_Window	"Udestue Vindue [MAP(da.map):%s]"		(GF_Udestue, Windows){modbus="<[slave100:0:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Alrum_Door_Syd 	"Alrum Teresse Dør Syd [MAP(da.map):%s]"	(GF_Alrum, Windows)
+Contact Window_GF_Alrum_Door_Vest 	"Alrum Terasse Dør Vest[MAP(da.map):%s]"	(GF_Alrum, Windows){modbus="<[slave104:3:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Alrum_Vindue	 	"Alrum Vindue Syd [MAP(da.map):%s]"		(GF_Alrum, Windows)
+Contact Window_GF_Sove_Vindue1	 	"Soveværelse Vindue Vest [MAP(da.map):%s]"	(GF_Sove, Windows){modbus="<[slave101:0:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GF_Sove_Vindue2	 	"Soveværelse Vindue Nord [MAP(da.map):%s]"	(GF_Sove, Windows){modbus="<[slave104:2:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GC_Anna_Vindue1	 	"Anna Vindue Øst [MAP(da.map):%s]"		(GC_Anna, Windows){modbus="<[slave102:0:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GC_Anna_Vindue2	 	"Anna Vindue Midt [MAP(da.map):%s]"		(GC_Anna, Windows){modbus="<[slave102:1:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GC_Anna_Vindue3	 	"Anna Vindue Vest [MAP(da.map):%s]"		(GC_Anna, Windows){modbus="<[slave102:3:trigger=CHANGED,transformation=JS(mbinvert.js)]"}
+Contact Window_GC_Kontor_Vindue	 	"Kontor Kælder Vindue [MAP(da.map):%s]"		(GC_Kontor, Windows)
+
+
+Group Weather_ChartNumber
+Number Weather_Temperature 		"Udendørs Temperatur [%.1f °C]"		<temperature> (Weather, Weather_Chart) { channel="yahooweather:weather:0987f307:temperature" } 
+
+Number Weather_Temp_Max 		"Dagens Maximum [%.1f °C]"		<temperature> (Weather, Weather_Chart) 
+Number Weather_Temp_Min 		"Dagens Minimum [%.1f °C]"		<temperature> (Weather, Weather_Chart) 
+Number Weather_Chart_Period		"Diagram Periode"
+DateTime Weather_LastUpdate		"Sidste Update [%1$ta %1$tR]"		<clock>
+
+Switch Presence_Nanna_PhoneHome   "Nanna" <present>  { mqttitude="mosquitto:owntracks/nanna/android/event:hus" }
+
+Switch        ownTracks_Nanna            "Nanna - OwnTracks"       <man>        (gPresentNanna, gPresence, gPresent)           {mqttitude="mosquitto:owntracks/nanna/android/event:hus" }
+
+String        location_NannaPhone      "Nanna's Location [%s]"                 (gLocations)                                   {mqtt="<[mosquitto:owntracks/nanna/android:state:JS(mqtt-coordinates.js)]"}
+String        ownTracks_NannaRaw        "Nanna Raw Data [%s]"             {mqtt="<[mosquitto:owntracks/nanna/android:state:default]"}
+Number        ownTracks_NannaLat        "Nanna's Latitude [%.3f °]"      <latitude>
+Number        ownTracks_NannaLon        "Nanna's Longitude [%.3f °]"     <longitude>
+Number        ownTracks_NannaAcc        "Nanna's Accuracy [%d m]"        <accuracy>
+Number        ownTracks_NannaBatt       "Nanna's Battery [%s %%]"        <battery>
+
+Switch        ownTracks_Kenneth         "Kenneth - OwnTracks"       <man>        (gPresentKenneth, gPresence, gPresent)           {mqttitude="mosquitto:owntracks/nanna/kenneth/event:hus" }
+
+String        location_KennethPhone      "Kenneth's Location [%s]"                 (gLocations)                                   {mqtt="<[mosquitto:owntracks/nanna/kenneth:state:JS(mqtt-coordinates.js)]"}
+String        ownTracks_KennethRaw        "Kenneth Raw Data [%s]"             {mqtt="<[mosquitto:owntracks/nanna/kenneth:state:default]"}
+Number        ownTracks_KennethLat        "Kenneth's Latitude [%.3f °]"      <latitude>
+Number        ownTracks_KennethLon        "Kenneth's Longitude [%.3f °]"     <longitude>
+Number        ownTracks_KennethAcc        "Kenneth's Accuracy [%d m]"        <accuracy>
+Number        ownTracks_KennethBatt       "Kenneth's Battery [%s %%]"        <battery>
+
+Switch Switch1 {mqtt=">[mosquitto:myhome/switch1:command:ON:1],>[mosquitto:myhome/switch1:command:OFF:0],<[mosquitto:myhome/switch1:state:ON:1],<[mosquitto:myhome/switch1:state:OFF:0"}
+
+Switch smarthouse_sluk_alt	{modbus="smarthouse_sluk_alt:0"}
+
+
+
+Switch Sonos "Power Sonos"        { sonos="[ON:stue:play], [OFF:stue:stop]" } 
+Dimmer VolumeSonos "Sonos Volume" { sonos="[stue:volume]" }
+
+/* Demo items */
+DateTime CurrentDate			"Dato [%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"	<calendar> { channel="ntp:ntp:local:dateTime" }
+
+Switch DemoSwitch			"Switch"
+Dimmer DimmedLight			"Dimmer [%d %%]"				<slider>
+Color  RGBLight				"RGB Light"					<slider>
+Rollershutter DemoShutter	 	"Roller Shutter"
+Dimmer DemoBlinds			"Blinds [%d %%]"				<rollershutter>
+Number Scene_General			"Scene"						<sofa>
+Number Radio_Station			"Radio"						<network>
+Dimmer Volume 				"Volume [%.1f %%]"
+Number Temperature_Setpoint		"Temperature [%.1f °C]" <temperature>
+Location DemoLocation			"Kirkegade 50, 9460 Brovst"
+
+
+
+

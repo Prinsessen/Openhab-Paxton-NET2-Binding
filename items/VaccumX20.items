@@ -1,0 +1,116 @@
+Group G_vacuum "Xiaomi Robot Vacuum X20+" <status>
+String actions "Actions" (G_vacuum) {channel="miio:basic:Roboclean:actions"}
+Number status "Robot Cleaner - Status" (G_vacuum) {channel="miio:basic:Roboclean:status"}
+Number fault "Robot Cleaner - Device Fault" (G_vacuum) {channel="miio:basic:Roboclean:fault"}
+Number mode "Robot Cleaner - Mode" (G_vacuum) {channel="miio:basic:Roboclean:mode"}
+Number:Dimensionless battery_level "Battery - Battery Level" (G_vacuum) {channel="miio:basic:Roboclean:battery_level"}
+Number charging_state "Battery - Charging State" (G_vacuum) {channel="miio:basic:Roboclean:charging_state"}
+Number:Time brush_left_time "Main Cleaning Brush - Brush Left Time" (G_vacuum) {channel="miio:basic:Roboclean:brush_left_time"}
+Number:Dimensionless brush_life_level "Main Cleaning Brush - Brush Life Level" (G_vacuum) {channel="miio:basic:Roboclean:brush_life_level"}
+Number:Time brush_left_time1 "Side Cleaning Brush - Brush Left Time" (G_vacuum) {channel="miio:basic:Roboclean:brush_left_time1"}
+Number:Dimensionless brush_life_level1 "Side Cleaning Brush - Brush Life Level" (G_vacuum) {channel="miio:basic:Roboclean:brush_life_level1"}
+Number:Dimensionless filter_life_level "Filter - Filter Life Level" (G_vacuum) {channel="miio:basic:Roboclean:filter_life_level"}
+Number:Time filter_left_time "Filter - Filter Left Time" (G_vacuum) {channel="miio:basic:Roboclean:filter_left_time"}
+Number:Dimensionless mop_life_level "Mop - Mop Life Level" (G_vacuum) {channel="miio:basic:Roboclean:mop_life_level"}
+Number mop_left_time "Mop - Mop Left Time" (G_vacuum) {channel="miio:basic:Roboclean:mop_left_time"}
+Number:Time cleaning_time "Vacuum Extend - Cleaning Time" (G_vacuum) {channel="miio:basic:Roboclean:cleaning_time"}
+Number cleaning_area "Vacuum Extend - Cleaning Area" (G_vacuum) {channel="miio:basic:Roboclean:cleaning_area"}
+Number volume "Audio - Volume" (G_vacuum) {channel="miio:basic:Roboclean:volume"}
+Number waterbox_status "Water Tank - Waterbox Status" (G_vacuum) {channel="miio:basic:Roboclean:water_check_status"}
+String voice_managment "Audio - Voice Management" (G_vacuum) {channel="miio:basic:Roboclean:target_voice"}
+String vaccum_framewaere "Vacuum - Frameware Version" (G_vacuum) {channel="miio:basic:Roboclean:vacuum_frameware_version"}
+Number sweep_mop_type "Cleaning - Sweep and Mop Type" (G_vacuum) {channel="miio:basic:Roboclean:sweep_mop_type"}
+Number sweep_type "Cleaning - Sweep Type" (G_vacuum) {channel="miio:basic:Roboclean:sweep_type"}
+Number clean_times "Cleaning - Clean Times" (G_vacuum) {channel="miio:basic:Roboclean:clean_times"}
+String room_information "Cleaning - Room Information" (G_vacuum) {channel="miio:basic:Roboclean:room_information"}
+Number mop_water_output_level "Mop - Water Output Level" (G_vacuum) {channel="miio:basic:Roboclean:mop_water_output_level"}
+Switch mop_status "Mop - Mop Status" (G_vacuum) {channel="miio:basic:Roboclean:mop_status"}
+String zone_ids "Cleaning - Zone IDs" (G_vacuum) {channel="miio:basic:Roboclean:zone_ids"}
+String restricted_sweep_areas "Cleaning - Restricted Sweep Areas" (G_vacuum) {channel="miio:basic:Roboclean:restricted_sweep_areas"}
+String restricted_walls "Cleaning - Restricted Walls" (G_vacuum) {channel="miio:basic:Roboclean:restricted_walls"}
+Number:Time last_clean_time "Cleaning - Last Clean Time" (G_vacuum) {channel="miio:basic:Roboclean:last_clean_time"}
+String base_station_working_status "Base Station - Working Status" (G_vacuum) {channel="miio:basic:Roboclean:base_station_working_status"}
+String order_clean "Cleaning - Order Clean" (G_vacuum) {channel="miio:basic:Roboclean:order_clean"}
+Switch carpet_boost "Cleaning - Carpet Boost" (G_vacuum) {channel="miio:basic:Roboclean:carpet_boost"}
+Switch carpet_avoidance "Cleaning - Carpet Avoidance" (G_vacuum) {channel="miio:basic:Roboclean:carpet_avoidance"}
+Switch carpet_display "Cleaning - Carpet Display" (G_vacuum) {channel="miio:basic:Roboclean:carpet_display"}
+Switch sweep_brake_switch "Cleaning - Sweep Brake Switch" (G_vacuum) {channel="miio:basic:Roboclean:sweep_break_switch"}
+Switch sleep_status "Sleep Mode - Sleep Status" (G_vacuum) {channel="miio:basic:Roboclean:sleep_status"}
+Switch location_status "Location - Location Status" (G_vacuum) {channel="miio:basic:Roboclean:location_status"}
+Number map_complete_dialog "Mapping - Map Complete Dialog" (G_vacuum) {channel="miio:basic:Roboclean:map_complete_dialog"}
+Switch enable_mop_wash "Mop - Enable Mop Wash" (G_vacuum) {channel="miio:basic:Roboclean:enable_mop_wash"}
+Number frequency_mop_wash "Mop - Frequency Mop Wash" (G_vacuum) {channel="miio:basic:Roboclean:frequency_mop_wash"}
+Number water_output_for_washing_mop "Mop - Water Output For Washing Mop" (G_vacuum) {channel="miio:basic:Roboclean:water_output_for_washing_mop"}
+Number drying_time "Mop - Drying Time" (G_vacuum) {channel="miio:basic:Roboclean:drying_time"}
+Switch auto_dust_arrest "Auto Dust Arrest" (G_vacuum) {channel="miio:basic:Roboclean:auto_dust_arrest"}
+Number dust_arrest_frequency "Dust Arrest - Dust Arrest Frequency" (G_vacuum) {channel="miio:basic:Roboclean:dust_arrest_frequency"}
+Switch auto_mop_dry "Auto Mop Dry" (G_vacuum) {channel="miio:basic:Roboclean:auto_mop_dry"}
+Switch auto_water_charge "Auto Water Change" (G_vacuum) {channel="miio:basic:Roboclean:auto_water_change"}
+Switch use_detergent "Use Detergent" (G_vacuum) {channel="miio:basic:Roboclean:use_detergent"}
+Switch exit_remote_dialog "Exit Remote Dialog" (G_vacuum) {channel="miio:basic:Roboclean:exit_remote_dialog"}
+String current_cleaning_config "Cleaning - Current Cleaning Config" (G_vacuum) {channel="miio:basic:Roboclean:current_cleaning_config"}
+String user_define_sweep_cfg "Cleaning - User Define Sweep Config" (G_vacuum) {channel="miio:basic:Roboclean:user_define_sweep_cfg"}
+Number user_define_sweep_id "Cleaning - User Define Sweep ID" (G_vacuum) {channel="miio:basic:Roboclean:user_define_sweep_id"}
+String water_check_list "Water Tank - Water Check List" (G_vacuum) {channel="miio:basic:Roboclean:water_check_list"}
+String sweep_furniture "Sweep Furniture" (G_vacuum) {channel="miio:basic:Roboclean:sweep_furniture"}
+String carpet_object "Carpet Object" (G_vacuum) {channel="miio:basic:Roboclean:carpet_object"}
+Switch detergent_self_delivery "Detergent Self Delivery" (G_vacuum) {channel="miio:basic:Roboclean:detergent_self_delivery"}
+Number mop_water_output_level_no_tank "Mop - Water Output Level No Tank" (G_vacuum) {channel="miio:basic:Roboclean:mop_water_output_level_no_tank"}
+Number frequency_mop_wash_no_tank "Mop - Frequency Mop Wash No Tank" (G_vacuum) {channel="miio:basic:Roboclean:frequency_mop_wash_no_tank"}
+Switch auto_water_change_installed "Auto Water Change Installed" (G_vacuum) {channel="miio:basic:Roboclean:auto_water_change_installed"}
+String fault_ids "Device Fault IDs" (G_vacuum) {channel="miio:basic:Roboclean:fault_ids"}
+String action_result "Action Result" (G_vacuum) {channel="miio:basic:Roboclean:action_result"}
+String plugin_info_remind "Plugin Info Remind" (G_vacuum) {channel="miio:basic:Roboclean:plugin_info_remind"}
+Switch detergent_depletion_reminder "Detergent Depletion Reminder" (G_vacuum) {channel="miio:basic:Roboclean:detergent_depletion_reminder"}
+String notice "Notice" (G_vacuum) {channel="miio:basic:Roboclean:notice"}
+Number carpet_cleaning_method "Carpet Cleaning Method" (G_vacuum) {channel="miio:basic:Roboclean:carpet_cleaning_method"}
+Number sweep_route "Sweep Route" (G_vacuum) {channel="miio:basic:Roboclean:sweep_route"}
+Number obstacle_avoidance_strategy "Obstacle Avoidance Strategy" (G_vacuum) {channel="miio:basic:Roboclean:obstacle_avoidance_strategy"}
+Switch carpet_deep_cleaning "Carpet Deep Cleaning" (G_vacuum) {channel="miio:basic:Roboclean:carpet_deep_cleaning"}
+Switch carpet_discriminate "Carpet Discriminate" (G_vacuum) {channel="miio:basic:Roboclean:carpet_discriminate"}
+Switch sweep_carpet_first "Sweep Carpet First" (G_vacuum) {channel="miio:basic:Roboclean:sweep_carpet_first"}
+Switch mop_outer_swing "Mop Outer Swing" (G_vacuum) {channel="miio:basic:Roboclean:mop_outer_swing"}
+Number mop_outer_swing_frequency "Mop Outer Swing Frequency" (G_vacuum) {channel="miio:basic:Roboclean:mop_outer_swing_frequency"}
+Number frequency_mop_wash_by_time "Frequency Mop Wash By Time" (G_vacuum) {channel="miio:basic:Roboclean:frequency_mop_wash_by_time"}
+Number auto_dust_arrest_power_level "Auto Dust Arrest Power Level" (G_vacuum) {channel="miio:basic:Roboclean:auto_dust_arrest_power_level"}
+Number worry_free_clean_mode "Worry Free Clean Mode" (G_vacuum) {channel="miio:basic:Roboclean:worry_free_clean_mode"}
+Number wash_mop_water_temperature "Wash Mop Water Temperature" (G_vacuum) {channel="miio:basic:Roboclean:wash_mop_water_temperature"}
+Number voltage "Battery - Voltage" (G_vacuum) {channel="miio:basic:Roboclean:voltage"}
+Switch alarm "Alarm" (G_vacuum) {channel="miio:basic:Roboclean:alarm"}
+Switch physical_controls_locked "Physical Controls Locked" (G_vacuum) {channel="miio:basic:Roboclean:physical_controls_locked"}
+Switch current_physical_control_lock "Current Physical Control Lock" (G_vacuum) {channel="miio:basic:Roboclean:current_physical_control_lock"}  
+String map_obj_name "Mapping - Map Object Name" (G_vacuum) {channel="miio:basic:Roboclean:map_obj_name"}
+String trajectory_obj_name "Mapping - Trajectory Object Name" (G_vacuum) {channel="miio:basic:Roboclean:trajectory_obj_name"}
+String clean_record "Cleaning - Clean Record" (G_vacuum) {channel="miio:basic:Roboclean:clean_record"}
+String vacuum_position "Location - Vacuum Position" (G_vacuum) {channel="miio:basic:Roboclean:vacuum_position"}
+String map_management "Mapping - Map Management" (G_vacuum) {channel="miio:basic:Roboclean:map_management"}
+Number current_map_id "Mapping - Current Map ID" (G_vacuum) {channel="miio:basic:Roboclean:current_map_id"}
+String carpet_obj_name "Carpet Object Name" (G_vacuum) {channel="miio:basic:Roboclean:carpet_obj_name"}
+String map_3d_info "Mapping - Map 3D Info" (G_vacuum) {channel="miio:basic:Roboclean:map_3d_info"}
+Number map_switch_method "Mapping - Map Switch Method" (G_vacuum) {channel="miio:basic:Roboclean:map_switch_method"}    
+Switch map_upload_stop "Map Upload Stop" (G_vacuum) {channel="miio:basic:Roboclean:map_upload_stop"}
+String map_upload_stop_action_result "Map Upload Stop Action Result" (G_vacuum) {channel="miio:basic:Roboclean:map_upload_stop_action_result"}
+String backup_map_list "Mapping - Backup Map List" (G_vacuum) {channel="miio:basic:Roboclean:backup_map_list"}
+String restore_map_result "Mapping - Restore Map Result" (G_vacuum) {channel="miio:basic:Roboclean:restore_map_result"}
+Switch no_disturb "Do Not Disturb" (G_vacuum) {channel="miio:basic:Roboclean:no_disturb"}
+Number enable_time_period "Do Not Disturb - Enable Time Period" (G_vacuum) {channel="miio:basic:Roboclean:enable_time_period"}
+Switch current_no_disturb "Current Do Not Disturb" (G_vacuum) {channel="miio:basic:Roboclean:current_no_disturb"}
+String cur_voice "Audio - Current Voice" (G_vacuum) {channel="miio:basic:Roboclean:cur_voice"}
+Number download_status "Download Status" (G_vacuum) {channel="miio:basic:Roboclean:download_status"}
+Number:Dimensionless download_progress "Download Progress" (G_vacuum) {channel="miio:basic:Roboclean:download_progress"}
+Number:Dimensionless detergent_left_level "Detergent - Detergent Left Level" (G_vacuum) {channel="miio:basic:Roboclean:detergent_left_level"}
+Switch detergent_self_delivery1 "Detergent Self Delivery Status" (G_vacuum) {channel="miio:basic:Roboclean:detergent_self_delivery1"}
+Number detergent_self_delivery_level "Detergent Self Delivery Level" (G_vacuum) {channel="miio:basic:Roboclean:detergent_self_delivery_level"}
+Number:Dimensionless dust_bag_life_level "Dust Bag - Dust Bag Life Level" (G_vacuum) {channel="miio:basic:Roboclean:dust_bag_life_level"}
+Number:Time dust_bag_left_time "Dust Bag - Dust Bag Left Time" (G_vacuum) {channel="miio:basic:Roboclean:dust_bag_left_time"}
+String updata_difference "Updata Difference" (G_vacuum) {channel="miio:basic:Roboclean:updata_difference"}
+
+String actions_command "Actions Command" (G_vacuum) {channel="miio:basic:Roboclean:actions#commands"} 
+
+// Ny switch til at aktivere/deaktivere CRON-reglen
+Switch EnableDailyCron "Aktivér Daglig Plan"
+
+// String item til visning af den faste tid i UI (Hardcoded til 14:00 i reglen vacuum_start.rules)
+String CronTimeDisplay "Planlagt Tidspunkt [%s]"
+
+Switch Kitchen_Clean_Switch "Rengør Køkken" <vacuum>

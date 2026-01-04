@@ -1,0 +1,11 @@
+String    Reader_Status           "Reader Status"                    <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_Status"}
+String    Reader_State            "Reader State"                     <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_State"}
+String    Reader_Mode             "Reader Mode"                      <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_Mode"}
+String    Reader_Match            "Reader Match"                     <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_Match"}
+Number    Reader_FingerprintID    "Reader FingerprintId"             <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_FingerprintID"}
+Number    Reader_UserId           "Reader UserId"                    <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_UserId"}
+Number    Reader_Confidence       "Reader Match"                     <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_Confidence"}
+String    Reader_gate             "Reader Gate"                      <settings>        {channel="mqtt:topic:broker:fingerprint:Reader_gate"}
+Number    FingerprintID_last      "Last fingerprint ID [%s]"
+Number    enroll_fingerprint      "Enroll fingerprint [%s]"                            {channel="mqtt:topic:broker:fingerprint:enroll_fingerprint"}
+Number    delete_fingerprint      "Delete fingerprint [%s]"                            {channel="mqtt:topic:broker:fingerprint:delete_fingerprint"}

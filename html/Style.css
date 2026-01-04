@@ -1,0 +1,39 @@
+/*
+* Style Sheet
+*/
+body {
+background-color: White;
+font-size: xx-small;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+table {
+border: 0;
+border-color: Black;
+line-height : 80%;
+}
+td {
+color: Black;
+font-size: xx-small;
+text-align: left;
+}
+th {
+color: White;
+font-size: xx-small;
+}
+/* Header row */
+tr.head {
+background-color: Black;
+font-weight : bold;
+text-align: left;
+}
+/* Odd data rows */
+tr.a {
+background-color: #FFFFF8;
+}
+/* Even data rows */
+tr.b {
+background-color: #F8F8FF;
+}/* Department headers */
+tr.c {
+background-color: #D0D0D0;
+}

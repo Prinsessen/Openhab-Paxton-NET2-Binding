@@ -1,0 +1,5 @@
+Number    Solar_Diff_Send           "Waste energy sendt to grid  [%.3f kW]"
+Number    Solar_Diff_Send_Phase1    "Waste energy sendt to grid Ph1 [%.3f kW]"
+Number    Solar_Diff_Send_Phase2    "Waste energy sendt to grid Ph2 [%.3f kW]"
+Number    Solar_Diff_Send_Phase3    "Waste energy sendt to grid Ph3 [%.3f kW]"
+Number    Bought_Energy             "Bought Energy [%.3f kWh]"

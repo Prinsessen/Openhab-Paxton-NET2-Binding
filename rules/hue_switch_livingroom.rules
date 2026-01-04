@@ -1,0 +1,25 @@
+rule "Control Flowerpot via Hue Switch"
+when
+    Item Hue_Switch_1 received update
+then
+    // Log the received command for debugging purposes
+    logInfo("Hue Rule", "Received command for Hue_Switch_1: " + Hue_Switch_1.state.toString)
+
+    // Check the value of the received command
+    switch (Hue_Switch_1.state) {
+        case 1002.0: {
+            // Turns the flowerpot light ON
+            Light_GF_Flowerpot_Stue.sendCommand(ON)
+            logInfo("Hue Rule", "Command was 1002.0, turning Light_GF_Flowerpot_Stue ON.")
+        }
+        case 4002.0: {
+            // Turns the flowerpot light OFF
+            Light_GF_Flowerpot_Stue.sendCommand(OFF)
+            logInfo("Hue Rule", "Command was OFF, turning Light_GF_Flowerpot_Stue OFF.")
+        }
+        default: {
+            // Optional: Handle other potential commands or log an unknown command
+            logInfo("Hue Rule", "Received an unhandled command: " + Hue_Switch_1.state.toString)
+        }
+    }
+end

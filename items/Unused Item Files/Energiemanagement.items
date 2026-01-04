@@ -1,0 +1,146 @@
+Location Anlagenort                                                                 // lat,lon als Geokoordinaten
+Number:Angle Dachneigung                                                            // in °
+Number:Angle Azimuth                                                                // in °
+Number:Power PeakPVLeistung                                                         // in W(p)
+Number:Dimensionless Abregelungsgrenze                                              // typischerweise 70%, 100% == AUS
+String forecastAPIkey
+Switch Viertelstundengenauigkeit                                                    // ON = 15 min -> "Free" Service von forecast.solar 
+                                                                                    // OFF = 60 min -> "Professional" Service von forecast.solar 
+Group Verbraucher "Verbraucher"                             <energy>
+Group Verbraeuche "Verbräuche"                              <energy>
+Group Ertraege "Erträge"                                    <energy>
+Group Verbraucher_Config                                    <gear>
+Group EnergiemanagementVoreinstellungen                     <gear>
+
+Switch BrauchwasserWaermepumpeRelais1                       <pump>
+Switch BrauchwasserWaermepumpeRelais2                       <pump>
+Switch HeizwasserWaermepumpeRelais1                         <pump>
+Switch HeizwasserWaermepumpeRelais2                         <pump>
+
+Group:Switch generisch "generische (Speicher-)Verbraucher"  <gear>
+Number ModusSpuelmaschine                                                           // 0=Automatik, 1=Halbautomatik (mit Rückfrage)
+Number ModusWaschmaschine                                                           // 0=Automatik, 1=Halbautomatik (mit Rückfrage)
+Switch EAutoLaden                                                                   // "virtueller" d.h. noch zu implementierender Schalter schaltet Wallbox frei => E-Auto lädt sich selbst
+Switch EAutoZwangsladen                                                             // [ACHTUNG optional: nur WENN in Auto-Binding implementiert => Schalter instruiert E-Auto sich zu laden 
+Number BrauchwasserWaermepumpe                                                      // gemäß SG-Read Betriebszuständen Bit 0 / 1. Relais ON bedeutet Vorrangladen (SG-Ready BS 3, Bit 1/2. Relais = 0)
+Number HeizwasserWaermepumpe                                                        // ggfs. auf selben Channel gemappt wie BrauchwasserWaermepumpe
+Switch BrauchwasserLaden                                                            // virtueller Switch der bei := ON/OFF BrauchwasserWaermepumpe Bit 1 := 1/0 setzt d.h. Betriebszustand 3 o. 4
+Switch BrauchwasserZwangsladen                                                      // setze Betriebszustand 4, Bit 0/1 = 1/1)
+Switch HeizwasserLaden                                                              // wie Brauchwasser
+Switch HeizwasserZwangsladen
+
+Number:Dimensionless ArbeitszahlBrauchwasser                                        // Arbeitszahl der Brauchwasser-Wärmepumpe
+Number:Dimensionless ArbeitszahlHeizwasser                                          // Arbeitszahl der Heizwasser-Wärmepumpe
+
+
+Number:Energy Schwellwert_Waschmaschine_AUS (Verbraucher_Config)
+Number:Energy Schwellwert_Waschmaschine_STANDBY (Verbraucher_Config)
+Number:Energy Schwellwert_Waschmaschine_AKTIV (Verbraucher_Config)
+Number:Energy Schwellwert_Spuelmaschine_AUS (Verbraucher_Config)
+Number:Energy Schwellwert_Spuelmaschine_STANDBY (Verbraucher_Config)
+Number:Energy Schwellwert_Spuelmaschine_AKTIV (Verbraucher_Config)
+
+Number StatusWaschmaschine
+Number StatusSpuelmaschine
+
+Group Strombedarf
+Number:Energy Strombedarf_Spuelmaschine_Normal (Strombedarf)
+Number:Energy Strombedarf_Spuelmaschine_Eco (Strombedarf)
+Number:Energy Strombedarf_Waschmaschine_Vollwaesche (Strombedarf)
+Number:Energy Strombedarf_Trocknung (Strombedarf)
+Number:Energy Strombedarf_Waschmaschine_Feinwaesche (Strombedarf)
+Number:Energy Strombedarf_Spuelmaschine_Normal_Voreinstellung (Verbraucher_Config)
+Number:Energy Strombedarf_Spuelmaschine_Eco_Voreinstellung (Verbraucher_Config)
+Number:Energy Strombedarf_Waschmaschine_Vollwaesche_Voreinstellung (Verbraucher_Config)
+Number:Energy Strombedarf_Trocknung_Voreinstellung (Verbraucher_Config)
+Number:Energy Strombedarf_Waschmaschine_Feinwaesche_Voreinstellung (Verbraucher_Config)
+
+Group Laufzeit
+Number:Time Laufzeit_Spuelmaschine_Normal (Laufzeit)
+Number:Time Laufzeit_Spuelmaschine_Eco (Laufzeit)
+Number:Time Laufzeit_Waschmaschine_Vollwaesche (Laufzeit)
+Number:Time Laufzeit_Waschmaschine_Trocknung (Laufzeit)
+Number:Time Laufzeit_Waschmaschine_Feinwaesche (Laufzeit)
+Number:Time Laufzeit_Spuelmaschine_Normal_Voreinstellung (Verbraucher_Config)
+Number:Time Laufzeit_Spuelmaschine_Eco_Voreinstellung (Verbraucher_Config)
+Number:Time Laufzeit_Waschmaschine_Vollwaesche_Voreinstellung (Verbraucher_Config)
+Number:Time Laufzeit_Waschmaschine_Trocknung_Voreinstellung (Verbraucher_Config)
+Number:Time Laufzeit_Waschmaschine_Feinwaesche_Voreinstellung (Verbraucher_Config)
+Number:Time AbschaltVorlaufzeitWaschmaschine_Voreinstellung (Verbraucher_Config) 
+Number:Time AbschaltVorlaufzeitSpuelmaschine_Voreinstellung (Verbraucher_Config) 
+
+Switch WaermepumpenSpeicherladung                                       // OFF=kein Heizwasser (vor-)laden
+Number ModusWaermepumpe                                                 // 0=AUS, 1=Sommerbetrieb, 2=Winterbetrieb, 3=Automatik
+Number:Energy Waermepumpe_Verbrauch (Verbraeuche)
+
+Number:Time Dunkelzeit                                                  // Zeit Resttag + Nacht bis Sonnenaufgang bzw. Start neuer PV-Erträge
+Number:Time VerzoegerungErtragsStart                                    <gear> (Einstellungen)
+Number:Time Durchschnittsintervall                                      <gear> (Einstellungen)     // Rückwärtsfenster default 5 min um Ausschläge zu glätten
+
+Number:Volume WarmwasserVorrat                                          (EnergiemanagementVoreinstellungen)    // in l, Duschen 80l pP
+Number:Power Ueberschuss "Überschuss PV-Ertrag"                         <energy> (PV)           // in W
+Number:Power Grundlast "Grundlast in W"                                 <energy> (Verbraeuche)  // in W
+Number:Power Grundlast_Voreinstellung                                   <energy> (EnergiemanagementVoreinstellungen,Verbraucher_Config)
+Number:Power Nachtlast "Nachtlast in W"                                 <energy> (Verbraeuche)  // in W
+Number:Power Nachtlast_Voreinstellung                                   <energy> (EnergiemanagementVoreinstellungen,Verbraucher_Config)
+Number:Energy Restertrag                                                <energy> (Ertraege)
+Number:Energy Restertrag_Voreinstellung                                 <energy> (EnergiemanagementVoreinstellungen,Verbraucher_Config)
+Number:Energy KapazitaetEAuto                                           // nutzbare Kapazität der Batterie in kWh
+Number:Power maxLadeleistungEAuto                                       // in kW
+Number:Power LadeleistungEAuto "Ladeleistung EAuto"                     <energy>
+Number:Power SollLadeleistungEAuto "Soll-Ladeleistung EAuto"            <energy>
+Switch BegrenzungLadeleistungEAuto "Ladeleistung EAuto steuern"         <energy>
+Number:Power SchwellwertEAutoLadungAn                                               // wird verglichen mit Durchschnittswert der letzten X Minuten
+// wird permanent ermittelt als Durchschnittswert der letzten X Minuten minus Grundlast
+Number:Dimensionless SoCEAuto                                                       // in %, wird aus channel Auto-binding ausgelesen
+Number:Energy KapazitaetHaus                                                        // nutzbare Kapazität der Batterie in Wh
+Number:Power maxLadeleistungHaus                                                    // max. Ladeleistung der Batterie in W
+Number:Power LadeleistungHaus                                                       // Lade/Entladeleistung der Batterie in W
+Number:Energy NachtvorratHaus                                        (PV)           // Mindest-Energiemenge die bei Sonnenuntergang in der Batterie vorhanden sein soll in kWh
+
+// ACHTUNG: thermische per WP hereingeholte kWh ! entspricht elektrische kWh * Arbeitszahl
+Number:Energy KapazitaetBrauchwasserspeicher                                        // in Wh elektrisch
+Number:Volume VolumenBrauchwasserspeicher                                           // default 300l für 4 Personen
+Number:Temperature TemperaturFrischwasser
+Number:Temperature TemperaturBrauchwasser
+Number:Temperature maxTemperaturBrauchwasserspeicher
+Number:Power LeistungBrauchwasserWaermepumpe "Leistung Brauchwasserwaermepumpe"     <pump> (Verbraeuche)           // in W
+Number BrauchwasserLadung_Fertigstellung                                            <pump> (Verbraucher_Config)     // Stunde bis zu der Brauchwasser bereitgestellt wird
+Switch BrauchwasserLadebedarf
+                                                                                    // morgenMittag = Start bei PV Produktionsstart am Folgetag, morgenAbend = 20 Uhr Folgetag
+//Number:Power LeistungSpuelmaschine              <washingmachine> (Verbraeuche)      // ggfs. per binding oder Zwischenstecker abfragen
+Number:Energy VerbrauchLaufSpuelmaschine                                            // Verbrauch des Standard-Programms Spuelmaschine in kWh
+Number Spuelmaschine_Fertigstellung             <clock> (Verbraucher_Config)        // keine Aufzählung wie Waschmaschine
+Number:Time VorlaufHeizenSpuelmaschine
+
+//Number:Power LeistungWaschmaschine              <washingmachine> (Verbraeuche)      // ggfs. per binding oder Zwischenstecker abfragen
+Number:Time VorlaufHeizenWaschmaschine
+Number:Energy VerbrauchLaufWaschmaschine                                            // Verbrauch des Standard-Programms Waschmaschine in kWh
+Number Waschmaschine_Fertigstellung             <clock> (Verbraucher_Config)        // in UI Auswahl heuteAbend = 20 Uhr, morgenFrueh = 8 Uhr Folgetag,
+Switch BenachrichtigungWaschmaschine                               <switch>                 // soll Bewohner benachrichtigt werden, wenn ein Waschmaschinenlauf beendet ist
+Switch WaschmaschineAusraeumenPruefen
+Switch WaschmaschineAusgeraeumt
+Number:Time WaschmaschineAusraeumenErinnerung
+
+// ACHTUNG: thermische per WP hereingeholte kWh ! entspricht elektrische kWh * Arbeitszahl
+Number:Energy KapazitaetHeizwasserspeicher                                          // in Wh elektrisch
+Number:Dimensionless SoCHeizwasserspeicher
+Number:Volume VolumenHeizwasserspeicher                                             // default 500l ACHTUNG bei gemeinsamem Speicher Brauch- & Heizwasser aufteilen !
+Number:Temperature maxTemperaturHeizwasserspeicher
+Number:Power LeistungHeizwasserWaermepumpe "Leistung Heizwasserwärmepumpe"          <pump>  (Verbraeuche)   // ggfs. per binding oder Zwischenstecker abfragen
+
+Switch NachtladungHausbatterie
+Switch Energiemanagement
+Switch Lastmessung
+Number Rueckfrage
+String StartzeitpunktSetzen                                                         // Stringinhalt = Name des Verbrauchers
+Switch RestertragsAPIAuslesen
+Switch RestertragErmitteln
+
+Switch GrundlastDynamisch "Grundlast des Vortags als Berechnungsgrundlage"          <gear> (Einstellungen)
+Switch StrombedarfDynamisch "jüngsten Lauf/Verbrauch SpM/WM als Prognose nutzen"    <gear> (Einstellungen)
+Number:Dimensionless    StrombedarfDynamischAenderungsMaximum    <gear>    (EnergiemanagementVoreinstellungen)
+Switch SpuelmaschineDynamisch    <gear>    (Einstellungen)
+Switch WaschmaschineDynamisch    <gear>    (Einstellungen)
+Number:Time AbschaltVorlaufzeitSpuelmaschine
+Number:Time AbschaltVorlaufzeitWaschmaschine

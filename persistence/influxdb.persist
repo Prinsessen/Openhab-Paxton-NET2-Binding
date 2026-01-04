@@ -1,0 +1,147 @@
+Strategies {
+        everyMinute :   "0 * * * * ?"
+        everyHour :     "0 0 * * * ?"
+        everyDay  :     "0 0 0 * * ?"
+	myStrategy :    "0 * 5-22 ? * * *"
+
+
+        // if no strategy is specified for an item entry below, the default list will be used
+        //default = everyChange
+
+
+}
+
+Items {
+    nilan_generated_chartperiod : strategy = everyChange,restoreOnStartup  
+    heatpump_generated_chartperiod : strategy = everyChange,restoreOnStartup  
+    gHpSensor* : strategy = everyMinute,restoreOnStartup 
+    gAirSensor* : strategy = everyMinute,restoreOnStartup 
+    gHumSensor* : strategy = everyMinute,restoreOnStartup 
+    gWaterTemperature* : strategy = everyMinute,restoreOnStartup 
+    Light_GF_Stue_Led : strategy = everyMinute,restoreOnStartup 
+    EM111_Energi_srv_A : strategy = everyMinute,restoreOnStartup 
+    gCoSensor* : strategy = everyMinute,restoreOnStartup 
+    Temperature* : strategy = everyChange,everyMinute,restoreOnStartup 
+    Energi_2_24* : strategy = everyMinute,restoreOnStartup 
+    Energi_24* : strategy = everyMinute,restoreOnStartup 
+    EM111_Energi_cool_kW : strategy = everyChange,restoreOnStartup 
+    EM24_Energy_Grid : strategy = everyMinute,restoreOnStartup 
+    EM24_Energy_Balance_Phase1 : strategy = everyMinute,restoreOnStartup 
+    EM24_Energy_Balance_Phase2 : strategy = everyMinute,restoreOnStartup 
+    EM24_Energy_Balance_Phase3 : strategy= everyMinute,restoreOnStartup 
+    EM24_Boil_Energi_24_kW : strategy= everyMinute
+    Boiler_Energy_Diff : strategy= everyMinute
+    SMA_Daily_Yield : strategy= everyMinute
+
+    Nilan_error : strategy = everyChange, restoreOnStartup
+    Smarthouse_error : strategy = everyChange, restoreOnStartup
+    SMA_error : strategy = everyChange, restoreOnStartup
+    Metz_error : strategy = everyChange, restoreOnStartup
+    carbondioxide_error : strategy = everyChange, restoreOnStartup
+    kampstrup_error : strategy = everyChange, restoreOnStartup
+    Smarthouse_error_Terndrupvej : strategy = everyChange, restoreOnStartup
+    Mitsubishi_living_error : strategy = everyChange, restoreOnStartup
+
+
+    Flow_1			: strategy = everyMinute,restoreOnStartup
+    Flow_2			: strategy = everyMinute,restoreOnStartup
+    Actual_power		: strategy = everyMinute,restoreOnStartup
+    Temp_1_Inlet		: strategy = everyMinute,restoreOnStartup
+    Temp_2_Outlet		: strategy = everyMinute,restoreOnStartup
+    Differential_temp		: strategy = everyMinute,restoreOnStartup
+    Heat_energy_E1		: strategy = everyMinute,restoreOnStartup
+ 
+    Fresh_Water			: strategy = everyMinute,restoreOnStartup
+    Fresh_Water_Day		: strategy = everyMinute,restoreOnStartup   
+    Light_Grovlager		: strategy = everyMinute,restoreOnStartup
+
+    gAlarmHist* 		: strategy = everyMinute,restoreOnStartup 
+    gAlarm* 			: strategy = everyMinute,restoreOnStartup 
+    gAlarmcontact* 		: strategy = everyMinute,restoreOnStartup 
+
+    Tex_Alarm_Status		: strategy = everyMinute,restoreOnStartup
+    
+    Tex_History_00		: strategy = everyMinute,restoreOnStartup
+    Tex_History_01		: strategy = everyMinute,restoreOnStartup
+    Tex_History_02		: strategy = everyMinute,restoreOnStartup
+    Tex_History_03		: strategy = everyMinute,restoreOnStartup
+    Tex_History_04		: strategy = everyMinute,restoreOnStartup
+    Tex_History_05		: strategy = everyMinute,restoreOnStartup
+    Tex_History_06		: strategy = everyMinute,restoreOnStartup
+    Tex_History_07		: strategy = everyMinute,restoreOnStartup
+    Tex_History_08		: strategy = everyMinute,restoreOnStartup
+    Tex_History_09		: strategy = everyMinute,restoreOnStartup
+    Tex_History_10		: strategy = everyMinute,restoreOnStartup
+
+
+    WeatherWindSpeed		: strategy = everyMinute,restoreOnStartup
+    WeatherWindDir		: strategy = everyMinute,restoreOnStartup
+    dateWindSpeedMax		: strategy = everyMinute,restoreOnStartup
+    dateWindGustMax		: strategy = everyMinute,restoreOnStartup
+    	
+
+Rfid_receive_num	: strategy = everyChange,restoreOnStartup
+Rfid_receive		: strategy = everyChange,restoreOnStartup
+Last_Scan_Stamp 	: strategy = everyChange,restoreOnStartup
+
+Mitsubishi_Room_Temperature			: strategy = everyChange,everyMinute,restoreOnStartup
+Mitsubishi_BMS_Room_Temperature_signed		: strategy = everyChange,everyMinute,restoreOnStartup
+Mitsubishi_Living_Override		        : strategy = everyChange,everyMinute,restoreOnStartup
+Mitsubishi_Timer_Selector			: strategy = everyChange,everyMinute,restoreOnStartup
+Mitsubishi_Timer_DateTime_Start			: strategy = everyChange,everyMinute,restoreOnStartup
+Mitsubishi_Timer_DateTime_Stop			: strategy = everyChange,everyMinute,restoreOnStartup
+
+Mitsubishi_Server_Override		        : strategy = everyChange,everyMinute,restoreOnStartup
+
+Nilan_Override					: strategy = everyChange,everyMinute,restoreOnStartup
+
+DishwasherSimulator_Solar			: strategy = everyChange,everyMinute,restoreOnStartup
+ 
+DrivewayPan					: strategy = everyChange,restoreOnStartup
+DrivewayTilt					: strategy = everyChange,restoreOnStartup
+DrivewayZoom					: strategy = everyChange,restoreOnStartup
+
+CompanyPan					: strategy = everyChange,restoreOnStartup
+CompanyTilt					: strategy = everyChange,restoreOnStartup
+CompanyZoom					: strategy = everyChange,restoreOnStartup
+
+WestPan						: strategy = everyChange,restoreOnStartup
+WestTilt					: strategy = everyChange,restoreOnStartup
+WestZoom					: strategy = everyChange,restoreOnStartup
+
+PTZ						: strategy = everyChange,restoreOnStartup
+Net2						: strategy = everyChange,restoreOnStartup
+
+Fresh_Water_Day_Alarm				: strategy = everyChange,restoreOnStartup
+
+Alarm_System_Arm_Disarm				: strategy = everyChange,restoreOnStartup
+
+powersource 					: strategy = everyChange,restoreOnStartup
+fuel_level 					: strategy = everyChange,restoreOnStartup
+throttle 					: strategy = everyChange,restoreOnStartup
+enginerpm 					: strategy = everyChange,restoreOnStartup
+can_speed 					: strategy = everyChange,restoreOnStartup
+engineload 					: strategy = everyChange,restoreOnStartup
+
+
+TempTargetSet 					: strategy = everyChange,restoreOnStartup
+
+Energy_Crisis					: strategy = everyChange,restoreOnStartup
+Vent_Server_Aout				: strategy = everyChange,everyMinute,restoreOnStartup
+
+SeatTemperature					: strategy = everyChange,everyMinute,restoreOnStartup
+
+Temperature_C					: strategy = everyChange,everyMinute,restoreOnStartup
+Pressure_bar					: strategy = everyChange,everyMinute,restoreOnStartup
+Pressure_psi					: strategy = everyChange,everyMinute,restoreOnStartup
+Pressure_kPa					: strategy = everyChange,everyMinute,restoreOnStartup
+Battery						: strategy = everyChange,everyMinute,restoreOnStartup
+
+total_actual_power_plant001			: strategy = everyChange,everyMinute,restoreOnStartup
+
+Mitsubishi_Server_Avrg_Energy           	: strategy = everyChange,everyMinute,restoreOnStartup
+SMA_Active_Power				: strategy = everyChange,everyMinute,restoreOnStartup
+SMA_Power_A					: strategy = everyChange,everyMinute,restoreOnStartup
+SMA_Power_B                                     : strategy = everyChange,everyMinute,restoreOnStartup        
+
+}

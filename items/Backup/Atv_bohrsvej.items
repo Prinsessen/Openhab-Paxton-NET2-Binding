@@ -1,0 +1,9 @@
+Switch      heatpumpPower               								 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:power" }
+Switch      heatpumpForcedHotWaterMode  								 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:forcedHotWaterMode" }
+Number      heatpumpSetTemperatureZone1 	"Set Zone 1 temperature [%d °C]"			 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:setTemperatureZone1" }
+Number      heatpumpRoomTemperatureZone1	"Zone 1 temperature [%d °C]" 				 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:roomTemperatureZone1" }
+Number      heatpumpTankWaterTemperature 	"Tank water temperature [%d °C]" 			 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:tankWaterTemperature" }
+DateTime    heatpumpLastCommunication  "Last Communication [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]" 		 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:lastCommunication" }
+DateTime    heatpumpNextCommunication  "Next Communication [%1$td.%1$tm.%1$ty - %1$tH:%1$tM]" 		 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:nextCommunication" }
+Switch      heatpumpOffline            "Heatpump offline 		[MAP(yes_no.map):%s]"	 	 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:offline" }
+Switch      heatpumpHasPendingCommand  "Heatpump Pending commands	[MAP(yes_no.map):%s]"		 { channel="melcloud:heatpumpdevice:myaccount:bohrsvej:hasPendingCommand" }

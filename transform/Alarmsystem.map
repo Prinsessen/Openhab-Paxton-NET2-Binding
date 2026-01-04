@@ -1,0 +1,11 @@
+0=Deactivated with no sensor active
+1=Deactivated with sensor active
+2=Arming
+3=All armed
+4=Armed
+5=Warning
+6=Early alarm
+7=Alarm
+8=Receipt
+-=Test
+NULL=Unknown 

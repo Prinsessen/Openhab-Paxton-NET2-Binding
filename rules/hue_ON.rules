@@ -1,0 +1,371 @@
+// Global Timers declared with full class paths
+var org.openhab.core.model.script.actions.Timer fade_Timer1 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer2 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer3 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer4 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer5 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer6 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer10 = null
+
+// Global variable for the fading percentage (needs to be mutable)
+var Number percent = 0
+
+// Global Timer for the moon dimming effect
+var org.openhab.core.model.script.actions.Timer dim_moon_timer = null
+
+// Global state variables for the current dimmer and saturation values during the fade
+var Number moon_dimmer_level = 100 
+var Number moon_sat_mini = 0
+var Number moon_sat_midi = 0
+var Number moon_sat_maxi = 100
+
+rule "Philips HUE ON Stue"
+when
+    Time cron "0 40 05 * * ?" // 5:40 AM every day
+    // The previous triggers for smarthouse_lux and Light1_ON are replaced 
+    // by a single trigger that activates whenever either item receives an ON command
+    or Item smarthouse_lux received command ON
+    or Item Light1_ON received command ON 
+then
+    // Use 'if' statements to check the item's state at the moment the rule runs
+    // This checks if smarthouse_lux is currently OFF
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == OFF) {
+        // This 'if' block would check if Light1_ON is currently ON, 
+        // effectively replacing the 'changed from' logic. 
+        // Note: The rest of your original logic already handles checks appropriately.
+        
+        if (Light1_Dimmer.state instanceof Number) {
+            val Number current_dimmer_state = (Light1_Dimmer.state as Number)
+                percent = ((current_dimmer_state.intValue() / 5) * 5) as Number // Round to nearest 5
+
+        // Cancel any existing timer to prevent conflicts if the rule runs multiple times
+        if (fade_Timer1 !== null) {
+            fade_Timer1.cancel()
+            fade_Timer1 = null
+        }
+
+        fade_Timer1 = createTimer(now.plusSeconds(1)) [|
+            Light1_Dimmer.sendCommand(percent)
+            
+            if (percent < 100) {
+                // Continue fading and reschedule for the next step
+                percent = percent.intValue() + 5
+                fade_Timer1.reschedule(now.plusSeconds(1))
+                // Keep the ON state updated while fading up (optional but safe)
+                postUpdate("Light1_ON", "ON") 
+            } else {
+                // Fading is complete (percent is 100 or more)
+                logInfo("rules", "Light1_Dimmer reached 100%. Turning Light1_ON OFF.")
+                // Turn OFF the trigger item (Light1_ON)
+                // postUpdate("Light1_ON", "OFF")
+                // Clear the timer variable since we are done
+                fade_Timer1 = null
+               }
+            ]
+        }
+    }
+end
+
+// Test fase with smarthouse_lux as state trigger - 26-11-2025
+
+rule "Philips HUE ON TV Strip Polling"
+when
+    // This rule runs every minute at the 0-second mark (polling interval)
+    // Time cron "0 * * * * ?" 
+    // You can also keep your other non-polling triggers here if needed:
+    Item Light2_ON changed 
+then
+    // Check if the item we are polling is currently ON
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == ON) {
+        
+        // Check if a fade timer is already running. 
+        // We only want to start the fade process if it hasn't started yet.
+        if (fade_Timer2 === null) {
+            logInfo("rules", "smarthouse_lux is ON and no timer is running. Starting fade sequence.")
+
+            if (Light2_Dimmer.state instanceof Number) {
+                val Number current_dimmer_state = (Light2_Dimmer.state as Number)
+                percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+                // Start the timer; subsequent polls will see that fade_Timer2 is no longer null
+                fade_Timer2 = createTimer(now.plusSeconds(1), [|
+                    Light2_Dimmer.sendCommand(percent)
+                    
+                    if (percent < 100) {
+                        percent = percent.intValue() + 5
+                        fade_Timer2.reschedule(now.plusSeconds(1))
+                        postUpdate("Light2_ON", "ON")
+                    } else {
+                        logInfo("rules", "Light2_Dimmer reached 100%. Fade complete.")
+                        fade_Timer2 = null
+                    }
+                ])
+            }
+        } else {
+            // Optional: log a message if the polling happens while the fade is already active
+            // logDebug("rules", "smarthouse_lux is ON, but fade_Timer2 is already active.")
+        }
+    } else {
+        // Optional: log that the item is not ON if you are debugging
+        // logDebug("rules", "smarthouse_lux is not ON (state is " + smarthouse_lux.state + ").")
+    }
+end
+
+
+rule "Philips HUE ON Triangle Windows Strip"
+// Test fase with smarthouse_lux as state trigger - 26-11-2025
+
+when
+    // This rule runs every minute at the 0-second mark (polling interval)
+    Time cron "0 * * * * ?" 
+    // You can also keep your other non-polling triggers here if needed:
+     or Item Light4_ON changed 
+then
+    // Check if the item we are polling is currently ON
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == ON) {
+        
+        // Check if a fade timer is already running. 
+        // We only want to start the fade process if it hasn't started yet.
+        if (fade_Timer4 === null) {
+            logInfo("rules", "smarthouse_lux is ON and no timer is running. Starting fade sequence.")
+
+            if (Light4_Dimmer.state instanceof Number) {
+                val Number current_dimmer_state = (Light4_Dimmer.state as Number)
+                percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+                // Start the timer; subsequent polls will see that fade_Timer2 is no longer null
+                fade_Timer4 = createTimer(now.plusSeconds(1), [|
+                    Light4_Dimmer.sendCommand(percent)
+                    
+                    if (percent < 100) {
+                        percent = percent.intValue() + 5
+                        fade_Timer4.reschedule(now.plusSeconds(1))
+                        postUpdate("Light4_ON", "ON")
+                    } else {
+                        logInfo("rules", "Light4_Dimmer reached 100%. Fade complete.")
+                        fade_Timer4 = null
+                    }
+                ])
+            }
+        } else {
+            // Optional: log a message if the polling happens while the fade is already active
+            // logDebug("rules", "smarthouse_lux is ON, but fade_Timer4 is already active.")
+        }
+    } else {
+        // Optional: log that the item is not ON if you are debugging
+        // logDebug("rules", "smarthouse_lux is not ON (state is " + smarthouse_lux.state + ").")
+    }
+end
+
+rule "Philips HUE ON Kitchen Deko"
+// Test fase with smarthouse_lux as state trigger - 26-11-2025
+
+when
+    // This rule runs every minute at the 0-second mark (polling interval)
+    Time cron "0 * * * * ?" 
+    // You can also keep your other non-polling triggers here if needed:
+     or Item Light10_ON changed 
+then
+    // Check if the item we are polling is currently ON
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == ON) {
+        
+        // Check if a fade timer is already running. 
+        // We only want to start the fade process if it hasn't started yet.
+        if (fade_Timer10 === null) {
+            logInfo("rules", "smarthouse_lux is ON and no timer is running. Starting fade sequence.")
+
+            if (Light10_Dimmer.state instanceof Number) {
+                val Number current_dimmer_state = (Light10_Dimmer.state as Number)
+                percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+                // Start the timer; subsequent polls will see that fade_Timer10 is no longer null
+                fade_Timer10 = createTimer(now.plusSeconds(1), [|
+                    Light10_Dimmer.sendCommand(percent)
+                    
+                    if (percent < 100) {
+                        percent = percent.intValue() + 5
+                        fade_Timer10.reschedule(now.plusSeconds(1))
+                        postUpdate("Light10_ON", "ON")
+                    } else {
+                        logInfo("rules", "Light10_Dimmer reached 100%. Fade complete.")
+                        fade_Timer10 = null
+                    }
+                ])
+            }
+        } else {
+            // Optional: log a message if the polling happens while the fade is already active
+            // logDebug("rules", "smarthouse_lux is ON, but fade_Timer10 is already active.")
+        }
+    } else {
+        // Optional: log that the item is not ON if you are debugging
+        // logDebug("rules", "smarthouse_lux is not ON (state is " + smarthouse_lux.state + ").")
+    }
+end
+
+rule "Philips HUE Bedroom Strip Polling"
+when
+    // This rule runs every minute at the 0-second mark (polling interval)
+    // Time cron "0 * * * * ?" 
+    // You can also keep your other non-polling triggers here if needed:
+    Item Light3_ON changed 
+then
+    // Check if the item we are polling is currently ON
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == ON) {
+        
+        // Check if a fade timer is already running. 
+        // We only want to start the fade process if it hasn't started yet.
+        if (fade_Timer3 === null) {
+            logInfo("rules", "smarthouse_lux is ON and no timer is running. Starting fade sequence.")
+
+            if (Light3_Dimmer.state instanceof Number) {
+                val Number current_dimmer_state = (Light3_Dimmer.state as Number)
+                percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+                // Start the timer; subsequent polls will see that fade_Timer3 is no longer null
+                fade_Timer3 = createTimer(now.plusSeconds(1), [|
+                    Light3_Dimmer.sendCommand(percent)
+                    
+                    if (percent < 100) {
+                        percent = percent.intValue() + 5
+                        fade_Timer3.reschedule(now.plusSeconds(1))
+                        postUpdate("Light3_ON", "ON")
+                    } else {
+                        logInfo("rules", "Light3_Dimmer reached 100%. Fade complete.")
+                        fade_Timer3 = null
+                    }
+                ])
+            }
+        } else {
+            // Optional: log a message if the polling happens while the fade is already active
+            // logDebug("rules", "smarthouse_lux is ON, but fade_Timer3 is already active.")
+        }
+    } else {
+        // Optional: log that the item is not ON if you are debugging
+        // logDebug("rules", "smarthouse_lux is not ON (state is " + smarthouse_lux.state + ").")
+    }
+end
+
+
+rule "Philips HUE ON Ensis Up"
+when
+    Item smarthouse_lux changed from OFF to ON
+    or
+    Item Light5_ON changed from OFF to ON  
+then
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == OFF) {
+        if (Light5_Dimmer.state instanceof Number) {
+            val Number current_dimmer_state = (Light5_Dimmer.state as Number)
+            percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+        // Cancel any existing timer to prevent conflicts if the rule runs multiple times quickly
+        if (fade_Timer5 !== null) {
+            fade_Timer5.cancel()
+            fade_Timer5 = null
+        }
+
+        fade_Timer5 = createTimer(now.plusSeconds(1)) [|
+            Light5_Dimmer.sendCommand(percent)
+            
+            if (percent < 100) {
+                // Continue fading up and reschedule for the next step
+                percent = percent.intValue() + 5
+                fade_Timer5.reschedule(now.plusSeconds(1))
+                // Keep the ON state updated while fading up (optional but safe)
+                postUpdate("Light5_ON", "ON")
+            } else {
+                // Fading is complete (percent is 100 or more)
+                logInfo("rules", "Light5_Dimmer reached 100%. Turning Light5_ON OFF.")
+                // Turn OFF the trigger item (Light5_ON)
+                // postUpdate("Light5_ON", "OFF")
+                // Clear the timer variable since we are done
+                fade_Timer5 = null
+              }
+         ]
+     }
+    }
+end
+
+rule "Philips HUE ON Ensis Down"
+when
+    Item smarthouse_lux changed from OFF to ON
+    or
+    Item Light6_ON changed from OFF to ON  
+then
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == OFF) {
+        if (Light6_Dimmer.state instanceof Number) {
+            val Number current_dimmer_state = (Light6_Dimmer.state as Number)
+                percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+        // Cancel any existing timer to prevent conflicts if the rule runs multiple times quickly
+        if (fade_Timer6 !== null) {
+            fade_Timer6.cancel()
+            fade_Timer6 = null
+        }
+
+        fade_Timer6 = createTimer(now.plusSeconds(1)) [|
+            Light6_Dimmer.sendCommand(percent)
+            
+            if (percent < 100) {
+                // Continue fading up and reschedule for the next step
+                percent = percent.intValue() + 5
+                fade_Timer6.reschedule(now.plusSeconds(1))
+                // Keep the ON state updated while fading up (optional but safe)
+                postUpdate("Light6_ON", "ON")
+            } else {
+                // Fading is complete (percent is 100 or more)
+                logInfo("rules", "Light6_Dimmer reached 100%. Turning Light6_ON OFF.")
+                // Turn OFF the trigger item (Light6_ON)
+                // postUpdate("Light6_ON", "OFF")
+                // Clear the timer variable since we are done
+                fade_Timer6 = null
+                }
+            ]
+        }
+    }
+end
+
+rule "Dimming MOON - 1"
+when 
+    Item Light7_ON changed from OFF to ON
+then
+    // Initialize global variables for this new run
+    moon_dimmer_level = 100
+    moon_sat_mini = 0
+    moon_sat_midi = 0
+    moon_sat_maxi = 100
+    
+    // Ensure any existing timer is cancelled before starting a new one
+    if (dim_moon_timer !== null) {
+        dim_moon_timer.cancel()
+        dim_moon_timer = null
+    }
+
+    // Start the recursive timer process
+    dim_moon_timer = createTimer(now.plusSeconds(1), [|
+
+        // Send commands with current global values (using sendCommand action with item name as string)
+        sendCommand("Light9_ColorTemp", moon_sat_mini.toString())
+        sendCommand("Light8_ColorTemp", moon_sat_midi.toString())
+        sendCommand("Light7_ColorTemp", moon_sat_maxi.toString())
+
+        // Update the levels for the next iteration
+        moon_dimmer_level = moon_dimmer_level.intValue() - 1
+        moon_sat_mini = moon_sat_mini.intValue() + 1
+        moon_sat_midi = moon_sat_midi.intValue() + 1
+        moon_sat_maxi = moon_sat_maxi.intValue() - 1
+
+        // Check if we need to continue fading
+        if (moon_dimmer_level >= 0) {
+            // Reschedule the timer to run again in 1 second
+            dim_moon_timer.reschedule(now.plusSeconds(1))
+        } else {
+            // Fading complete, stop the timer
+            logInfo("rules", "Dimming MOON fade finished. Turning Light7_ON OFF.")
+            dim_moon_timer = null
+            
+            // Turn OFF the trigger item (Light7_ON) after the fade is complete
+            // postUpdate("Light7_ON", "OFF")
+        }
+    ])
+end
+

@@ -1,0 +1,224 @@
+// Openhab5 Optimized Code for Nilan Date Items Concatenation
+rule "nilan date items concatenation"
+    when
+        // Item Nilan_Time_Second received update or
+        Item Nilan_Time_Minute received update or
+        Item Nilan_Time_Hour received update or
+        Item Nilan_Time_Day received update or
+        Item Nilan_Time_Month received update or
+        Item Nilan_Time_Year received update or
+        System started
+    then
+        // Ensure all required items are valid numbers before proceeding
+        if (Nilan_Time_Hour.state instanceof Number &&
+            Nilan_Time_Minute.state instanceof Number &&
+            Nilan_Time_Day.state instanceof Number &&
+            Nilan_Time_Month.state instanceof Number &&
+            Nilan_Time_Year.state instanceof Number) {
+
+            // The fix: Cast 'as Number' and then call '.doubleValue()' to force the standard Java primitive type
+            var String formattedString = String::format("Kl. %02.0f:%02.0f - %02.0f.%02.0f.%04.0f",
+                                                       (Nilan_Time_Hour.state as Number).doubleValue(),
+                                                       (Nilan_Time_Minute.state as Number).doubleValue(),
+                                                       (Nilan_Time_Day.state as Number).doubleValue(),
+                                                       (Nilan_Time_Month.state as Number).doubleValue(),
+                                                       (Nilan_Time_Year.state as Number).doubleValue())
+
+            nilan_generated_time.postUpdate(formattedString)
+            logInfo("Nilan Time Rule", "Updated nilan_generated_time to: " + formattedString)
+
+        } else {
+            logWarn("Nilan Time Rule", "One or more Nilan time items are NULL/UNDEF. Time concatenation skipped.")
+        }
+end
+
+// 	Optimized code for Openhab5 - Calculating avrage humidity in the past 30 seconds
+
+rule "Humidity Average Nilan Inlet "
+when
+    Item Nilan_Input_RH received update
+then
+    // Use 'val' for the average result, as the result itself shouldn't be reassigned
+    // Specify your persistence service if you use multiple (e.g., "influxdb" if that's what you use for averages)
+    val averageState = Nilan_Input_RH.averageSince(now.minusSeconds(30)) 
+    // Check if the persistence query returned a valid state before using it.
+    if (averageState === NULL || averageState === UNDEF) {
+        logWarn("Nilan Rule", "Persistence call for Nilan_Input_RH average returned NULL or UNDEF. Check persistence configuration.")
+        return; // Stop the rule execution
+    }
+    // Post the valid average result to the target item.
+    Nilan_Input_RH_Avrg.postUpdate(averageState)
+end
+
+// 	Optimized Code for Openhab5 - Setting Nilan to max spped when Nilan Humidity Average + 15% is exceeded >= Trigger level
+
+rule "Nilan Humidity ON Forseret"
+when
+    	Item Nilan_Input_RH changed
+then
+    // Check that all required items have valid states before attempting operations
+    if (Nilan_Input_RH_Avrg.state === NULL || Nilan_Input_RH_Avrg.state === UNDEF ||
+        Nilan_Input_RH.state === NULL || Nilan_Input_RH.state === UNDEF ||
+        Nilan_Input_RH_Trig.state === NULL || Nilan_Input_RH_Trig.state === UNDEF) {
+        logWarn("Nilan Rule", "One or more required Nilan items are NULL/UNDEF. Exiting rule.")
+        return;
+    }
+    // Use .doubleValue to handle potential Units of Measurement (UoM) and ensure simple numeric types
+    var avgHumidity = (Nilan_Input_RH_Avrg.state as Number).doubleValue
+    var triggerLevel = avgHumidity + 0.15
+    // Post update to the trigger item using the item method
+    Nilan_Input_RH_Trig.postUpdate(triggerLevel)
+    // Compare current RH with the calculated trigger level
+    if ((Nilan_Input_RH.state as Number).doubleValue >= (Nilan_Input_RH_Trig.state as Number).doubleValue) {
+        // Use modern sendCommand method calls instead of the global action
+        Nilan_Control_VentSet.sendCommand(4)
+        Smarthouse_Motorventil.sendCommand(ON)
+    }
+end
+
+//  Openhab5 Optimized Code
+
+rule "Nilan Humidity Speed Status Speed 2"
+when
+    // This trigger is modern and correct
+    Item Nilan_Forceret changed from ON to OFF
+then
+    // Best practice check: Ensure the item receiving the update is initialized
+    if (Activated_by_status.state === NULL || Activated_by_status.state === UNDEF) {
+        logInfo("Nilan Rule", "Activated_by_status item was NULL/UNDEF. Rule proceeding with postUpdate.")
+    }
+    
+    // Use the item method for postUpdate
+    Activated_by_status.postUpdate("AS2")
+end
+
+rule "Nilan Humidity Speed Status Speed 4"
+	when
+        	Item Nilan_Forceret changed from OFF to ON
+	then
+		Activated_by_status.postUpdate("AS4")
+end
+
+//	Openhab5 Optimized Code
+//  CO2 Level Rules for Nilan Ventilation Control
+
+rule "Co2 Level Green Treshold"
+when
+    Item Co2_Sove changed
+then
+    // Ensure all required items have valid states before proceeding
+    if (Co2_Sove.state === NULL || Co2_Sove.state === UNDEF ||
+        Nilan_Forceret.state === NULL || Nilan_Forceret.state === UNDEF ||
+        Smarthouse_Motorventil.state === NULL || Smarthouse_Motorventil.state === UNDEF) {
+        logWarn("Co2 Rule", "One or more required items for the Co2 Level Green rule are NULL/UNDEF. Exiting rule.")
+        return;
+    }
+    // Get the numeric value safely using .doubleValue
+    val currentCo2 = (Co2_Sove.state as Number).doubleValue
+    // Check conditions
+    if (currentCo2 < 1250 && Nilan_Forceret.state == OFF) {
+        // Use modern item methods for sending commands/updates
+        Nilan_Control_VentSet.sendCommand(2)
+        Smarthouse_Motorventil.sendCommand(OFF)
+        Activated_by_status.postUpdate("AS6")
+        logInfo("Co2 Rule", "CO2 level is below 1250, setting ventilation to speed 2.")
+    }
+end
+	//Openhab5 Optimized - CO2 Level Yellow Treshold
+rule "Co2 Level Yellow Tresholds"
+when
+    Item Co2_Sove changed
+then
+    // Ensure all required items have valid states before proceeding
+    if (Co2_Sove.state === NULL || Co2_Sove.state === UNDEF ||
+        Nilan_Forceret.state === NULL || Nilan_Forceret.state === UNDEF) {
+        logWarn("Co2 Rule", "One or more required items for the Co2 Level Yellow rule are NULL/UNDEF. Exiting rule.")
+        return;
+    }
+    // Get the numeric value safely using .doubleValue
+    val currentCo2 = (Co2_Sove.state as Number).doubleValue
+    // Check conditions
+    if (currentCo2 >= 1300 && currentCo2 < 1450 && Nilan_Forceret.state == OFF) {
+        // Use modern item methods for sending commands/updates
+        Nilan_Control_VentSet.sendCommand(3)
+        // Uncomment the motor valve line if needed:
+        // Smarthouse_Motorventil.sendCommand(ON)
+        Activated_by_status.postUpdate("AS7")
+        logInfo("Co2 Rule", "CO2 level is in yellow range, setting ventilation to speed 3.")
+    }
+end
+
+	// Openhab5 Optimized - CO2 Level Red Treshold
+rule "Co2 Level Red Treshold"
+when
+    Item Co2_Sove changed
+then
+    // Ensure all required items have valid states before proceeding
+    if (Co2_Sove.state === NULL || Co2_Sove.state === UNDEF ||
+        Nilan_Forceret.state === NULL || Nilan_Forceret.state === UNDEF ||
+        Smarthouse_Motorventil.state === NULL || Smarthouse_Motorventil.state === UNDEF) {
+        logWarn("Co2 Rule", "One or more required items for the Co2 Level Red rule are NULL/UNDEF. Exiting rule.")
+        return;
+    }
+    // Get the numeric value safely using .doubleValue
+    val currentCo2 = (Co2_Sove.state as Number).doubleValue
+    // Check conditions
+    if (currentCo2 >= 1500 && Nilan_Forceret.state == OFF) {
+        // Use modern item methods for sending commands/updates
+        Nilan_Control_VentSet.sendCommand(7)
+        Smarthouse_Motorventil.sendCommand(ON)
+        Activated_by_status.postUpdate("AS7")
+        logInfo("Co2 Rule", "CO2 level is in red range (>= 1500 ppm), setting ventilation to max speed 7.")
+    }
+end
+
+	// Openhab5 Optimized - Calculating average Energy for Nilan in the past 5 minutes
+rule "Average energy available for Nilan Ventilation"
+when
+    Item EM24_Energy_Grid received update
+then
+    // Use val for the persistence result
+    val averageState = EM24_Energy_Grid.averageSince(now.minusMinutes(5)) // Optional: add , "rrd4j" before closing parenthesis to specify service
+
+    // Check if persistence returned a valid value
+    if (averageState === NULL || averageState === UNDEF) {
+        logWarn("Nilan Rule", "Persistence call for EM24_Energy_Grid average returned NULL or UNDEF.")
+        return; // Stop the rule execution
+    }
+    // Post the valid average value
+    Nilan_Avrg_Energy.postUpdate(averageState)
+end
+
+	// Openhab5 Optimized - Starting Nilan Ventilation when sufficient solar energy available
+rule "Start Nilan Ventilation when enough solar energy available"
+when
+    Item EM24_Energy_Grid received update 
+    or
+    Item Nilan_Avrg_Energy received update
+then
+    // Ensure all critical items have valid states before starting calculations
+    if (Nilan_Avrg_Energy.state === NULL || Nilan_Avrg_Energy.state === UNDEF ||
+        Nilan_Override.state === NULL || Nilan_Override.state === UNDEF ||
+        Nilan_Control_RunSet.state === NULL || Nilan_Control_RunSet.state === UNDEF) {
+        logWarn("Nilan Rule", "One or more required items in the main Nilan start/stop rule are NULL/UNDEF. Exiting.")
+        return;
+    }
+    // Get the numeric values safely using .doubleValue to handle potential UoM
+    val currentEnergyKw = (Nilan_Avrg_Energy.state as Number).doubleValue * -1
+    val isOverrideOff = Nilan_Override.state == OFF
+    val isRunSetOff = Nilan_Control_RunSet.state == OFF
+    val isRunSetOn = Nilan_Control_RunSet.state == ON
+    // Check for sufficient energy (>= 0.8) and conditions to turn ON
+    if (currentEnergyKw >= 0.8 && isOverrideOff && isRunSetOff) {
+        logInfo("Nilan Ventilation", "Nilan Ventilation turned ON by rule. Grid usage is approx {} kW.", currentEnergyKw)
+        // Use modern item methods for sending commands
+        Nilan_Control_RunSet.sendCommand(ON)    
+        Nilan_Control_VentSet.sendCommand(2)                 		 
+    }
+    // Check for insufficient energy (<= 0.5) and conditions to turn OFF
+    else if (currentEnergyKw <= 0.5 && isOverrideOff && isRunSetOn) {
+        // Use modern item methods for sending commands
+        Nilan_Control_RunSet.sendCommand(OFF)
+        logInfo("Nilan Ventilation", "Nilan Ventilation turned OFF by rule. Grid usage is approx {} kW.", currentEnergyKw)
+    }
+end

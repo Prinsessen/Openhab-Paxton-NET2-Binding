@@ -1,0 +1,61 @@
+// Optimized for Openhab 5 / Paxton Integration
+rule "Paxton Door"
+    when
+        Item Net2 received command
+    then
+        // Check if the received command is a number for the switch statement
+        if (receivedCommand instanceof Number) {
+            switch (receivedCommand as Number) {
+                case 1: {
+                    net2_Args.sendCommand("--did 7242929 --rid Relay1 --rea TimedOpen --ret 500 --fla 3")
+                }
+                case 2: {
+                    net2_Args.sendCommand("--did 6612642 --rid Relay1 --rea TimedOpen --ret 30000 --fla 3")
+                }
+                case 3: {
+                    net2_Args.sendCommand("--did 1265688 --rid Relay1 --rea TimedOpen --ret 30000 --fla 3")
+                }
+                case 4: {
+                    net2_Args.sendCommand("--did 6203980 --rid Relay1 --rea TimedOpen --ret 30000 --fla 3")
+                }
+                case 5: {
+                    net2_Args.sendCommand("--did 1265688 --rid Relay1 --rea TimedOpen --ret 30000 --fla 3")
+                }
+                case 6: {
+                    net2_Args.sendCommand("--did 6626578 --rid Relay1 --rea TimedOpen --ret 30000 --fla 3")
+                }
+            }
+
+            // These actions run after the switch block, regardless of the case matched
+            net2_Run.sendCommand(ON)
+            // It's often better to log the command being sent to net2_Run, as its state won't update instantly
+            logInfo("net2 run", "Sent ON command to net2_Run. Waiting for script to execute.")
+
+        } else {
+            logWarn("Paxton Door", "Received command was not a number. Cannot process switch case.")
+        }
+    end
+
+// Optimized for Openhab 5/ Paxton Integration
+ rule "process your results"
+    when
+        Item net2_Run changed from OFF to ON
+    then
+        // Check if net2_Out has a valid state before using it
+        if (net2_Out.state != NULL && net2_Out.state != UNDEF) {
+            
+            // Logging of raw command line result
+            logInfo("net2 exec", "Result: " + net2_Out.state)
+            
+            // Post the output string to the status item
+            Net2status.postUpdate(net2_Out.state.toString())
+            
+            // Post the OFF command to the Net2 item (assuming this resets the process)
+            // Note: Use sendCommand if it triggers another rule, use postUpdate otherwise
+            Net2.postUpdate(OFF) 
+            
+        } else {
+            // Log a warning if the output was empty
+            logWarn("net2 exec", "net2_Out state was NULL or UNDEF. Cannot process results.")
+        }
+end

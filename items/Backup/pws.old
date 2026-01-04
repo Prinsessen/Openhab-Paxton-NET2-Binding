@@ -1,0 +1,44 @@
+Number WeatherResponse "Response [%.1f ms]" {channel="ambientweather1400ip:weatherstation:Weather1:web_response"}
+Switch WeatherReboot "Reboot Station" {channel="ambientweather1400ip:weatherstation:Weather1:reboot"}
+
+Number WeatherWindSpeed "Wind Speed  [%.1f m/s]"  {http="<[wheatherstationCache:30000:REGEX(.*?windspeed.*?value=\"(.*?)\".*)]"}
+Number 	WindSpeedMax		"Wind Speed Max [%.1f m/s]"
+DateTime	dateWindSpeedMax	"Date Speed Max [%1$tA, %1$td.%1$tm.%1$tY - %1$tT] "			<calendar>	
+
+
+
+Number WeatherWindGust "Wind Gust [%.1f m/s]" {http="<[wheatherstationCache:30000:REGEX(.*?gustspeed.*?value=\"(.*?)\".*)]"}
+Number 	WindGustMax		"Wind Gust Max [%.1f m/s]"
+DateTime	dateWindGustMax	"Date Gust Max [%1$tA, %1$td.%1$tm.%1$tY - %1$tT] "			<calendar>	
+
+
+Number WeatherWindDir "Wind Direction [SCALE(wind.scale):%s]" {http="<[wheatherstationCache:30000:REGEX(.*?windir.*?value=\"(.*?)\".*)]"}
+Number WeatherWindDirDeg "Wind Direction [%s °]" {http="<[wheatherstationCache:30000:REGEX(.*?windir.*?value=\"(.*?)\".*)]"}
+Number RelPress "Relative Pressure [%.1f hPa]"  {http="<[wheatherstationCache:30000:REGEX(.*?RelPress.*?value=\"(.*?)\".*)]"}
+Number AbsPress "Absolute Pressure [%.1f hPa]"  {http="<[wheatherstationCache:30000:REGEX(.*?AbsPress.*?value=\"(.*?)\".*)]"}
+Number WeatherIndoorTemp "Indoor Temp  [%.1f °C]" (gTemperatures) {http="<[wheatherstationCache:30000:REGEX(.*?inTemp.*?value=\"(.*?)\".*)]"}
+Number WeatherOutdoorTemp "Outdoor Temp [%.1f °C]"  {http="<[wheatherstationCache:30000:REGEX(.*?outTemp.*?value=\"(.*?)\".*)]"}
+Number WeatherIndoorHumidity "Indoor Humidity [%.0f %%rH]" (gHumidity) {http="<[wheatherstationCache:30000:REGEX(.*?inHumi.*?value=\"(.*?)\".*)]"}
+Number WeatherOutdoorHumidity "Outdoor Humidity [%.0f %%rH]" (gHumidity) {http="<[wheatherstationCache:30000:REGEX(.*?outHumi.*?value=\"(.*?)\".*)]"}
+Number WeatherSolarRad "Solar Radiation [%.1f W/m²]" {http="<[wheatherstationCache:30000:REGEX(.*?solarrad.*?value=\"(.*?)\".*)]"}
+Number WeatherUV "UV [%.1f W/m²µm]" {http="<[wheatherstationCache:30000:REGEX(.*?uv.*?value=\"(.*?)\".*)]"}
+Number WeatherUVIndex "UV Index [%.0f]" {http="<[wheatherstationCache:30000:REGEX(.*?uvi.*?value=\"(.*?)\".*)]"}
+Number WeatherRainHourly "Rain Hourly  [%.1f mm]" {http="<[wheatherstationCache:30000:REGEX(.*?rainofhourly.*?value=\"(.*?)\".*)]"}
+Number WeatherRainDaily "Rain Last 24 hours [%.1f mm]" {http="<[wheatherstationCache:120000:REGEX(.*?rainofdaily.*?value=\"(.*?)\".*)]"}
+Number WeatherRainWeekly "Rain this week [%.1f mm]" {http="<[wheatherstationCache:120000:REGEX(.*?rainofweekly.*?value=\"(.*?)\".*)]"}
+Number WeatherRainMonthly "Rain this month [%.1f mm]" {http="<[wheatherstationCache:120000:REGEX(.*?rainofmonthly.*?value=\"(.*?)\".*)]"}
+Number WeatherRainYearly "Rain this year [%.1f mm]" {http="<[wheatherstationCache:120000:REGEX(.*?rainofyearly.*?value=\"(.*?)\".*)]"}
+String WeatherTime "Time of last update [%s]" {http="<[wheatherstationCache:120000:REGEX(.*?CurrTime.*?value=\"(.*?)\".*)]"}
+String WeatherBatteryIn "Battery In Status [%s]" {http="<[wheatherstationCache:120000:REGEX(.*?inBattSta.*?value=\"(.*?)\".*)]"}
+String WeatherBatteryOut "Battery Out Status [%s]" {http="<[wheatherstationCache:120000:REGEX(.*?outBattSta1.*?value=\"(.*?)\".*)]"}
+
+
+
+
+
+
+
+
+
+
+						

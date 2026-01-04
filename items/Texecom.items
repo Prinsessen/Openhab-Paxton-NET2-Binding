@@ -1,0 +1,58 @@
+/* Alarm interface */
+
+String                      Tex_UDP_Receive                "Receive UDP String [%s]"                                     <settings>    (gSet)                           {channel="remoteopenhab:server:oh2:Tex_UDP_Receive"}
+String                      Tex_UDP_Send                   "Send UDP String"                                             <settings>    (gSet)                           {channel="remoteopenhab:server:oh2:Tex_UDP_Send"}
+
+
+
+//String Tex_UDP_Receive "Receive UDP String [%s]" <settings> (gSet) { udp="<[10.0.0.30:*:'REGEX((.*))']" }
+//String Tex_UDP_Send "Send UDP String" <settings>  (gSet) { udp=">[10.0.0.30:9999:'REGEX((.*))']" }	
+
+/* Generic alarm items */
+Number                      Tex_Alarm_Status               "Alarm status [MAP(tex_alarmstatus.map):%s]"                  <alarm>       (gAlarm, gAlarmlogging)
+Number                      Tex_Alarm_Partition            "Alarm Partition [%s]"                                        <alarm>       (gAlarm)
+String                      Tex_Alarm_Textline1            "Alarm Display line 1 [%s]"                                 <text>          (gAlarm)
+String                      Tex_Alarm_Textline2            "Alarm Display line 2 [%s]"                                 <text>          (gAlarm)
+Number                      Tex_Alarm_User                 "User [MAP(tex_alarmusers.map):%s]"                           <man_3>       (gAlarm, gAlarmlogging)
+Number                      Tex_Alarm_ArmDisarmUser        "User [MAP(tex_alarmusers.map):%s]"                           <man_3>       (gAlarm, gAlarmlogging)
+DateTime                    Tex_Alarm_Status_Update        "Time alarm status changed [%1$td.%1$tm.%1$tY %1$tT]"         <time>        (gAlarm, gAlarmlogging)
+
+/* Various switches */
+
+Switch                      Tex_Get_LSTATUS                "Get the information on the LCD display"                      <settings>    (gAlarm)
+	
+/* Zone Status */
+
+Number                      Tex_Zone_Z002                  "Z0021 - Værksted [MAP(tex_contacts.map):%s]"                 <alarm>       (gAlarmcontact, gAllcontacts)
+Number                      Tex_Zone_Z003                  "Z0031 - Grovlager V. Toilet [MAP(tex_contacts.map):%s]"      <alarm>       (gAlarmcontact, gAllcontacts)
+Number                      Tex_Zone_Z004                  "Z0041 - Kontor [MAP(tex_contacts.map):%s]"                   <alarm>       (gAlarmcontact, gAllcontacts)
+Number                      Tex_Zone_Z005                  "Z0051 - Grovlager V. Filebænk [MAP(tex_contacts.map):%s]"    <alarm>       (gAlarmcontact, gAllcontacts)
+Number                      Tex_Zone_Z006                  "Z0061 - Finlager [MAP(tex_contacts.map):%s]"                 <alarm>       (gAlarmcontact, gAllcontacts)
+Group:Switch:OR(ON, OFF)    Allcontacts                    "Contacts are open [%d] "                                     <alarm>       (All)
+Switch                      Tex_Zone_Z002_mir              "Z0021 - Dummy"                                               <alarm>       (Allcontacts)
+Switch                      Tex_Zone_Z003_mir              "Z0031 - Dummy"                                               <alarm>       (Allcontacts)
+Switch                      Tex_Zone_Z004_mir              "Z0041 - Dummy"                                               <alarm>       (Allcontacts)
+Switch                      Tex_Zone_Z005_mir              "Z0051 - Dummy"                                               <alarm>       (Allcontacts)
+Switch                      Tex_Zone_Z006_mir              "Z0061 - Dummy"                                               <alarm>       (Allcontacts)
+
+/* History of last contact-changes */
+
+String                      Tex_History_00                 "0"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_01                 "1"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_02                 "2"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_03                 "3"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_04                 "4"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_05                 "5"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_06                 "6"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_07                 "7"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_08                 "8"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_09                 "9"                                                           <text>        (gAlarm, gAlarmHist)
+String                      Tex_History_10                 "10"                                                          <text>        (gAlarm, gAlarmHist)
+
+/* Alarm keypad */
+
+Switch                      Tex_QuickArm                   "Quick arming"                                                <lock>        (gAlarm)
+String                      Tex_Alarm_Keypad               "Alarm keyboard"                                              <alarm>       (gAlarm)
+Number                      Tex_Alarm_Keypad_counter       "Alarm keypad counter [%s]"                                   <text>        (gAlarm)
+Switch                      Tex_QuickArm_visibility        "Quick arm visible"                                           <lock>        (gAlarm)
+Switch                      Tex_Alarm_Keypad_visibility    "Alarm keyboard visible"                                      <lock>        (gAlarm)

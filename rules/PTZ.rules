@@ -1,0 +1,46 @@
+// Optimized for OpenHAB 5
+
+rule "PTZ Preset"
+when
+    Item PTZ received command
+then
+    // Use 'as Number' directly in the switch statement for modern OH5 DSL
+    switch (receivedCommand as Number) {
+        case 1: {
+            val String url = "http://10.0.11.101/ISAPI/PTZCtrl/channels/1/presets/1/goto"
+            // Use String.format for cleaner command structure
+            val String userPass = String.format("%s:%s", "admin", "Jekboapj110")
+            
+            // Execute the command using the modern Exec action arguments format
+            executeCommandLine("curl", "-X", "PUT", "--digest", "--user", userPass, url)
+            logInfo("PTZ Rule", "Sent command for Preset 1: " + url)
+        }
+        case 2: {
+            val String url = "http://10.0.11.101/ISAPI/PTZCtrl/channels/1/presets/2/goto"
+            val String userPass = String.format("%s:%s", "admin", "Jekboapj110")
+            executeCommandLine("curl", "-X", "PUT", "--digest", "--user", userPass, url)
+            logInfo("PTZ Rule", "Sent command for Preset 2: " + url)
+        }
+        case 3: {
+            val String url = "http://10.0.11.101/ISAPI/PTZCtrl/channels/1/presets/3/goto"
+            val String userPass = String.format("%s:%s", "admin", "Jekboapj110")
+            executeCommandLine("curl", "-X", "PUT", "--digest", "--user", userPass, url)
+            logInfo("PTZ Rule", "Sent command for Preset 3: " + url)
+        }
+        case 4: {
+            val String url = "http://10.0.11.101/ISAPI/PTZCtrl/channels/1/presets/4/goto"
+            val String userPass = String.format("%s:%s", "admin", "Jekboapj110")
+            executeCommandLine("curl", "-X", "PUT", "--digest", "--user", userPass, url)
+            logInfo("PTZ Rule", "Sent command for Preset 4: " + url)
+        }
+        case 5: {
+            val String url = "http://10.0.11.101/ISAPI/PTZCtrl/channels/1/presets/5/goto"
+            val String userPass = String.format("%s:%s", "admin", "Jekboapj110")
+            executeCommandLine("curl", "-X", "PUT", "--digest", "--user", userPass, url)
+            logInfo("PTZ Rule", "Sent command for Preset 5: " + url)
+        }
+        default: {
+            logWarn("PTZ Rule", "Received command was not a valid number (1-5): " + receivedCommand)
+        }
+    }
+end

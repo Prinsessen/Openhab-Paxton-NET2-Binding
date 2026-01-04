@@ -1,0 +1,19 @@
+Group  Indian_Seat_Thermostat "Indian Seat"			 { ga="Thermostat" [ modes="off=OFF:WINDOW_OPEN,heat=COMFORT:BOOST,eco=ECO,on=ON,auto", thermostatTemperatureRange="20,85", useFahrenheit=false ] }
+String Indian_Seat_Mode     "Indian Seat Mode"			 (Indian_Seat_Thermostat) { ga="thermostatMode" }
+Group  Indian_Ambient_Thermostat "Indian Ambient"		 { ga="Thermostat"  }
+
+Number SeatTemperature	"Seat Temperature [%.1f °C]"	  	        <temperature> (Indian_Seat_Thermostat)      {ga="thermostatTemperatureAmbient",  channel="mqtt:topic:broker:SeatHeat:Temperature" } 
+Number AmbientTemp	"Ambient Temperature [%.1f °C]" 		<temperature> (Indian_Ambient_Thermostat)   {ga="thermostatTemperatureAmbient",  channel="mqtt:topic:broker:SeatHeat:AmbientTemp" } 
+Number TempTargetSet	"Set Target Temp [%d °C]"  		        <temperature>  (Indian_Seat_Thermostat)     {ga="thermostatTemperatureSetpoint", channel="mqtt:topic:broker:SeatHeat:TempTargetSet" }
+Number TempPreset1	"Set Preset 1  [%d °C]"                 <temperature>		 {channel="mqtt:topic:broker:SeatHeat:TempPreset1" }
+Number TempPreset2	"Set Preset 2  [%d °C]"                 <temperature>		 {channel="mqtt:topic:broker:SeatHeat:TempPreset2" }
+Number TempPreset3	"Set Preset 3  [%d °C]"                 <temperature>		 {channel="mqtt:topic:broker:SeatHeat:TempPreset3" }
+Number TempPreset4	"Set Preset 4  [%d °C]"                 <temperature>		 {channel="mqtt:topic:broker:SeatHeat:TempPreset4" }
+String HeatStatus       "Heating Status"                	<energy>                 {channel="mqtt:topic:broker:SeatHeat:Status"}
+String Heatelement      "Heatelement Status"                	<energy>                 {channel="mqtt:topic:broker:SeatHeat:Heatelement"}
+
+String Bike_Status      "Bike Status [%s]"                     		 <settings>   	         {channel="mqtt:topic:broker:SeatHeat:BikeOffline"}
+Number:Dimensionless  	  WIFI_RSSI          "WiFI Signal [%d %%]"     	 <settings>   		 {channel="mqtt:topic:broker:SeatHeat:RSSI"}
+String bike_mac_wifi    	"Bike MAC Adress [%s]"                   <settings>   	         {channel="mqtt:topic:broker:SeatHeat:bike_mac_wifi"}
+String bike_connected_ssid      "Bike SSID [%s]"                     	 <settings>   	         {channel="mqtt:topic:broker:SeatHeat:bike_connected_ssid"}
+String bike_ip_address     	"Bike IP Adress [%s]"                    <settings>   	         {channel="mqtt:topic:broker:SeatHeat:bike_ip_address"}

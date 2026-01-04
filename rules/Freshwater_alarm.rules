@@ -1,0 +1,33 @@
+
+// Optimized For OpenHAB 5.0 and later
+
+rule "Raise freshwater Alarm Switch"
+    when
+        Item Fresh_Water_Day changed
+        or
+        Time cron "0 */10 * * * ?" // every 10 minutes
+    then
+        // Cast the item state to a Number for a safe comparison
+        if ((Fresh_Water_Day.state as Number) >= 500) {
+            // Use idiomatic method call for postUpdate
+            Fresh_Water_Day_Alarm.postUpdate(ON)
+        }
+    end
+
+rule "Raise freshwater Alarm Email/SMS"
+    when
+        Item Fresh_Water_Day_Alarm changed from OFF to ON
+    then
+        logInfo("Freshwater Alert", "Abnormal water usage")
+        
+        // Use method call style for getActions (ensuring the mail binding is configured)
+        val mailActions = getActions("mail", "mail:smtp:samplesmtp")
+        
+        // Send mail to multiple recipients
+        val success = mailActions.sendMail("Nanna@agesen.dk, 20960210@sms.uni-tel.dk", "Freshwater Alert", "Abnormal water usage.")
+        
+        logInfo("Freshwater Alert", "Mail actions success status: " + success)
+        
+        // Reset the alarm item after sending the notification
+        Fresh_Water_Day_Alarm.postUpdate(OFF)
+    end

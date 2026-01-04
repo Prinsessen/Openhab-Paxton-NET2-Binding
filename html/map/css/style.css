@@ -1,0 +1,31 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    overflow: hidden;
+}
+
+main {
+    height: 100%
+}
+
+.map {
+    height: calc(100% - 10px);;
+    text-align: center;
+    border-style: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.errorMessage {
+    background-color: lightgray;
+    color: red;
+    border: solid;
+    border-radius: 20px;
+    border-color: black;
+    padding: 20px;
+    margin: 20px;
+    display: inline-block;
+}

@@ -1,0 +1,21 @@
+rule "Synchronize Modbus Input to Hue Light Brightness - Triggers on Update or Command"
+when
+    // This is the critical change: listen for ANY change in state from the binding
+   Item Light_GF_VP_HUE_Bulb received update 
+   or Item Light_GF_VP_HUE_Bulb received command
+then
+    // Log the event to confirm the rule fired
+    logInfo("DimmerSync", "RULE TRIGGERED by an update or command.")
+
+    // Ensure the item has a value before we try to use it
+    if (Light_GF_VP_HUE_Bulb.state === NULL || Light_GF_VP_HUE_Bulb.state === UNDEF) {
+        logInfo("DimmerSync", "Modbus item state is invalid, cannot sync.")
+        return
+    }
+    
+    // Get the current actual state value (e.g. 50)
+    val Number currentValue = Light_GF_VP_HUE_Bulb.state as Number
+
+    // Send that number as a command to the Hue light
+    Light17_Dimmer.sendCommand(currentValue)
+end

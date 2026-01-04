@@ -1,0 +1,131 @@
+Bridge modbus:tcp:kamstrup [ host="10.0.5.102", port=502, id=38 ] {
+
+
+// Kamstrup Multical 603 Float32 Registers
+
+	Bridge poller multical603 [ start=0, length=82, refresh=5000, type="holding" ] {
+	    
+	    	
+		Thing data Flow_1	 		[ readStart="0", readValueType="float32" ]
+
+		Thing data Flow_2       		[ readStart="2", readValueType="float32" ]
+
+		Thing data Actual_power 		[ readStart="4", readValueType="float32" ]
+
+		Thing data Temp_1_Inlet     	        [ readStart="6", readValueType="float32" ]
+		
+		Thing data Temp_2_Outlet    		[ readStart="8", readValueType="float32" ]
+
+		Thing data Temp_3 			[ readStart="10", readValueType="float32" ]
+
+		Thing data Temp_4	 		[ readStart="12", readValueType="float32" ]
+
+		Thing data Differential_temp 		[ readStart="14", readValueType="float32" ]
+
+		Thing data Pressure_1	 		[ readStart="16", readValueType="float32" ]
+
+		Thing data Pressure_2        	        [ readStart="18", readValueType="float32" ]
+
+		Thing data Heat_energy_E1		[ readStart="20", readValueType="float32" ]
+
+		Thing data E2		 		[ readStart="22", readValueType="float32" ]
+
+		Thing data Cooling_energy_E3 		[ readStart="24", readValueType="float32" ]
+
+		Thing data E4_Serial_Number 		[ readStart="26", readValueType="float32" ]
+
+		Thing data E5_Hour_counter 		[ readStart="28", readValueType="float32" ]
+
+		Thing data E6		 		[ readStart="30", readValueType="float32" ]
+
+		Thing data E7		 		[ readStart="32", readValueType="float32" ]
+
+		Thing data Energy_E8 			[ readStart="34", readValueType="float32" ]
+
+		Thing data Energy_E9			[ readStart="36", readValueType="float32" ]
+
+		Thing data E10		 		[ readStart="38", readValueType="float32" ]
+
+		Thing data E11		 		[ readStart="40", readValueType="float32" ]
+
+		Thing data Tariff_2			[ readStart="42", readValueType="float32" ]
+
+		Thing data Tariff_3			[ readStart="44", readValueType="float32" ]
+
+		Thing data TA4		 		[ readStart="46", readValueType="float32" ]
+
+		Thing data Heat_A1			[ readStart="48", readValueType="float32" ]
+
+		Thing data Heat_A2			[ readStart="50", readValueType="float32" ]
+
+		Thing data Volume_V1			[ readStart="52", readValueType="float32" ]
+
+		Thing data Volume_V2			[ readStart="54", readValueType="float32" ]
+
+		Thing data Pulse_input_A		[ readStart="56", readValueType="float32" ]
+
+		Thing data Pulse_input_B		[ readStart="58", readValueType="float32" ]
+
+		Thing data Pulse_input_A2		[ readStart="60", readValueType="float32" ]
+
+		Thing data Pulse_input_B2		[ readStart="62", readValueType="float32" ]
+
+		Thing data Coefficient			[ readStart="64", readValueType="float32" ]
+
+		Thing data T5_Limit			[ readStart="66", readValueType="float32" ]
+
+		Thing data VB_Power			[ readStart="68", readValueType="float32" ]
+
+		Thing data QP_Avg_Time			[ readStart="70", readValueType="float32" ]
+		
+		Thing data Tariff_Limit_2		[ readStart="72", readValueType="float32" ]
+
+		Thing data Tariff_Limit_3		[ readStart="74", readValueType="float32" ]
+
+		Thing data Tariff_Limit_4		[ readStart="76", readValueType="float32" ]
+
+		Thing data Mass_1		 	[ readStart="78", readValueType="float32" ]
+
+		Thing data Mass_2		 	[ readStart="80", readValueType="float32" ]
+			
+	    	 }
+// Kamstrup Multical 603 Uint32 Registers
+
+	Bridge poller multical603_Uint32 [ start=123, length=32, refresh=5000, type="holding" ] {
+	    
+	    	
+		Thing data Info_Code	 		[ readStart="123", readValueType="uint32" ]
+
+		Thing data HourCounter	 		[ readStart="125", readValueType="uint32" ]
+
+		Thing data ErrorHourCounter	 	[ readStart="127", readValueType="uint32" ]
+
+		Thing data Date	 			[ readStart="129", readValueType="uint32" ]
+
+		Thing data Clock	 		[ readStart="131", readValueType="uint32" ]
+
+		Thing data Config_No1	 		[ readStart="133", readValueType="uint32" ]
+
+		Thing data Config_No2	 		[ readStart="135", readValueType="uint32" ]
+
+		Thing data Config_No3	 		[ readStart="137", readValueType="uint32" ]
+
+		Thing data Config_No4	 		[ readStart="139", readValueType="uint32" ]
+
+		Thing data Meter_No_high	 	[ readStart="141", readValueType="uint32" ]
+
+		Thing data Meter_Number_low	 	[ readStart="143", readValueType="uint32" ]
+
+		Thing data Serial_Number	 	[ readStart="145", readValueType="uint32" ]
+
+		Thing data Meter_Type	 		[ readStart="147", readValueType="uint32" ]
+
+		Thing data Meter_Main_Sub_Type	 	[ readStart="149", readValueType="uint32" ]
+
+		Thing data Software_number	 	[ readStart="151", readValueType="uint32" ]
+
+
+	}
+ }
+
+

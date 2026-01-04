@@ -1,0 +1,260 @@
+// *******************************************************************
+// NILAN ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "Nilan Error Dummy"
+when
+    Item Nilan_error changed
+then
+	// Use idiomatic method call for postUpdate
+	Nilan_error_Dummy.postUpdate(ON)
+	// Log the actual state of the item using .state
+	logInfo ("Device Error", "Nilan Dummy " + Nilan_error.state)
+end
+
+rule "Nilan Error - Send Mail Notification"
+when
+    Item Nilan_error_Dummy changed to ON
+then
+	logInfo("Device","Nilan Gateway Error")
+
+    // Use method call style for getActions (ensuring the mail binding is configured)
+    val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+    val success1 = mailActions.sendMail("Nanna@agesen.dk", "Nilan Gateway Error", "Nilan Offline, reboot gateway at 10.0.5.101" )
+	logInfo("Device Error - Nilan Gateway Error", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Nilan Gateway Error", "Nilan Offline, reboot gateway at 10.0.5.101" )
+	logInfo("Device Error - Nilan Gateway Error", "Mailactions says - " + success2)
+end
+
+// *******************************************************************
+// SMARTHOUSE ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "Smarthouse Error Dummy"
+when
+    Item Smarthouse_error changed
+then
+	// Use idiomatic method call for postUpdate
+	Smarthouse_error_Dummy.postUpdate(ON)
+	// Log the item's state using .state
+	logInfo ("Device Error", "Smarthouse Dummy " + Smarthouse_error.state)
+end
+
+rule "Smarthouse Error - Send Mail Notification"
+when
+    Item Smarthouse_error_Dummy changed to ON
+then
+	// Log the item's state using .state
+	logInfo ("Device Error", "Smarthouse " + Smarthouse_error_Dummy.state)
+    
+    // Get mail actions using method call style
+    val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+    val success1 = mailActions.sendMail("Nanna@agesen.dk", "SMARTHOUSE ERROR", "Smarthouse Offline, reboot gateway at 192.168.100.86" )
+	logInfo("Device Error - SMARTHOUSE ERROR", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE ERROR", "Smarthouse Offline, reboot gateway at 192.168.100.86" )
+	logInfo("Device Error - SMARTHOUSE ERROR", "Mailactions says - " + success2)
+end
+
+// *******************************************************************
+// SMA INVERTER ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "SMA Inverter Error Dummy"
+when
+    Item SMA_error changed
+then
+    // Use idiomatic method call for postUpdate
+    SMA_error_Dummy.postUpdate(ON)
+    // Log the item's state using .state
+	logInfo ("Device Error", "SMA Dummy " + SMA_error.state)
+end
+
+rule "SMA Inverter Error - Send Mail Notification"
+when
+    Item SMA_error_Dummy changed to ON
+then
+    logInfo("Device Error","SMA Inverter Error")
+    
+    // Get mail actions using method call style
+    val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+    val success1 = mailActions.sendMail("Nanna@agesen.dk", "SMA INVERTER ERROR", "SMA Inverter Offline, reboot gateway at 192.168.100.141" )
+	logInfo("Device Error - SMA INVERTER ERROR", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMA INVERTER ERROR", "SMA Inverter Offline, reboot gateway at 192.168.100.141" )
+	logInfo("Device Error - SMA INVERTER ERROR", "Mailactions says - " + success2)
+end
+
+// *******************************************************************
+// METZ OUTPUT MODULE ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "METZ Output Error Dummy"
+when
+    Item Metz_error changed
+then
+	// Use idiomatic method call for postUpdate
+	Metz_error_Dummy.postUpdate(ON)
+	// Log the item's state using .state
+	logInfo ("Device Error", "Metz Dummy " + Metz_error.state)
+end
+
+
+rule "METZ Output Error - Send Mail Notification"
+when
+    Item Metz_error_Dummy changed to ON
+then
+	// Use idiomatic method calls
+	//NSPanel_Metz_error_Dummy.postUpdate(ON)
+    // Log the item's state using .state
+    logInfo("Device Error", "METZ Output Error " + Metz_error_Dummy.state)
+
+    // Get mail actions using method call style
+	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+ 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "METZ OUTPUT ERROR", "METZ Output Offline, reboot gateway at 10.0.5.100" )
+	logInfo("Device Error - METZ OUTPUT ERROR", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "METZ OUTPUT ERROR", "METZ Output Offline, reboot gateway at 10.0.5.100" )
+	logInfo("Device Error - METZ OUTPUT ERROR", "Mailactions says - " + success2)
+end
+
+// *******************************************************************
+// Carbondioxide ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "Carbondioxide Sensor Dummy Error"
+when
+    Item carbondioxide_error changed
+then
+	// Use idiomatic method call for postUpdate
+	carbondioxide_error_Dummy.postUpdate(ON)
+	// Log the item's state using .state
+	logInfo ("Device Error", "carbondioxide error Dummy " + carbondioxide_error.state)
+end
+
+rule "Carbondioxide Sensor Error - Send Mail Notification"
+when
+    Item carbondioxide_error_Dummy changed to ON
+then
+    logInfo("Device Error","Carbondioxide Sensor Error")
+    
+    // Get mail actions using method call style
+	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+ 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "CARBONDIOXIDE SENSOR ERROR", "Carbondioxide Sensor Offline, reboot gateway at 10.0.5.100" )
+	logInfo("Device Error - CARBONDIOXIDE SENSOR ERROR", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "CARBONDIOXIDE SENSOR ERROR", "Carbondioxide Sensor Offline, reboot gateway at 10.0.5.100" )
+	logInfo("Device Error - CARBONDIOXIDE SENSOR ERROR", "Mailactions says - " + success2)
+end
+
+// *******************************************************************
+// KAMPSTRUP MULTICAL 603 ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "Multical 603 Dummy Error"
+when
+    Item kampstrup_error changed
+then
+	// Use idiomatic method call for postUpdate
+	kampstrup_error_Dummy.postUpdate(ON)
+	// Log the item's state using .state
+	logInfo ("Device Error", "Kampstrup error Dummy " + kampstrup_error.state)
+end
+
+rule "Multical 603  Error - Send Mail Notification"
+when
+     Item kampstrup_error_Dummy changed to ON
+then
+    logInfo("Device Error","Multical 603 Error")
+    
+    // Get mail actions using method call style
+	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+ 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "MULTICAL 603 ERROR", "Multical 603 Offline, reboot gateway at 10.0.5.102" )
+	logInfo("Device Error - MULTICAL 603 ERROR", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MULTICAL 603 ERROR", "Multical 603 Offline, reboot gateway at 10.0.5.102" )
+	logInfo("Device Error - MULTICAL 603 ERROR", "Mailactions says - " + success2)
+end
+
+// *******************************************************************
+// SMARTHOUSE TERNDRUPVEJ ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "Smarthouse Terndrupvej Dummy Error"
+when
+    Item Smarthouse_error_Terndrupvej changed
+then
+	// Use idiomatic method call for postUpdate
+	Smarthouse_error_Terndrupvej_Dummy.postUpdate(ON)
+	// Log the item's state using .state
+	logInfo ("Device Error", "Smarthouse_error_Terndrupvej Dummy " + Smarthouse_error_Terndrupvej.state)
+end
+
+rule "Smarthouse Terndrupvej  Error - Send Mail Notification"
+when
+    Item Smarthouse_error_Terndrupvej_Dummy changed to ON
+then
+    logInfo("Device Error","Smarthouse Terndrupvej Error")
+    
+    // Get mail actions using method call style
+	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+ 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "SMARTHOUSE TERNDRUPVEJ ERROR", "Smarthouse Terndrupvej Offline, reboot gateway at 10.0.1.17" )
+	logInfo("Device Error - SMARTHOUSE TERNDRUPVEJ ERROR", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE TERNDRUPVEJ ERROR", "Smarthouse Terndrupvej Offline, reboot gateway at 10.0.1.17" )
+	logInfo("Device Error - SMARTHOUSE TERNDRUPVEJ ERROR", "Mailactions says - " + success2)
+end
+
+// *******************************************************************
+// MITSUBISHI LIVINGROOM ERROR NOTIFICATION RULE
+// *******************************************************************
+// Optimized for Openhab 5.0
+
+rule "Mitsubishi Livingroom Dummy Error"
+when
+    Item Mitsubishi_living_error changed
+then
+	// Use idiomatic method call for postUpdate
+	Mitsubishi_living_Dummy.postUpdate(ON)
+	// Log the item's state using .state
+	logInfo ("Device Error", "Mitsubishi Livingroom Dummy " + Mitsubishi_living_error.state)
+end
+
+rule "Mitsubishi Livingroom Error - Send Mail Notification"
+when
+    Item Mitsubishi_living_Dummy changed to ON
+then
+    logInfo("Device Error","Mitsubishi Livingroom Error")
+    
+    // Get mail actions using method call style
+	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
+ 	
+    // Use unique variable names for success results to prevent naming conflicts
+ 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "MITSUBISHI LIVINGROOM OFFLINE", "Mitsubishi Livingroom Offline, reboot gateway at 192.168.100.45" )
+	logInfo("Device Error - Mitsubishi Livingroom Error", "Mailactions says - " + success1)
+    
+    val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MITSUBISHI LIVINGROOM OFFLINE", "Mitsubishi Livingroom Offline, reboot gateway at 192.168.100.45" )
+    logInfo("Device Error - Mitsubishi Livingroom Error", "Mailactions says - " + success2)
+end

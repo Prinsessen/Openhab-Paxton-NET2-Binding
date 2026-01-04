@@ -1,0 +1,35 @@
+Bridge hue:bridge:1 "Philips Hue Bridge v1" [ 
+    ipAddress="10.0.5.49", 
+    userName="NBpcKWPJMRbfgQxj2VOaPcJhJqtbG2Nb1q9n0LJE" 
+] {
+    // Define individual things inside the bridge using their Thing Type ID and a custom Thing ID
+    // Syntax: <ThingTypeID> <ThingID> [config parameters]
+
+    // 0210/0220 are Extended Color Lights/Color Temperature Lights
+    0210 bulb1 [ lightId="1" ]
+    0210 bulb2 [ lightId="2" ]
+    0210 bulb3 [ lightId="3" ]
+    0210 bulb4 [ lightId="4" ]
+    0210 bulb5 [ lightId="5" ]
+    0210 bulb6 [ lightId="6" ]
+    0220 bulb7 [ lightId="7" ]
+    0220 bulb8 [ lightId="8" ]
+    0220 bulb9 [ lightId="9" ]
+    0210 bulb10 [ lightId="10" ]
+    0210 bulb11 [ lightId="11" ]
+    0210 bulb12 [ lightId="12" ]
+    0210 bulb13 [ lightId="13" ]
+    0220 bulb17 [ lightId="17" ]
+    0820 switch1 [ sensorId="14" ]
+    0820 switch2 [ sensorId="16" ]
+}
+
+// Define a Hue Group/Room thing separately, linking to the bridge UID
+Thing hue:group:1:1 "All Lights Group" (hue:bridge:1) [groupId="1"]
+Thing hue:group:1:2 "TV Stue"(hue:bridge:1) [groupId="2"]
+Thing hue:group:1:3 "Living Room" (hue:bridge:1) [groupId="3"]
+Thing hue:group:1:4 "Bedroom"(hue:bridge:1) [groupId="4"]
+Thing hue:group:1:5 "Kitchen" (hue:bridge:1) [groupId="5"]
+Thing hue:group:1:81 "Living Room Group" (hue:bridge:1) [groupId="81"]
+Thing hue:group:1:82 "Office Group" (hue:bridge:1) [groupId="82"]
+Thing hue:group:1:83 "Luceplan Group" (hue:bridge:1) [groupId="83"]

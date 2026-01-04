@@ -1,0 +1,12 @@
+Switch    HP_RunSet                        "Power"                                                                               {channel="mqtt:topic:broker:Living_HP:Power"}
+String    HP_Mode                          "Mode"                                                <settings>                      {channel="mqtt:topic:broker:Living_HP:Mode"}
+String    HP_Fan                           "Fan [%s]"                                            <fan>            (gHpSensor)    {channel="mqtt:topic:broker:Living_HP:Fan"}
+String    HP_Vane                          "Vane [%s]"                                           <flow>           (gHpSensor)    {channel="mqtt:topic:broker:Living_HP:Vane"}
+Number    HP_Temp                          "Set Temp [%d °C]"                                    <temperature>    (gHpSensor)    {channel="mqtt:topic:broker:Living_HP:Temp"}
+String    HP_WideVane                      "WideVane [%s]"                                       <flow>           (gHpSensor)    {channel="mqtt:topic:broker:Living_HP:WideVane"}
+String    HP_Status                        "Operating [MAP(ACStatus.map):%s]"                    <wind>                          {channel="mqtt:topic:broker:Living_HP:Status"}
+Number    HP_RoomTemp                      "RoomTemp [%.1f °C]"                                  <temperature>                   {channel="mqtt:topic:broker:Living_HP:RoomTemp"}
+Number    RemoteTemp                       "RemoteTemp [%d °C]"                                  <temperature>                   {channel="mqtt:topic:broker:Living_HP:RemoteTemp"}
+String    RemoteTemp_Decimal               "RemoteTemp Dec [%d °C]"                              <temperature>
+Number    Mitsubishi_Server_Avrg_Energy    "Average waste energy (Start > - 0.8kW) [%.3f kW]"    <energy>
+Switch    Mitsubishi_Server_Override       "Override heatpump automation [%s]"

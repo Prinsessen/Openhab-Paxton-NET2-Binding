@@ -1,0 +1,46 @@
+// ***************************
+// Process Exit mode Timer Management
+// ***************************
+
+// Optimized for openHAB 5
+
+// Define a variable to hold the timer object (needs to be defined globally if using a .rules file)
+var org.openhab.core.model.script.ActionSystems.Timer exitmode_timer = null
+
+rule "Process Exit mode"
+when   
+    // Trigger when the alarm status changes
+    Item  Tex_Alarm_Status changed
+then
+    // Check the new state of the item
+    if (Tex_Alarm_Status.state.toString == "2") { // Check for status '2' (Exit Mode)
+	    	
+            // Create a timer to run in 95 seconds if still in exit mode
+	    	exitmode_timer = createTimer(now.plusSeconds(95)) [|
+                // This code runs AFTER the 95 seconds elapse
+
+                // Check if the alarm is STILL in exit mode (status 2) before forcing it to disarmed (0)
+                if (Tex_Alarm_Status.state.toString == "2") {
+				    events.postUpdate(Tex_Alarm_Status, "1") // Should this be 1 (armed) or 0 (disarmed)?
+                    // Use the modern DateTimeType creation syntax
+				    events.postUpdate(Tex_Alarm_Status_Update, org.openhab.core.library.types.DateTimeType.fromZonedDateTime(java.time.ZonedDateTime.now()))
+                    logInfo("TexecomTimer", "Exit mode finished. Forcing status to Armed (1).")
+                } else {
+                    logInfo("TexecomTimer", "Exit mode status changed before timer finished. Doing nothing.")
+                }
+                
+                // Clear the timer reference once complete
+                exitmode_timer = null
+    		]
+            logInfo("TexecomTimer", "Entered Exit Mode (Status 2). Started 95 second timer.")
+
+    	} else {
+            // If the status changed to something *other* than 2 (e.g., 0=Disarmed, 1=Armed), cancel the pending timer.
+    		if(exitmode_timer !== null) {
+                // Use the correct method call syntax (must include parenthesis)
+    			exitmode_timer.cancel() 
+                exitmode_timer = null // Clear the timer reference
+                logInfo("TexecomTimer", "Exit mode status changed (to {}). Timer cancelled.", Tex_Alarm_Status.state)
+    		}
+    	}	
+end

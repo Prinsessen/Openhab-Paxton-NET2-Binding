@@ -1,0 +1,29 @@
+// --- Regel 1: Selve CRON-triggeren (Hardkodet til 14:00) ---
+rule "Daglig planlagt rengøring klokken 14:00 via CRON"
+when
+    // Format: minut time dag_i_måneden måned dag_i_ugen
+    Time cron "0 00 14 * * ?" 
+then
+    // Tjekker om kontakten er slået til, før handlingen udføres
+    if (EnableDailyCron.state == ON) {
+        logInfo("vacuum_rule_cron", "CRON Udløst: Starter daglig rengøring kl. 14:00 præcist.")
+        actions.sendCommand("vacuum-start-sweep-mop")
+    } else {
+        logInfo("vacuum_rule_cron", "CRON Udløst, men reglen er deaktiveret af brugeren via switch.")
+    }
+end
+
+
+// --- Regel 2: Styrer aktivering/deaktivering af Regel 1 ---
+rule "Styr aktivering af daglig CRON-regel"
+when
+    Item EnableDailyCron changed // Udløses når du trykker på kontakten i sitemap'et
+then
+    if (EnableDailyCron.state == ON) {
+        CronTimeDisplay.postUpdate("14:00 Hver Dag (Aktiv)")
+        logInfo("vacuum_rule_control", "CRON-reglen er nu AKTIVERET.")
+    } else {
+        CronTimeDisplay.postUpdate("14:00 Hver Dag (Inaktiv)")
+        logInfo("vacuum_rule_control", "CRON-reglen er nu DEAKTIVERET.")
+    }
+end

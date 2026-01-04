@@ -1,0 +1,90 @@
+import java.time.ZonedDateTime // Required for modern time operations
+
+// Calculating average Energy for heatpump in the past 5 minutes (as specified in lambda)
+// Optimized for OpenHAB 5.0 and later
+
+rule "Average energy available for Mitsubishi living"
+when
+    Item EM24_Energy_Grid received update
+then
+    // Use ZonedDateTime for time calculation
+    val ZonedDateTime timeAgo = ZonedDateTime.now().minusMinutes(5)
+    // Use idiomatic postUpdate method and check for null return
+    val averageEnergy = EM24_Energy_Grid.averageSince(timeAgo)
+
+    if (averageEnergy !== null) {
+        Mitsubishi_Living_Avrg_Energy.postUpdate(averageEnergy)
+    } else {
+        logWarn("Mitsubishi Living", "Average energy calculation failed or returned null.")
+    }
+end
+
+
+rule "Start Mitsubishi living when enough energy and temperature exceed treshold"
+when
+    Item EM24_Energy_Grid received update 
+    or
+    Item Mitsubishi_Living_Avrg_Energy received update
+then
+    // Use 'as Number' for type casting and arithmetic
+    val avgEnergyNum = Mitsubishi_Living_Avrg_Energy.state as Number
+
+    // Check conditions using idiomatic syntax and proper type handling
+    if (avgEnergyNum * -1 >= 1.2 && Mitsubishi_Living_Override.state == OFF && (Mitsubishi_Drive_On_Off.state as Number) == 0) {
+        logInfo("Mitsubishi Living", "Mitsubishi Living turned ON by rule")
+        Mitsubishi_Drive_On_Off.sendCommand(1)                       
+    }
+    else if (avgEnergyNum * -1 <= 0.9 && Mitsubishi_Living_Override.state == OFF && (Mitsubishi_Drive_On_Off.state as Number) == 1) {
+        Mitsubishi_Drive_On_Off.sendCommand(0)
+        logInfo("Mitsubishi Living", "Mitsubishi Living turned OFF by rule")
+    }
+end
+
+
+// Deadband heat is always 2 degree higher than deadband cold
+
+rule "Deadband Cool sync"
+when
+    Item Mitsubishi_Deadband_Cooling_Setpoint changed
+then
+    // Use 'as Number' and idiomatic method calls
+    val heatingSetpointNum = Mitsubishi_Deadband_Heating_Setpoint.state as Number
+
+    if ((Mitsubishi_Deadband_Cooling_Setpoint.state as Number) <= (heatingSetpointNum + 1)) {
+        logInfo("Mitsubishi Living", "Sync Deadband - Correcting Deadband Heating")
+        Mitsubishi_Deadband_Heating_Setpoint.sendCommand(heatingSetpointNum - 2) 
+    }         
+end
+
+// Deadband Deadband cool is always 2 degree lower than deadband heat
+
+rule "Deadband Heat sync"
+when
+    Item Mitsubishi_Deadband_Heating_Setpoint changed
+then
+    // Use 'as Number' and idiomatic method calls
+    val coolingSetpointNum = Mitsubishi_Deadband_Cooling_Setpoint.state as Number
+
+    if ((Mitsubishi_Deadband_Heating_Setpoint.state as Number) >= (coolingSetpointNum - 1)) {
+        logInfo("Mitsubishi Living", "Sync Deadband - Correcting Deadband Cooling")
+        Mitsubishi_Deadband_Cooling_Setpoint.sendCommand(coolingSetpointNum + 2) 
+    }         
+end
+
+rule "Sets Heat/Cool according to Smarthouse Temperature display Al-room"
+when
+    Item EM24_Energy_Grid received update 
+then
+    // Use 'as Number' for state comparison
+    if ((Mode_Panasonic.state as Number) == 1  && Mitsubishi_Living_Override.state == OFF) {
+        Mitsubishi_Drive_Mode.sendCommand(1) 
+        Mitsubishi_Temperature_Setpoint.sendCommand(28)        
+    }
+    else if ((Mode_Panasonic.state as Number) == 2 && Mitsubishi_Living_Override.state == OFF) {
+        Mitsubishi_Drive_Mode.sendCommand(3) 
+        Mitsubishi_Temperature_Setpoint.sendCommand(18)
+    }
+    else if ((Mode_Panasonic.state as Number) == 0 && Mitsubishi_Living_Override.state == OFF) {
+        Mitsubishi_Drive_Mode.sendCommand(7) 
+    }           
+end

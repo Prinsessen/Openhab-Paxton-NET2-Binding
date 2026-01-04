@@ -1,0 +1,41 @@
+
+// *************************************************
+// Fingerprint Rule Print Last Fingerprint ID Used
+// Optimized for OpenHAB 5.0
+// *************************************************
+
+rule "Fingerprint ID"
+when
+    Item Reader_FingerprintID changed
+then
+    // Explicitly cast the state of Reader_FingerprintID to a Number for comparison
+    var Number fingerprintID = Reader_FingerprintID.state as Number
+
+    // Check the fingerprint ID and cast the state of Reader_Status to a String for comparison
+    if (fingerprintID != 0 && Reader_Status.state?.toString == "Fingerprint match found.") {
+        logInfo("Fingerprint", "FingerprintID detected: " + fingerprintID)
+        // Use the proper action call for postUpdate within a rule
+        FingerprintID_last.postUpdate(fingerprintID)
+    }
+end
+
+// *************************************************
+// Match Rule Nanna Agesen
+// Optimized for OpenHAB 5.0	
+// *************************************************
+
+rule "Fingerprint ID Nanna"
+when
+    Item Reader_FingerprintID received update
+then
+    // Cast states to their appropriate types before comparison
+    val Number fingerprintID = Reader_FingerprintID.state as Number
+    val String readerStatus = Reader_Status.state?.toString
+
+    if (fingerprintID == 16 && readerStatus?.toString == "Fingerprint match found.") {
+        logInfo("Fingerprint", "FingerprintID for Nanna matched. Arming system.")
+        
+        // Use the method call syntax for sendCommand
+        Alarm_System_Arm_Disarm.sendCommand(ON)
+    }
+end

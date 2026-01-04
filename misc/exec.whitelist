@@ -1,0 +1,2 @@
+python3 /etc/openhab/scripts/net2.py %2$s
+openhab-cli status

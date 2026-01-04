@@ -1,0 +1,65 @@
+Group       Energi_340                         "EM340 - Energimåler - Terndrupvej "                      <electricity>     (gEnergi)
+
+/* SmartLight Grovlager - Detail section */
+
+Number      Smartlight_Lux_Grovlager           "LUX Niveau  [%.1f Lux]"                                  <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Grovlager_Details:Light_Grovlager_Led_Lux:number"}
+Number      Smartlight_Grovlager_Timer         "Energi Timer [%.1f s]"                                   <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Grovlager_Details:Light_Grovlager_Led_Energy:number"}
+Number      Smartlight_Grovlager_Virtualoff    "Virtual Off [MAP(on_off.map):%s]"                        <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Grovlager_Details:Light_Grovlager_Led_Virtualoff:number"}
+Number      Smartlight_Grovlager_Dimmermode    "Mode [MAP(dimmermode.map):%s]"                           <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Grovlager_Details:Light_Grovlager_Led_Dimmermode:number"}
+Number      Smartlight_Grovlager_Presence      "Is Room Presence [MAP(presence.map):%s]"                 <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Grovlager_Details:Light_Grovlager_Led_Presence:number"}
+
+/* SmartLight Grovlager - Settings */
+
+Dimmer      Light_Grovlager                    "Light Grovlager[%d %%]"                                                                    {channel="modbus:data:endpointTerndrupvej:Light_Smartlight_Grovlager:Light_Grovlager:dimmer"}
+Number      Light_Grovlager_Constant           "Amature [%d Lux]"                                                                          {channel="modbus:data:endpointTerndrupvej:Light_Smartlight_Grovlager:Light_Grovlager_Constant:number"}
+
+/* SmartLight Finlager - Detail section */
+// Number Smartlight_Finlager     	      		"LUX Niveau  [%.1f Lux]"	<thermometer1>	      { channel="modbus:data:endpointTerndrupvej:Smartlight_Finlager_Details:Light_Finlager_Led_Lux:number" }
+
+Number      Smartlight_Finlager_Timer          "Energi Timer [%.1f s]"                                   <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Finlager_Details:Light_Finlager_Led_Energy:number"}
+Number      Smartlight_Finlager_Virtualoff     "Virtual Off [MAP(on_off.map):%s]"                        <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Finlager_Details:Light_Finlager_Led_Virtualoff:number"}
+Number      Smartlight_Finlager_Dimmermode     "Mode [MAP(dimmermode.map):%s]"                           <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Finlager_Details:Light_Finlager_Led_Dimmermode:number"}
+Number      Smartlight_Finlager_Presence       "Is Room Presence [MAP(presence.map):%s]"                 <thermometer1>                    {channel="modbus:data:endpointTerndrupvej:Smartlight_Finlager_Details:Light_Finlager_Led_Presence:number"}
+
+/* SmartLight Grovlager - Settings */
+
+Dimmer      Light_Finlager                     "Light Finlager [%d %%]"                                                                    {channel="modbus:data:endpointTerndrupvej:Light_Smartlight_Finlager:Light_Finlager:dimmer"}
+
+/* SmartLight Udvendig - Settings */
+
+Dimmer      Light_Udvendig                     "Light Outdoor Ceiling [%d %%]"                                                             {channel="modbus:data:endpointTerndrupvej:Light_Smartlight_Udvendig:Light_Udvendig:dimmer"}
+
+/* SmartLight Udvendig Tilbygning- Settings */
+
+Dimmer      Light_Udvendig_Extension           "Light Outdoor Extension [%d %%]"                                                           {channel="modbus:data:endpointTerndrupvej:Light_Smartlight_Udvendig_Extension:Light_Udvendig_Extension:dimmer"}
+Switch      Light_Office                       "Office "                                                 <light>                           {channel="modbus:data:endpointTerndrupvej:Light_Office:Light_Office:switch"}
+Switch      Light_Kitchen                      "Kitchen"                                                 <light>                           {channel="modbus:data:endpointTerndrupvej:Light_Kitchen:Light_Kitchen:switch"}
+Switch      Light_Bathroom                     "Bathroom"                                                <light>                           {channel="modbus:data:endpointTerndrupvej:Light_Bathroom:Light_Bathroom:switch"}
+Switch      Light_Ceiling                      "Ceiling"                                                 <light>                           {channel="modbus:data:endpointTerndrupvej:Light_Ceiling:Light_Ceiling:switch"}
+Switch      Light_Workshop                     "Workshop"                                                <light>                           {channel="modbus:data:endpointTerndrupvej:Light_Workshop:Light_Workshop:switch"}
+
+/* Energy */
+
+Number      EM300_Energi_340_AL1               "Strøm L1 [%.3f A]"                                       <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_AL1:number"}
+Number      EM300_Energi_340_AL2               "Strøm L2 [%.3f A]"                                       <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_AL2:number"}
+Number      EM300_Energi_340_AL3               "Strøm L3 [%.3f A]"                                       <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_AL3:number"}
+Number      EM300_Energi_340_kWh               "System kWh [%.2f kWh]"                                   <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kWh:number"}
+Number      EM300_Energi_340_kWh_L1            "System kWh L1 [%.1f kWh]"                                <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kWh1:number"}
+Number      EM300_Energi_340_kWh_L2            "System kWh L2 [%.1f kWh]"                                <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kWh2:number"}
+Number      EM300_Energi_340_kWh_L3            "System kWh L3 [%.1f kWh]"                                <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kWh3:number"}
+Number      EM300_Energi_340_kW                "System Effekt (P) [%.3f kW]"                             <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kW:number"}
+Number      EM300_Energi_340_kW1               "Effekt L1 (P) [%.3f kW]"                                 <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kW_L1:number"}
+Number      EM300_Energi_340_kW2               "Effekt L2 (P) [%.3f kW]"                                 <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kW_L2:number"}
+Number      EM300_Energi_340_kW3               "Effekt L3 (P) [%.3f kW]"                                 <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kW_L3:number"}
+Number      EM300_Energi_340_kVA               "System Effekt (S) [%.3f kVA]"                            <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kVA:number"}
+Number      EM300_Energi_340_kVA_L1            "Effekt L1 (S) [%.3f kVA]"                                <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kVA_L1:number"}
+Number      EM300_Energi_340_kVA_L2            "Effekt L2 (S) [%.3f kVA]"                                <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kVA_L2:number"}
+Number      EM300_Energi_340_kVA_L3            "Effekt L3 (S) [%.3f kVA]"                                <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_kVA_L3:number"}
+Number      EM300_Energi_340_HZ                "Frekvens [%.1f HZ]"                                      <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_HZ:number"}
+Number      EM300_Energi_340_V_L1_L2           "Spænding L1-L2 [%.1f V]"                                 <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L1_L2:number"}
+Number      EM300_Energi_340_V_L1_N            "Spænding L1-N [%.1f V]"                                  <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L1_N:number"}
+Number      EM300_Energi_340_V_L2_L3           "Spænding L2-L3 [%.1f V]"                                 <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L2_L3:number"}
+Number      EM300_Energi_340_V_L2_N            "Spænding L2-N [%.1f V]"                                  <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L2_N:number"}
+Number      EM300_Energi_340_V_L3_L1           "Spænding L3-L1 [%.1f V]"                                 <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L3_L1:number"}
+Number      EM300_Energi_340_V_L3_N            "Spænding L3-N [%.1f V]"                                  <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L3_N:number"}
+DateTime    Light_Office_Stamp                 "Light Office last [%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"    <iclock>

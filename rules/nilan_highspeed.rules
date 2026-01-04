@@ -1,0 +1,69 @@
+// Imports are largely implicit in OH5 Rules DSL.
+import java.time.ZonedDateTime
+// import java.time.format.DateTimeFormatter
+
+// Global variable to manage the timer instance safely
+var Timer timerNilan = null
+
+// Optimized for OpenHAB 5
+
+rule "Initialize Nilan switches on startup"
+when
+    System started
+then
+    // Use idiomatic method calls
+    Nilan_Forceret.sendCommand(OFF)
+    Nilan_Timer_Selector.postUpdate(30)
+    Activated_by_status.postUpdate("AS1")
+end
+
+
+rule "Turn Temporary High Speed on for selected time"
+when
+    // Trigger when the ventilation mode is manually set to level 4 (Boost)
+    Item Nilan_Control_VentSet changed from 2 to 4
+    or
+    Item Nilan_Control_VentSet changed from 3 to 4
+then
+    logInfo("Nilan_Control_VentSet", "changed to 4 (Boost)")
+
+    // Cancel existing timer if it's already running (e.g., if boost is re-triggered)
+    if (timerNilan !== null) {
+        timerNilan.cancel()
+        timerNilan = null
+    }
+
+    // Extract the selected time value safely using 'as Number'
+    var int int_Nilan_Selection = (Nilan_Timer_Selector.state as Number).intValue
+
+    // Update UI immediately (using idiomatic postUpdate)
+    Nilan_Timer_Remaining.postUpdate(int_Nilan_Selection)
+
+    if (int_Nilan_Selection >= 15) { // Check if a duration was actually selected
+        logInfo("Nilan_Timer_Selector", "Starting timer for " + int_Nilan_Selection + " minutes.")
+      
+        // Actions to happen at the start of the timer
+        Nilan_Forceret.sendCommand(ON)
+        // Use ZonedDateTime for time updates
+        Nilan_Timer_DateTime_Start.postUpdate(ZonedDateTime.now().toString)
+
+        // Define and start the timer
+        // The timer logic is simplified to use standard rescheduling
+        timerNilan = createTimer(now.plusMinutes(1)) [|
+            var remaining = (Nilan_Timer_Remaining.state as Number).intValue
+            
+            if (remaining > 1) {
+                // Decrement and reschedule
+                Nilan_Timer_Remaining.postUpdate(remaining - 1)
+                timerNilan.reschedule(now.plusMinutes(1))
+            } else {
+                // Timer reached zero: perform turn-off actions
+                logInfo("Nilan", "Boost timer reached zero, returning to normal operation.")
+                Nilan_Forceret.sendCommand(OFF)
+                Nilan_Timer_DateTime_Stop.postUpdate(ZonedDateTime.now().toString)
+                Nilan_Control_VentSet.sendCommand(2) // Return to normal level 2
+                timerNilan = null // Clear the global timer variable
+            }
+        ]
+    }
+end

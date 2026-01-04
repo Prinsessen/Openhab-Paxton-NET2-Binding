@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+
+TOKEN=$(curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' --data '{ 
+   "username": "System tekniker", 
+   "password": "remote110",  
+   "grant_type": "password", 
+   "client_id": "00aab996-6439-4f16-89b4-6c0cc851e8f3" 
+  } ' http://bullock:8080/api/v1/authorization/tokens | sed -E 's/\},\s*\{/\},\n\{/g' File | grep  ‘“access_token”’)
+
+
+
+
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/json' --header 'Authorization: bearer ${TOKEN}' --data '{"DoorId": 6612642}' 'http://bullock:8080/api/v1/commands/door/open'
+
+echo nice
+
+
+
+

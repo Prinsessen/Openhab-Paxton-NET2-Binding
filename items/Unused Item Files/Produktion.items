@@ -1,0 +1,31 @@
+// in der Produktion schon vorhandene items
+// (damit der Rest in Energiemanagement.items definiert und diese kopiert werden kann)
+Switch Spuelmaschine                              <washingmachine>  (Verbraucher)       { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Stue_VP:switch", autoupdate="false" }
+Switch Waschmaschine                              <washingmachine>  (Verbraucher)       { channel="modbus:data:endpointSmarthouse:Smarthouse_Light:Light_GF_Stue_VP:switch", autoupdate="false" }
+Number:Energy VerbrauchWaschmaschine    (Verbraeuche)    				// { channel= ... }
+Number:Energy VerbrauchSpuelmaschine    (Verbraeuche)    				// { channel= ... }
+Switch Neuinitialisierung
+String TelegramChatID1 "Telegram ChatID [%s]"                        (telegram)      { channel="telegram:telegramBot:Telegram_EMS:chatId" }
+Number:Length Wetter24h_Regenmenge "Regenmenge in 24 Std." <rain>   (Wetter)        { channel="openweathermap:weather-and-forecast:api:local:forecastHours24#rain" }
+
+Group PV "Photovoltaik"                               <solarplant>
+
+String Jahreszeit "Jahreszeit"                                                      { channel="astro:sun:home:season#name" }
+DateTime Sonnenaufgang "Sonnenaufgang [%1$tH:%1$tM]"     <sunrise>                  { channel="astro:sun:home:rise#start" }
+DateTime Sonnenuntergang "Sonnenuntergang [%1$tH:%1$tM]" <sunset>                   { channel="astro:sun:home:set#start" }
+Number:Temperature Aussentemperatur
+
+
+Number:Energy KapazitaetHaus                                                        // nutzbare Kapazität der Batterie in Wh
+Number:Power maxLadeleistungHaus                                                    // max. Ladeleistung der Batterie in W
+Number:Power LadeleistungHaus                                                       // Lade/Entladeleistung der Batterie in W
+Number SoCHaus                                                          (PV)        //   { channel="modbus:data:SH10RT-register-status1:PVthingBatteryLevel:number" }
+Number ZielSoCHaus                                                      (PV)
+Number PVEMSmodeSelection                                               (PV)        //    { channel="modbus:data:SH10RT-register-status3:PVthingEMSmodeSelection:number" }
+Number PVChargeDischargeCommand                                         (PV)        //    { channel="modbus:data:SH10RT-register-status3:SungrowChargeDischargeCommand:number" }
+Number PVChargeDischargePower                                           (PV)        //    { channel="modbus:data:SH10RT-register-status3:SungrowChargeDischargePower:number" }
+Number:Energy NachtvorratHaus                                                       // Mindest-Energiemenge die bei Sonnenuntergang in der Batterie vorhanden sein soll in kWh
+
+Number:Power Verbrauch "aktueller Verbrauch"                            <energy> (PV,Verbraeuche)  { channel="modbus:data:endpointSmarthouse:Energy_1:EM24_Energi_24_kW:number" }
+Number:Power PVErzeugungsLeistung "aktueller Ertrag gemittelt"          <energy> (PV,Test)  { channel="modbus:data:inverter:power_a:Active_Power:number" }
+

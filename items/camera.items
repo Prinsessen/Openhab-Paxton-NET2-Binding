@@ -1,0 +1,12 @@
+// Driveway
+Dimmer    DrivewayPan     "Pan [%d] left/right"    {channel="ipcamera:hikvision:Driveway:pan"}
+Dimmer    DrivewayTilt    "Tilt [%d] up/down"      {channel="ipcamera:hikvision:Driveway:tilt"}
+Dimmer    DrivewayZoom    "Zoom [%.1f] in/out"     {channel="ipcamera:hikvision:Driveway:zoom"}
+// Company
+Dimmer    CompanyPan      "Pan [%d] left/right"    {channel="ipcamera:hikvision:Company:pan"}
+Dimmer    CompanyTilt     "Tilt [%d] up/down"      {channel="ipcamera:hikvision:Company:tilt"}
+Dimmer    CompanyZoom     "Zoom [%.1f] in/out"     {channel="ipcamera:hikvision:Company:zoom"}
+// West
+Dimmer    WestPan         "Pan [%d] left/right"    {channel="ipcamera:hikvision:West:pan"}
+Dimmer    WestTilt        "Tilt [%d] up/down"      {channel="ipcamera:hikvision:West:tilt"}
+Dimmer    WestZoom        "Zoom [%.1f] in/out"     {channel="ipcamera:hikvision:West:zoom"}

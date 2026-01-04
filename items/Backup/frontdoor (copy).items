@@ -1,0 +1,6 @@
+// state of the execution, is running or finished
+
+Switch Frontdoor			      "Open Frontdoor"					  (gNilan)
+{channel="exec:command:frontdoor:run"}
+
+

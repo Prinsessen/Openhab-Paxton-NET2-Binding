@@ -1,0 +1,1 @@
+Switch    Innov                   "Innov"                            <pressure>        {channel="mqtt:topic:broker:shellyplusuni-cc7b5c867760:Innov"}

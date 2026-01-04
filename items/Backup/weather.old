@@ -1,0 +1,46 @@
+DateTime owmLastMeasurement "Timestamp of last measurement [%1$tY-%1$tm-%1$tdT%1$tH:%1$tM:%1$tS]" <time> { channel="openweathermap:weather:api:local:current#time-stamp" }
+String owmCurrentCondition "Current condition [%s]" <sun_clouds> { channel="openweathermap:weather:api:local:current#condition" }
+Number:Temperature owmCurrentTemperature "Current temperature [%.1f %unit%]" <temperature> { channel="openweathermap:weather:api:local:current#temperature" }
+Number:Temperature owmCurrentMinTemperature "Minimum temperature of today [%.1f %unit%]" <temperature> { channel="openweathermap:daily-openweathermap:weather:api:local:current#min-temperature" }
+Number:Temperature owmCurrentMaxTemperature "Maximum temperature of today [%.1f %unit%]" <temperature> { channel="openweathermap:daily-openweathermap:weather:api:local:current#max-temperature" }
+Number:Pressure owmCurrentPressure "Current barometric pressure [%.1f %unit%]" <pressure> { channel="openweathermap:weather:api:local:current#pressure" }
+Number:Dimensionless owmCurrentHumidity "Current atmospheric humidity [%d %unit%]" <humidity> { channel="openweathermap:weather:api:local:current#humidity" }
+Number:Speed owmCurrentWindSpeed "Current wind speed [%.1f km/h]" <wind> { channel="openweathermap:weather:api:local:current#wind-speed" }
+
+
+Number:Angle owmCurrentWindDirection "Current wind direction  [JS(windrose.js):%s]" <wind> 	{ channel="openweathermap:weather:api:local:current#wind-direction" }
+
+Number:Dimensionless owmCurrentCloudiness "Current cloudiness [%d %unit%]" <clouds> { channel="openweathermap:weather:api:local:current#cloudiness" }
+Number:Length owmCurrentRainVolume "Current rain volume [%.1f %unit%]" <rain> { channel="openweathermap:weather:api:local:current#rain" }
+Number:Length owmCurrentSnowVolume "Current snow volume [%.1f %unit%]" <snow> { channel="openweathermap:weather:api:local:current#snow" }
+
+
+
+DateTime owmForecastTodayTimestamp "Timestamp of forecast [%1$tY-%1$tm-%1$tdT%1$tH:%1$tM:%1$tS]" <time>		 { channel="openweathermap:daily-forecast:api:local:forecastToday#time-stamp" }
+String owmForecastTodayCondition "Condition for today [%s]" <sun_clouds> 					{ channel="openweathermap:daily-forecast:api:local:forecastToday#condition" }
+Number:Temperature owmForecastTodayMinTemperature "Minimum temperature for today [%.1f %unit%]" <temperature> { channel="openweathermap:daily-forecast:api:local:forecastToday#min-temperature" }
+Number:Temperature owmForecastTodayMaxTemperature "Maximum temperature for today [%.1f %unit%]" <temperature> { channel="openweathermap:daily-forecast:api:local:forecastToday#max-temperature" }
+Number:Pressure owmForecastTodayPressure "Barometric pressure for today [%.1f %unit%]" <pressure> 		{ channel="openweathermap:daily-forecast:api:local:forecastToday#pressure" }
+Number:Dimensionless owmForecastTodayHumidity "Atmospheric humidity for today [%d %unit%]" <humidity> 		{ channel="openweathermap:daily-forecast:api:local:forecastToday#humidity" }
+Number:Speed owmForecastTodayWindSpeed "Wind speed for today [%.1f km/h]" <wind> 				{ channel="openweathermap:daily-forecast:api:local:forecastToday#wind-speed" }
+Number:Angle owmForecastTodayWindDirection "Wind direction for today [%d %unit%]" <wind> 			{ channel="openweathermap:daily-forecast:api:local:forecastToday#wind-direction" }
+Number:Dimensionless owmForecastTodayCloudiness "Cloudiness for today [%d %unit%]" <clouds> 			{ channel="openweathermap:daily-forecast:api:local:forecastToday#cloudiness" }
+Number:Length owmForecastTodayRainVolume "Rain volume for today [%.1f %unit%]" <rain> 				{ channel="openweathermap:daily-forecast:api:local:forecastToday#rain" }
+Number:Length owmForecastTodaySnowVolume "Snow volume for today [%.1f %unit%]" <snow> 				{ channel="openweathermap:daily-forecast:api:local:forecastToday#snow" }
+
+String owmForecastTomorrowCondition "Condition for tomorrow [%s]" <sun_clouds> 					{ channel="openweathermap:daily-forecast:api:local:forecastTomorrow#condition" }
+Number:Temperature owmForecastTomorrowMinTemperature "Minimum temperature for tomorrow [%.1f %unit%]" <temperature> { channel="openweathermap:daily-forecast:api:local:forecastTomorrow#min-temperature" }
+Number:Temperature owmForecastTomorrowMaxTemperature "Maximum temperature for tomorrow [%.1f %unit%]" <temperature> { channel="openweathermap:daily-forecast:api:local:forecastTomorrow#max-temperature" }
+
+
+String owmForecastDay2Condition "Condition in 2 days [%s]" <sun_clouds> 					{ channel="openweathermap:daily-forecast:api:local:forecastDay2#condition" }
+Number:Temperature owmForecastDay2MinTemperature "Minimum temperature in 2 days [%.1f %unit%]" <temperature> 		{ channel="openweathermap:daily-forecast:api:local:forecastDay2#min-temperature" }
+Number:Temperature owmForecastDay2MaxTemperature "Maximum temperature in 2 days [%.1f %unit%]" <temperature>	 { channel="openweathermap:daily-forecast:api:local:forecastDay2#max-temperature" }
+
+
+String owmCurrentConditionBrovst "Current condition in Brovst [%s]" <sun_clouds> { channel="openweathermap:weather:api:brovst:current#condition" }
+Number:Temperature owmCurrentTemperatureBrovst "Current temperature in Brovst [%.1f %unit%]" <temperature> { channel="openweathermap:weather:api:brovst:current#temperature" }
+
+
+
+

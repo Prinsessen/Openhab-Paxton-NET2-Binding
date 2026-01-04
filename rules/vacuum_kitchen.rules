@@ -1,0 +1,15 @@
+rule "Start Roborock Kitchen Cleaning (ID 4) "
+when
+    Item Kitchen_Clean_Switch received command ON // Your trigger item
+then
+    logInfo("VacuumRule", "Sending raw command string to actions channel for Room ID 4.")
+
+    // This format explicitly tells the binding which internal command (siid and aiid) to use
+    // '6' is included as the parameter value inside the 'in' array.
+   // val String commandString = 'action{"siid":2,"aiid":16,"in":[{"piid":15,"value":6}]}' 
+    
+    // Send the command string to your linked 'actions' item
+    //actions.sendCommand(commandString)
+    actions_command.sendCommand("app_segment_clean[4]")
+    logInfo("VacuumRule", "Command sent to start cleaning Kitchen.")
+end

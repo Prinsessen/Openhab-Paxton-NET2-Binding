@@ -1,0 +1,117 @@
+// Spisestue
+Switch      Light1_Toggle                                                                                             {channel="hue:0210:1:bulb1:color"}
+Dimmer      Light1_Dimmer                                                                                             {channel="hue:0210:1:bulb1:color"}
+Color       Light1_Color                                                                                              {channel="hue:0210:1:bulb1:color"}
+Dimmer      Light1_ColorTemp                                                                                          {channel="hue:0210:1:bulb1:color_temperature"}
+String      Light1_Alert                                                                                              {channel="hue:0210:1:bulb1:alert"}
+Switch      Light1_Effect                                                                                             {channel="hue:0210:1:bulb1:effect"}
+Switch      Light1_ON
+
+// Tvstue
+Switch      Light2_Toggle                                                                                             {channel="hue:0210:1:bulb2:color"}
+Dimmer      Light2_Dimmer                                                                                             {channel="hue:0210:1:bulb2:color"}
+Color       Light2_Color                                                                                              {channel="hue:0210:1:bulb2:color"}
+Dimmer      Light2_ColorTemp                                                                                          {channel="hue:0210:1:bulb2:color_temperature"}
+String      Light2_Alert                                                                                              {channel="hue:0210:1:bulb2:alert"}
+Switch      Light2_Effect                                                                                             {channel="hue:0210:1:bulb2:effect"}
+Switch      Light2_ON
+
+// Bedroom
+Switch      Light3_Toggle                                                                                             {channel="hue:0210:1:bulb3:color"}
+Dimmer      Light3_Dimmer                                                                                             {channel="hue:0210:1:bulb3:color"}
+Color       Light3_Color                                                                                              {channel="hue:0210:1:bulb3:color"}
+Dimmer      Light3_ColorTemp                                                                                          {channel="hue:0210:1:bulb3:color_temperature"}
+String      Light3_Alert                                                                                              {channel="hue:0210:1:bulb3:alert"}
+Switch      Light3_Effect                                                                                             {channel="hue:0210:1:bulb3:effect"}
+Switch      Light3_ON
+
+// Vindue Ost
+Switch      Light4_Toggle                                                                                             {channel="hue:0210:1:bulb4:color"}
+Dimmer      Light4_Dimmer                                                                                             {channel="hue:0210:1:bulb4:color"}
+Color       Light4_Color                                                                                              {channel="hue:0210:1:bulb4:color"}
+Dimmer      Light4_ColorTemp                                                                                          {channel="hue:0210:1:bulb4:color_temperature"}
+String      Light4_Alert                                                                                              {channel="hue:0210:1:bulb4:alert"}
+Switch      Light4_Effect                                                                                             {channel="hue:0210:1:bulb4:effect"}
+Switch      Light4_ON
+Switch      LightsLava
+
+// Ensig Up
+Switch      Light5_Toggle                                                                                             {channel="hue:0210:1:bulb11:color"}
+Dimmer      Light5_Dimmer                                                                                             {channel="hue:0210:1:bulb11:color"}
+Color       Light5_Color                                                                                              {channel="hue:0210:1:bulb11:color"}
+// Dimmer      Light5_ColorTemp                                                                                          {channel="hue:0210:1:bulb11:color_temperature"}
+String      Light5_Alert                                                                                              {channel="hue:0210:1:bulb11:alert"}
+Switch      Light5_Effect                                                                                             {channel="hue:0210:1:bulb11:effect"}
+Switch      Light5_ON
+
+// Ensig Down
+Switch      Light6_Toggle                                                                                             {channel="hue:0210:1:bulb12:color"}
+Dimmer      Light6_Dimmer                                                                                             {channel="hue:0210:1:bulb12:color"}
+Color       Light6_Color                                                                                              {channel="hue:0210:1:bulb12:color"}
+// Dimmer      Light6_ColorTemp                                                                                          {channel="hue:0210:1:bulb12:color_temperature"}
+String      Light6_Alert                                                                                              {channel="hue:0210:1:bulb12:alert"}
+Switch      Light6_Effect                                                                                             {channel="hue:0210:1:bulb12:effect"}
+Switch      Light6_ON
+
+// MOON Maxi
+Switch      Light7_Toggle                                                                                             {channel="hue:0220:1:bulb7:brightness"}
+Dimmer      Light7_Dimmer                                                                                             {channel="hue:0220:1:bulb7:brightness"}
+Dimmer      Light7_ColorTemp                                                                                          {channel="hue:0220:1:bulb7:color_temperature"}
+String      Light7_Alert                                                                                              {channel="hue:0220:1:bulb7:alert"}
+Switch      Light7_ON
+
+// MOON Midi
+Switch      Light8_Toggle                                                                                             {channel="hue:0220:1:bulb8:brightness"}
+Dimmer      Light8_Dimmer                                                                                             {channel="hue:0220:1:bulb8:brightness"}
+Dimmer      Light8_ColorTemp                                                                                          {channel="hue:0220:1:bulb8:color_temperature"}
+String      Light8_Alert                                                                                              {channel="hue:0220:1:bulb8:alert"}
+Switch      Light8_ON
+
+// MOON Mini
+Switch      Light9_Toggle                                                                                             {channel="hue:0220:1:bulb9:brightness"}
+Dimmer      Light9_Dimmer                                                                                             {channel="hue:0220:1:bulb9:brightness"}
+Dimmer      Light9_ColorTemp                                                                                          {channel="hue:0220:1:bulb9:color_temperature"}
+String      Light9_Alert                                                                                              {channel="hue:0220:1:bulb9:alert"}
+Switch      Light9_ON
+
+// Emhaette Deko
+Switch      Light10_Toggle                                                                                            {channel="hue:0210:1:bulb10:color"}
+Dimmer      Light10_Dimmer                                                                                            {channel="hue:0210:1:bulb10:color"}
+Color       Light10_Color                                                                                             {channel="hue:0210:1:bulb10:color"}
+Dimmer      Light10_ColorTemp                                                                                         {channel="hue:0210:1:bulb10:color_temperature"}
+String      Light10_Alert                                                                                             {channel="hue:0210:1:bulb10:alert"}
+Switch      Light10_Effect                                                                                            {channel="hue:0210:1:bulb10:effect"}
+Switch      Light10_ON
+DateTime    Hue_Fade_Next
+
+// Festivitas
+Switch      Light13_Toggle                                                                                            {channel="hue:0210:1:bulb13:color"}
+Dimmer      Light13_Dimmer                                                                                            {channel="hue:0210:1:bulb13:color"}
+Color       Light13_Color                                                                                             {channel="hue:0210:1:bulb13:color"}
+Dimmer      Light13_ColorTemp                                                                                         {channel="hue:0210:1:bulb13:color_temperature"}
+String      Light13_Alert                                                                                             {channel="hue:0210:1:bulb13:alert"}
+Switch      Light13_Effect                                                                                            {channel="hue:0210:1:bulb13:effect"}
+Switch      Light13_ON
+
+//Luceplan Group
+Switch      Light14_Toggle                                                                                            {channel="hue:group:1:83:color"}
+Dimmer      Light14_Dimmer                                                                                            {channel="hue:group:1:83:color"}
+Color       Light14_Color                                                                                             {channel="hue:group:1:83:color"}      
+Dimmer      Light14_ColorTemp                                                                                         {channel="hue:group:1:83:color_temperature"}  
+
+// Hue Switch Office
+Number      Hue_Switch_2_Battery_Level                                                                                {channel="hue:0820:1:switch2:battery_level"}
+Number      Hue_Switch_2_Dimmer_Switch_Event                                                                          {channel="hue:0820:1:switch2:dimmer_switch_event"}        
+Number      Hue_Switch_2                                                                                              {channel="hue:0820:1:switch2:dimmer_switch"}  
+
+// Hue Switch Livingroom
+Number      Hue_Switch_1_Battery_Level                                                                                {channel="hue:0820:1:switch1:battery_level"}
+Number      Hue_Switch_1_Dimmer_Switch_Event                                                                          {channel="hue:0820:1:switch1:dimmer_switch_event"}        
+Number      Hue_Switch_1                                                                                              {channel="hue:0820:1:switch1:dimmer_switch"}  
+
+// VP Kugle
+Switch      Light17_Toggle                                                                                             {channel="hue:0220:1:bulb17:brightness"}
+Dimmer      Light17_Dimmer                                                                                             {channel="hue:0220:1:bulb17:brightness"}
+Dimmer      Light17_ColorTemp                                                                                          {channel="hue:0220:1:bulb17:color_temperature"}
+String      Light17_Alert                                                                                              {channel="hue:0220:1:bulb17:alert"}
+Switch      Light17_ON

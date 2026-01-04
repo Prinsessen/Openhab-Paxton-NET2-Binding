@@ -1,0 +1,39 @@
+// ***************************
+// Poll the Texecom Panel for LSTATUS using a Cron Trigger (openHAB 5 Safe)
+// ***************************
+
+// Optimized for openHAB5
+
+// ***************************
+// Poll the Texecom Panel for LSTATUS using a Cron Trigger (openHAB 5 Safe)
+// ***************************
+
+// Optimized for openHAB5
+
+rule "Poll LSTATUS via Cron"
+when   
+    // Trigger every 4 seconds
+	Time cron "*/4 * * * * ?"
+then
+    // Check if the state is NULL state before comparing
+    if (Tex_Get_LSTATUS.state !== NULL) {
+        
+        // Check if the polling switch is ON before sending the command
+        if (Tex_Get_LSTATUS.state == ON) {
+            // *** FIX: Use the implicit sendCommand() ***
+            sendCommand(Tex_UDP_Send, "LSTATUS")
+            // Logging added for clarity
+            logInfo("TexecomPolling", "Sent LSTATUS poll command.")
+        }
+    }
+end
+
+// A separate rule to ensure the polling is always started when the system starts
+rule "Start LSTATUS Polling on Startup"
+when
+    System started
+then
+    // Ensure the switch is ON to start the cron-based polling condition
+    // *** FIX: Use the implicit sendCommand() ***
+    sendCommand(Tex_Get_LSTATUS, ON)
+end

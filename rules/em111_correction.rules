@@ -1,0 +1,20 @@
+// Ensure your items are of type Number or are compatible types that can accept numerical values.
+// Optimized for OpenHAB 5.0 and later versions.
+
+rule "EM111-Server_KwH Offset"
+when
+    Item EM111_Energi_srv_kWh received update
+then
+    // Cast the state to a Number before performing arithmetic, then post the updated value
+    val Number offsetValue = (EM111_Energi_srv_kWh.state as Number) + 19976
+    EM111_Energi_srv_kWh_1.postUpdate(offsetValue)
+end
+
+rule "EM111-Server_Cool_KwH Offset"
+when
+    Item EM111_Energi_cool_kWh received update
+then
+    // Cast the state to a Number before performing arithmetic, then post the updated value
+    val Number offsetValue = (EM111_Energi_cool_kWh.state as Number) + 19624
+    EM111_Energi_cool_kWh_1.postUpdate(offsetValue)
+end

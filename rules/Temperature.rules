@@ -1,0 +1,74 @@
+// Optimized for OpenHAB 5.0 
+rule "Set daily max and min temperature"
+    when
+        Item Temperature_Have changed or
+        Time cron "0 0 0 * * ?" or // Midnight daily
+        System started
+    then
+        val startOfDay = now.withHour(0).withMinute(0).withSecond(0)
+
+        // The persistence methods return a HistoricItem object.
+        // Replace "rrd4j" with your specific persistence service ID if necessary.
+        val maxStats = Temperature_Have.maximumSince(startOfDay, "rrd4j")
+        val minStats = Temperature_Have.minimumSince(startOfDay, "rrd4j")
+
+        // Check maxStats result first
+        if (maxStats != NULL && maxStats != UNDEF && maxStats.state instanceof Number) {
+            // Use as Number for compatibility and retrieve the state property
+            Weather_Max.postUpdate(maxStats.state as Number)
+            logInfo("Daily Temp Stats", "Updated Weather_Max to: " + (maxStats.state as Number))
+        } else {
+            logWarn("Daily Temp Stats", "Could not retrieve valid maximum value from persistence.")
+        }
+
+        // Check minStats result
+        if (minStats != NULL && minStats != UNDEF && minStats.state instanceof Number) {
+            // Use as Number for compatibility and retrieve the state property
+            Weather_Min.postUpdate(minStats.state as Number)
+            logInfo("Daily Temp Stats", "Updated Weather_Min to: " + (minStats.state as Number))
+        } else {
+            logWarn("Daily Temp Stats", "Could not retrieve valid minimum value from persistence.")
+        }
+end
+
+//  label: Set Weekly Max and Min Temperature
+//  description: >
+//    This rule tracks and updates the weekly maximum and minimum temperature values.
+//    It monitors temperature sensor changes and compares them against stored weekly extremes,
+//    updating the values when new highs or lows are detected. The rule helps maintain
+//    a rolling record of temperature ranges over a weekly period for climate monitoring
+//    and analysis purposes.
+//
+//    Key functionality:
+//    - Monitors temperature sensor item for changes
+//    - Compares current temperature against stored weekly maximum
+//    - Compares current temperature against stored weekly minimum
+//    - Updates weekly max/min items when new extremes are detected
+//    - Useful for HVAC optimization and weather pattern tracking
+
+rule "Set weekly max and min temperature"
+    when
+        Item Temperature_Have changed or
+        Time cron "0 0 0 ? * MON" or // Monday at midnight each week
+        System started
+    then
+        val startOfWeek = now.withHour(0).withMinute(0).withSecond(0).minusDays(now.getDayOfWeek().getValue() - 1)
+
+        val maxWeekStats = Temperature_Have.maximumSince(startOfWeek, "rrd4j")
+        val minWeekStats = Temperature_Have.minimumSince(startOfWeek, "rrd4j")
+
+        if (maxWeekStats != NULL && maxWeekStats != UNDEF && maxWeekStats.state instanceof Number) {
+            Weather_Max_Week.postUpdate(maxWeekStats.state as Number)
+            logInfo("Weekly Temp Stats", "Updated Weather_Max_Week to: " + (maxWeekStats.state as Number))
+        } else {
+            logWarn("Weekly Temp Stats", "Could not retrieve valid maximum value from persistence.")
+        }
+
+        if (minWeekStats != NULL && minWeekStats != UNDEF && minWeekStats.state instanceof Number) {
+            Weather_Min_Week.postUpdate(minWeekStats.state as Number)
+            logInfo("Weekly Temp Stats", "Updated Weather_Min_Week to: " + (minWeekStats.state as Number))
+        } else {
+            logWarn("Weekly Temp Stats", "Could not retrieve valid minimum value from persistence.")
+        }
+end
+

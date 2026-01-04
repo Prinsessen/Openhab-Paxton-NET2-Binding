@@ -1,0 +1,17 @@
+// Imports are no longer required in openHAB 5 Rules DSL for these standard classes.
+
+// Optimized for OpenHAB 5
+
+rule "Persist Energy EM24 Meter between -8 kW and 8 kW"
+when
+    // Cron adjusted for standard format
+    Time cron "0 * * * * ?"   // every minute
+    // or Item SMA_Active_Power received update // kept as commented out option
+then
+    // Explicitly cast the state to a Number for a safe comparison
+    val Number gridState = EM24_Energy_Grid.state as Number
+
+    if (gridState > -8 && gridState < 8) {
+        EM24_Energy_Grid.persist("influxdb")
+    }
+end

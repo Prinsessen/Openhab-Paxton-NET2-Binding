@@ -1,0 +1,16 @@
+// Springfield Garage Opener
+String    GeofenceID                  "GeofenceID"                              {channel="mqtt:topic:broker:Traccar:GeofenceID"}
+String    UseruniqueID                "UseruniqueID"                            {channel="mqtt:topic:broker:Traccar:UseruniqueID"}
+String    Geodirection                "Geodirection"                            {channel="mqtt:topic:broker:Traccar:Geodirection"}
+String    GeofenceIo155               "GeodirectionTrackerIO155"                {channel="mqtt:topic:broker:Traccar:GeofenceIo155"}
+// Motorcycle Information
+Number    totalDistance               "Total Distance [%.1f km]"                {channel="mqtt:topic:broker:Traccar:totalDistance"}
+Number    totalDistanceSpringfield    "Springfield Total Distance [%.1f km]"
+Number    springRPM                   "Springfield RPM"                         {channel="mqtt:topic:broker:Traccar:springRPM"}
+// Motorcycle CANbus Information from Flepsi
+Number    powersource                 "Battery Voltage [%.3f V]"                {channel="mqtt:topic:broker:flepsi:powersource"}
+Number    fuel_level                  "Fuel level [%.2f L]"                     {channel="mqtt:topic:broker:flepsi:fuel_level"}
+Number    throttle                    "Throttle Position [%.2f Percent]"        {channel="mqtt:topic:broker:flepsi:throttle"}
+Number    enginerpm                   "Engine RPM [%.2f RPM]"                   {channel="mqtt:topic:broker:flepsi:enginerpm"}
+Number    can_speed                   "CAN Speed [%.2f kmt]"                    {channel="mqtt:topic:broker:flepsi:can_speed"}
+Number    engineload                  "Engine Load [%.2f Percent]"              {channel="mqtt:topic:broker:flepsi:engineload"}

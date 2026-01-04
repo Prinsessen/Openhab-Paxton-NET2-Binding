@@ -1,0 +1,524 @@
+String Activated_by_status "Ventilation [MAP(activated.map):%s]"
+
+Switch Smarthouse_Motorventil	      "Ventilation damper basement [MAP(motor_valve_basement.map):%s]"			          (gNilan)
+{ channel="modbus:data:endpointSmarthouse:Smarthouse_Motorventil:Smarthouse_Motorventil:switch" }
+
+
+Number Nilan_Bus_Version              "Protocol version number [%d]"                              (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_device:Nilan_Bus_Version:number" }
+
+String Nilan_App_VersionMajor         "Software version - major (2 character ascii text) [%s]"    (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_device:Nilan_App_VersionMajor:string" }
+
+String Nilan_App_VersionMinor         "Software version - minor (2 character ascii text) [%s]"    (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_device:Nilan_App_VersionMinor:string" }
+
+String Nilan_App_VersionRelease       "Software version - release (2 character ascii text) [%s]"  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_device:Nilan_App_VersionRelease:string" }
+
+Switch  Nilan_Input_UserFunc           "User function"                         <boy_2>            (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_discreteio:Nilan_Input_UserFunc:switch" }
+ 
+Switch  Nilan_Input_AirFilter          "Air filter alarm"                      <siren>            (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_discreteio:Nilan_Input_AirFilter:switch" }
+
+Switch  Nilan_Input_Smoke              "Fire/Smoke alarm"                      <smoke>            (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_discreteio:Nilan_Input_Smoke:switch" }
+
+Switch  Nilan_Input_Frost_Overht       "Heating surface frost / overheat"      <climate>          (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_discreteio:Nilan_Input_Frost_Overht:switch" }
+ 
+Switch  Nilan_Input_AirFlow            "Airflow monitor (guard)"               <flow>             (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_discreteio:Nilan_Input_AirFlow:switch" }
+
+// Switch  Nilan_Input_P_HI               "High pressure switch"                  <pressure>         (gNilan) 
+// { channel="modbus:data:endpointNilan:nilan_input_discreteio:Nilan_Input_P_HI:switch" }
+
+Switch  Nilan_Input_UserFunc_2         "User function 2"                       <boy_2>            (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_discreteio:Nilan_Input_UserFunc_2:switch" }
+
+Switch  nilan_Input_DamperClosed      "Air Damper Closed position [%s]"               	<flow>         (gNilan) 	{channel="modbus:data:endpointNilan:nilan_input_discreteio:nilan_Input_DamperClosed:switch"}
+
+Switch  nilan_Input_DamperOpen        "Air Damper Open position [%s]"               	<flow>         (gNilan) 	{channel="modbus:data:endpointNilan:nilan_input_discreteio:nilan_Input_DamperOpen:switch"}
+
+
+
+Number Nilan_Input_T0_Controller      "Controller board temperature [%.2f °C]"         <temperature>   (gNilan)  
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T0_Controller:number" }
+                        
+Number Nilan_Input_T3_Exhaust         "Temperature Exhaust [%.2f °C]"                <temperature>    (gNilan,gAirSensor) 
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T3_Exhaust:number" }       
+
+Number Nilan_Input_T4_Outlet          "Temperature Outlet [%.2f °C]"                   <temperature>    (gNilan,gAirSensor) 
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T4_Outlet:number" }                  
+
+Number Nilan_Input_T7_Inlet           "Temperature Inlet [%.2f °C]"    	       <temperature>   (gNilan,gAirSensor) 
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T7_Inlet:number" }       
+
+Number Nilan_Input_T8_Outdoor         "Temperatur Outdoor [%.2f °C]"                  <temperature>    (gNilan,gAirSensor) 
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T8_Outdoor:number" }       
+
+Number Nilan_Input_T9_Heater          "Heating surface temperature [%.2f °C]"          <temperature>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T9_Heater:number" }                  
+
+Number Nilan_Input_T10_Extem          "External room temperature [%.2f °C]"            <temperature>   (gNilan)  
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T10_Extem:number" }                 
+             
+Number Nilan_Input_T15_Room           "User panel room temperature [%.2f °C]"          <temperature>   (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_T15_Room:number" }        
+             
+Number Nilan_Input_RH                 "Humidity Extraction [%.2f %%r.H]"   <humidity>    (gNilan,gAirSensor,gHumSensor)
+{ channel="modbus:data:endpointNilan:nilan_input_analogio:Nilan_Input_RH:number" }
+
+Number Nilan_Input_CO2                "Carbondioxide Extraction [%.0f ppm] "             <carbondioxide> (gNilan, gCoSensor)  
+{ channel="modbus:data:endpointCarbon:nilan_input_carbondioxide:nilan_input_carbondioxide:number" }
+
+
+
+
+Number Nilan_Alarm_Status             "Alarm state bit mask [%d]"                                        <keyring>   (gNilan)
+//{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_Status:number" }  
+
+Number Nilan_Alarm_List_1_ID          "Alarm 1 - Code [%d]"           					 <keyring>   (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_1_ID:number" } 
+
+Number Nilan_Alarm_List_1_Importance  "Alarm 1 - Importance [MAP(nilan_alarmcode_to_importance.map):%s]"				 <alarm>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_1_Importance:number" } 
+
+String Nilan_Alarm_List_1_Date        "Alarm 1 - Date [%s]"                                              <calendar>  (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_1_Date:string" } 
+
+String Nilan_Alarm_List_1_Time        "Alarm 1 - Time [%s]"                                              <clock>     (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_1_Time:string" } 
+
+Number Nilan_Alarm_List_2_ID          "Alarm 2 - Code [%d]"                                              <keyring>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_2_ID:number" }
+
+String Nilan_Alarm_List_2_Date        "Alarm 2 - Date [%s]"                                              <calendar>  (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_2_Date:string" } 
+
+String Nilan_Alarm_List_2_Time        "Alarm 2 - Time [%s]"                                              <clock>     (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_2_Time:string" }  
+
+Number Nilan_Alarm_List_3_ID          "Alarm 3 - Code [%d]"                                              <keyring>   (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_3_ID:number" } 
+
+String Nilan_Alarm_List_3_Date        "Alarm 3 - Date [%s]"                                              <calendar>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_3_Date:string" } 
+
+String Nilan_Alarm_List_3_Time        "Alarm 3 - Time [%s]"                                              <clock>     (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_alarm:Nilan_Alarm_List_3_Time:string" } 
+
+
+Switch Nilan_Control_RunAct           "Actual on/off state"                                       <switch>    (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_control:Nilan_Control_RunAct:switch" } 
+
+Number Nilan_Control_ModeAct          "Actual operation mode [MAP(nilan_control_modeact.map):%s]" <settings>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_control:Nilan_Control_ModeAct:number" } 
+
+Number Nilan_Control_State            "Actual control state [MAP(nilan_control_state.map):%s]"    <settings>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_control:Nilan_Control_State:number" }			    
+
+Number Nilan_Control_SeclnState       "Actual time in state [%d s]"                               <clock>     (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_control:Nilan_Control_SeclnState:number" } 
+
+
+
+Number Nilan_airFlow_ventSet           "Actual ventilation step set point"                                       <switch>    (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airFlow:Nilan_airFlow_ventSet:number" } 
+
+Number Nilan_airFlow_inletAct          "Actual inlet fan speed step" <settings>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airFlow:Nilan_Control_ModeAct:number" } 
+
+Number Nilan_airFlow_exhaustAct            "Actual exhaust fan speed step"    <settings>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airFlow:Nilan_airFlow_inletAct:number" }			    
+
+Number Nilan_airFlow_sinceFiltDay       "Days since last air filter change alarm [%d Days]"                               <clock>     (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_airFlow:Nilan_airFlow_sinceFiltDay:number" } 
+
+Number Nilan_airFlow_toFiltDay       "Days to next air filter change alarm [%d Days]"                               <clock>     (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_input_airFlow:Nilan_airFlow_toFiltDay:number" } 
+
+
+
+Number Nilan_AirTemp_IsSummer         "Summer state [MAP(nilan_summer.map):%s]"           <sun>      (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airtemp:Nilan_AirTemp_IsSummer:number" } 
+
+Number Nilan_AirTemp_TempinletSet     "Inlet temperature request (T7 setpoint) [%.1f °C]" <temperature>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airtemp:Nilan_AirTemp_TempinletSet:number" } 
+
+Number Nilan_AirTemp_TempControl      "Actual value for controlled temperature [%.1f °C]" <temperature>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airtemp:Nilan_AirTemp_TempControl:number" } 
+
+Number Nilan_AirTemp_TempRoom         "Actual room temperature (T15 or T10) [%.1f °C]"    <temperature>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airtemp:Nilan_AirTemp_TempRoom:number" }
+
+Number Nilan_AirTemp_EffPct           "Passive heat exchanger efficiency [%.1f %%]"       <line>          (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airtemp:Nilan_AirTemp_EffPct:number" }
+
+Number Nilan_AirTemp_CapSet           "Requested capacity [%.1f %%]"                                      (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airtemp:Nilan_AirTemp_CapSet:number" }
+
+Number Nilan_AirTemp_CapAct           "Actual capacity [%.1f %%]"                                         (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_airtemp:Nilan_AirTemp_CapAct:number" }
+
+
+// Switch Nilan_Display_LED_1            "User panel indicator light"        <light> (gNilan) 
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_LED_1:switch" }
+
+// Switch Nilan_Display_LED_2            "User panel indicator light2"       <light> (gNilan) 
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_LED_2:switch" }
+
+// String Nilan_Display_Text_1_2         "Text line 1 character 1-2 [%s]"            (gNilan)
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_1_2:string" } 
+
+// String Nilan_Display_Text_3_4         "Text line 1 character 3-4 [%s]"            (gNilan)
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_3_4:string" }  
+
+// String Nilan_Display_Text_5_6         "Text line 1 character 5-6 [%s]"            (gNilan)
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_5_6:string" } 
+
+// String Nilan_Display_Text_7_8         "Text line 1 character 7-8 [%s]"            (gNilan)
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_7_8:string" } 
+
+// Number Nilan_Display_Attr_1_8         "Text line 1 flags [%d]"                    (gNilan) 
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Attr_1_8:number" }
+ 
+// String Nilan_Display_Text_9_10        "Text line 2 character 9-10 [%s]"           (gNilan)
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_9_10:string" }
+ 
+// String Nilan_Display_Text_11_12       "Text line 2 character 11-12 [%s]"          (gNilan)
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_11_12:string" } 
+
+// String Nilan_Display_Text_13_14       "Text line 2 character 13-14 [%s]"          (gNilan) 
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_13_14:string" } 
+
+// String Nilan_Display_Text_15_16       "Text line 2 character 15-16 [%s]"          (gNilan)
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Text_15_16:string" } 
+
+// Number Nilan_Display_Attr_9_16        "Text line 2 flags [%d]"                    (gNilan) 
+// { channel="modbus:data:endpointNilan:nilan_input_userpanel:Nilan_Display_Attr_9_16:number" }
+
+
+Number Nilan_Bus_Address              "Protocol node address (default = 30) [%d]" (gNilan)
+{ channel="modbus:data:endpointNilan:Nilan_Bus_Address:Nilan_Bus_Address:number" }
+	 
+Contact Nilan_Output_AirFlap          "Air flap [%s]"                   <contact>   (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_AirFlap:contact" }
+
+Contact Nilan_Output_SmokeFlap        "Fire/Smoke flap [%s]"            <contact>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_SmokeFlap:contact" }
+
+Contact Nilan_Output_BypassOpen       "Bypass flap open [MAP(nilan_Air.map):%s]"           <contact>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_BypassOpen:contact" }
+
+Contact Nilan_Output_BypassClose      "Bypass flap close [%s]"          <contact>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_BypassClose:contact" }
+
+// Number  Nilan_Output_AirCircPump      "Air heat circulation pump [%d]"  <pump>      (gNilan) 
+// { channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_AirCircPump:number" }
+
+Number  Nilan_Output_AirHeatAllo      "Air heating selected [%d]"       <flowpipe>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_AirHeatAllo:number" }
+
+Number  Nilan_Output_AirHeat_1        "Air heater relays [%d]"                      (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_AirHeat_1:number" }
+
+Number  Nilan_Output_AirHeat_2        "Air heater relays [%d]"                      (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_AirHeat_2:number" }
+
+Number  Nilan_Output_AirHeat_3        "Air heater relays [%d]"                      (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_AirHeat_3:number" }
+
+Switch  Nilan_Output_Compressor       "Compressor"                      <pump>      (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_Compressor:switch" } 
+
+Switch  Nilan_Output_Compressor2      "Compressor 2"                    <pump>      (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_Compressor2:switch" }
+
+Number  Nilan_Output_4WayCool         "4-way valve [%d]"                            (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_4WayCool:number" }
+
+Number  Nilan_Output_HotgasHeat       "Hotgas valve - heat [%d]"                    (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_HotgasHeat:number" }
+
+Number  Nilan_Output_HotgasCool       "Hotgas valve - cool [%d]"                    (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_HotgasCool:number" }
+
+Number  Nilan_Output_CondOpen         "Air condenser active [%d]"                   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_CondOpen:number" }
+
+Number  Nilan_Output_CondClose        "Air condenser inactive [%d]"                 (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_CondClose:number" }
+
+Switch  Nilan_Output_WaterHeat        "Hot water heater"                <heating>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_WaterHeat:switch" }
+
+Number  Nilan_Output_3WayValve        "Hot water 3-way valve [%d]"                  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_3WayValve:number" }
+
+Number  Nilan_Output_CenCircPump      "EK circulation pump [%d]"        <pump>      (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_CenCircPump:number" }
+
+Number  Nilan_Output_CenHeat_1        "EK heater relays [%d]"                       (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_CenHeat_1:number" }
+
+Number  Nilan_Output_CenHeat_2        "EK heater relays [%d]"                       (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_CenHeat_2:number" }
+
+Number  Nilan_Output_CenHeat_3        "EK heater relays [%d]"                       (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_CenHeat_3:number" }
+
+Number  Nilan_Output_CenHeatExt       "External radiator heat [%d]"                 (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_CenHeatExt:number" }
+
+Switch  Nilan_Output_UserFunc         "User function active"            <boy_2>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_UserFunc:switch" }
+
+Switch  Nilan_Output_UserFunc_2       "User function 2 active"          <boy_2>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_UserFunc_2:switch" }
+
+Switch  Nilan_Output_Defrosting       "Defrost function active"         <climate>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_discreteio:Nilan_Output_Defrosting:switch" }
+
+Switch  nilan_AlarmRelayState	      "Alarm Relay state [%s]"		<switch> (gNilan)	{channel="modbus:data:endpointNilan:nilan_holding_discreteio::nilan_AlarmRelayState:switch"}
+
+
+
+Number Nilan_Output_ExhaustSpeed      "Exhaust fan speed [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_analogio:Nilan_Output_ExhaustSpeed:number" }
+
+Number Nilan_Output_InletSpeed        "Inlet fan speed [%.0f %%]"                 <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_analogio:Nilan_Output_InletSpeed:number" }
+
+Number Nilan_Output_AirHeatCap        "Air heater capacity [%.1f %%]"                       (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_analogio:Nilan_Output_AirHeatCap:number" }
+
+Number Nilan_Output_CenHeatCap        "Central heater capacity [%.1f %%]"                   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_analogio:Nilan_Output_CenHeatCap:number" }
+
+Number Nilan_Output_CprCap            "Compresor capacity [%.1f %%]"                        (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_analogio:Nilan_Output_CprCap:number" }
+
+Number Nilan_Output_EarthSpeed        "Earth tube air intake fan speed [%.1f %%]" <fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_analogio:Nilan_Output_EarthSpeed:number" }
+
+
+
+Number Nilan_Time_Second              "Second [%d]"   <time>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_time:Nilan_Time_Second:number" }
+
+Number Nilan_Time_Minute              "Minute [%d]"   <time>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_time:Nilan_Time_Minute:number" }
+
+Number Nilan_Time_Hour                "Hour [%d]"     <time>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_time:Nilan_Time_Hour:number" }
+
+Number Nilan_Time_Day                 "Day [%d]"      <calendar>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_time:Nilan_Time_Day:number" }
+
+Number Nilan_Time_Month               "Month [%d]"    <calendar>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_time:Nilan_Time_Month:number" }
+
+Number Nilan_Time_Year                "Year [%d]"     <calendar>  (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_time:Nilan_Time_Year:number" }
+
+
+
+Number Nilan_Alarm_Reset              "Clear one specific alarm code or all [%d]"                      <keyring>       (gNilan,gNilanProgram)
+{ channel="modbus:data:endpointNilan:nilan_holding_alarm:Nilan_Alarm_Reset:number" } 
+
+Number Nilan_Program_Select           "Week program nb. select [MAP(nilan_program_select.map):%s]"     <calendar>      (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_weekprogram:Nilan_Program_Select:number" }
+
+
+Switch Nilan_Program_UserFuncAct      "User function active"                                		<boy_2>  (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user1functions:Nilan_Program_UserFuncAct:switch" } 
+
+Number Nilan_Program_UserFuncSet      "User function select [MAP(nilan_program_userfuncset.map):%s]"   <settings>      (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user1functions:Nilan_Program_UserFuncSet:number" } 
+
+Number Nilan_Program_UserTimeSet      "Min User function period [%d]"                                  <clock>         (gNilan,gNilanProgram)
+{ channel="modbus:data:endpointNilan:nilan_holding_user1functions:Nilan_Program_UserTimeSet:number" }
+
+Number Nilan_Program_UserVentSet      "Step User function ventilation [MAP(nilan_ventset.map):%s]"     <fan_ceiling>   (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user1functions:Nilan_Program_UserVentSet:number" }
+
+Number Nilan_Program_UserTempSet      "User function temperature (Extend function only) [%.1f °C]"     <temperature>   (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user1functions:Nilan_Program_UserTempSet:number" }
+
+Number Nilan_Program_UserOffsSet      "User function temperature(Offset function only) [%.1f °C]"      <temperature>   (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user1functions:Nilan_Program_UserOffsSet:number" }
+
+
+
+Switch Nilan_Program_User2FuncAct     "User function 2 active"         				       <boy_2>         
+(gNilan,gNilanProgram)
+{ channel="modbus:data:endpointNilan:nilan_holding_user2functions:Nilan_Program_User2FuncAct:switch" } 
+
+Number Nilan_Program_User2FuncSet     "User function 2 select [MAP(nilan_program_userfuncset.map):%s]" <settings>      (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user2functions:Nilan_Program_User2FuncSet:number" }
+
+Number Nilan_Program_User2TimeSet     "Min User function 2 period [%d]"                                <clock>         (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user2functions:Nilan_Program_User2TimeSet:number" }
+
+Number Nilan_Program_User2VentSet     "Step User function 2 ventilation [MAP(nilan_ventset.map):%s]"   <fan_ceiling>   (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user2functions:Nilan_Program_User2VentSet:number" }
+
+Number Nilan_Program_User2TempSet     "User function 2 temperature (Extend function only) [%.1f °C]"   <temperature>   (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user2functions:Nilan_Program_User2TempSet:number" }
+
+Number Nilan_Program_User2OffsSet     "User function 2 temperature(Offset function only) [%.1f °C]"    <temperature>   (gNilan,gNilanProgram) 
+{ channel="modbus:data:endpointNilan:nilan_holding_user2functions:Nilan_Program_User2OffsSet:number" }
+
+
+
+Number Nilan_Control_Type             "Machine type select [%d]"                                             		(gNilan)
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_Type:number" }
+
+Switch Nilan_Control_RunSet           "User on / off select [%s]"                                           <switch>        (gNilan) 
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_RunSet:switch" }
+
+Number Nilan_Control_ModeSet          "User operation mode select [MAP(nilan_control_modeact.map):%s]" <settings>      (gNilan) 
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_ModeSet:number" }
+
+Number Nilan_Control_VentSet          "User ventilation step select [MAP(nilan_ventset.map):%s]"     <blue_fan>   (gNilan) 
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_VentSet:number" }
+
+Number Nilan_Control_TempSet          "User temperature setpoint [%.1f °C]"                            <thermometer1>   (gNilan) 
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_TempSet:number" }
+
+Number Nilan_Control_ServiceMode      "Service mode select [MAP(nilan_control_servicemode.map):%s]"    <lock>          (gNilan) 
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_ServiceMode:number" }
+
+Number Nilan_Control_ServicePct       "Service mode capacity [%.1f %%]"                                              	(gNilan) 
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_ServicePct:number" }
+
+Number Nilan_Control_Preset           "Request preset to factory [%d]"                                               	(gNilan) 
+{ channel="modbus:data:endpointNilan:Nilan_Holding_Control:Nilan_Control_Preset:number" }
+
+
+Number Nilan_AirFlow_AirExchMode      "Air exchange mode [MAP(nilan_airflow_airexchmode.map):%s]"      <flow>          (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airflow:Nilan_AirFlow_AirExchMode:number" }
+
+Number Nilan_AirFlow_CoolVent         "Cooling high ventilation step [MAP(nilan_ventset.map):%s]"      <fan_ceiling>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airflow:Nilan_AirFlow_CoolVent:number" }
+
+
+Number Nilan_AirTemp_CoolSet          "Cooling setpoint [MAP(Nilan_AirTemp_CoolSet.map):%s]"  <temperature> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_CoolSet:number" }
+
+Number Nilan_AirTemp_TempMinSum       "Inlet temp. min. summer [%.1f °C]"         <temperature> (gNilan){ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_TempMinSum:number" } 
+
+Number Nilan_AirTemp_TempMinWin       "Inlet temp. min. winter [%.1f °C]"         <temperature> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_TempMinWin:number" }
+
+Number Nilan_AirTemp_TempMaxSum          "Inlet temp. max. summer [%.1f °C]"         <temperature> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_TempMaxSum:number" }
+
+Number Nilan_AirTemp_TempMaxWin       "Inlet temp. max. winter [%.1f °C]"         <temperature> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_TempMaxWin:number" }
+
+Number Nilan_AirTemp_TempSummer       "Summer/winter limit [%.1f °C]"             <temperature> (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_TempSummer:number" } 
+
+Number Nilan_AirTemp_NightDayLim      "Outdoor day temperature for night cooling activation [%.1f °C]"    <temperature> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_NightDayLim:number" }
+
+Number Nilan_AirTemp_NightSet         "Free energy night cooling room setpoint [%.1f °C]"   <temperature> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_NightSet:number" }
+
+Number Nilan_AirTemp_SensorSelect     "Control temperature sensor selec [MAP(nilan_airtemp.map):%s]"   <settings> (gNilan)
+{ channel="modbus:data:endpointNilan:nilan_holding_airtemp:Nilan_AirTemp_SensorSelect:number" } 
+
+
+Number Nilan_HotWater_TempSet_T11     "Top temperature setpoint [%.1f °C]"        <temperature> (gNilan)
+//{ channel="modbus:data:endpointNilan:nilan_holding_hotwater:Nilan_HotWater_TempSet_T11:number" } 
+
+Number Nilan_HotWater_TempSet_T12     "Bottom temperature setpoint [%.1f °C]"     <temperature> (gNilan) 
+//{ channel="modbus:data:endpointNilan:nilan_holding_hotwater:Nilan_HotWater_TempSet_T12:number" } 
+
+
+Number Nilan_CentralHeat_HeatExtern   "External heating offset from room temperature setpoint [%.1f °C]" <temperature> (gNilan) 
+//{ channel="modbus:data:endpointNilan:nilan_holding_centheat:Nilan_CentralHeat_HeatExtern:number" } 
+
+
+Number Nilan_AirQual_RH_VentLo        "Humidity low winter step select [MAP(nilan_ventset.map):%s]" <fan_ceiling> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airqualrh:Nilan_AirQual_RH_VentLo:number" } 
+
+Number Nilan_AirQual_RH_VentHi        "Humidity high step select [MAP(nilan_ventset.map):%s]"       <fan_ceiling> (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airqualrh:Nilan_AirQual_RH_VentHi:number" } 
+
+Number Nilan_AirQual_RH_LimLo         "Humidity limit for low ventilation [%.2f %%]"                <humidity>    (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airqualrh:Nilan_AirQual_RH_LimLo:number" } 
+
+Number Nilan_AirQual_RH_TimeOut       "Humidity max. time on high ventilation [%d min.]"            <clock>       (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_airqualrh:Nilan_AirQual_RH_TimeOut:number" } 
+
+
+Number Nilan_AirQual_CO2_VentHi       "CO2 high step select [MAP(nilan_ventset.map):%s]"  <fan_ceiling>  (gNilan) 
+//{ channel="modbus:data:endpointNilan:nilan_holding_airqualco2:Nilan_AirQual_CO2_VentHi:number" } 
+
+Number Nilan_AirQual_CO2_LimLo        "CO2 limit for normal ventilation [%d ppm]"                        (gNilan) 
+//{ channel="modbus:data:endpointNilan:nilan_holding_airqualco2:Nilan_AirQual_CO2_LimLo:number" }
+
+Number Nilan_AirQual_CO2_LimHi        "CO2 limit for high ventilation [%d ppm]"                          (gNilan) 
+//{ channel="modbus:data:endpointNilan:nilan_holding_airqualco2:Nilan_AirQual_CO2_LimHi:number" }
+
+
+Number Nilan_Display_KeyCode          "User panel keypress [%d]" (gNilan)
+//{ channel="modbus:data:endpointNilan:nilan_holding_userpanel:Nilan_Display_KeyCode:number" } 
+
+Number AirBypass_IsOpen       "Bypass flap [MAP(nilan_bypass_flap.map):%s] "           <contact>   (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_input_display:AirBypass_IsOpen:number" }
+
+Number Nilan_AirFlow_InletSpd_1      "Inlet fan speed Step1 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_InletSpd_1:number" }
+
+Number Nilan_AirFlow_InletSpd_2      "Inlet fan speed Step2 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_InletSpd_2:number" }
+
+Number Nilan_AirFlow_InletSpd_3      "Inlet fan speed Step3 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_InletSpd_3:number" }
+
+Number Nilan_AirFlow_InletSpd_4      "Inlet fan speed Step4 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_InletSpd_4:number" }
+
+Number AirFlow_ExhaustSpd_1      "Exhust fan speed Step1 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_ExhaustSpd_1:number" }
+
+Number AirFlow_ExhaustSpd_2      "Exhust fan speed Step2 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_ExhaustSpd_2:number" }
+
+Number AirFlow_ExhaustSpd_3      "Exhust fan speed Step3 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_ExhaustSpd_3:number" }
+
+Number AirFlow_ExhaustSpd_4      "Exhust fan speed Step4 [%.0f %%]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display:AirFlow_ExhaustSpd_4:number" }
+
+
+Number CentralHeat_HeatExtern      "Regulation deadband external room heating [%.0f °C]"               <temperature>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display1:CentralHeat_HeatExtern:number" }
+
+Number AirFlow_CoolVent      "High fan speed at high indoor temp [%.0f]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display1:AirFlow_CoolVent:number" }
+
+Number AirFlow_WinterTemp      "Low outdoor temperature [%.0f °C]"               <temperature>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display1:AirFlow_WinterTemp:number" }
+
+Number AirFlow_WinerVent      "Fan speed at low outdoor temperature [%.0f]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display1:AirFlow_WinerVent:number" }
+
+Number AirFlow_TestSelect      "Day for automatic test [%.0f]"               <settings>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display1:AirFlow_TestSelect:number" }
+
+Number AirHeat_Type      "After heating type [%.0f]"               <settings>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display1:AirHeat_Type:number" }
+
+Number AirHeat_Delay      "Delay timer for after-heat activation Step4 [%.0f Min]"               <blue_fan>     (gNilan) 
+{ channel="modbus:data:endpointNilan:nilan_holding_display1:AirHeat_Delay:number" }
+
+
+
+
+

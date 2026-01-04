@@ -1,0 +1,3 @@
+Number    metz_out1       "Hotwater Boiler Modbus Output [%d]"    <returnpipe>    (gNilan)    {channel="modbus:data:Metz:metz_out1:metz_out1:number"}
+Number    metz_out_run    "Internal flag run flag [%d]"                                       	// Internal flag to run METZ Output module
+Switch    Reset_Metz      "Reset Metz [%s]"

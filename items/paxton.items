@@ -1,0 +1,8 @@
+Number    Net2
+Number    Net2status
+// state of the execution, is running or finished
+Switch    net2_Run      {channel="exec:command:net2:run"}
+// Arguments to be placed for '%2$s' in command line
+String    net2_Args     {channel="exec:command:net2:input"}
+// Output of command line execution 
+String    net2_Out      {channel="exec:command:net2:output"}

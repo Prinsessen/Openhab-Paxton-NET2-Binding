@@ -1,0 +1,231 @@
+import org.openhab.core.model.script.actions.Timer
+
+var Timer delayTimer = null
+var Number Humidity = null
+val int timeoutMinutes = 20
+
+// Openhab 5 Optimized - Setting Virtual Items to 0 - To avoid NULL error in log
+
+rule "Init Solar"
+when
+    System started
+then
+    // Check if the item state is NULL or UNDEF upon system start
+    if (EM24_Boil_Charge.state == NULL || EM24_Boil_Charge.state == UNDEF) {
+        logInfo("Init Solar", "EM24_Boil_Charge state was NULL or UNDEF at startup, setting to 0.")
+        EM24_Boil_Charge.postUpdate(0)
+    }
+end
+
+// Openhab 5 Optimized - Energy Balance Rules
+rule "Energy Balance Total"
+    when
+        Item EM24_Energi_24_kW changed
+    then
+        // Check that all involved items have valid numeric states before performing math
+        if (EM24_Energi_24_kW.state instanceof Number && 
+            SMA_Active_Power.state instanceof Number) {
+
+            // Calculate the balance and post the update
+            val Number gridBalance = (EM24_Energi_24_kW.state as Number) - (SMA_Active_Power.state as Number)
+            EM24_Energy_Grid.postUpdate(gridBalance)
+
+        } else {
+            // Log a warning if one of the required items is NULL/UNDEF
+            logWarn("Energy Balance", "One or both items (EM24_Energi_24_kW or SMA_Active_Power) are NULL or UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Energy Balance Phase 1 Rules
+rule "Energy Balance Phase 1"
+    when
+        Item EM24_Energi_24_kW1 changed
+        or
+        Item PowerL1 changed
+    then
+        // Ensure all necessary items have valid number states before calculation
+        if (EM24_Energi_24_kW1.state instanceof Number &&
+            PowerL1.state instanceof Number) {
+
+            // Perform calculation and store in a temporary variable for clarity
+            val Number phaseBalance = (EM24_Energi_24_kW1.state as Number) - (PowerL1.state as Number)
+
+            // Post the result
+            EM24_Energy_Balance_Phase1.postUpdate(phaseBalance)
+
+        } else {
+            // Log a warning if the rule triggers but essential item states are invalid (NULL/UNDEF)
+            logWarn("Energy Balance Phase 1", "One or both items (EM24_Energi_24_kW1 or PowerL1) are NULL/UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Energy Balance Phase 2 Rules
+rule "Energy Balance Phase 2"
+    when
+        Item EM24_Energi_24_kW2 changed
+        or
+        Item PowerL2 changed
+    then
+        // Ensure all necessary items have valid number states before calculation
+        if (EM24_Energi_24_kW2.state instanceof Number &&
+            PowerL2.state instanceof Number) {
+
+            // Perform calculation and store in a temporary variable for clarity
+            val Number phaseBalance = (EM24_Energi_24_kW2.state as Number) - (PowerL2.state as Number)
+
+            // Post the result
+            EM24_Energy_Balance_Phase2.postUpdate(phaseBalance)
+
+        } else {
+            // Log a warning if the rule triggers but essential item states are invalid (NULL/UNDEF)
+            logWarn("Energy Balance Phase 2", "One or both items (EM24_Energi_24_kW2 or PowerL2) are NULL/UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Energy Balance Phase 3 Rules
+rule "Energy Balance Phase 3"
+    when
+        Item EM24_Energi_24_kW3 changed
+        or
+        Item PowerL3 changed
+    then
+        // Ensure all necessary items have valid number states before calculation
+        if (EM24_Energi_24_kW3.state instanceof Number &&
+            PowerL3.state instanceof Number) {
+
+            // Perform calculation and store in a temporary variable for clarity
+            val Number phaseBalance = (EM24_Energi_24_kW3.state as Number) - (PowerL3.state as Number)
+
+            // Post the result
+            EM24_Energy_Balance_Phase3.postUpdate(phaseBalance)
+
+        } else {
+            // Log a warning if the rule triggers but essential item states are invalid (NULL/UNDEF)
+            logWarn("Energy Balance Phase 3", "One or both items (EM24_Energi_24_kW3 or PowerL3) are NULL/UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Energy Boiler Charge Rules
+rule "Energy Boiler Charge"
+    when
+        Time cron "0/1 * * * * ?" // every 1 second
+    then
+        // Check if all necessary items have valid number states before calculation
+        if (EM24_Energy_Grid.state instanceof Number &&
+            EM24_Boil_Energi_24_kW.state instanceof Number) {
+
+            // Calculate the boiler charge using 'as Number' for type safety.
+            // The multiplication by -1 should happen correctly within the expression.
+            val Number boilerCharge = (EM24_Energy_Grid.state as Number) * -1 + (EM24_Boil_Energi_24_kW.state as Number)
+
+            // Post the result
+            EM24_Boil_Charge.postUpdate(boilerCharge)
+
+        } else {
+            // Log a warning if any required item is NULL/UNDEF
+            logWarn("Energy Boiler Charge", "One or more items (EM24_Energy_Grid or EM24_Boil_Energi_24_kW) are NULL/UNDEF. Calculation skipped.")
+        }
+end
+
+
+// Openhab 5 Optimized - Change negative values to positive values
+rule "Change the value of EM24_Energy_Grid to positive value"
+    when
+        Item EM24_Energy_Grid changed
+    then
+        // Check if the source item has a valid numeric state
+        if (EM24_Energy_Grid.state instanceof Number) {
+
+            // Perform calculation (multiply by -1) and store in a temporary variable
+            val Number positiveValue = (EM24_Energy_Grid.state as Number) * -1
+
+            // Post the result to the target item
+            Solar_Diff_Send.postUpdate(positiveValue)
+
+        } else {
+            // Log a warning if the source item is NULL or UNDEF
+            logWarn("Solar Diff Send", "EM24_Energy_Grid state is NULL or UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Change negative values to positive values for Phase 1
+rule "Change the value of EM24_Energy_Balance_Phase1 to positive value"
+    when
+        Item EM24_Energy_Balance_Phase1 changed
+    then
+        // Check if the source item has a valid numeric state
+        if (EM24_Energy_Balance_Phase1.state instanceof Number) {
+
+            // Perform calculation (multiply by -1) and store in a temporary variable
+            val Number positiveValue = (EM24_Energy_Balance_Phase1.state as Number) * -1
+
+            // Post the result to the target item
+            Solar_Diff_Send_Phase1.postUpdate(positiveValue)
+
+        } else {
+            // Log a warning if the source item is NULL or UNDEF
+            logWarn("Solar Diff Phase 1 Send", "EM24_Energy_Balance_Phase1 state is NULL or UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Change negative values to positive values for Phase 2
+rule "Change the value of EM24_Energy_Balance_Phase2 to positive value"
+    when
+        Item EM24_Energy_Balance_Phase2 changed
+    then
+        // Check if the source item has a valid numeric state
+        if (EM24_Energy_Balance_Phase2.state instanceof Number) {
+
+            // Perform calculation (multiply by -1) and store in a temporary variable
+            val Number positiveValue = (EM24_Energy_Balance_Phase2.state as Number) * -1
+
+            // Post the result to the target item
+            Solar_Diff_Send_Phase2.postUpdate(positiveValue)
+
+        } else {
+            // Log a warning if the source item is NULL or UNDEF
+            logWarn("Solar Diff Phase 2 Send", "EM24_Energy_Balance_Phase2 state is NULL or UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Change negative values to positive values for Phase 3
+rule "Change the value of EM24_Energy_Balance_Phase3 to positive value"
+    when
+        Item EM24_Energy_Balance_Phase3 changed
+    then
+        // Check if the source item has a valid numeric state
+        if (EM24_Energy_Balance_Phase3.state instanceof Number) {
+
+            // Perform calculation (multiply by -1) and store in a temporary variable
+            val Number positiveValue = (EM24_Energy_Balance_Phase3.state as Number) * -1
+
+            // Post the result to the target item
+            Solar_Diff_Send_Phase3.postUpdate(positiveValue)
+
+        } else {
+            // Log a warning if the source item is NULL or UNDEF
+            logWarn("Solar Diff Phase 3 Send", "EM24_Energy_Balance_Phase3 state is NULL or UNDEF. Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized - Energy Balance Daily Rules	
+rule "Energy Balance Daily"
+    when
+        Item EM24_Energi_24_kW changed
+        or
+        Item EM24_Solar_Energi_24_kW changed
+    then
+        // Check that all involved items have valid numeric states before performing math
+        if (House_Energy_Day.state instanceof Number &&
+            SMA_Active_Power.state instanceof Number) {
+
+            // Calculate the daily balance and post the update
+            val Number dailyBalance = (House_Energy_Day.state as Number) - (SMA_Active_Power.state as Number)
+            Energy_Balance_Day.postUpdate(dailyBalance)
+
+        } else {
+            // Log a warning if one of the required items is NULL/UNDEF
+            logWarn("Energy Balance Daily", "One or both items (House_Energy_Day or SMA_Active_Power) are NULL or UNDEF. Calculation skipped.")
+        }
+end
+

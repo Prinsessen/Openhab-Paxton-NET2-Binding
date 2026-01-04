@@ -1,0 +1,24 @@
+Group       Astro                                                                              <sun_clouds>    (gALL)
+DateTime    CurrDateTime             "Idag [%1$tA, %1$td.%1$tm.%1$tY]"                         <clock>         (Astro)    {channel="ntp:ntp:local:dateTime"}
+String      SeasonName               "Årstid [MAP(astro.map):%s]"                                              (Astro)    {channel="astro:sun:home:season#name"}
+DateTime    SunsetTime               "Solnedgang [Kl. %1$tH:%1$tM ]"                           <sun>           (Astro)    {channel="astro:sun:home:set#start"}
+DateTime    NightStartTime           "Natten Starter [Kl. %1$tH:%1$tM ]"                       <moon>          (Astro)    {channel="astro:sun:home:night#start"}
+DateTime    NightEndTime             "Natten Ender [Kl. %1$tH:%1$tM ]"                         <moon>          (Astro)    {channel="astro:sun:home:night#end"}
+DateTime    SunriseTime              "Solopgang [Kl. %1$tH:%1$tM ]"                            <sun>           (Astro)    {channel="astro:sun:home:rise#end"}
+String      DayPhase                 "Dagtimerne [MAP(astro.map):%s]"                                          (Astro)    {channel="astro:sun:home:phase#name"}
+Switch      NightState               "Nat"                                                                     (Astro)
+Number      SunElevation             "Solhøjde [%.1f °]"                                       <sun>           (Astro)    {channel="astro:sun:home:position#elevation"}
+String      Zodiac                   "Stjernetegn [MAP(astro.map):%s]"                         <sun>           (Astro)    {channel="astro:sun:home:zodiac#sign"}
+Number      MoonElevation            "Månehøjde [%.1f °]"                                      <moon>          (Astro)    {channel="astro:moon:home:position#elevation"}
+String      MoonPhase                "Måne Fase [MAP(astro.map):%s]"                           <moon>          (Astro)    {channel="astro:moon:home:phase#name"}
+DateTime    MoonFull                 "Næste Fuldmåne [Kl. %1$td.%1$tm.%1$tY, %1$tH:%1$tM ]"    <moon>          (Astro)    {channel="astro:moon:home:phase#full"}
+DateTime    MoonNew                  "Næste Nymåne [Kl. %1$td.%1$tm.%1$tY, %1$tH:%1$tM ]"      <moon>          (Astro)    {channel="astro:moon:home:phase#new"}
+Number      Sun_Height               "Solhøjde"                                                                (Astro)
+Number      Sun_Azimut               "SolAzimut"                                               <sun>           (Astro)
+Switch      Sun_Dawn_Solar           "Sun_Dawn_Solar [MAP(Astro.map):%s]"                      <sun>           (Astro)
+Switch      Sun_Dawn_Civil           "Sun_Dawn_Civil [MAP(Astro.map):%s]"                      <sun>           (Astro)
+Switch      Sun_Dawn_Nautical        "Sun_Dawn_Nautical [MAP(Astro.map):%s]"                   <sun>           (Astro)
+Switch      Sun_Dawn_Astronomical    "Sun_Dawn_Astronomical [MAP(Astro.map):%s]"               <sun>           (Astro)
+Switch      Sun_Dusk_Civil           "Sun_Dusk_Civil [MAP(Astro.map):%s]"                      <sun>           (Astro)
+Switch      Sun_Dusk_Nautical        "Sun_Dusk_Nautical [MAP(Astro.map):%s]"                   <sun>           (Astro)
+Switch      Sun_Dusk_Astronomical    "Sun_Dusk_Astronomical [MAP(Astro.map):%s]"               <sun>           (Astro)

@@ -1,0 +1,16 @@
+Bridge modbus:tcp:Metz [ host="10.0.5.100", port=502, id=20 ] {
+
+// The below line is a test, trouble dropout 2/4/2025
+
+//Bridge modbus:tcp:Metz [ host="10.0.5.100", port=502, id=20, connectMaxTries=1, timeBetweenTransactionsMillis=150, reconnectAfterMillis=60000 ] {
+
+
+//# Metz 0-10v Output
+
+	Bridge poller metz_out1 [ start=0, length=2, refresh=5000, type="holding" ] {
+	    
+		Thing data metz_out1 [ readStart="0", readValueType="int16", writeStart="0", writeValueType="int16", 
+writeType="holding" ]
+	   	 
+}	
+}

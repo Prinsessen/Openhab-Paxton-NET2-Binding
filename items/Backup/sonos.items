@@ -1,0 +1,126 @@
+
+Group Sonos <player>
+
+Player Sonos_Controller   "Sonos Stue"                  <control>          (GF_Stue, Sonos) 
+{channel="sonos:PLAYBAR:4:control"}
+
+Dimmer Sonos_Volume       "Sonos Stue Volume [%.1f %%]" <speaker>          (GF_Stue, Sonos) 
+{channel="sonos:PLAYBAR:4:volume"}
+        
+Switch Sonos_Mute         "Sonos Stue Mute"             <speaker> 	   (GF_Stue, Sonos) 
+{channel="sonos:PLAYBAR:4:mute"}
+
+Switch Sonos_LED          "Sonos Stue LED"              <light>            (GF_Stue, Sonos) 
+{channel="sonos:PLAYBAR:4:led"}
+
+String Sonos_CurrentTrack "Sonos Stue Now playing [%s]" <info1>            (GF_Stue, Sonos) 
+{channel="sonos:PLAYBAR:4:currenttrack"}
+
+String Sonos_State        "Sonos Stue Status [%s]"      <info1>            (GF_Stue, Sonos) 
+{channel="sonos:PLAYBAR:4:state"}
+
+Switch Sonos_Standalone		  							    
+{channel="sonos:PLAYBAR:4:standalone"}
+
+Switch Sonos_TV		  "Sonos Stue TV"<screen> 	   		   (GF_Stue, Sonos) 
+
+Image  Sonos_Coverart  	  "AlbumCover [%s]"	 			   (GF_Stue, Sonos) 
+{channel="sonos:PLAYBAR:4:currentalbumart"}	
+
+Number	Sonos_Ensuite_Preset						   
+
+String	Sonos_Ensuite_Favorite	"Sonos Stue Favorites [%s]" <info1> 	   (GF_Stue, Sonos) 
+ {channel="sonos:PLAYBAR:4:favorite"}
+
+String	Sonos_Ensuite_Radio	"Sonos Stue Radio [%s]"     <info1> 	   (GF_Stue, Sonos)  
+{channel="sonos:PLAYBAR:4:radio"}
+
+Number Lautsprecher
+Number gPlayer_NotificationVolume
+
+
+// SONOS Bathroom
+
+Dimmer Sonos_Bath_Volume       "Sonos Bathroom Volume [%.1f %%]" <speaker>          (GF_Toilet, Sonos) 
+{channel="sonos:One:6:volume"}
+
+Player Sonos_Bath_Controller   "Sonos Bathroom"                  <control>          (GF_Toilet, Sonos) 
+{channel="sonos:One:6:control"}
+        
+Switch Sonos_Bath_Mute         "Sonos Bathroom Mute"             <speaker> 	   (GF_Toilet, Sonos) 
+{channel="sonos:One:6:mute"}
+
+Switch Sonos_Bath_LED          "Sonos Bathroom LED"              <light>            (GF_Toilet, Sonos) 
+{channel="sonos:One:6:led"}
+
+String Sonos_Bath_CurrentTrack "Sonos Bathroom Now playing [%s]" <info1>            (GF_Toilet, Sonos) 
+{channel="sonos:One:6:currenttrack"}
+
+String Sonos_Bath_State        "Sonos Bathroom Status [%s]"      <info1>            (GF_Toilet, Sonos) 
+{channel="sonos:One:6:state"}
+
+Switch Sonos_Bath_Standalone		  							    
+{channel="sonos:One:6:standalone"}
+
+Image  Sonos_Bath_Coverart  	  "AlbumCover [%s]"	 			   (GF_Toilet, Sonos) 
+{channel="sonos:One:6:currentalbumart"}
+
+
+
+// SONOS Bedroom
+
+Dimmer Sonos_Bed_Volume       "Sonos Bedroom Volume [%.1f %%]" <speaker>          (GF_Sove, Sonos) 
+{channel="sonos:One:1:volume"}
+
+Player Sonos_Bed_Controller   "Sonos Bedroom"                  <control>          (GF_Sove, Sonos) 
+{channel="sonos:One:1:control"}
+        
+Switch Sonos_Bed_Mute         "Sonos Bedroom Mute"             <speaker> 	   (GF_Sove, Sonos) 
+{channel="sonos:One:1:mute"}
+
+Switch Sonos_Bed_LED          "Sonos Bedroom LED"              <light>            (GF_Sove, Sonos) 
+{channel="sonos:One:1:led"}
+
+String Sonos_Bed_CurrentTrack "Sonos Bedroom Now playing [%s]" <info1>            (GF_Sove, Sonos) 
+{channel="sonos:One:1:currenttrack"}
+
+String Sonos_Bed_State        "Sonos Bedroom Status [%s]"      <info1>            (GF_Sove, Sonos) 
+{channel="sonos:One:1:state"}
+
+Switch Sonos_Bed_Standalone		  							    
+{channel="sonos:One:1:standalone"}
+
+Image  Sonos_Bed_Coverart  	  "AlbumCover [%s]"	 			   (GF_Sove, Sonos) 
+{channel="sonos:One:1:currentalbumart"}
+
+
+
+// SONOS Kitchen
+
+Dimmer Sonos_Kitchen_Volume       "Sonos Kitchen Volume [%.1f %%]" <speaker>          (GF_Kokken, Sonos) 
+{channel="sonos:One:7:volume"}
+
+Player Sonos_Kitchen_Controller   "Sonos Kitchen"                  <control>          (GF_Kokken, Sonos) 
+{channel="sonos:One:7:control"}
+        
+Switch Sonos_Kitchen_Mute         "Sonos Kitchen Mute"             <speaker> 	   (GF_Kokken, Sonos) 
+{channel="sonos:One:7:mute"}
+
+Switch Sonos_Kitchen_LED          "Sonos Kitchen LED"              <light>            (GF_Kokken, Sonos) 
+{channel="sonos:One:7:led"}
+
+String Sonos_Kitchen_CurrentTrack "Sonos Kitchen Now playing [%s]" <info1>            (GF_Kokken, Sonos) 
+{channel="sonos:One:7:currenttrack"}
+
+String Sonos_Kitchen_State        "Sonos Kitchen Status [%s]"      <info1>            (GF_Kokken, Sonos) 
+{channel="sonos:One:7:state"}
+
+Switch Sonos_Kitchen_Standalone		  							    
+{channel="sonos:One:7:standalone"}
+
+Image  Sonos_Kitchen_Coverart  	  "AlbumCover [%s]"	 			   (GF_Kokken, Sonos) 
+{channel="sonos:One:7:currentalbumart"}
+
+
+
+

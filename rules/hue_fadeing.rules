@@ -1,0 +1,69 @@
+// Optimized for openHAB 5.0
+// Define the timer variable in the global scope of the .rules file
+var org.openhab.core.model.script.actions.Timer timer = null
+
+rule "Start Hue Colors fading in Triangle Window"
+when
+    Item smarthouse_lux changed from OFF to ON
+then
+    if (timer === null) {
+        // Use 'createTimer' with a lambda that handles its own rescheduling
+        timer = createTimer(now.plusSeconds(1), [|
+            logInfo("rules", "Rescheduling Hue Fade Next timer.")
+            // The action that triggers the next color change
+            Hue_Fade_Next.sendCommand(now.toString) 
+            
+            // Reschedule the timer within the lambda
+            if (timer !== null) {
+                timer.reschedule(now.plusSeconds(1))
+            }
+        ])
+    } else {
+        // If the timer already exists, just reschedule its next execution
+        timer.reschedule(now.plusSeconds(1))
+    }
+end
+
+
+
+rule "Hue Fade Next"
+when
+    Item Hue_Fade_Next changed
+then
+    // Use logInfo for debugging to ensure the rule is running and values are correct
+    logInfo("HueFadeRule", "Rule triggered. Checking lux sensor state.")
+
+    // 1. Check the lux item's state correctly using the built-in NULL constant.
+    // Assuming 'smarthouse_lux' is a Switch Item (ON/OFF)
+    if (smarthouse_lux.state !== NULL && smarthouse_lux.state == ON) {
+        
+        // 2. Add an explicit check for the color item's state to prevent NullPointerExceptions.
+        if (Light4_Color.state !== NULL && Light4_Color.state instanceof HSBType) {
+            
+            val HSBType hsb = Light4_Color.state as HSBType
+
+            // 3. Change modulo from % 359 to % 360 for a complete and smooth color loop (0-359 degrees).
+            // openHAB HSBType hue value is typically 0 to < 360.
+            val DecimalType hue = new DecimalType((hsb.hue.intValue() + 1) % 360)
+            
+            val PercentType sat = new PercentType(100)
+            val PercentType bright = new PercentType(100)
+
+            val HSBType newHsb = new HSBType(hue, sat, bright)
+            
+            logInfo("HueFadeRule", "Sending new HSB color value: {}", newHsb.toString)
+
+            // 4. API v2 items linked to the 'color' channel accept HSBType objects directly, 
+            // or the string representation of HSB (e.g., "120, 100, 100").
+            // Sending the HSBType's string representation is the reliable method used here.
+            Light4_Color.sendCommand(newHsb.toString)
+            //Light5_Color.sendCommand(newHsb.toString) // Original line
+            Light10_Color.sendCommand(newHsb.toString)
+        } else {
+            logWarn("HueFadeRule", "Light4_Color item state is NULL or not an HSBType.")
+        }
+    } else {
+        logInfo("HueFadeRule", "Lux condition not met.")
+    }
+end
+

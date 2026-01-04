@@ -1,0 +1,9 @@
+
+Bridge modbus:tcp:endpointCarbon [ host="10.0.5.100", port=502, id=1 ] {
+
+//#nilan_input_carbondioxide
+	Bridge poller nilan_input_carbondioxide [ start=0, length=1, refresh=5000, type="input" ] {
+	    
+	    	 Thing data nilan_input_carbondioxide [ readStart="0", readValueType="uint16" ]
+}	
+}

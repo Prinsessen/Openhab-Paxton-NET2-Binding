@@ -1,0 +1,5 @@
+Number reflectors_west_2 "Temp Andreas - BacNet Test [%.2f °C]" <reflector> (Reflector) {bacnet="device=5000,type=analogInput,id=15"}
+
+Switch reflectors_west_3 "VP Kugle - BacNet Test " <reflector> (Reflector) {bacnet="device=5000,type=multiStateInput,id=38"}
+
+

@@ -1,0 +1,88 @@
+// Imports are largely implicit in OH5 Rules DSL.
+import java.time.ZonedDateTime
+
+// Global variable to manage the timer instance safely
+var Timer timerMitsubishi = null
+
+
+// As a precaution in case the server restarts or there is a power cut.
+/*
+rule "Initialize Mitsubishi on startup"
+when
+    System started
+then
+    // Use idiomatic method calls
+    Mitsuibshi_timer.postUpdate(OFF)
+    Mitsubishi_Timer_Selector.postUpdate(30)
+    Mitsubishi_Drive_On_Off.sendCommand(0)
+    Mitsubishi_Living_Override.postUpdate(OFF)
+end
+*/
+
+//Optimized for OpenHAB 5.0 and later
+// Start a timer using the value of the selection item in the UI
+
+rule "Turn Mitsubishi Livingroom on for selected time"
+when
+    Item Mitsuibshi_timer changed from OFF to ON
+then
+    // Cancel existing timer if it runs
+    if (timerMitsubishi !== null) {
+        timerMitsubishi.cancel()
+        timerMitsubishi = null
+    }
+
+    // Extract the selected time value safely using 'as Number'
+    var int_Mitsubishi_Selection = (Mitsubishi_Timer_Selector.state as Number).intValue
+
+    // Update UI immediately (using idiomatic postUpdate)
+    Mitsubishi_Timer_Remaining.postUpdate(int_Mitsubishi_Selection)
+
+    if (int_Mitsubishi_Selection >= 15) {
+        logInfo("Mitsubishi_Timer_Selector", "state = " + int_Mitsubishi_Selection)
+        
+        // Actions to happen at the start of the timer
+        Mitsubishi_Living_Override.postUpdate(ON)
+        Mitsubishi_Drive_On_Off.sendCommand(1)
+        // Use ZonedDateTime for time updates
+        Mitsubishi_Timer_DateTime_Start.postUpdate(ZonedDateTime.now().toString)
+
+        // Define and start the timer
+        // The timer logic is simplified to use standard rescheduling instead of recursion/lambda functions
+        timerMitsubishi = createTimer(now.plusMinutes(1)) [|
+            var remaining = (Mitsubishi_Timer_Remaining.state as Number).intValue
+            
+            if (remaining > 1) {
+                // Decrement and reschedule
+                Mitsubishi_Timer_Remaining.postUpdate(remaining - 1)
+                timerMitsubishi.reschedule(now.plusMinutes(1))
+            } else {
+                // Timer reached zero: perform turn-off actions
+                logInfo("Mitsubishi Living", "Timer reached zero, turning off unit.")
+                Mitsuibshi_timer.sendCommand(OFF)
+                Mitsubishi_Timer_DateTime_Stop.postUpdate(ZonedDateTime.now().toString)
+                Mitsubishi_Drive_On_Off.sendCommand(0)
+                Mitsubishi_Living_Override.postUpdate(OFF)
+                timerMitsubishi = null // Clear the global timer variable
+            }
+        ]
+    }
+end 
+
+rule "Turn Mitsubishi Livingroom off"
+when
+    Item Mitsuibshi_timer changed from ON to OFF
+then
+    // Actions to happen when the switch is explicitly turned OFF
+    
+    // Cancel the ongoing timer if the user switches it off manually
+    if (timerMitsubishi !== null) {
+        timerMitsubishi.cancel()
+        timerMitsubishi = null
+    }
+
+    // Use idiomatic method calls
+    Mitsubishi_Living_Override.postUpdate(OFF)
+    Mitsubishi_Drive_On_Off.sendCommand(0)
+    Mitsubishi_Timer_Remaining.postUpdate(0)
+end

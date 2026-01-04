@@ -1,0 +1,13 @@
+// dishwasher
+Switch                  DishwasherSimulator_PowerState                   "Power State [%s]"                                        <dishwasher>    {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:power_state"}
+Contact                 DishwasherSimulator_DoorState                    "Door State [%s]"                                         <dishwasher>    {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:door_state"}
+String                  DishwasherSimulator_OperationState               "Operation State [%s]"                                    <dishwasher>    {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:operation_state"}
+Switch                  DishwasherSimulator_RemoteStartAllowanceState    "Remote Start Allowance State [MAP(yes_no.map):%s]"       <dishwasher>    {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:remote_start_allowance_state"}
+Switch                  DishwasherSimulator_RemoteControlActiveState     "Remote Control Activation State [MAP(yes_no.map):%s]"    <dishwasher>    {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:remote_control_active_state"}
+String                  DishwasherSimulator_SelectedProgramState         "Selected Program [%s]"                                   <dishwasher>    {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:selected_program_state"}
+String                  DishwasherSimulator_ActiveProgramState           "Active Program"                                          <dishwasher>    {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:active_program_state"}
+Number:Time             DishwasherSimulator_RemainingProgramTimeState    "Remaining program time"                                  <schedule>      {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:remaining_program_time_state"}
+Number:Dimensionless    DishwasherSimulator_ProgramProgressState         "Progress State [%d %%]"                                  <schedule>      {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:program_progress_state"}
+String                  DishwasherSimulator_Basic_Action_State           "Basic Action State [%s]  "                               <switch>        {channel="homeconnect:dishwasher:simulator_api_bridge:dishwasher1:basic_actions_state"}
+Switch                  DishwasherSimulator_Solar                        "Free energy wash [%s]"                                   <dishwasher>
+Number                  Dishwasher_Avrg_Energy                           "Average waste energy [%.3f kW]"                          <energy>

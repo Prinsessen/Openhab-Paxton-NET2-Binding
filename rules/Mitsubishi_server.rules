@@ -1,0 +1,99 @@
+// Optimized for Openhab 5
+rule "HP RemoteTemp" //allows HP's to use wall mounted thermostats if available as room temp
+    when
+        Item Temperature_Teknik changed or
+        Item HP_RunSet changed from OFF to ON or
+        Time cron "0 */5 * * * ?" //every 5 minutes
+    then
+        logInfo("HP RemoteTemp", "Rule Triggered")
+
+        // Ensure both items have valid states before attempting the sendCommand
+        if (HP_RunSet.state == ON &&
+            Temperature_Teknik.state instanceof Number) {
+
+            logInfo("HP RemoteTemp", "Updating HP remote temp using Temperature_Teknik value.")
+
+            // Send the numeric state as a string command to the target item
+            RemoteTemp.sendCommand(Temperature_Teknik.state.toString())
+
+        } else {
+            // Log if conditions aren't met or data is invalid
+            logInfo("HP RemoteTemp", "Conditions for updating HP remote temp not met (HP_RunSet is OFF, or Temperature_Teknik is NULL/UNDEF).")
+        }
+end
+
+ //Calculating average Energy for heatpump in the past 5 Minutes
+rule "Average energy avaliable for Mitsibishi Server"
+    when
+        Item EM24_Energy_Grid received update
+    then
+        Mitsubishi_Server_Avrg_Energy.postUpdate(EM24_Energy_Grid.averageSince(now.minusMinutes(5)))
+end
+
+
+//
+rule "Start Mitsubishi Server when enough energy"
+    when
+        Item EM24_Energy_Grid received update or
+        Item Mitsubishi_Server_Avrg_Energy received update
+    then
+        // Check if all necessary items have valid states before running the logic
+        if (Mitsubishi_Server_Avrg_Energy.state instanceof Number &&
+            Mitsubishi_Server_Override.state != NULL && Mitsubishi_Server_Override.state != UNDEF &&
+            HP_RunSet.state != NULL && HP_RunSet.state != UNDEF) {
+
+            // Use 'as Number' for safer, general casting in Rules DSL
+            val Number avgEnergy = Mitsubishi_Server_Avrg_Energy.state as Number
+
+            // Logic to turn the heat pump ON
+            if (avgEnergy <= -0.8 &&
+                Mitsubishi_Server_Override.state == OFF &&
+                HP_RunSet.state == OFF) {
+
+                logInfo("Mitsubishi Server", "Mitsubishi Server turned ON by rule (Avg Energy: " + avgEnergy + " kW)")
+                HP_RunSet.sendCommand(ON)
+
+            // Logic to turn the heat pump OFF
+            } else if (avgEnergy >= -0.5 &&
+                       Mitsubishi_Server_Override.state == OFF &&
+                       HP_RunSet.state == ON) {
+
+                HP_RunSet.sendCommand(OFF)
+                logInfo("Mitsubishi Server", "Mitsubishi Server turned OFF by rule (Avg Energy: " + avgEnergy + " kW)")
+            }
+
+        } else {
+            logWarn("Mitsubishi Server", "Conditions for rule execution not met (one or more items are NULL/UNDEF).")
+        }
+end
+
+// Optimized for Openhab 5 
+rule "Lower server room temperature when excess solar power is met"
+    when
+        Item EM24_Energy_Grid received update or
+        Item Mitsubishi_Server_Avrg_Energy received update
+    then
+        // Check if all necessary items have valid states before running the logic
+        if (Mitsubishi_Server_Avrg_Energy.state instanceof Number &&
+            HP_RunSet.state != NULL && HP_RunSet.state != UNDEF) {
+
+            // Use 'as Number' for safer, general casting in Rules DSL
+            val Number avgEnergy = Mitsubishi_Server_Avrg_Energy.state as Number
+
+            // Logic to lower temperature when energy threshold is met
+            if (avgEnergy <= -0.8 && HP_RunSet.state == ON) {
+                logInfo("Mitsubishi Server Temp", "Mitsubishi Server Temperature lowered to 16C by rule (Avg Energy: " + avgEnergy + " kW)")
+                HP_Temp.sendCommand(16)
+                HP_Fan.sendCommand("4") // Assuming "4" is a valid fan speed command
+
+            // Logic to return temperature to default
+            } else if (avgEnergy >= -0.5 && HP_RunSet.state == ON) {
+                logInfo("Mitsubishi Server Temp", "Mitsubishi Server Temperature set to default 20C by rule (Avg Energy: " + avgEnergy + " kW)")
+                HP_Temp.sendCommand(20)
+                HP_Fan.sendCommand("AUTO") // Assuming "AUTO" is a valid fan speed command
+            }
+
+        } else {
+            logWarn("Mitsubishi Server Temp", "Conditions for rule execution not met (one or more items are NULL/UNDEF).")
+        }
+end

@@ -1,0 +1,54 @@
+// *******************************************************************
+// Extract Numbers between 4 and 10 - then convert from HEX To Decimal
+// *******************************************************************
+
+// Optimized for OpenHAB 5
+
+rule "Extract Rule"
+when
+    Item Rfid_receive received update
+then
+    // Log the actual state of the item using .state
+    logInfo("Rfid_Raw", "Result Raw " + Rfid_receive.state)
+    
+    var String newValue = Rfid_receive.state.toString
+    // Note: substring(startIndex, endIndex) uses 0-based indexing. 
+    // substring(2, 10) extracts characters from index 2 up to (but not including) index 10.
+    var resultVal = newValue.substring(2, 10) 
+    logInfo("Rfid_Hex", "Result Hex " + resultVal)   
+    
+    // Use Integer.parseInt to convert Hex string to integer, then cast as Number
+    var numVal = Integer.parseInt(resultVal, 16) as Number
+    logInfo("Rfid_Dec", "Result Dec " + numVal)   
+    
+    // Use idiomatic method call for postUpdate
+    Rfid_receive_num.postUpdate(numVal)
+    
+    // Log the actual state of the item using .state
+    logInfo("Rfid_Number", "Result Item " + Rfid_receive_num.state)
+end
+
+// *************************************************
+// Match List Nanna Implantat Right hand / 1100367
+// *************************************************
+
+rule "Match"
+when
+	Item Rfid_receive_num received update
+then
+    // Explicitly cast the item state to a Number for a safe comparison
+    val Number receivedId = Rfid_receive_num.state as Number
+
+    if (receivedId == 1100367) {
+		logInfo("RFID", "Access Granted for ID: " + receivedId)
+        // Use idiomatic method calls
+        Alarm_System_Arm_Disarm.sendCommand(ON)  
+		Rfid_receive_Raw.postUpdate(0) // Use 0 (Number) instead of "0000000" (String)                     
+    }
+    else {
+        logInfo("RFID", "Access Denied for ID: " + receivedId)
+        // Note: The mail action requires the Mail binding to be installed and configured.
+        // Replace 'mail:smtp:myMailThing' with your actual mail thing ID.
+        getActions("mail", "mail:smtp:myMailThing").sendMail("20960210@sms.uni-tel.dk", "AIA Denied", "Access Denied AIA RFID Reader for ID: " + receivedId)
+    }
+end

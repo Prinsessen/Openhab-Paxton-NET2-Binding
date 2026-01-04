@@ -1,0 +1,2 @@
+String    heatpump_generated_time           "SystemTid [%s]"       <clock>    (gHeatpump)
+Number    heatpump_generated_chartperiod    "Graf Periode [%d]"    <line>     (gHeatpump)

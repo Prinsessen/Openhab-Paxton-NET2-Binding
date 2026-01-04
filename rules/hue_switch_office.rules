@@ -1,0 +1,25 @@
+rule "Control Udestue_outlet ceiling via Hue Switch"
+when
+    Item Hue_Switch_2 received update
+then
+    // Log the received command for debugging purposes
+    logInfo("Hue Rule", "Received command for Hue_Switch_2: " + Hue_Switch_2.state.toString)
+
+    // Check the value of the received command
+    switch (Hue_Switch_2.state) {
+        case 1002.0: {
+            // Turns the Udestue_outlet ceiling ON
+            Light_GF_Udestue.sendCommand(ON)
+            logInfo("Hue Rule", "Command was 1002.0, turning Light_GF_Udestue ON.")
+        }
+        case 4002.0: {
+            // Turns the Udestue_outlet ceiling OFF
+            Light_GF_Udestue.sendCommand(OFF)
+            logInfo("Hue Rule", "Command was OFF, turning Light_GF_Udestue OFF.")
+        }
+        default: {
+            // Optional: Handle other potential commands or log an unknown command
+            logInfo("Hue Rule", "Received an unhandled command: " + Hue_Switch_2.state.toString)
+        }
+    }
+end

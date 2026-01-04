@@ -1,0 +1,44 @@
+ Bridge modbus:tcp:endpointMitsubishi [ host="10.0.5.59", port=502, id=1, connectMaxTries=1, timeBetweenTransactionsMillis=150, reconnectAfterMillis=60000  ] {
+
+// Mitsubishi Holding registers
+
+	Bridge poller Mitsubishi_holding_registers [ start=0, length=20, refresh=2000 , type="holding" , maxTries=1 ] {
+	    
+	         Thing data Mitsubishi_Drive_Mode [ readStart="0", readValueType="uint16", writeStart="0", writeValueType="int16", writeType="holding"]
+	    
+	         Thing data Mitsubishi_Temperature_Setpoint [ readStart="1", readValueType="uint16", readTransform="JS(divide10.js)", writeStart="1", writeValueType="int16", writeType="holding", writeTransform="JS(multiply10.js)"]
+
+	         Thing data Mitsubishi_Fan_Speed [ readStart="2", readValueType="uint16", writeStart="2", writeValueType="int16", writeType="holding"]
+	    
+	         Thing data Mitsubishi_Air_Direction [ readStart="3", readValueType="uint16", writeStart="3", writeValueType="int16",writeType="holding" ]
+		 
+		 Thing data Mitsubishi_Modbus_Slave_ID [ readStart="4", readValueType="uint16", writeStart="4", writeValueType="int16", writeType="holding"]
+	    
+	         Thing data Mitsubishi_Modbus_Baud_Rate [ readStart="5", readValueType="uint16", writeStart="5", writeValueType="int16",writeType="holding"]
+
+		 Thing data Mitsubishi_Parity_Type [ readStart="6", readValueType="uint16", writeStart="6", writeValueType="int16", writeType="holding"]
+	    
+	         Thing data Mitsubishi_Drive_On_Off [ readStart="7", readValueType="uint16", writeStart="7", writeValueType="int16", writeType="holding"]
+
+	         Thing data Mitsubishi_Room_Temperature [ readStart="8", readValueType="uint16", readTransform="JS(divide10.js)" ]
+	    
+	         
+		 Thing data Mitsubishi_Firmware_Version [ readStart="10", readValueType="uint16" ]
+	    
+	         Thing data Mitsubishi_Modbus_Comms_Counter [ readStart="11", readValueType="uint16" ]
+
+		 Thing data Mitsubishi_Fault_Code_decimal [ readStart="12", readValueType="uint16" ]
+	    
+	         Thing data Mitsubishi_System_Type_Detected [ readStart="13", readValueType="uint16" ]
+
+	         Thing data Mitsubishi_Deadband_Enabled_State  [ readStart="14", readValueType="uint16" ]
+	    
+	         Thing data Mitsubishi_BMS_Room_Temperature_signed [ readStart="15", readValueType="uint16", writeStart="15", writeValueType="int16",writeType="holding"]
+			    
+	         Thing data Mitsubishi_BMS_Virtual_Setpoint [ readStart="17", readValueType="uint16", readTransform="JS(divide10.js)", writeStart="17", writeValueType="int16",writeType="holding", writeTransform="JS(multiply10.js)" ]
+
+		 Thing data Mitsubishi_Deadband_Heating_Setpoint [ readStart="18", readValueType="uint16", writeStart="18", writeValueType="int16", writeType="holding" ]
+	    
+	         Thing data Mitsubishi_Deadband_Cooling_Setpoint [ readStart="19", readValueType="uint16", writeStart="19", writeValueType="int16",writeType="holding"]
+		 }
+ }

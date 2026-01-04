@@ -1,0 +1,6 @@
+Switch      Nilan_Forceret                                                                         <time>
+Number      Nilan_Timer_Selector          "Override Time"                                        <time>
+Number      Nilan_Timer_Remaining         "Remaining Override Time [%s minutes]"        <time>
+// additional items so I can see the start/stop times on the sitemap
+DateTime    Nilan_Timer_DateTime_Start    "Last Start/Update[%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"    <time>
+DateTime    Nilan_Timer_DateTime_Stop     "Latest Stopped [%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"      <time>

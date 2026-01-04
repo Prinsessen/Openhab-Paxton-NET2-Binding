@@ -1,0 +1,75 @@
+// Calculating average Energy for dishwasher in the past 5
+// Optimized for openHAB 5.0
+rule "Average energy available for dishwasher"
+when
+    // This trigger fires whenever the energy item receives an update
+    Item EM24_Energy_Grid received update
+then
+    // Ensure the required simulator items have valid states before proceeding
+    if (DishwasherSimulator_Solar.state == NULL || EM24_Energy_Grid.state == NULL) {
+        logWarn("Dishwasher Energy", "Prerequisites (Solar state or Energy Grid state) are NULL, skipping calculation.")
+        return
+    }
+
+    if (DishwasherSimulator_Solar.state == ON) {
+        // Calculate the average energy over the last 5 minutes.
+        // openHAB returns an object that must be handled carefully if history is missing.
+        val avgEnergyState = EM24_Energy_Grid.averageSince(now.minusMinutes(5))
+
+        if (avgEnergyState instanceof Number) {
+            val avgEnergyValue = avgEnergyState as Number
+
+            // Update the state using a standard Number
+            // Assuming we want exported energy (negative grid usage) to be positive "free energy".
+            Dishwasher_Avrg_Energy.postUpdate(avgEnergyValue * -1)
+            logInfo("Dishwasher Energy", "Free energy updated: " + Dishwasher_Avrg_Energy.state)
+        } else {
+            // Log a warning if no data was found in the persistence service for that time frame
+            logWarn("Dishwasher Energy", "averageSince returned null or non-number state, check persistence service config.")
+        }
+    }
+end
+
+
+rule "Dishwasher free energy wash"
+when
+    // This trigger fires every minute
+    Time cron "0 */1 * * * ?"
+then
+    // Ensure Dishwasher_Avrg_Energy has a valid number value before comparison
+    if (Dishwasher_Avrg_Energy.state == NULL || !(Dishwasher_Avrg_Energy.state instanceof Number)) {
+        Dishwasher_Avrg_Energy.postUpdate(0)
+    }
+
+    // Explicitly cast the item states to Number types for safe comparison
+    val currentAvrgEnergy = Dishwasher_Avrg_Energy.state as Number
+    val requiredEnergyThreshold = 1.3 as Number
+
+    // Check all conditions using robust type comparisons
+    if (currentAvrgEnergy > requiredEnergyThreshold &&
+        DishwasherSimulator_Solar.state == ON &&
+        DishwasherSimulator_RemoteStartAllowanceState.state == ON) {
+
+        logInfo("Dishwasher", "Free energy rule triggered. Attempting to turn on dishwasher.")
+        DishwasherSimulator_PowerState.sendCommand("ON")
+
+        // Use a lambda (anonymous function within the timer)
+        createTimer(now.plusSeconds(5), [ |
+            // Check state again inside the timer
+            if (DishwasherSimulator_PowerState.state == ON) {
+                logInfo("Dishwasher", "Power confirmed ON. Setting program and starting cycle.")
+
+                // Send specific commands to control the simulated appliance
+                DishwasherSimulator_SelectedProgramState.sendCommand("Dishcare.Dishwasher.Program.Intensiv70")
+                DishwasherSimulator_Basic_Action_State.sendCommand("start")
+                
+                // Turn OFF the solar flag to prevent the rule from immediately re-triggering next minute
+                DishwasherSimulator_Solar.sendCommand("OFF")
+            } else {
+                logWarn("Dishwasher", "Power state did not transition to ON after 5 seconds, skipping program start.")
+            }
+        ])
+    }
+end
+
+

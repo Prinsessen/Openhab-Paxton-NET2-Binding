@@ -1,0 +1,6 @@
+Switch      Mitsuibshi_timer                   "Mitsubishi Timer [%s]"                                  <time>    ["switchable"]
+Number      Mitsubishi_Timer_Selector          "Timer Setpoint"                                         <time>
+Number      Mitsubishi_Timer_Remaining         "Remaining time  [%s minutes]"                           <time>
+// additional items so I can see the start/stop times on the sitemap
+DateTime    Mitsubishi_Timer_DateTime_Start    "Last Start/Update[%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"    <time>
+DateTime    Mitsubishi_Timer_DateTime_Stop     "Latest Stopped [%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"      <time>

@@ -1,0 +1,3 @@
+Switch    nanna_ring       "Nanna Ringing"    (all)    {mqtt="<[mosquitto:phone/nanna:command:ON]"}
+// Android Tasker MQTT Sluk-Alt Icon
+Switch    mqtt_sluk_alt                                {mqtt="<[mosquitto:openhab/slukalt:command:ON]"}

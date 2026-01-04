@@ -1,0 +1,131 @@
+//Optimized for OpenHAB 5.0
+rule "Traccar Open Port"
+    when
+        Item Geodirection changed
+    then
+        // Check that all required items have valid states before using them
+        if (GeofenceID.state == NULL || GeofenceID.state == UNDEF ||
+            UseruniqueID.state == NULL || UseruniqueID.state == UNDEF ||
+            Geodirection.state == NULL || Geodirection.state == UNDEF ||
+            Garageport_Bundstop.state == NULL || Garageport_Bundstop.state == UNDEF ||
+            Garageport_TopStop.state == NULL || Garageport_TopStop.state == UNDEF) {
+            
+            logWarn("Traccar Open Port", "One or more required item states are NULL or UNDEF. Rule execution skipped.")
+            return; // Stop the rule if data is missing
+        }
+
+        // Assign states to local variables for clarity and type safety
+        val String currentGeofenceID = GeofenceID.state.toString()
+        val String currentUseruniqueID = UseruniqueID.state.toString()
+        val String currentGeodirection = Geodirection.state.toString()
+        
+        // Use standard comparison operators (==) and check conditions
+        if (currentGeofenceID == "1" &&
+            currentUseruniqueID == "866088075183606" &&
+            currentGeodirection == "geofenceEnter" &&
+            Garageport_Bundstop.state == OPEN &&
+            Garageport_TopStop.state == CLOSED) {
+            
+            logInfo("Traccar Open Port", "Conditions met. Opening garage door and turning on light.")
+            
+            net2_Args.sendCommand("--did 7242929 --rid Relay1 --rea TimedOpen --ret 500 --fla 3")
+            net2_Run.sendCommand(ON)
+            // Assuming Light_GA_Bil_Loft is a Dimmer or Number item that accepts 100
+            Light_GA_Bil_Loft.sendCommand(100)
+        }
+    end
+
+
+//Optimized for OpenHAB 5.0
+rule "Traccar Close Port"
+    when
+        Item Geodirection changed
+    then
+        // Check that all required items have valid states before using them
+        if (GeofenceID.state == NULL || GeofenceID.state == UNDEF ||
+            UseruniqueID.state == NULL || UseruniqueID.state == UNDEF ||
+            Geodirection.state == NULL || Geodirection.state == UNDEF ||
+            Garageport_Bundstop.state == NULL || Garageport_Bundstop.state == UNDEF ||
+            Garageport_TopStop.state == NULL || Garageport_TopStop.state == UNDEF) {
+
+            logWarn("Traccar Close Port", "One or more required item states are NULL or UNDEF. Rule execution skipped.")
+            return; // Stop the rule if data is missing
+        }
+
+        // Assign states to local variables for clarity and type safety
+        val String currentGeofenceID = GeofenceID.state.toString()
+        val String currentUseruniqueID = UseruniqueID.state.toString()
+        val String currentGeodirection = Geodirection.state.toString()
+
+        // Use standard comparison operators (==) and check conditions
+        if (currentGeofenceID == "1" &&
+            currentUseruniqueID == "866088075183606" &&
+            currentGeodirection == "geofenceExit" &&
+            Garageport_Bundstop.state == CLOSED &&
+            Garageport_TopStop.state == OPEN) {
+
+            logInfo("Traccar Close Port", "Conditions met. Closing garage door and turning off light.")
+
+            net2_Args.sendCommand("--did 7242929 --rid Relay1 --rea TimedOpen --ret 500 --fla 3")
+            net2_Run.sendCommand(ON)
+            // Assuming Light_GA_Bil_Loft is a Dimmer or Number item that accepts 0
+            Light_GA_Bil_Loft.sendCommand(0)
+        }
+    end
+
+//Optimized for OpenHAB 5.0
+rule "Traccar Convert TotalDistance from meter to km for Springfield"
+    when
+        Item totalDistance received update
+    then
+        // Ensure both source items have valid states before calculation
+        if (UseruniqueID.state != NULL && UseruniqueID.state != UNDEF &&
+            totalDistance.state instanceof Number) {
+
+            // Assign state to local variable for clarity and type safety
+            val String currentUseruniqueID = UseruniqueID.state.toString()
+
+            // Check conditions and perform calculation
+            if (currentUseruniqueID == "866088075183606") {
+                // Calculate distance in km (using as Number for safety)
+                val Number distanceKm = (totalDistance.state as Number) / 1000
+
+                // Post the update
+                totalDistanceSpringfield.postUpdate(distanceKm)
+                logInfo("Traccar Dist Conv", "Updated totalDistanceSpringfield to: " + distanceKm + " km")
+            }
+        } else {
+            logWarn("Traccar Dist Conv", "Conditions not met or items are NULL/UNDEF. Cannot convert distance.")
+        }
+    end
+
+//Optimized for OpenHAB 5.0
+rule "Traccar Convert Springfield RPM"
+    when
+        Item springRPM received update
+    then
+        // Ensure both source items have valid states before calculation
+        if (UseruniqueID.state != NULL && UseruniqueID.state != UNDEF &&
+            springRPM.state instanceof Number) {
+
+            // Assign state to local variable for clarity and type safety
+            val String currentUseruniqueID = UseruniqueID.state.toString()
+
+            // Check conditions and perform update
+            if (currentUseruniqueID == "866088075183606") {
+                // The calculation /1 doesn't change the value, but we ensure the type is Number
+                val Number rpmValue = (springRPM.state as Number)
+
+                // Post the update
+                springRPM.postUpdate(rpmValue)
+                logInfo("Traccar RPM Conv", "Updated springfieldRPM to: " + rpmValue + " RPM")
+            }
+        } else {
+            logWarn("Traccar RPM Conv", "Conditions not met or items are NULL/UNDEF. Cannot process RPM.")
+        }
+    end
+
+
+
+
+

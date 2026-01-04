@@ -1,0 +1,32 @@
+var Integer Dimmer
+var Integer DimmerCheck
+var Integer HueVal
+var Integer SatVal
+var DecimalType hue = new DecimalType(0) // 0-360; 0=red, 120=green, 240=blue, 360=red(again)
+var PercentType sat = new PercentType(100) // 0-100
+var PercentType bright = new PercentType(0)
+var HSBType light
+
+Dimmer = 3
+HueVal = 2
+SatVal = 99
+DimmerCheck=Dimmer
+
+while(Dimmer<=90) // End up at 90% brightness
+  {
+   if (Dimmer==DimmerCheck)
+     {
+      bright = new PercentType(Dimmer)
+      hue = new DecimalType(HueVal)
+      sat = new PercentType(SatVal)
+      light = new HSBType(hue,sat,bright)
+      Light1_Color.sendCommand(light.toString)
+      Dimmer = Dimmer + 3
+      HueVal = HueVal + 2 // Increment from 0 to 60 over half an hour
+      SatVal = SatVal - 1 // Decrement from 100 saturation to 70% over half an hour
+		 
+        Thread::sleep(60000)
+        DimmerCheck = Dimmer
+            }
+        }
+

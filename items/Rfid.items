@@ -1,0 +1,5 @@
+/* RFID interface */
+String      Rfid_receive        "Rfid Raw [%s]"                                   <settings>    (gSet)    {channel="remoteopenhab:server:oh2:Rfid_receive"}
+Number      Rfid_receive_num    "Rfid ID [%s] "
+DateTime    Last_Scan_Stamp     "Last Scan [%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"    <iclock>
+String      Rfid_receive_Raw    "Rfid Raw Data [%s]"                              <settings>

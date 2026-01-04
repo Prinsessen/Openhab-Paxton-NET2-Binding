@@ -1,0 +1,222 @@
+//import org.openhab.model.script.actions.Timer
+//import org.openhab.core.library.types.*
+//import org.openhab.core.persistence.*
+//import org.openhab.model.script.actions.*
+//import org.joda.time.*
+
+// Define global variables at the top of your .rules file, outside of any specific rule definition
+var Timer delayTimer = null
+var Number Humidity = null
+val int timeoutMinutes = 20
+var Timer timer = null
+var Number minimumValue = null // 'min' renamed to minimumValue to avoid keyword conflict
+
+// Openhab 5 Optimized Rules 
+rule "Init Metz 2 / Reset"
+    when
+        Item Reset_Metz changed
+    then
+        // The commands below will run whenever 'Reset_Metz' changes its state.
+
+        metz_out_run.postUpdate(2)
+        metz_out1_10v.postUpdate(0)
+
+        // It is good practice to log updates for debugging system initialization
+        logInfo("Init Metz 2", "Resetting boiler charge averages and diffs to 0.")
+
+        EM24_Boil_Charge_Avrg.postUpdate(0)
+        Boiler_Energy_Diff.postUpdate(0)
+
+    end
+
+// Openhab 5 Optimized - Setting Virtual Items to 0 - To avoid NULL error in log
+rule "Init Metz"
+    when
+        System started
+    then
+        // Check for both NULL and UNDEF states for maximum robustness at startup
+
+        if (metz_out1_10v.state == NULL || metz_out1_10v.state == UNDEF) {
+            metz_out1_10v.postUpdate(0)
+            logInfo("Init Metz", "metz_out1_10v was initialized to 0.")
+        }
+
+        if (Boiler_Energy_New.state == NULL || Boiler_Energy_New.state == UNDEF) {
+            Boiler_Energy_New.postUpdate(0)
+            logInfo("Init Metz", "Boiler_Energy_New was initialized to 0.")
+        }
+end
+
+// Openhab 5 Optimized 
+rule "Delay Timer"
+//  Currently not in use - To activate, remove the comment '//' from the rule name
+when
+    Item District_Heating changed
+then
+    if (timer === null) {
+        logInfo("Delay Timer Rule", "Setting to ON and creating timer")
+        // Assuming you meant to issue a command to 'District_Heating' or another item here
+        // District_Heating.sendCommand(ON) 
+        
+        timer = createTimer(now.plusMinutes(1), [|
+            logInfo("Delay Timer Rule", "Timer expired and setting timer variable to null")
+            timer = null
+        ])
+    } else {
+        logInfo("Delay Timer Rule", "Timer rescheduled")
+        timer.reschedule(now.plusMinutes(1))
+    }
+end
+
+// Openhab 5 Optimized
+rule "Calculating the minumium energy value for heater over the past period"
+    when
+        Item EM24_Energy_Grid received update
+    then
+        // The minimumSince method returns a RetimedHistoricItem.
+        val minValueItem = EM24_Boil_Charge.minimumSince(now.minusSeconds(30))
+
+        // Check if the persistence query returned a valid item object
+        if (minValueItem == NULL || minValueItem == UNDEF) {
+            logWarn("Heater Min Calc", "Persistence call for minimum value returned NULL or UNDEF (no data found). Check persistence configuration.")
+            return; // Stop the rule execution safely
+        }
+        
+        // Access the '.state' property of the historic item object to get the actual numeric value
+        val Number minValue = minValueItem.state as Number
+
+        // Post the valid minimum value to the target item.
+        EM24_Boil_Charge_Avrg.postUpdate(minValue)
+end
+
+// Openhab 5 Optimized
+rule "MetroTherm Boiler Value pasted to Metz Output for EuroTherm"
+    when
+        Item EM24_Boil_Charge received update
+        or
+        Item EM24_Boil_Charge_Avrg received update
+    then
+        // Use 'as Number' for safer, more general casting in Rules DSL
+        val currentAverage = EM24_Boil_Charge_Avrg.state as Number
+
+        // Check if the currentAverage is a valid number before making comparisons
+        if (currentAverage === NULL || currentAverage === UNDEF) {
+            logWarn("MetroTherm Boiler", "EM24_Boil_Charge_Avrg state is NULL or UNDEF. Rule execution stopped.")
+            return;
+        }
+
+        // Check the conditions using the type-safe 'currentAverage' variable
+        if (currentAverage >= 0.2 && currentAverage <= 3.0) {
+            // Note: sendCommand might require the argument to be a specific type (Number, ON/OFF, etc.).
+            // Ensure metz_out1 expects a Number value.
+            sendCommand(metz_out1, currentAverage * 10400)
+            sendCommand(metz_out_run, 2) // Set the output flag to 2
+            logInfo("MetroTherm Boiler", "Average within 0.2 and 3.0 range. Sending calculated value and run=2.")
+
+        } else if (currentAverage < 0.2) {
+            sendCommand(metz_out_run, 0) // Set the output flag to 0
+            logInfo("MetroTherm Boiler", "Average below 0.2. Sending run=0.")
+
+        } else if (currentAverage > 3.0) {
+            sendCommand(metz_out_run, 1) // Set the output flag to 1
+            logInfo("MetroTherm Boiler", "Average above 3.0. Sending run=1.")
+        }
+end
+
+// Openhab 5 Optimized
+rule "Metz Output Run Mode sent to modbus output module" // Setting Outputmodule to 0 or 32000
+    when
+        Item metz_out_run changed
+    then
+        // Ensure the item has a valid numeric state before comparison
+        if (metz_out_run.state instanceof Number) {
+
+            // Use val to store the current state safely as a number
+            val Number runState = metz_out_run.state as Number
+
+            if (runState == 0) {
+                sendCommand(metz_out1, 0)
+                logInfo("Metz Output Rule", "metz_out_run is 0. Setting metz_out1 to 0.")
+
+            } else if (runState == 1) {
+                sendCommand(metz_out1, 32000)
+                logInfo("Metz Output Rule", "metz_out_run is 1. Setting metz_out1 to 32000.")
+            
+            } else if (runState == 2) {
+                // Handle the case where the state is 2 (e.g., from the Init rule)
+                logInfo("Metz Output Rule", "metz_out_run is 2. No 0/32000 output sent, value should be set by 'MetroTherm Boiler' rule.")
+            }
+
+        } else {
+            // Log a warning if the state is not a valid number (NULL/UNDEF)
+            logWarn("Metz Output Rule", "metz_out_run state is invalid (NULL/UNDEF). Actions skipped.")
+        }
+end
+
+// Openhab 5 Optimized
+rule "Metz Output1 Convert to 0/10v"
+    when
+        Item metz_out1 changed
+        or
+        Time cron "10,20,30,40,50,0 * * * * ?" // every 10 seconds
+    then
+        // Ensure the source item has a valid numeric state before calculation
+        if (metz_out1.state instanceof Number) {
+
+            // Calculate the 0-10V value (which will be a DecimalType/Number)
+            val Number voltageValue = (metz_out1.state as Number) * 0.0003125
+
+            // Post the update to the target item
+            metz_out1_10v.postUpdate(voltageValue)
+            logInfo("Metz Convert 0/10V", "Calculated and posted new voltage value: " + voltageValue)
+
+        } else {
+            // Log a warning if the source item is NULL or UNDEF
+            logWarn("Metz Convert 0/10V", "metz_out1 state is invalid (NULL/UNDEF). Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized
+rule "Boiler Total Kwh - Clear old remaining usage"
+    when
+        Time cron "10,20,30,40,50,0 * * * * ?" // every 10 seconds
+    then
+        // Check if the source item has a valid numeric state before calculation
+        if (EM24_boil_Energi_24_kWh.state instanceof Number) {
+
+            // Calculate the new energy value
+            val Number newEnergyValue = (EM24_boil_Energi_24_kWh.state as Number) - 31100
+
+            // Post the update to the target item
+            Boiler_Energy_New.postUpdate(newEnergyValue)
+            logInfo("Boiler Kwh Clear", "Calculated and posted new Boiler_Energy_New value: " + newEnergyValue)
+
+        } else {
+            // Log a warning if the source item is NULL or UNDEF
+            logWarn("Boiler Kwh Clear", "EM24_boil_Energi_24_kWh state is invalid (NULL/UNDEF). Calculation skipped.")
+        }
+end
+
+// Openhab 5 Optimized
+rule "Energy Boiler/Solar Difference"
+    when
+        Item EM24_Energy_Grid received update
+    then
+        // Check if all necessary items have valid number states before calculation
+        if (EM24_Energy_Grid.state instanceof Number &&
+            EM24_Boil_Energi_24_kW.state instanceof Number) {
+
+            // Calculate the energy difference using 'as Number' for type safety
+            // (Grid energy * -1) minus Boiler energy
+            val Number energyDifference = (EM24_Energy_Grid.state as Number) * -1 - (EM24_Boil_Energi_24_kW.state as Number)
+
+            // Post the result
+            Boiler_Energy_Diff.postUpdate(energyDifference)
+            logInfo("Energy Diff Rule", "Calculated and posted new Boiler_Energy_Diff value: " + energyDifference)
+
+        } else {
+            // Log a warning if any required item is NULL/UNDEF
+            logWarn("Energy Diff Rule", "One or more items (EM24_Energy_Grid or EM24_Boil_Energi_24_kW) are NULL/UNDEF. Calculation skipped.")
+        }
+end
+

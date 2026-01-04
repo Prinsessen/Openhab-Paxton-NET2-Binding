@@ -1,0 +1,10 @@
+Number    Temperature_C           "Temperature [%.2f °C]"            <temperature>     {channel="mqtt:topic:broker:dream-catcher:Temperature_C"}
+Number    Pressure_bar            "Pressure    [%.2f Bar]"           <pressure>        {channel="mqtt:topic:broker:dream-catcher:Pressure_bar"}
+Number    Pressure_psi            "Pressure    [%.2f Psi]"           <pressure>        {channel="mqtt:topic:broker:dream-catcher:Pressure_psi"}
+Number    Pressure_kPa            "Pressure    [%.2f kPa]"           <pressure>        {channel="mqtt:topic:broker:dream-catcher:Pressure_kpa"}
+Number    Battery                 "Battery     [%.2f %%]"            <batterylevel>    {channel="mqtt:topic:broker:dream-catcher:Battery"}
+Number    Alarm                   "Alarm [MAP(Ble_Alarm.map):%s]"    <alarm>           {channel="mqtt:topic:broker:dream-catcher:Alarm"}
+Number    BTrssi                  "BT Rssi[%.2f dBm]"                <bluetooth>       {channel="mqtt:topic:broker:dream-catcher:BTrssi"}
+String    Connected_ssid          "WiFi SSID"                        <network>         {channel="mqtt:topic:broker:dream-catcher:Dc_ssid"}
+String    Connected_ip_address    "WiFi IP"                          <settings>        {channel="mqtt:topic:broker:dream-catcher:Dc_ip_address"}
+String    Dc_Status               "Status"                           <settings>        {channel="mqtt:topic:broker:dream-catcher:Dc_Status"}

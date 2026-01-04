@@ -1,0 +1,46 @@
+//
+ARIES=♈ Vædder
+TAURUS=♉ Tyr
+GEMINI=♊ Tvilling
+CANCER=♋ Krebs
+LEO=♌ Løve
+VIRGO=♍ Jomfru
+LIBRA=♎ Vægten
+SCORPIO=♏ Skorpion
+SAGITTARIUS=♐ Skytte
+CAPRICORN=♑ Stenbuk
+AQUARIUS=♒ Vandmand
+PISCES=♓ Fisk
+
+//
+SPRING=Forår
+SUMMER=Sommer
+AUTUMN=Efterår
+WINTER=Vinter
+
+//
+SUN_RISE=Solopgang
+ASTRO_DAWN=Astronomisk Aften Skumring
+NAUTIC_DAWN=Nautisk Morgen Skumring
+CIVIL_DAWN=Civil Morgen Skumring 
+CIVIL_DUSK=Civil Aften Skumring
+NAUTIC_DUSK=Nautisk Aften Skumring
+ASTRO_DUSK=Astronomisk Aften Skumring
+SUN_SET=Solnedgang
+DAYLIGHT=Dag
+NOON=Middag
+NIGHT=Nat
+
+//
+NEW=Nymåne
+WAXING_CRESCENT=Stigende Halvmåne
+FIRST_QUARTER=Første Kvartal
+WAXING_GIBBOUS=Stigende Måne
+FULL=Fuldmåne
+WANING_GIBBOUS=Faldende Måne
+THIRD_QUARTER=Sidste Kvartal
+WANING_CRESCENT=Aftagende Halvmåne
+
+//
+NULL=unbekannt ⁉
+-=unbekannt ⁉

@@ -1,0 +1,236 @@
+// Global Timers declared with full class paths
+var org.openhab.core.model.script.actions.Timer fade_Timer1 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer2 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer3 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer4 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer5 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer6 = null
+var org.openhab.core.model.script.actions.Timer fade_Timer10 = null
+
+// Global variable for the fading percentage (needs to be mutable across timer iterations)
+var Number percent = 0
+
+// Global Timer for the second moon dimming effect
+var org.openhab.core.model.script.actions.Timer dim_moon2_timer = null
+
+// Global state variables for the current dimmer and saturation values during the fade
+var Number moon2_dimmer_level = 100 
+var Number moon2_sat_mini = 100
+var Number moon2_sat_midi = 100
+var Number moon2_sat_maxi = 0
+
+rule "Philips HUE OFF Stue"
+when
+    Time cron "0 59 23 * * ?" // 23:59:00 (11:59 PM) every day
+    or Item smarthouse_lux changed from ON to OFF
+    or Item Light1_ON changed from ON to OFF
+then
+    if (Light1_Dimmer.state instanceof Number) {
+        val Number current_dimmer_state = (Light1_Dimmer.state as Number)
+        // Round current percentage down to nearest 5
+        percent = ((current_dimmer_state.intValue() / 5) * 5) as Number 
+
+        fade_Timer1 = createTimer(now.plusSeconds(1)) [|
+            Light1_Dimmer.sendCommand(percent)
+            if (percent > 0) {
+                percent = percent.intValue() - 5
+                fade_Timer1.reschedule(now.plusSeconds(1))
+                // Use global postUpdate action with String arguments
+                postUpdate("Light1_ON", "OFF")
+            }
+        ]
+    }
+end
+
+rule "Philips HUE OFF TV Strip"
+when
+    Time cron "0 59 23 * * ?" // 23:59:00 (11:59 PM) every day
+    or Item smarthouse_lux changed from ON to OFF
+    or Item Light2_ON changed from ON to OFF
+then
+    if (Light2_Dimmer.state instanceof Number) {
+        val Number current_dimmer_state = (Light2_Dimmer.state as Number)
+        percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+        
+        fade_Timer2 = createTimer(now.plusSeconds(1)) [|	
+            Light2_Dimmer.sendCommand(percent)
+            if (percent > 0) {
+                percent = percent.intValue() - 5
+                fade_Timer2.reschedule(now.plusSeconds(1))
+                // Use global postUpdate action with String arguments
+                postUpdate("Light2_ON", "OFF")
+            }
+        ]
+    }
+end
+
+
+rule "Philips HUE OFF Triangle Windows Strip"
+when
+    Item smarthouse_lux changed from ON to OFF
+    or Item Light4_ON changed from ON to OFF
+then
+    if (Light4_Dimmer.state instanceof Number) {
+        val Number current_dimmer_state = (Light4_Dimmer.state as Number)
+        percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+        fade_Timer4 = createTimer(now.plusSeconds(1)) [|
+            Light4_Dimmer.sendCommand(percent)
+            if (percent > 0) {
+                percent = percent.intValue() - 5
+                fade_Timer4.reschedule(now.plusSeconds(1))
+                // Use global postUpdate action with String arguments
+                postUpdate("Light4_ON", "OFF")
+            }
+        ]
+    }
+end
+
+rule "Philips HUE OFF Kitchen Deko"
+when
+    Item smarthouse_lux changed from ON to OFF
+    or Item Light10_ON changed from ON to OFF
+then
+    if (Light10_Dimmer.state instanceof Number) {
+        val Number current_dimmer_state = (Light10_Dimmer.state as Number)
+        percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+        fade_Timer10 = createTimer(now.plusSeconds(1)) [|
+            Light10_Dimmer.sendCommand(percent)
+            if (percent > 0) {
+                percent = percent.intValue() - 5
+                fade_Timer10.reschedule(now.plusSeconds(1))
+                // Use global postUpdate action with String arguments
+                postUpdate("Light10_ON", "OFF")
+            }
+        ]
+    }
+end
+
+rule "Philips HUE Bedroom Strip"
+when
+    Time cron "0 59 23 * * ?" // 23:59:00 (11:59 PM) every day
+    or Item smarthouse_lux changed from ON to OFF
+    or Item Light3_ON changed from ON to OFF
+then
+    if (Light3_Dimmer.state instanceof Number) {
+        val Number current_dimmer_state = (Light3_Dimmer.state as Number)
+        percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+        
+        fade_Timer3 = createTimer(now.plusSeconds(1)) [|	
+            Light3_Dimmer.sendCommand(percent)
+            if (percent > 0) {
+                percent = percent.intValue() - 5
+                fade_Timer3.reschedule(now.plusSeconds(1))
+                // Use global postUpdate action with String arguments
+                postUpdate("Light3_ON", "OFF")
+            }
+        ]
+    }
+end
+
+rule "Philips HUE Ensis Up"
+when
+    Item smarthouse_lux changed from ON to OFF
+    or Item Light5_ON changed from ON to OFF
+then
+    if (Light5_Dimmer.state instanceof Number) {
+        val Number current_dimmer_state = (Light5_Dimmer.state as Number)
+        percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+        fade_Timer5 = createTimer(now.plusSeconds(1)) [|
+            Light5_Dimmer.sendCommand(percent)
+            if (percent > 0) {
+                percent = percent.intValue() - 5
+                fade_Timer5.reschedule(now.plusSeconds(1))
+                // Use global postUpdate action with String arguments
+                postUpdate("Light5_ON", "OFF")
+            }
+        ]
+    }
+end
+
+rule "Philips HUE Ensis Down"
+when
+    Item smarthouse_lux changed from ON to OFF
+    or Item Light6_ON changed from ON to OFF
+then
+    if (Light6_Dimmer.state instanceof Number) {
+        val Number current_dimmer_state = (Light6_Dimmer.state as Number)
+        percent = ((current_dimmer_state.intValue() / 5) * 5) as Number
+
+        fade_Timer6 = createTimer(now.plusSeconds(1)) [|
+            Light6_Dimmer.sendCommand(percent)
+            if (percent > 0) {
+                percent = percent.intValue() - 5
+                fade_Timer6.reschedule(now.plusSeconds(1))
+                // Use global postUpdate action with String arguments
+                postUpdate("Light6_ON", "OFF")
+            }
+        ]
+    }
+end
+
+rule "Dimming MOON - 2"
+when 
+    // Trigger when Light7_ColorTemp changes from 1 to 0 (or a specific state if 1 is a value, not a type)
+    // Assuming 1 and 0 are values (Percent or Decimal)
+    Item Light7_ON changed from ON to OFF
+then
+    // Initialize global variables for this new run
+    moon2_dimmer_level = 100
+    moon2_sat_mini = 100
+    moon2_sat_midi = 100
+    moon2_sat_maxi = 0
+    
+    // Ensure any existing timer is cancelled before starting a new one
+    if (dim_moon2_timer !== null) {
+        dim_moon2_timer.cancel()
+        dim_moon2_timer = null
+    }
+
+    // Start the recursive timer process, using a 5-second delay per step as in the original
+    dim_moon2_timer = createTimer(now.plusSeconds(5), [|
+
+        // Send commands with current global values (using sendCommand action with item name as string)
+        sendCommand("Light9_ColorTemp", moon2_sat_mini.toString())
+        sendCommand("Light8_ColorTemp", moon2_sat_midi.toString())
+        sendCommand("Light7_ColorTemp", moon2_sat_maxi.toString())
+
+        // Update the levels for the next iteration (decrement dimmer, change sats)
+        moon2_dimmer_level = moon2_dimmer_level.intValue() - 1
+        moon2_sat_mini = moon2_sat_mini.intValue() - 1
+        moon2_sat_midi = moon2_sat_midi.intValue() - 1
+        moon2_sat_maxi = moon2_sat_maxi.intValue() + 1
+
+        // Check if we need to continue fading (dimmer >= 0)
+        if (moon2_dimmer_level >= 0) {
+            // Reschedule the timer to run again in 5 seconds
+            dim_moon2_timer.reschedule(now.plusSeconds(5))
+        } else {
+            // Fading complete, stop the timer
+            logInfo("rules", "Dimming MOON 2 fade finished.")
+            dim_moon2_timer = null
+        }
+    ])
+end
+
+
+rule "Moon On/Off Smarthouse"
+when
+    Item Smarthouse_Moons changed
+then
+    // Use sendCommand actions with string arguments for compatibility and best practice
+    if (Smarthouse_Moons.state == OFF) {
+        sendCommand("Light7_Toggle", "OFF")
+	    sendCommand("Light8_Toggle", "OFF")
+        sendCommand("Light9_Toggle", "OFF")
+    }
+    else {
+        sendCommand("Light7_Toggle", "ON")
+        sendCommand("Light8_Toggle", "ON")
+        sendCommand("Light9_Toggle", "ON")
+    }
+end
+
+
