@@ -279,7 +279,7 @@ def normalize_event_time(value):
 
 def process_events_for_openhab(events):
     """Process events and extract OpenHAB-relevant information"""
-    door_states = {}  # device_name: last_event
+    door_states = {}  # canonical_door_key: last_event
     user_presence = {}  # user_name: last_seen
     security_events = []
 
@@ -299,31 +299,34 @@ def process_events_for_openhab(events):
 
     for event in events:
         event_type = event.get('eventType', 0)
-        
         if event_type not in DOOR_EVENT_TYPES:
             continue
-        
+
         # Extract user info
         first_name = event.get('firstName', '')
         middle_name = event.get('middleName', '')
         surname = event.get('surname', '')
         user_name = ' '.join([p for p in [first_name, middle_name, surname] if p]).strip()
-        
         if not user_name:
             user_name = 'Unknown'
-        
+
         # Extract event details
         device_name = event.get('deviceName', '')
         event_time = event.get('eventTime', '')
         event_desc = event.get('eventDescription', '')
-        
+
+        # Canonicalize door key for merging (handles multi-reader doors)
+        door_key = extract_door_key(device_name)
+        if "6612642" in door_key:
+            door_key = "Fordør ACU 6612642"
+
         # Track door entry using ACCESS_GRANTED (contains the actual entry time/user). Treat as OPEN for state.
         if device_name and event_type in ACCESS_GRANTED_TYPES and user_name and user_name != 'Unknown':
-            current = door_states.get(device_name)
+            current = door_states.get(door_key)
             incoming_ts = parse_iso_datetime(event_time)
             current_ts = parse_iso_datetime(current['time']) if current else None
             if current is None or (incoming_ts and current_ts and incoming_ts > current_ts) or (incoming_ts and current_ts is None):
-                door_states[device_name] = {
+                door_states[door_key] = {
                     'state': 'OPEN',
                     'time': event_time,
                     'user': user_name,
@@ -332,11 +335,11 @@ def process_events_for_openhab(events):
 
         # Track explicit door opened events
         if device_name and event_type in DOOR_OPENED_TYPES:
-            current = door_states.get(device_name)
+            current = door_states.get(door_key)
             incoming_ts = parse_iso_datetime(event_time)
             current_ts = parse_iso_datetime(current['time']) if current else None
             if current is None or (incoming_ts and current_ts and incoming_ts > current_ts) or (incoming_ts and current_ts is None):
-                door_states[device_name] = {
+                door_states[door_key] = {
                     'state': 'OPEN',
                     'time': event_time,
                     'user': user_name,
@@ -345,17 +348,17 @@ def process_events_for_openhab(events):
 
         # Track explicit door closed events
         if device_name and event_type in DOOR_CLOSED_TYPES:
-            current = door_states.get(device_name)
+            current = door_states.get(door_key)
             incoming_ts = parse_iso_datetime(event_time)
             current_ts = parse_iso_datetime(current['time']) if current else None
             if current is None or (incoming_ts and current_ts and incoming_ts > current_ts) or (incoming_ts and current_ts is None):
-                door_states[device_name] = {
+                door_states[door_key] = {
                     'state': 'CLOSED',
                     'time': event_time,
                     'user': user_name,
                     'event_type': event_type
                 }
-        
+
         # Track user presence (access granted means user entered)
         if event_type in ACCESS_GRANTED_TYPES:
             user_presence[user_name] = {
@@ -363,7 +366,7 @@ def process_events_for_openhab(events):
                 'time': event_time,
                 'method': 'PIN' if event_type == 26 else 'Card'
             }
-        
+
         # Track security events (access denied)
         if event_type in ACCESS_DENIED_TYPES:
             security_events.append({
@@ -373,7 +376,7 @@ def process_events_for_openhab(events):
                 'description': event_desc,
                 'severity': 'WARNING'
             })
-        
+
         # Track door held open
         if event_type in DOOR_HELD_OPEN_TYPES:
             security_events.append({
@@ -383,7 +386,7 @@ def process_events_for_openhab(events):
                 'description': 'Door held open',
                 'severity': 'ALERT'
             })
-    
+
     return door_states, user_presence, security_events
 
 def extract_door_key(device_name):
@@ -393,11 +396,17 @@ def extract_door_key(device_name):
         parts = device_name.split(' - ', 1)
         if len(parts) > 1:
             device_name = parts[1]
-    
+
     # Remove direction suffix like " (Ind)", " (Ud)"
     if ' (' in device_name:
         device_name = device_name.split(' (')[0]
-    
+
+    # Normalize all readers for ACU 6612642 to the same canonical key
+    if "6612642" in device_name or "FaceID" in device_name or "marine reader" in device_name:
+        return "Fordør ACU 6612642"
+
+    # Add similar normalization for other multi-reader ACUs if needed
+
     return device_name.strip()
 
 def sync_to_openhab(token):
@@ -405,7 +414,7 @@ def sync_to_openhab(token):
     log("Starting sync to OpenHAB...")
     
     # Get recent events
-    events = get_recent_events(token, minutes=5)
+    events = get_recent_events(token, minutes=1440)
     door_states, user_presence, security_events = process_events_for_openhab(events)
 
     # Auto-close doors that only emit an open pulse and no close event
@@ -427,24 +436,9 @@ def sync_to_openhab(token):
                     'event_type': 'auto_close'
                 }
     
-    # Merge door states by canonical item to avoid older sister-reader events overwriting newer ones
-    merged_door_states = {}
-    for door_name, state_info in door_states.items():
-        door_key = extract_door_key(door_name)
-        if "6612642" in door_key:
-            door_key = "Fordør ACU 6612642"
+    # Door states are now keyed by canonical door key; update OpenHAB items directly
+    for door_key, state_info in door_states.items():
         item_name = f"Net2_Door_{sanitize_item_name(door_key)}"
-
-        incoming_ts = parse_iso_datetime(state_info.get('time'))
-        existing = merged_door_states.get(item_name)
-        existing_ts = parse_iso_datetime(existing['time']) if existing else None
-
-        # Keep the newest event per item_name
-        if existing is None or (incoming_ts and existing_ts and incoming_ts > existing_ts) or (incoming_ts and existing_ts is None):
-            merged_door_states[item_name] = {**state_info, 'door_key': door_key}
-
-    # Update door states
-    for item_name, state_info in merged_door_states.items():
         # Write door state if present
         if state_info.get('state') in ['OPEN', 'CLOSED']:
             update_openhab_item(f"{item_name}_State", state_info['state'], "String")
