@@ -326,6 +326,9 @@ def generate_html(user_activity, event_summary, hours, refresh_interval, usernam
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="{refresh_interval}">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Paxton Net2 User Activity</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
@@ -468,6 +471,9 @@ def generate_door_html(door_name, door_events, refresh_interval, username):
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="{refresh_interval}">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>{door_name} - Activity Log</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
