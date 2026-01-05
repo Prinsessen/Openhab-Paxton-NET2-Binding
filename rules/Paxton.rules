@@ -39,7 +39,7 @@ rule "Paxton Door"
 // Optimized for Openhab 5/ Paxton Integration
  rule "process your results"
     when
-        Item net2_Run changed from OFF to ON
+        Item net2_Run changed from ON to OFF
     then
         // Check if net2_Out has a valid state before using it
         if (net2_Out.state != NULL && net2_Out.state != UNDEF) {
