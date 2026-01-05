@@ -471,32 +471,21 @@ def generate_door_html(door_name, door_events, refresh_interval, username):
     <title>{door_name} - Activity Log</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; }}
-        .container {{ max-width: 1200px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); overflow: hidden; }}
-        .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }}
-        .header h1 {{ font-size: 2em; margin-bottom: 10px; }}
-        .header p {{ font-size: 0.9em; opacity: 0.9; }}
-        .content {{ padding: 30px; }}
-        .events-table {{ width: 100%; border-collapse: collapse; }}
-        .events-table th {{ background: #667eea; color: white; padding: 12px; text-align: left; }}
-        .events-table td {{ padding: 12px; border-bottom: 1px solid #e0e0e0; }}
-        .events-table tr:hover {{ background: #f5f5f5; }}
-        .event-result {{ padding: 5px 10px; border-radius: 5px; font-weight: bold; }}
+        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 0; margin: 0; overflow-x: hidden; }}
+        .container {{ width: 100%; margin: 0; background: white; overflow: hidden; }}
+        .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px; text-align: center; }}
+        .header h1 {{ font-size: 0.95em; margin-bottom: 5px; word-wrap: break-word; word-break: break-word; line-height: 1.3; }}
+        .header p {{ font-size: 0.65em; opacity: 0.9; }}
+        .content {{ padding: 8px; }}
+        .event-card {{ background: #f8f9fa; border-left: 4px solid #667eea; margin-bottom: 8px; padding: 8px; border-radius: 4px; word-wrap: break-word; }}
+        .event-user {{ font-weight: bold; font-size: 0.85em; color: #333; margin-bottom: 4px; word-break: break-word; }}
+        .event-time {{ font-size: 0.7em; color: #666; margin-bottom: 4px; }}
+        .event-type {{ font-size: 0.75em; color: #555; margin-bottom: 4px; word-break: break-word; }}
+        .event-result {{ padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.7em; display: inline-block; }}
         .result-granted {{ background: #d4edda; color: #155724; }}
         .result-denied {{ background: #f8d7da; color: #721c24; }}
         .result-unknown {{ background: #e2e3e5; color: #383d41; }}
-        .footer {{ background: #f8f9fa; padding: 20px; text-align: center; color: #666; }}
-        
-        @media (max-width: 768px) {{
-            body {{ padding: 5px; }}
-            .header {{ padding: 15px 10px; }}
-            .header h1 {{ font-size: 1.2em; }}
-            .header p {{ font-size: 0.75em; }}
-            .content {{ padding: 10px; overflow-x: auto; }}
-            .events-table {{ font-size: 0.75em; }}
-            .events-table th, .events-table td {{ padding: 8px 4px; }}
-            .event-result {{ padding: 3px 6px; font-size: 0.75em; }}
-        }}
+        .footer {{ background: #f8f9fa; padding: 8px; text-align: center; color: #666; font-size: 0.6em; line-height: 1.4; }}
     </style>
 </head>
 <body>
@@ -508,16 +497,6 @@ def generate_door_html(door_name, door_events, refresh_interval, username):
         </div>
         
         <div class="content">
-            <table class="events-table">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Timestamp</th>
-                        <th>Event Type</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
 """
     
     # Limit to last 25 events
@@ -539,17 +518,15 @@ def generate_door_html(door_name, door_events, refresh_interval, username):
             result_class = 'result-unknown'
         
         html_content += f"""
-                    <tr>
-                        <td><strong>{user_name}</strong></td>
-                        <td>{timestamp}</td>
-                        <td>{event_type}</td>
-                        <td><span class="event-result {result_class}">{result}</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 {user_name}</div>
+                <div class="event-time">🕐 {timestamp}</div>
+                <div class="event-type">{event_type}</div>
+                <span class="event-result {result_class}">{result}</span>
+            </div>
 """
     
     html_content += f"""
-                </tbody>
-            </table>
         </div>
         
         <div class="footer">
