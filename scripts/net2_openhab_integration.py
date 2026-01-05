@@ -8,7 +8,7 @@ Syncs Net2 access control data with OpenHAB items for automation and monitoring
 import json
 import requests
 import argparse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import sys
 import time
 import os
@@ -59,6 +59,9 @@ ACCESS_DENIED_TYPES = [23, 24, 25, 27]
 DOOR_OPENED_TYPES = [28, 46]
 DOOR_CLOSED_TYPES = [29, 47]
 DOOR_HELD_OPEN_TYPES = [93]
+
+# Auto-close fallback (seconds) to handle pulse-only doors without explicit close events
+AUTO_CLOSE_SECONDS = int(os.getenv("NET2_DOOR_AUTOCLOSE_SECONDS", "8"))
 
 # -----------------------------
 # Argument Parser
@@ -243,6 +246,22 @@ def sanitize_item_name(name):
     # Remove leading/trailing underscores
     return name.strip('_')
 
+def parse_iso_datetime(value):
+    """Parse ISO8601 timestamps, handling trailing Z."""
+    if not value:
+        return None
+    try:
+        # Handle Zulu suffix
+        if isinstance(value, str):
+            value = value.replace('Z', '+00:00')
+        dt = datetime.fromisoformat(value)
+        # If timezone-naive, assume UTC to keep comparisons consistent
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except Exception:
+        return None
+
 def process_events_for_openhab(events):
     """Process events and extract OpenHAB-relevant information"""
     door_states = {}  # door_id: last_event
@@ -339,6 +358,24 @@ def sync_to_openhab(token):
     # Get recent events
     events = get_recent_events(token, minutes=5)
     door_states, user_presence, security_events = process_events_for_openhab(events)
+
+    # Auto-close doors that only emit an open pulse and no close event
+    if AUTO_CLOSE_SECONDS > 0:
+        now_ts = datetime.now(timezone.utc)
+        for door_name, state_info in list(door_states.items()):
+            if state_info.get('state') != 'OPEN':
+                continue
+            event_ts = parse_iso_datetime(state_info.get('time'))
+            if event_ts is None:
+                continue
+            elapsed = (now_ts - event_ts).total_seconds()
+            if elapsed >= AUTO_CLOSE_SECONDS:
+                door_states[door_name] = {
+                    'state': 'CLOSED',
+                    'time': now_ts.isoformat(),
+                    'user': state_info.get('user', 'auto-close'),
+                    'event_type': 'auto_close'
+                }
     
     # Update door states
     for door_name, state_info in door_states.items():

@@ -23,9 +23,15 @@ curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" https://openhab5.agesen.dk/r
 ```
 Expected output: Should show ~75+ items (7 doors × 3 items + 31 users × 3 items + stats/security items)
 
+If your OpenHAB TLS cert requires a custom CA bundle, add:
+```bash
+export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+```
+
 ### 3. Run Initial Sync
 ```bash
 export OPENHAB_TOKEN=Ai
+export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 /etc/openhab/scripts/net2_openhab_integration.py --mode sync --verbose
 ```
 
@@ -38,6 +44,7 @@ This will:
 ### 4. Start Continuous Monitoring (Optional)
 ```bash
 export OPENHAB_TOKEN=Ai
+export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 /etc/openhab/scripts/net2_openhab_integration.py --mode monitor --interval 30 --verbose
 ```
 

@@ -2,72 +2,57 @@ sitemap net2 label="Paxton Net2" {
     
     Frame label="Hoveddøre" {
         Text item=Net2_Door_Fordoer_ACU_6612642_State icon="door" valuecolor=[=="ACCESS_GRANTED"="green", =="ACCESS_DENIED"="red", =="OPEN"="orange", =="CLOSED"="gray"]
-        Text item=Net2_Door_Fordoer_ACU_6612642_LastUser icon="user"
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate icon="time"
-        
+
         Text item=Net2_Door_Fordoer_Porsevej_ACU967438_State label="Fordør Porsevej [%s]" icon="door" valuecolor=[=="ACCESS_GRANTED"="green", =="ACCESS_DENIED"="red", =="OPEN"="orange", =="CLOSED"="gray"]
-        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUser icon="user"
         Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate icon="time"
-        
+
         Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_State label="Fordør Terndrupvej [%s]" icon="door" valuecolor=[=="ACCESS_GRANTED"="green", =="ACCESS_DENIED"="red", =="OPEN"="orange", =="CLOSED"="gray"]
-        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser icon="user"
         Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate icon="time"
     }
     
     Frame label="Garage & Værksted" {
         Text item=Net2_Door_Garage_Port_ACU7242929_State label="Garage Port [%s]" icon="garagedoor" valuecolor=[=="ACCESS_GRANTED"="green", =="ACCESS_DENIED"="red", =="OPEN"="orange", =="CLOSED"="gray"]
-        Text item=Net2_Door_Garage_Port_ACU7242929_LastUser icon="user"
         Text item=Net2_Door_Garage_Port_ACU7242929_LastUpdate icon="time"
-        
+
         Text item=Net2_Door_Vaerksted_ACU_01265688_State label="Værksted [%s]" icon="door" valuecolor=[=="ACCESS_GRANTED"="green", =="ACCESS_DENIED"="red", =="OPEN"="orange", =="CLOSED"="gray"]
-        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser icon="user"
         Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate icon="time"
-        
+
         Text item=Net2_Door_Vaerksted_Doer_Central_03962494_State label="Værksted Dør [%s]" icon="door" valuecolor=[=="ACCESS_GRANTED"="green", =="ACCESS_DENIED"="red", =="OPEN"="orange", =="CLOSED"="gray"]
-        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser icon="user"
         Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate icon="time"
     }
     
     Frame label="Kælder" {
         Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_State label="Andreas Udv.Kælder [%s]" icon="door" valuecolor=[=="ACCESS_GRANTED"="green", =="ACCESS_DENIED"="red", =="OPEN"="orange", =="CLOSED"="gray"]
-        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser icon="user"
         Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate icon="time"
     }
     
     Frame label="Familiemedlemmer Tilstede" {
         Switch item=Net2_User_Nanna_Sloth_Agesen_Present label="Nanna" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Nanna_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Nanna_Sloth_Agesen_Present==ON]
-        Text item=Net2_User_Nanna_Sloth_Agesen_LastSeen icon="time"
-        
+
         Switch item=Net2_User_Anna_Fage_Sloth_Agesen_Present label="Anna" icon="girl_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Anna_Fage_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Anna_Fage_Sloth_Agesen_Present==ON]
-        Text item=Net2_User_Anna_Fage_Sloth_Agesen_LastSeen icon="time"
-        
+
         Switch item=Net2_User_Andreas_Fage_Sloth_Agesen_Present label="Andreas" icon="boy_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Andreas_Fage_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Andreas_Fage_Sloth_Agesen_Present==ON]
-        Text item=Net2_User_Andreas_Fage_Sloth_Agesen_LastSeen icon="time"
-        
+
         Switch item=Net2_User_Keld_Agesen_Present label="Keld" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Keld_Agesen_Location icon="location" visibility=[Net2_User_Keld_Agesen_Present==ON]
-        Text item=Net2_User_Keld_Agesen_LastSeen icon="time"
-        
+
         Switch item=Net2_User_Vanda_Sloth_Agesen_Present label="Vanda" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Vanda_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Vanda_Sloth_Agesen_Present==ON]
-        Text item=Net2_User_Vanda_Sloth_Agesen_LastSeen icon="time"
     }
     
     Frame label="Andre Brugere" {
         Switch item=Net2_User_Henrik_Brander_Present label="Henrik Brander" icon="man_1"
         Text item=Net2_User_Henrik_Brander_Location icon="location" visibility=[Net2_User_Henrik_Brander_Present==ON]
-        Text item=Net2_User_Henrik_Brander_LastSeen icon="time"
-        
+
         Switch item=Net2_User_Mette_Brander_Present label="Mette Brander" icon="woman_1"
         Text item=Net2_User_Mette_Brander_Location icon="location" visibility=[Net2_User_Mette_Brander_Present==ON]
-        Text item=Net2_User_Mette_Brander_LastSeen icon="time"
-        
+
         Switch item=Net2_User_Christian_Brander_Present label="Christian Brander" icon="man_1"
         Text item=Net2_User_Christian_Brander_Location icon="location" visibility=[Net2_User_Christian_Brander_Present==ON]
-        Text item=Net2_User_Christian_Brander_LastSeen icon="time"
     }
     
     Frame label="Sikkerhed" {
