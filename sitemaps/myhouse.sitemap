@@ -72,6 +72,11 @@ sitemap myhouse label="Nanna Agesen"
 			Default item=WestTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
 			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
 	}
+	Text label="Paxton Door Events" icon="lock" {
+			Frame label="Door Events" {
+				 Webview url="/static/doors/kirkegade50_-_hikvision_faceid_-_acu_6612642.html" height=85 icon=none
+				}
+}
 	Frame label="Romeo Robot" {
 		Text icon="vacuum" label="Romeo Robot"{
 			Frame label="Smart Control" {
@@ -148,11 +153,7 @@ sitemap myhouse label="Nanna Agesen"
 					Switch item=actions label="Reset Mop" mappings=["mop-reset-mop-life"="Reset"] icon="reset-clock"
 			}
 		}
-		Text label="Paxton" icon="lock" {
-			Frame label="Door Events" {
-				 Webview url="/static/doors/kirkegade50_-_hikvision_faceid_-_acu_6612642.html" height=85 icon=none
-				}
-}
+		
 			}
 			Frame label="House Control" {
 				Text icon="house" label="1st Floor" {
