@@ -1,6 +1,6 @@
 # OpenHAB 5.1.0 Smart Home Configuration
 
-**Last Auto-Update: 2026-01-05 20:30:01
+**Last Auto-Update: 2026-01-05 21:15:36
 ## openhab5.agesen.dk
 
 A comprehensive OpenHAB smart home automation system managing heating, ventilation, energy monitoring, security, and presence detection for a Danish residence.
@@ -112,13 +112,21 @@ Multi-source presence system:
 - RFID reader integration
 - Presence-based automation triggers
 
+
 ### Access Control
-**Files:** `items/paxton.items`, `scripts/Paxton/`, `rules/Paxton.rules`
+**Files:** `items/paxton.items`, `scripts/Paxton/`, `rules/Paxton.rules`, `scripts/net2_openhab_integration.py`
 
 Paxton Net2 door access system:
 - Remote door unlock via REST API
 - Token-based authentication
 - Multiple location support (Kirkegade, Terndrupvej)
+- **OpenHAB sync:**
+        - As of 2026-01-05, the Net2/OpenHAB integration is triggered by a cron job every 30 minutes:
+            ```
+            */30 * * * * /usr/bin/python3 /etc/openhab/scripts/net2_openhab_integration.py --mode sync >> /var/log/net2_openhab_integration_cron.log 2>&1
+            ```
+        - This replaces the previous systemd service approach. The script runs once per interval and exits, ensuring no duplicate or lingering processes.
+        - Output and errors are logged to `/var/log/net2_openhab_integration_cron.log`.
 
 ---
 
@@ -273,26 +281,35 @@ Install via Paper UI (http://10.0.5.21:8080) or configure in `services/addons.cf
 - scale
 - js (JavaScript)
 
+
 ### Configuration Files
 All configurations are in `/etc/openhab/`:
 
 1. **Whitelisted Commands** - `misc/exec.whitelist`
-   ```
-   python /etc/openhab/scripts/net2.py %2$s
-   ```
-   Required for alarm system control via Python script execution.
+    ```
+    python /etc/openhab/scripts/net2.py %2$s
+    ```
+    Required for alarm system control via Python script execution.
 
-2. **Persistence Configuration**
-   - `persistence/rrd4j.persist` - Chart generation with RRD4j Round Robin Database
-   - `persistence/influxdb.persist` - Long-term time-series storage in InfluxDB
-   - `services/rrd4j.cfg` - RRD4j service configuration
-   - `services/influxdb.cfg` - InfluxDB connection settings
+2. **Net2/OpenHAB Integration Cron Job**
+    - The Net2/OpenHAB sync is now triggered by a cron job (see Access Control above).
+    - To edit the schedule, run `crontab -e` as the admin user.
+    - Example entry:
+      ```
+      */30 * * * * /usr/bin/python3 /etc/openhab/scripts/net2_openhab_integration.py --mode sync >> /var/log/net2_openhab_integration_cron.log 2>&1
+      ```
 
-3. **Service Configuration** - `services/*.cfg`
-   - `addons.cfg` - Binding and add-on management
-   - `basicui.cfg` - Basic UI customization
-   - `openhabcloud.cfg` - myopenHAB cloud connector settings
-   - `runtime.cfg` - Runtime system properties
+3. **Persistence Configuration**
+    - `persistence/rrd4j.persist` - Chart generation with RRD4j Round Robin Database
+    - `persistence/influxdb.persist` - Long-term time-series storage in InfluxDB
+    - `services/rrd4j.cfg` - RRD4j service configuration
+    - `services/influxdb.cfg` - InfluxDB connection settings
+
+4. **Service Configuration** - `services/*.cfg`
+    - `addons.cfg` - Binding and add-on management
+    - `basicui.cfg` - Basic UI customization
+    - `openhabcloud.cfg` - myopenHAB cloud connector settings
+    - `runtime.cfg` - Runtime system properties
 
 ### Device Setup
 
