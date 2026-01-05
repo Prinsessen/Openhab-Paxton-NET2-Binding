@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 11:30:01
+- Added: scripts/NET2_TEMP_USER_SUMMARY.md
+- Added: scripts/README_net2_temp_user.md
+- Added: scripts/net2_temp_user.py
+- Added: scripts/net2_temp_user_examples.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 11:15:41
 - Modified: sitemaps/myhouse.sitemap
 
