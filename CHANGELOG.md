@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 16:00:01
+- Modified: scripts/NET2_OPENHAB_SETUP.md
+- Added: sitemaps/net2.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 15:45:00
 - Added: items/net2.items
 - Added: scripts/NET2_OPENHAB_SETUP.md
