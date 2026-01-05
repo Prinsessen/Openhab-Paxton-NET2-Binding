@@ -33,19 +33,22 @@ sitemap net2 label="Paxton Net2" {
     Frame label="Bohrsvej 2 - Garage -ACU 01265688" {
         Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser label="Seneste bruger [%s]" icon="door"
         Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text item=Net2_User_Birthe_og_Poul_Brander_LastSeen label="Poul & Birte sidst set [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
     }
 
     Frame label="User location" {
-        Text item=Net2_User_Nanna_Sloth_Agesen_Location label="Nanna Agesen" icon="location"
-        Text item=Net2_User_Anna_Fage_Sloth_Agesen_Location label="Anna Agesen" icon="location"
-        Text item=Net2_User_Alexander_Agesen_Location label="Alexander Agesen" icon="location"
-        Text item=Net2_User_Andreas_Fage_Sloth_Agesen_Location label="Andreas Agesen" icon="location"
-        Text item=Net2_User_Vanda_Sloth_Agesen_Location label="Vanda Agesen" icon="location"
-        Text item=Net2_User_Keld_Agesen_Location label="Keld Agesen" icon="location"
-        Text item=Net2_User_Henrik_Brander_Location label="Henrik Brander" icon="location"
-        Text item=Net2_User_Jan_Christensen_Location label="Jan Christensen" icon="location"
-        Text item=Net2_User_Torben_Christensen_Location label="Torben Heby" icon="location"
-        Text item=Net2_User_Birthe_og_Poul_Brander_Location label="Poul & Birte Brander" icon="location"
+        Text label="| Bruger | Lokation |" icon="none"
+        // Text label="|---|---|" icon="none"
+        Text item=Net2_User_Nanna_Sloth_Agesen_Location label="| 🧑‍🦰 Nanna | [%s] |" icon="woman_1" visibility=[Net2_User_Nanna_Sloth_Agesen_Present==ON]
+        Text item=Net2_User_Anna_Fage_Sloth_Agesen_Location label="| 👧 Anna | [%s] |" icon="girl_1" visibility=[Net2_User_Anna_Fage_Sloth_Agesen_Present==ON]
+        Text item=Net2_User_Alexander_Agesen_Location label="| 👦 Alexander | [%s] |" icon="boy_1" visibility=[Net2_User_Alexander_Agesen_Present==ON]
+        Text item=Net2_User_Andreas_Fage_Sloth_Agesen_Location label="| 👦 Andreas | [%s] |" icon="boy_1" visibility=[Net2_User_Andreas_Fage_Sloth_Agesen_Present==ON]
+        Text item=Net2_User_Vanda_Sloth_Agesen_Location label="| 👩 Vanda | [%s] |" icon="woman_1" visibility=[Net2_User_Vanda_Sloth_Agesen_Present==ON]
+        Text item=Net2_User_Keld_Agesen_Location label="| 👨 Keld | [%s] |" icon="man_1" visibility=[Net2_User_Keld_Agesen_Present==ON]
+        Text item=Net2_User_Henrik_Brander_Location label="| 👨 Henrik | [%s] |" icon="man_1" visibility=[Net2_User_Henrik_Brander_Present==ON]
+        Text item=Net2_User_Jan_Christensen_Location label="| 👨 Jan | [%s] |" icon="man_1" visibility=[Net2_User_Jan_Christensen_Present==ON]
+        Text item=Net2_User_Torben_Christensen_Location label="| 👨 Torben | [%s] |" icon="man_1" visibility=[Net2_User_Torben_Christensen_Present==ON]
+        Text item=Net2_User_Birthe_og_Poul_Brander_Location label="| 👴👵 Poul & Birthe | [%s] |" icon="man_1" visibility=[Net2_User_Birthe_og_Poul_Brander_Present==ON]
     }
     
     
