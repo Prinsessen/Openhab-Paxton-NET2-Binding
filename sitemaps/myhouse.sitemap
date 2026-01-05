@@ -149,8 +149,8 @@ sitemap myhouse label="Nanna Agesen"
 			}
 		}
 		Text label="Paxton" icon="lock" {
-			Frame label="Who is in" {
-				 Webview url="/static/kirkegade50_-_hikvision_faceid_-_acu_6612642.html" height=200 icon=none
+			Frame label="Door Events" {
+				 Webview url="/static/doors/kirkegade50_-_hikvision_faceid_-_acu_6612642.html" height=85 icon=none
 				}
 }
 			}
