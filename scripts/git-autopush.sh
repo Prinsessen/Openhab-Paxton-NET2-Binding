@@ -36,22 +36,23 @@ if [ ! -d ".git" ]; then
     exit 1
 fi
 
-# Check for changes (including untracked files)
-if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-    log_message "No changes to commit"
+# Check for changes (including untracked files, excluding net2_config.json)
+if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard | grep -v 'scripts/net2_config.json')" ]; then
+    log_message "No changes to commit (excluding net2_config.json)"
     exit 0
 fi
 
 # Rotate log if needed
 rotate_log
 
-# Add all changes
-log_message "Adding changes to git..."
+# Add all changes except net2_config.json
+log_message "Adding changes to git (excluding net2_config.json)..."
 git add -A
+git reset -- scripts/net2_config.json
 
 # Check again if there are changes to commit
 if git diff --cached --quiet; then
-    log_message "No changes after git add"
+    log_message "No changes after git add (excluding net2_config.json)"
     exit 0
 fi
 

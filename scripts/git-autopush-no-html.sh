@@ -37,23 +37,24 @@ if [ ! -d ".git" ]; then
     exit 1
 fi
 
-# Check for changes (excluding html directory)
-if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard | grep -v '^html/')" ]; then
-    log_message "No changes to commit (excluding html directory)"
+# Check for changes (excluding html directory and net2_config.json)
+if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard | grep -v '^html/' | grep -v 'scripts/net2_config.json')" ]; then
+    log_message "No changes to commit (excluding html directory and net2_config.json)"
     exit 0
 fi
 
 # Rotate log if needed
 rotate_log
 
-# Add all changes except html directory
-log_message "Adding changes to git (excluding html directory)..."
+# Add all changes except html directory and net2_config.json
+log_message "Adding changes to git (excluding html directory and net2_config.json)..."
 git add -A
 git reset -- html/
+git reset -- scripts/net2_config.json
 
 # Check again if there are changes to commit
 if git diff --cached --quiet; then
-    log_message "No changes after git add (excluding html)"
+    log_message "No changes after git add (excluding html and net2_config.json)"
     exit 0
 fi
 
