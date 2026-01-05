@@ -21,7 +21,7 @@ export OPENHAB_TOKEN=Ai
 curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" https://openhab5.agesen.dk/rest/items \
     | jq '.[] | select(.name | startswith("Net2")) | .name' | wc -l
 ```
-Expected output: Should show ~75+ items (7 doors × 3 items + 31 users × 3 items + stats/security items)
+Expected output: Should show ~110 items (7 doors × 2 items + 31 users × 3 items + stats/security/groups)
 
 If your OpenHAB TLS cert requires a custom CA bundle, add:
 ```bash
@@ -35,9 +35,16 @@ export REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 /etc/openhab/scripts/net2_openhab_integration.py --mode sync --verbose
 ```
 
+If your door controller only sends an "open" pulse (no close event), the script will auto-close after 7s by default. To change that timeout:
+```bash
+export NET2_DOOR_AUTOCLOSE_SECONDS=7   # set to your relay pulse length
+```
+
+Close detection now also covers Net2 "secured/locked" event codes 45 and 49 in addition to the standard close codes 29/47.
+
 This will:
 - Fetch recent Net2 events (last 5 minutes)
-- Update door states (OPEN/CLOSED/ACCESS_DENIED)
+- Update door last user + last update timestamp
 - Update user presence (ON/OFF)
 - Update last access times
 
@@ -52,9 +59,8 @@ Polls Net2 API every 30 seconds and updates OpenHAB items.
 
 ## Generated OpenHAB Items
 
-### Door Items (3 per door)
+### Door Items (2 per door)
 ```
-Net2_Door_<DoorName>_State          // String: OPEN, CLOSED, ACCESS_GRANTED, ACCESS_DENIED
 Net2_Door_<DoorName>_LastUser       // String: Last person who accessed door
 Net2_Door_<DoorName>_LastUpdate     // DateTime: Timestamp of last event
 ```
@@ -92,10 +98,12 @@ Net2_Stats_LastSync                 // DateTime: Last synchronization time
 
 ## Usage Examples
 
-### Check Specific Door State
+### Check Last Door Activity
 ```bash
 curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" \
-    https://openhab5.agesen.dk/rest/items/Net2_Door_Fordoer_ACU_6612642_State/state
+    https://openhab5.agesen.dk/rest/items/Net2_Door_Fordoer_ACU_6612642_LastUser/state
+curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" \
+    https://openhab5.agesen.dk/rest/items/Net2_Door_Fordoer_ACU_6612642_LastUpdate/state
 ```
 
 ### Check If User Is Present
@@ -172,12 +180,10 @@ Add to your existing sitemap or create `/etc/openhab/sitemaps/net2.sitemap`:
 
 ```openhab
 sitemap net2 label="Paxton Net2" {
-    Frame label="Door Status" {
-        Text item=Net2_Door_Fordoer_ACU_6612642_State
+    Frame label="Door Activity" {
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUser
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate
         
-        Text item=Net2_Door_Garage_Port_ACU7242929_State
         Text item=Net2_Door_Garage_Port_ACU7242929_LastUser
         Text item=Net2_Door_Garage_Port_ACU7242929_LastUpdate
     }

@@ -57,11 +57,12 @@ else:
 ACCESS_GRANTED_TYPES = [20, 26]  # 20=card, 26=PIN
 ACCESS_DENIED_TYPES = [23, 24, 25, 27]
 DOOR_OPENED_TYPES = [28, 46]
-DOOR_CLOSED_TYPES = [29, 47]
+# Add common "door secured/locked" event codes (45/49) used by some Net2 controllers
+DOOR_CLOSED_TYPES = [29, 47, 45, 49]
 DOOR_HELD_OPEN_TYPES = [93]
 
 # Auto-close fallback (seconds) to handle pulse-only doors without explicit close events
-AUTO_CLOSE_SECONDS = int(os.getenv("NET2_DOOR_AUTOCLOSE_SECONDS", "8"))
+AUTO_CLOSE_SECONDS = int(os.getenv("NET2_DOOR_AUTOCLOSE_SECONDS", "7"))
 
 # -----------------------------
 # Argument Parser
@@ -382,7 +383,6 @@ def sync_to_openhab(token):
         # Extract the door key without location/direction
         door_key = extract_door_key(door_name)
         item_name = f"Net2_Door_{sanitize_item_name(door_key)}"
-        update_openhab_item(f"{item_name}_State", state_info['state'], "String")
         update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
         update_openhab_item(f"{item_name}_LastUpdate", state_info['time'], "DateTime")
     
@@ -451,7 +451,6 @@ Number Net2_Security_AlertCount "Alert Count [%d]" <alarm> (Net2_Security)
         
         items_content += f"""
 // {door_name} (ID: {door_id})
-String Net2_Door_{safe_name}_State "State" <door> (Net2_Doors)
 String Net2_Door_{safe_name}_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_{safe_name}_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
 """
