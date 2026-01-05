@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 16:30:28
+- Modified: items/net2.items
+- Modified: scripts/net2_openhab_integration.py
+- Modified: services/addons.cfg
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 16:15:01
 - Added: rules/net2.rules
 - Added: scripts/NET2_INTEGRATION_TEST_RESULTS.md
