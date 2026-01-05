@@ -1,0 +1,26 @@
+[Unit]
+Description=Paxton Net2 User Activity Daemon
+Documentation=file:///etc/openhab/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=openhab
+Group=openhab
+WorkingDirectory=/etc/openhab
+ExecStart=/usr/bin/python3 /etc/openhab/scripts/net2_user_activity_daemon.py
+Restart=on-failure
+RestartSec=60
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+PrivateTmp=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/etc/openhab /var/log/openhab
+
+[Install]
+WantedBy=multi-user.target
