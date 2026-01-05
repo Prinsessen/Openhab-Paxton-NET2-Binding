@@ -308,7 +308,11 @@ def format_timestamp(timestamp_str):
 def sanitize_filename(name):
     """Convert door name to safe filename"""
     name = name.lower()
-    name = re.sub(r'[^a-z0-9_\-]', '_', name)
+    # Allow Danish characters æøå in addition to a-z0-9_
+    name = re.sub(r'[^a-zæøå0-9_]', '_', name)
+    # Replace multiple underscores or patterns like _-_ with single underscore
+    name = re.sub(r'_+', '_', name)
+    name = re.sub(r'_-_', '_', name)
     name = re.sub(r'_+', '_', name)
     return name.strip('_')
 

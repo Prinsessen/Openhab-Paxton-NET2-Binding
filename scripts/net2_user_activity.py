@@ -650,10 +650,15 @@ def generate_html(user_activity, event_summary, hours, username):
 
 def sanitize_filename(name):
     """Convert door name to safe filename"""
-    # Remove special characters and replace spaces with underscores
-    safe_name = re.sub(r'[^\w\s-]', '', name)
-    safe_name = re.sub(r'[-\s]+', '_', safe_name)
-    return safe_name.lower()
+    # Remove special characters but keep Danish characters æøå
+    # \w in Python includes letters, digits, and underscore
+    safe_name = re.sub(r'[^\wæøå\s]', '', name)
+    safe_name = re.sub(r'[\s]+', '_', safe_name)
+    # Replace multiple underscores or patterns like _-_ with single underscore
+    safe_name = re.sub(r'_+', '_', safe_name)
+    safe_name = re.sub(r'_-_', '_', safe_name)
+    safe_name = re.sub(r'_+', '_', safe_name)
+    return safe_name.lower().strip('_')
 
 def generate_door_html(door_name, events, refresh_interval, username):
     """Generate HTML report for a specific door"""

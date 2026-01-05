@@ -86,7 +86,7 @@ Text label="Paxton Door Events" icon="lock" {
 		}
 		Text label="Kirkegade 50 - Garage Port" icon="door" {
 			Frame label="Garage Port Events" {
-				Webview url="/static/doors/kirkegade50_garage_port_acu7242929_ind.html" height=50 icon=none
+				Webview url="/static/doors/kirkegade50_garage_port_acu_7242929_ind.html" height=50 icon=none
 			}
 		}
 		Text label="Kirkegade 50 - Basement" icon="door" {
@@ -101,12 +101,12 @@ Text label="Paxton Door Events" icon="lock" {
 		}
 		Text label="Terndrupvej 81 - Frontdoor" icon="door" {
 			Frame label="Fordør Events" {
-				Webview url="/static/doors/terndrupvej_81_fordør_terndrupvej_acu6203980_ind.html" height=50 icon=none
+				Webview url="/static/doors/terndrupvej_81_fordør_terndrupvej_acu_6203980_ind.html" height=50 icon=none
 			}
 		}
 		Text label="Porsevej 19 - Frontdoor" icon="door" {
 			Frame label="Fordør Events" {
-				Webview url="/static/doors/porsevej19_fordør_porsevej_acu967438_ind.html" height=50 icon=none
+				Webview url="/static/doors/porsevej19_fordør_porsevej_acu_967438_ind.html" height=50 icon=none
 			}
 		//}
 		//Text label="Kirkegade 50 - Door 8" icon="door" {
