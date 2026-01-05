@@ -182,7 +182,7 @@ def get_net2_users(token):
         "Accept": "application/json",
         "Authorization": f"Bearer {token}"
     }
-    
+
     try:
         response = requests.get(USERS_ENDPOINT, headers=headers, timeout=10, verify=NET2_VERIFY)
         if response.status_code == 200:
@@ -204,11 +204,8 @@ def get_recent_events(token, minutes=5):
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": f"Bearer {token}"
-            # Only write last user when known to avoid overwriting with "Unknown"
-            if state_info.get('user') and state_info.get('user') != 'Unknown':
-                update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
-            # Always write timestamp from the event
-            update_openhab_item(f"{item_name}_LastUpdate", state_info['time'], "DateTime")
+    }
+
     end_time = datetime.now()
     start_time = end_time - timedelta(minutes=minutes)
     
@@ -265,6 +262,20 @@ def parse_iso_datetime(value):
         return dt
     except Exception:
         return None
+
+def normalize_event_time(value):
+    """Return ISO string with timezone; assume local tz if missing."""
+    if not value:
+        return None
+    try:
+        if isinstance(value, str):
+            value = value.replace('Z', '+00:00')
+        dt = datetime.fromisoformat(value)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=datetime.now().astimezone().tzinfo)
+        return dt.isoformat()
+    except Exception:
+        return value
 
 def process_events_for_openhab(events):
     """Process events and extract OpenHAB-relevant information"""
@@ -379,13 +390,18 @@ def sync_to_openhab(token):
     for door_name, state_info in door_states.items():
         # Extract the door key without location/direction
         door_key = extract_door_key(door_name)
+        # Normalize known multi-reader ACU names to a single canonical door key
+        if "6612642" in door_key:
+            door_key = "Fordør ACU 6612642"
         item_name = f"Net2_Door_{sanitize_item_name(door_key)}"
         # Only write last user when known to avoid overwriting with "Unknown"
         if state_info.get('user') and state_info.get('user') != 'Unknown':
             update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
         # Only write timestamp when it's from a real event (skip auto_close)
         if state_info.get('event_type') != 'auto_close':
-            update_openhab_item(f"{item_name}_LastUpdate", state_info['time'], "DateTime")
+            normalized_time = normalize_event_time(state_info.get('time'))
+            if normalized_time:
+                update_openhab_item(f"{item_name}_LastUpdate", normalized_time, "DateTime")
     
     # Update user presence
     for user_name, presence_info in user_presence.items():

@@ -1,32 +1,40 @@
 sitemap net2 label="Paxton Net2" {
-    
-    Frame label="Hoveddøre" {
-        Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="Fordør - seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate label="Fordør - sidst opdateret [%1$tH:%1$tM]" icon="time"
 
-        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUser label="Fordør Porsevej - seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate label="Fordør Porsevej - sidst opdateret [%1$tH:%1$tM]" icon="time"
-
-        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser label="Fordør Terndrupvej - seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate label="Fordør Terndrupvej - sidst opdateret [%1$tH:%1$tM]" icon="time"
+    Frame label="Fordør - ACU 6612642" {
+        Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate label="Sidst opdateret [%1$tH:%1$tM]" icon="time"
     }
-    
-    Frame label="Garage & Værksted" {
-        Text item=Net2_Door_Garage_Port_ACU7242929_LastUser label="Garage Port - seneste bruger [%s]" icon="garagedoor"
-        Text item=Net2_Door_Garage_Port_ACU7242929_LastUpdate label="Garage Port - sidst opdateret [%1$tH:%1$tM]" icon="time"
 
-        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser label="Værksted - seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate label="Værksted - sidst opdateret [%1$tH:%1$tM]" icon="time"
+    Frame label="Fordør Porsevej - ACU:967438" {
+        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate label="Sidst opdateret [%1$tH:%1$tM]" icon="time"
+    }
 
-        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="Værksted Dør - seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate label="Værksted Dør - sidst opdateret [%1$tH:%1$tM]" icon="time"
+    Frame label="Fordør Terndrupvej - ACU:6203980" {
+        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate label="Sidst opdateret [%1$tH:%1$tM]" icon="time"
     }
-    
-    Frame label="Kælder" {
-        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser label="Andreas Udv.Kælder - seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate label="Andreas Udv.Kælder - sidst opdateret [%1$tH:%1$tM]" icon="time"
+
+    Frame label="Garage Port - ACU:7242929" {
+        Text item=Net2_Door_Garage_Port_ACU7242929_LastUser label="Seneste bruger [%s]" icon="garagedoor"
+        Text item=Net2_Door_Garage_Port_ACU7242929_LastUpdate label="Sidst opdateret [%1$tH:%1$tM]" icon="time"
     }
-    
+
+    Frame label="Værksted - ACU 01265688" {
+        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate label="Sidst opdateret [%1$tH:%1$tM]" icon="time"
+    }
+
+    Frame label="Værksted Dør - Central 03962494" {
+        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate label="Sidst opdateret [%1$tH:%1$tM]" icon="time"
+    }
+
+    Frame label="Andreas Udv.Kælder - ACU 01038236" {
+        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate label="Sidst opdateret [%1$tH:%1$tM]" icon="time"
+    }
+
     Frame label="Familiemedlemmer Tilstede" {
         Switch item=Net2_User_Nanna_Sloth_Agesen_Present label="Nanna" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Nanna_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Nanna_Sloth_Agesen_Present==ON]

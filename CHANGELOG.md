@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 18:30:01
+- Modified: scripts/net2_openhab_integration.py
+- Modified: sitemaps/net2.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 18:15:07
 - Modified: scripts/net2_openhab_integration.py
 
