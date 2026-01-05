@@ -1,38 +1,38 @@
 sitemap net2 label="Paxton Net2" {
 
-    Frame label="Kirkegade Fordør - ACU 6612642" {
+    Frame label="Kirkegade 50 - Fordør - ACU 6612642" {
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="Seneste bruger [%s]" icon="door"
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
     }
 
-    Frame label="Fordør Porsevej - ACU:967438" {
-        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
-    }
-
-    Frame label="Fordør Terndrupvej - ACU:6203980" {
-        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
-    }
-
-    Frame label="Garage Port - ACU:7242929" {
+    Frame label="Kirkegade 50 - Garage Port - ACU 7242929" {
         Text item=Net2_Door_Garage_Port_ACU7242929_LastUser label="Seneste bruger [%s]" icon="garagedoor"
         Text item=Net2_Door_Garage_Port_ACU7242929_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
     }
 
-    Frame label="Værksted - ACU 01265688" {
-        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
-    }
-
-    Frame label="Værksted Dør - Central 03962494" {
+    Frame label="Kirkegade 50 - Værksted - ACU 03962494" {
         Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="Seneste bruger [%s]" icon="door"
         Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
     }
 
-    Frame label="Andreas Udv.Kælder -  ACU 01038236" {
+    Frame label="Kirkegade 50 - Kælder Dør - ACU 01038236" {
         Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser label="Seneste bruger [%s]" icon="door"
         Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+    }
+
+    Frame label="Terndrupvej 81 - Fordør - ACU 6203980" {
+        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+    }
+
+    Frame label="Porsevej 19 - Fordør- ACU 967438" {
+        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+    }
+
+    Frame label="Bohrsvej 2 - Garage -ACU 01265688" {
+        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser label="Seneste bruger [%s]" icon="door"
+        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
     }
 
     Frame label="Familiemedlemmer Tilstede" {

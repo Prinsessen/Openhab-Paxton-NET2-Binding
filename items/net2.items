@@ -29,30 +29,37 @@ Number Net2_Security_AlertCount "Alert Count [%d]" <alarm> (Net2_Security)
 // Andreas Udv.Kælder -  ACU 01038236 (ID: 6626578)
 String Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
+Contact Net2_Door_Andreas_UdvKaelder_ACU_01038236_State "State [%s]" <door> (Net2_Doors)
 
 // Fordør - ACU 6612642 (ID: 6612642)
 String Net2_Door_Fordoer_ACU_6612642_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_Fordoer_ACU_6612642_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
+Contact Net2_Door_Fordoer_ACU_6612642_State "State [%s]" <door> (Net2_Doors)
 
 // Fordør Porsevej - ACU:967438 (ID: 7319051)
 String Net2_Door_Fordoer_Porsevej_ACU967438_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
+Contact Net2_Door_Fordoer_Porsevej_ACU967438_State "State [%s]" <door> (Net2_Doors)
 
 // Fordør Terndrupvej - ACU:6203980 (ID: 6203980)
 String Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
+Contact Net2_Door_Fordoer_Terndrupvej_ACU6203980_State "State [%s]" <door> (Net2_Doors)
 
 // Garage Port - ACU:7242929 (ID: 7242929)
 String Net2_Door_Garage_Port_ACU7242929_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_Garage_Port_ACU7242929_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
+Contact Net2_Door_Garage_Port_ACU7242929_State "State [%s]" <door> (Net2_Doors)
 
 // Værksted - ACU 01265688 (ID: 1265688)
 String Net2_Door_Vaerksted_ACU_01265688_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_Vaerksted_ACU_01265688_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
+Contact Net2_Door_Vaerksted_ACU_01265688_State "State [%s]" <door> (Net2_Doors)
 
 // Værksted Dør - Central 03962494 (ID: 3962494)
 String Net2_Door_Vaerksted_Doer_Central_03962494_LastUser "Last User" <user> (Net2_Doors)
 DateTime Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
+Contact Net2_Door_Vaerksted_Doer_Central_03962494_State "State [%s]" <door> (Net2_Doors)
 
 // ==============================================
 // Users

@@ -306,15 +306,40 @@ def process_events_for_openhab(events):
         event_time = event.get('eventTime', '')
         event_desc = event.get('eventDescription', '')
         
-        # Track door entry using ACCESS_GRANTED (contains the actual entry time/user)
+        # Track door entry using ACCESS_GRANTED (contains the actual entry time/user). Treat as OPEN for state.
         if device_name and event_type in ACCESS_GRANTED_TYPES and user_name and user_name != 'Unknown':
             current = door_states.get(device_name)
-            # Only keep the newest ACCESS_GRANTED per device_name
             incoming_ts = parse_iso_datetime(event_time)
             current_ts = parse_iso_datetime(current['time']) if current else None
             if current is None or (incoming_ts and current_ts and incoming_ts > current_ts) or (incoming_ts and current_ts is None):
                 door_states[device_name] = {
-                    'state': 'ACCESS_GRANTED',
+                    'state': 'OPEN',
+                    'time': event_time,
+                    'user': user_name,
+                    'event_type': event_type
+                }
+
+        # Track explicit door opened events
+        if device_name and event_type in DOOR_OPENED_TYPES:
+            current = door_states.get(device_name)
+            incoming_ts = parse_iso_datetime(event_time)
+            current_ts = parse_iso_datetime(current['time']) if current else None
+            if current is None or (incoming_ts and current_ts and incoming_ts > current_ts) or (incoming_ts and current_ts is None):
+                door_states[device_name] = {
+                    'state': 'OPEN',
+                    'time': event_time,
+                    'user': user_name,
+                    'event_type': event_type
+                }
+
+        # Track explicit door closed events
+        if device_name and event_type in DOOR_CLOSED_TYPES:
+            current = door_states.get(device_name)
+            incoming_ts = parse_iso_datetime(event_time)
+            current_ts = parse_iso_datetime(current['time']) if current else None
+            if current is None or (incoming_ts and current_ts and incoming_ts > current_ts) or (incoming_ts and current_ts is None):
+                door_states[device_name] = {
+                    'state': 'CLOSED',
                     'time': event_time,
                     'user': user_name,
                     'event_type': event_type
@@ -409,6 +434,9 @@ def sync_to_openhab(token):
 
     # Update door states
     for item_name, state_info in merged_door_states.items():
+        # Write door state if present
+        if state_info.get('state') in ['OPEN', 'CLOSED']:
+            update_openhab_item(f"{item_name}_State", state_info['state'], "String")
         # Only write last user when known to avoid overwriting with "Unknown"
         if state_info.get('user') and state_info.get('user') != 'Unknown':
             update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
