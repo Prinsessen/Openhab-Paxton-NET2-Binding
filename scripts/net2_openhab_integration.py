@@ -282,10 +282,21 @@ def process_events_for_openhab(events):
     door_states = {}  # device_name: last_event
     user_presence = {}  # user_name: last_seen
     security_events = []
-    
+
     # Door-related event types
     DOOR_EVENT_TYPES = [20, 23, 24, 25, 26, 27, 28, 29, 46, 47, 93]
-    
+
+    # Sort events by eventTime ascending to ensure latest event for each user is processed last
+    def event_time_key(ev):
+        t = ev.get('eventTime', '')
+        try:
+            # Handle Zulu suffix
+            t = t.replace('Z', '+00:00')
+            return datetime.fromisoformat(t)
+        except Exception:
+            return datetime.min
+    events = sorted(events, key=event_time_key)
+
     for event in events:
         event_type = event.get('eventType', 0)
         
