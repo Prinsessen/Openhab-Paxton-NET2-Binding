@@ -1,0 +1,17 @@
+[Unit]
+Description=OpenHAB Git Auto-Push Timer (Excluding HTML)
+Documentation=file:///etc/openhab/README.md
+Requires=openhab-git-autopush-no-html.service
+
+[Timer]
+# Run every 15 minutes
+OnCalendar=*:0/15
+# Run 2 minutes after boot
+OnBootSec=2min
+# Run immediately if missed schedule
+Persistent=true
+# Accuracy tolerance (allows batching with other timers)
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
