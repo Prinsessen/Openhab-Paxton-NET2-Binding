@@ -889,15 +889,30 @@ def main():
         os.makedirs(door_dir, exist_ok=True)
         log(f"Created directory: {door_dir}")
     
+    # Track which door files should exist
+    valid_door_files = set()
+    
     # Generate HTML for each door
     door_files = []
     for door_name, door_events in door_activity.items():
         if len(door_events) > 0:
             safe_name = sanitize_filename(door_name)
             door_html_path = os.path.join(door_dir, f"{safe_name}.html")
+            valid_door_files.add(os.path.basename(door_html_path))
             door_html = generate_door_html(door_name, door_events, args.refresh, username)
             save_html(door_html, door_html_path)
             door_files.append((door_name, door_html_path, len(door_events)))
+    
+    # Clean up old HTML files for doors with no activity
+    if os.path.exists(door_dir):
+        for filename in os.listdir(door_dir):
+            if filename.endswith('.html') and filename not in valid_door_files:
+                old_file_path = os.path.join(door_dir, filename)
+                try:
+                    os.remove(old_file_path)
+                    log(f"Removed old door file with no activity: {old_file_path}")
+                except Exception as e:
+                    log(f"Warning: Could not remove old file {old_file_path}: {e}")
     
     print("=" * 60)
     print(f"Total Events: {event_summary['total_events']}")
