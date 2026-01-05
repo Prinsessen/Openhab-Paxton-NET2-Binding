@@ -614,4 +614,11 @@ def main():
     print("=" * 60)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        import traceback
+        log(f"FATAL: Unhandled exception: {e}", "ERROR")
+        log(traceback.format_exc(), "ERROR")
+        # Optionally, force exit with error code so systemd can restart
+        sys.exit(1)
