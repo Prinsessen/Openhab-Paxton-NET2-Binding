@@ -584,11 +584,6 @@ def generate_html(user_activity, event_summary, hours, username):
                 door = event.get('door', 'Unknown')
                 result = str(event.get('result', 'Unknown'))
                 details = event.get('details', '')
-                card_no = event.get('card_no', '')
-                
-                # Add card number to event type if present
-                if card_no:
-                    event_type = f"{event_type} (Card: {card_no})"
                 
                 # Add details if present
                 if details:
@@ -805,11 +800,6 @@ def generate_door_html(door_name, events, refresh_interval, username):
         event_type = event.get('event_type', 'Unknown')
         result = str(event.get('result', 'Unknown'))
         details = event.get('details', '')
-        card_no = event.get('card_no', '')
-        
-        # Add card number if present
-        if card_no:
-            event_type = f"{event_type} (Card: {card_no})"
         
         # Add details if present
         if details:
