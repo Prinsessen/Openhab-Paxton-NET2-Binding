@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 22:30:08
+- Modified: services/addons.cfg
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 21:30:01
 - Modified: scripts/net2_user_activity_daemon.py
 
