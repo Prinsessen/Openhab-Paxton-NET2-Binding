@@ -1,0 +1,94 @@
+// Paxton Net2 Integration Rules
+// Auto-generated rules for Net2 access control integration
+
+rule "Net2 - Security Alert Notification"
+when
+    Item Net2_Security_AlertCount changed
+then
+    val count = Net2_Security_AlertCount.state as Number
+    if(count > 0) {
+        val user = Net2_Security_LastUser.state.toString
+        val event = Net2_Security_LastEvent.state.toString
+        val time = Net2_Security_LastTime.state.toString
+        logWarn("Net2Security", "⚠️ Security Alert #{}: {} - {} at {}", count, event, user, time)
+    }
+end
+
+rule "Net2 - Nanna Arrived"
+when
+    Item Net2_User_Nanna_Sloth_Agesen_Present changed from OFF to ON
+then
+    val location = Net2_User_Nanna_Sloth_Agesen_Location.state.toString
+    logInfo("Net2Presence", "👋 Nanna arrived at: {}", location)
+    // Add automation here: turn on lights, adjust heating, etc.
+end
+
+rule "Net2 - Nanna Departed"
+when
+    Item Net2_User_Nanna_Sloth_Agesen_Present changed from ON to OFF
+then
+    logInfo("Net2Presence", "👋 Nanna left")
+    // Add automation here: turn off lights, away mode, etc.
+end
+
+rule "Net2 - Anna Arrived"
+when
+    Item Net2_User_Anna_Fage_Sloth_Agesen_Present changed from OFF to ON
+then
+    val location = Net2_User_Anna_Fage_Sloth_Agesen_Location.state.toString
+    logInfo("Net2Presence", "👋 Anna arrived at: {}", location)
+end
+
+rule "Net2 - Anna Departed"
+when
+    Item Net2_User_Anna_Fage_Sloth_Agesen_Present changed from ON to OFF
+then
+    logInfo("Net2Presence", "👋 Anna left")
+end
+
+rule "Net2 - Garage Door Opened"
+when
+    Item Net2_Door_Garage_Port_ACU7242929_State changed to OPEN
+then
+    val user = Net2_Door_Garage_Port_ACU7242929_LastUser.state.toString
+    logInfo("Net2Doors", "🚪 Garage door opened by: {}", user)
+    // Add automation: turn on garage lights, etc.
+end
+
+rule "Net2 - Garage Door Closed"
+when
+    Item Net2_Door_Garage_Port_ACU7242929_State changed to CLOSED
+then
+    logInfo("Net2Doors", "🚪 Garage door closed")
+    // Add automation: turn off garage lights after delay, etc.
+end
+
+rule "Net2 - Front Door Activity"
+when
+    Item Net2_Door_Fordoer_ACU_6612642_State changed
+then
+    val state = Net2_Door_Fordoer_ACU_6612642_State.state.toString
+    val user = Net2_Door_Fordoer_ACU_6612642_LastUser.state.toString
+    logInfo("Net2Doors", "🚪 Front door {} by: {}", state, user)
+end
+
+rule "Net2 - Door Held Open Alert"
+when
+    Item Net2_Security_LastEvent changed
+then
+    val event = Net2_Security_LastEvent.state.toString
+    if(event.contains("held open")) {
+        val door = Net2_Security_LastUser.state.toString
+        logWarn("Net2Security", "⚠️ Door held open: {}", door)
+        // Add automation: send notification, sound alarm, etc.
+    }
+end
+
+rule "Net2 - Log Sync Status"
+when
+    Item Net2_Stats_LastSync changed
+then
+    val eventCount = Net2_Stats_EventCount.state
+    val activeUsers = Net2_Stats_ActiveUsers.state
+    logInfo("Net2Sync", "Sync complete: {} events, {} active users", eventCount, activeUsers)
+end

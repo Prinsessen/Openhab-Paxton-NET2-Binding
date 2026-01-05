@@ -294,6 +294,20 @@ def process_events_for_openhab(events):
     
     return door_states, user_presence, security_events
 
+def extract_door_key(device_name):
+    """Extract the key part of device name (remove location prefix and direction suffix)"""
+    # Remove location prefix (e.g., "Kirkegade50 - ", "Porsevej19 - ", "Terndrupvej 81 - ")
+    if ' - ' in device_name:
+        parts = device_name.split(' - ', 1)
+        if len(parts) > 1:
+            device_name = parts[1]
+    
+    # Remove direction suffix like " (Ind)", " (Ud)"
+    if ' (' in device_name:
+        device_name = device_name.split(' (')[0]
+    
+    return device_name.strip()
+
 def sync_to_openhab(token):
     """Sync Net2 data to OpenHAB items"""
     log("Starting sync to OpenHAB...")
@@ -304,7 +318,9 @@ def sync_to_openhab(token):
     
     # Update door states
     for door_name, state_info in door_states.items():
-        item_name = f"Net2_Door_{sanitize_item_name(door_name)}"
+        # Extract the door key without location/direction
+        door_key = extract_door_key(door_name)
+        item_name = f"Net2_Door_{sanitize_item_name(door_key)}"
         update_openhab_item(f"{item_name}_State", state_info['state'], "String")
         update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
         update_openhab_item(f"{item_name}_LastUpdate", state_info['time'], "DateTime")
