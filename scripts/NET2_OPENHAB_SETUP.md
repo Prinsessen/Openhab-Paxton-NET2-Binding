@@ -17,12 +17,15 @@ sudo systemctl restart openhab
 
 ### 2. Verify Items Loaded
 ```bash
-curl -s https://openhab5.agesen.dk/rest/items | jq '.[] | select(.name | startswith("Net2")) | .name' | wc -l
+export OPENHAB_TOKEN=Ai
+curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" https://openhab5.agesen.dk/rest/items \
+    | jq '.[] | select(.name | startswith("Net2")) | .name' | wc -l
 ```
 Expected output: Should show ~75+ items (7 doors × 3 items + 31 users × 3 items + stats/security items)
 
 ### 3. Run Initial Sync
 ```bash
+export OPENHAB_TOKEN=Ai
 /etc/openhab/scripts/net2_openhab_integration.py --mode sync --verbose
 ```
 
@@ -34,6 +37,7 @@ This will:
 
 ### 4. Start Continuous Monitoring (Optional)
 ```bash
+export OPENHAB_TOKEN=Ai
 /etc/openhab/scripts/net2_openhab_integration.py --mode monitor --interval 30 --verbose
 ```
 
@@ -83,17 +87,20 @@ Net2_Stats_LastSync                 // DateTime: Last synchronization time
 
 ### Check Specific Door State
 ```bash
-curl -s https://openhab5.agesen.dk/rest/items/Net2_Door_Fordoer_ACU_6612642_State/state
+curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" \
+    https://openhab5.agesen.dk/rest/items/Net2_Door_Fordoer_ACU_6612642_State/state
 ```
 
 ### Check If User Is Present
 ```bash
-curl -s https://openhab5.agesen.dk/rest/items/Net2_User_Nanna_Sloth_Agesen_Present/state
+curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" \
+    https://openhab5.agesen.dk/rest/items/Net2_User_Nanna_Sloth_Agesen_Present/state
 ```
 
 ### View Security Alerts
 ```bash
-curl -s https://openhab5.agesen.dk/rest/items/Net2_Security_AlertCount/state
+curl -s -H "Authorization: Bearer ${OPENHAB_TOKEN}" \
+    https://openhab5.agesen.dk/rest/items/Net2_Security_AlertCount/state
 ```
 
 ## Integration Script Modes

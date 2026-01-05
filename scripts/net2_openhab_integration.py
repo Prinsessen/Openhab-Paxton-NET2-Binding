@@ -11,6 +11,7 @@ import argparse
 from datetime import datetime, timedelta
 import sys
 import time
+import os
 
 # -----------------------------
 # Configuration
@@ -27,9 +28,30 @@ NET2_PASSWORD = "Jekboapj110"
 NET2_GRANT_TYPE = "password"
 NET2_CLIENT_ID = "00aab996-6439-4f16-89b4-6c0cc851e8f3"
 
+# Net2 TLS verification (path to CA bundle or 'false' to disable)
+NET2_VERIFY_ENV = os.getenv("NET2_VERIFY")
+NET2_VERIFY_DEFAULT = "/etc/ssl/certs/ca-certificates.crt"
+if NET2_VERIFY_ENV is None:
+    NET2_VERIFY = NET2_VERIFY_DEFAULT
+elif NET2_VERIFY_ENV.lower() in ["0", "false", "no"]:
+    NET2_VERIFY = False
+else:
+    NET2_VERIFY = NET2_VERIFY_ENV
+
 # OpenHAB Configuration
 OPENHAB_URL = "https://openhab5.agesen.dk"
 OPENHAB_REST_API = f"{OPENHAB_URL}/rest/items"
+# Optional bearer token for secured OpenHAB REST API
+OPENHAB_TOKEN = os.getenv("OPENHAB_TOKEN")
+# Optional TLS verification override for OpenHAB (path to CA bundle or 'false')
+OPENHAB_VERIFY_ENV = os.getenv("OPENHAB_VERIFY")
+OPENHAB_VERIFY_DEFAULT = "/etc/ssl/certs/ca-certificates.crt"
+if OPENHAB_VERIFY_ENV is None:
+    OPENHAB_VERIFY = OPENHAB_VERIFY_DEFAULT
+elif OPENHAB_VERIFY_ENV.lower() in ["0", "false", "no"]:
+    OPENHAB_VERIFY = False
+else:
+    OPENHAB_VERIFY = OPENHAB_VERIFY_ENV
 
 # Event type mappings
 ACCESS_GRANTED_TYPES = [20, 26]  # 20=card, 26=PIN
@@ -74,7 +96,7 @@ def authenticate_net2():
     }
     
     try:
-        response = requests.post(AUTH_ENDPOINT, data=payload, timeout=10)
+        response = requests.post(AUTH_ENDPOINT, data=payload, timeout=10, verify=NET2_VERIFY)
         if response.status_code != 200:
             log(f"Authentication failed: {response.status_code}", "ERROR")
             return None
@@ -96,6 +118,8 @@ def update_openhab_item(item_name, state, state_type="String"):
     try:
         url = f"{OPENHAB_REST_API}/{item_name}/state"
         headers = {"Content-Type": "text/plain", "Accept": "application/json"}
+        if OPENHAB_TOKEN:
+            headers["Authorization"] = f"Bearer {OPENHAB_TOKEN}"
         
         # Convert state to appropriate format
         if state_type == "Switch":
@@ -109,7 +133,7 @@ def update_openhab_item(item_name, state, state_type="String"):
             else:
                 state = state.isoformat()
         
-        response = requests.put(url, data=str(state), headers=headers, timeout=5)
+        response = requests.put(url, data=str(state), headers=headers, timeout=5, verify=OPENHAB_VERIFY)
         
         if response.status_code in [200, 202]:
             log(f"Updated {item_name} = {state}")
@@ -133,7 +157,7 @@ def get_net2_doors(token):
     }
     
     try:
-        response = requests.get(DOORS_ENDPOINT, headers=headers, timeout=10)
+        response = requests.get(DOORS_ENDPOINT, headers=headers, timeout=10, verify=NET2_VERIFY)
         if response.status_code == 200:
             doors = response.json()
             log(f"Retrieved {len(doors)} doors")
@@ -156,7 +180,7 @@ def get_net2_users(token):
     }
     
     try:
-        response = requests.get(USERS_ENDPOINT, headers=headers, timeout=10)
+        response = requests.get(USERS_ENDPOINT, headers=headers, timeout=10, verify=NET2_VERIFY)
         if response.status_code == 200:
             users = response.json()
             log(f"Retrieved {len(users)} users")
@@ -188,7 +212,7 @@ def get_recent_events(token, minutes=5):
     }
     
     try:
-        response = requests.get(EVENTS_ENDPOINT, headers=headers, params=params, timeout=30)
+        response = requests.get(EVENTS_ENDPOINT, headers=headers, params=params, timeout=30, verify=NET2_VERIFY)
         if response.status_code == 200:
             events = response.json()
             log(f"Retrieved {len(events)} events")
