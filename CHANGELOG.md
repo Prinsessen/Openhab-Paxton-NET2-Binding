@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 15:45:00
+- Added: items/net2.items
+- Added: scripts/NET2_OPENHAB_SETUP.md
+- Added: scripts/PAXTON_NET2_API_ANALYSIS.md
+- Added: scripts/net2_openhab_integration.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 14:15:01
 - Modified: sitemaps/myhouse.sitemap
 
