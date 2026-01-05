@@ -84,14 +84,14 @@ Text label="Paxton Door Events" icon="lock" {
 				Webview url="/static/doors/kirkegade50_-_ford_r_marine_reader_-_acu_6612642.html" height=85 icon=none
 			}
 		}
-		Text label="Kirkegade 50 - Door 3" icon="door" {
-			Frame label="Door 3 Events" {
-				Webview url="/static/doors/door3_events.html" height=85 icon=none
+		Text label="Kirkegade 50 - Garage Port" icon="door" {
+			Frame label="Garage Port Events" {
+				Webview url="/static/doors/kirkegade50_-_garage_port_-_acu_7242929_ind.html" height=85 icon=none
 			}
 		}
-		Text label="Kirkegade 50 - Door 4" icon="door" {
-			Frame label="Door 4 Events" {
-				Webview url="/static/doors/door4_events.html" height=85 icon=none
+		Text label="Kirkegade 50 - Basement" icon="door" {
+			Frame label="Basement Events" {
+				Webview url="/static/doors/kirkegade50_-_andreas_udv_k_lder_-_acu_01038236.html" height=85 icon=none
 			}
 		}
 		Text label="Kirkegade 50 - Door 5" icon="door" {
