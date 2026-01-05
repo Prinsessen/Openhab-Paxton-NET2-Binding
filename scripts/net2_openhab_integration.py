@@ -279,6 +279,8 @@ def normalize_event_time(value):
 
 def process_events_for_openhab(events):
     """Process events and extract OpenHAB-relevant information"""
+    # DEBUG: Log all events for Fordør ACU 6612642
+    debug_door_key = "Fordør ACU 6612642"
     door_states = {}  # canonical_door_key: last_event
     user_presence = {}  # user_name: last_seen
     security_events = []
@@ -319,6 +321,9 @@ def process_events_for_openhab(events):
         door_key = extract_door_key(device_name)
         if "6612642" in door_key:
             door_key = "Fordør ACU 6612642"
+        # DEBUG: Log every event for this door
+        if door_key == debug_door_key:
+            log(f"DEBUG: Event for {door_key}: time={event_time}, user={user_name}, type={event_type}, desc={event_desc}")
 
         # Track door entry using ACCESS_GRANTED (contains the actual entry time/user). Treat as OPEN for state.
         if device_name and event_type in ACCESS_GRANTED_TYPES and user_name and user_name != 'Unknown':
@@ -437,19 +442,27 @@ def sync_to_openhab(token):
                 }
     
     # Door states are now keyed by canonical door key; update OpenHAB items directly
-    for door_key, state_info in door_states.items():
+    for door_key in door_states.keys():
         item_name = f"Net2_Door_{sanitize_item_name(door_key)}"
+        # Find all events for this door in the last 24h
+        relevant_events = [
+            e for e in events
+            if extract_door_key(str(e.get('deviceName', '') or '')) == door_key or ("6612642" in door_key and "6612642" in str(e.get('deviceName', '') or ''))
+        ]
+        if relevant_events:
+            # Pick the event with the latest eventTime
+            latest_event = max(relevant_events, key=lambda e: parse_iso_datetime(e.get('eventTime', '')) or datetime.min)
+            normalized_time = normalize_event_time(latest_event.get('eventTime', ''))
+            if normalized_time:
+                log(f"DEBUG: Will update {item_name}_LastUpdate with value {normalized_time}")
+                update_openhab_item(f"{item_name}_LastUpdate", normalized_time, "DateTime")
         # Write door state if present
+        state_info = door_states[door_key]
         if state_info.get('state') in ['OPEN', 'CLOSED']:
             update_openhab_item(f"{item_name}_State", state_info['state'], "String")
         # Only write last user when known to avoid overwriting with "Unknown"
         if state_info.get('user') and state_info.get('user') != 'Unknown':
             update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
-        # Only write timestamp when it's from a real event (skip auto_close)
-        if state_info.get('event_type') != 'auto_close':
-            normalized_time = normalize_event_time(state_info.get('time'))
-            if normalized_time:
-                update_openhab_item(f"{item_name}_LastUpdate", normalized_time, "DateTime")
     
     # Update user presence
     for user_name, presence_info in user_presence.items():
