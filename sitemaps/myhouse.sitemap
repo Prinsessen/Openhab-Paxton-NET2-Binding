@@ -91,7 +91,7 @@ Text label="Paxton Door Events" icon="lock" {
 		}
 		Text label="Kirkegade 50 - Basement" icon="door" {
 			Frame label="Basement Events" {
-				Webview url="/static/doors/kirkegade50_andreas_udvkælder_acu_01038236_ind.html" height=50 icon=none
+				Webview url="/static/doors/kirkegade50_andreas_udv_kælder_acu_01038236_ind.html" height=50 icon=none
 			}
 		}
 		Text label="Kirkegade 50 - Værksted" icon="door" {

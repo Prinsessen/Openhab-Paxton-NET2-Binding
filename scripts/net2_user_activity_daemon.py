@@ -486,6 +486,17 @@ def generate_door_html(door_name, door_events, refresh_interval, username):
         .result-denied {{ background: #f8d7da; color: #721c24; }}
         .result-unknown {{ background: #e2e3e5; color: #383d41; }}
         .footer {{ background: #f8f9fa; padding: 20px; text-align: center; color: #666; }}
+        
+        @media (max-width: 768px) {{
+            body {{ padding: 5px; }}
+            .header {{ padding: 15px 10px; }}
+            .header h1 {{ font-size: 1.2em; }}
+            .header p {{ font-size: 0.75em; }}
+            .content {{ padding: 10px; overflow-x: auto; }}
+            .events-table {{ font-size: 0.75em; }}
+            .events-table th, .events-table td {{ padding: 8px 4px; }}
+            .event-result {{ padding: 3px 6px; font-size: 0.75em; }}
+        }}
     </style>
 </head>
 <body>
