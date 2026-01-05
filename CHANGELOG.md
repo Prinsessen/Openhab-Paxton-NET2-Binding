@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 17:00:31
+- Modified: services/addons.cfg
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 16:45:01
 - Modified: items/paxton.items
 - Modified: rules/Paxton.rules
