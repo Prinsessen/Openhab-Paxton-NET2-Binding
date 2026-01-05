@@ -14,6 +14,34 @@ import sys
 import os
 import re
 
+# Configuration file path
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'net2_config.json')
+
+# -----------------------------
+# Configuration Loading
+# -----------------------------
+def load_config():
+    """Load configuration from net2_config.json file"""
+    try:
+        if not os.path.exists(CONFIG_FILE):
+            print(f"❌ Configuration file not found: {CONFIG_FILE}")
+            sys.exit(1)
+        
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        
+        required_fields = ['base_url', 'username', 'password', 'grant_type', 'client_id']
+        missing_fields = [field for field in required_fields if field not in config]
+        
+        if missing_fields:
+            print(f"❌ Missing required fields in config: {', '.join(missing_fields)}")
+            sys.exit(1)
+        
+        return config
+    except Exception as e:
+        print(f"❌ Error loading config: {e}")
+        sys.exit(1)
+
 # -----------------------------
 # Argument Parser
 # -----------------------------
@@ -29,18 +57,8 @@ parser.add_argument("--verbose", action="store_true", help="Enable verbose outpu
 
 args = parser.parse_args()
 
-# -----------------------------
-# API Configuration
-# -----------------------------
-BASE_URL = "https://milestone.agesen.dk:8443/api/v1"
-AUTH_ENDPOINT = f"{BASE_URL}/authorization/tokens"
-EVENTS_ENDPOINT = f"{BASE_URL}/events"
-USERS_ENDPOINT = f"{BASE_URL}/users"
-
-username = "Nanna Agesen"
-password = "Jekboapj110"
-grant_type = "password"
-client_id = "00aab996-6439-4f16-89b4-6c0cc851e8f3"
+# Load configuration
+config = load_config()
 
 # -----------------------------
 # Helper Functions
@@ -55,14 +73,16 @@ def authenticate():
     log("Authenticating with Paxton Net2 API...")
     
     payload = {
-        'username': username,
-        'password': password,
-        'grant_type': grant_type,
-        'client_id': client_id
+        'username': config['username'],
+        'password': config['password'],
+        'grant_type': config['grant_type'],
+        'client_id': config['client_id']
     }
+    
+    auth_endpoint = f"{config['base_url']}/authorization/tokens"
 
     try:
-        response = requests.post(AUTH_ENDPOINT, data=payload, timeout=10)
+        response = requests.post(auth_endpoint, data=payload, timeout=10)
         
         if response.status_code != 200:
             print(f"ERROR: Authentication failed with status {response.status_code}")
@@ -91,6 +111,8 @@ def get_user_events(token, hours=24):
     end_time = datetime.now()
     start_time = end_time - timedelta(hours=hours)
     
+    events_endpoint = f"{config['base_url']}/events"
+    
     # API parameters for event retrieval
     params = {
         'startDate': start_time.isoformat(),
@@ -99,7 +121,7 @@ def get_user_events(token, hours=24):
     }
     
     try:
-        response = requests.get(EVENTS_ENDPOINT, headers=headers, params=params, timeout=30)
+        response = requests.get(events_endpoint, headers=headers, params=params, timeout=30)
         
         if response.status_code == 200:
             events = response.json()
@@ -868,7 +890,7 @@ def main():
     user_activity, event_summary = process_events(events)
     
     # Generate and save main HTML report
-    html_content = generate_html(user_activity, event_summary, args.hours, username)
+    html_content = generate_html(user_activity, event_summary, args.hours, config['username'])
     save_html(html_content, args.output)
     
     # Process events by door
@@ -890,7 +912,7 @@ def main():
             safe_name = sanitize_filename(door_name)
             door_html_path = os.path.join(door_dir, f"{safe_name}.html")
             valid_door_files.add(os.path.basename(door_html_path))
-            door_html = generate_door_html(door_name, door_events, args.refresh, username)
+            door_html = generate_door_html(door_name, door_events, args.refresh, config['username'])
             save_html(door_html, door_html_path)
             door_files.append((door_name, door_html_path, len(door_events)))
     

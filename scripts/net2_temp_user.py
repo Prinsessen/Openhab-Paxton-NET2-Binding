@@ -83,7 +83,7 @@ def load_config():
             }, indent=2))
             sys.exit(1)
         
-        with open(CONFIG_FILE, 'r') as f:
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
             config = json.load(f)
         
         # Validate required fields

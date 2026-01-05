@@ -41,7 +41,7 @@ def load_config():
             log(f"ERROR: Configuration file not found: {CONFIG_FILE}")
             sys.exit(1)
         
-        with open(CONFIG_FILE, 'r') as f:
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
             config = json.load(f)
         
         required_fields = ['base_url', 'username', 'password', 'grant_type', 'client_id']
@@ -312,7 +312,7 @@ def sanitize_filename(name):
     name = re.sub(r'_+', '_', name)
     return name.strip('_')
 
-def generate_html(user_activity, event_summary, hours, refresh_interval):
+def generate_html(user_activity, event_summary, hours, refresh_interval, username):
     """Generate main HTML report"""
     log("Generating HTML report...")
     
@@ -452,7 +452,7 @@ def generate_html(user_activity, event_summary, hours, refresh_interval):
     
     return html_content
 
-def generate_door_html(door_name, door_events, refresh_interval):
+def generate_door_html(door_name, door_events, refresh_interval, username):
     """Generate per-door HTML report"""
     log(f"Generating HTML for door: {door_name}")
     
@@ -576,7 +576,7 @@ def poll_and_update(config):
         user_activity, event_summary = process_events(events)
         
         # Generate and save main HTML report
-        html_content = generate_html(user_activity, event_summary, HOURS_TO_RETRIEVE, REFRESH_INTERVAL)
+        html_content = generate_html(user_activity, event_summary, HOURS_TO_RETRIEVE, REFRESH_INTERVAL, config['username'])
         save_html(html_content, OUTPUT_HTML)
         
         # Process events by door
@@ -596,7 +596,7 @@ def poll_and_update(config):
                 safe_name = sanitize_filename(door_name)
                 door_html_path = os.path.join(DOOR_DIR, f"{safe_name}.html")
                 valid_door_files.add(os.path.basename(door_html_path))
-                door_html = generate_door_html(door_name, door_events, REFRESH_INTERVAL)
+                door_html = generate_door_html(door_name, door_events, REFRESH_INTERVAL, config['username'])
                 save_html(door_html, door_html_path)
         
         # Clean up old door HTML files (only those created by this script)

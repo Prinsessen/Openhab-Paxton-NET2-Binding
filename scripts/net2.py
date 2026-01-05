@@ -3,6 +3,37 @@
 import json
 import requests
 import argparse
+import os
+import sys
+
+# Configuration file path
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'net2_config.json')
+
+# -----------------------------
+# Configuration Loading
+# -----------------------------
+def load_config():
+    """Load configuration from net2_config.json file"""
+    try:
+        if not os.path.exists(CONFIG_FILE):
+            print(f"ERROR: Configuration file not found: {CONFIG_FILE}")
+            print(f"Please create the config file with API credentials.")
+            sys.exit(1)
+        
+        with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        
+        required_fields = ['base_url', 'username', 'password', 'grant_type', 'client_id']
+        missing_fields = [field for field in required_fields if field not in config]
+        
+        if missing_fields:
+            print(f"ERROR: Missing required fields in config: {', '.join(missing_fields)}")
+            sys.exit(1)
+        
+        return config
+    except Exception as e:
+        print(f"ERROR: Failed to load config: {e}")
+        sys.exit(1)
 
 # -----------------------------
 # Argument Parser
@@ -24,27 +55,25 @@ parser.add_argument("--fla", required=True, help="LED Flash Mode")
 
 args = parser.parse_args()
 
+# Load configuration
+config = load_config()
+
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------
 # API Endpoints & Auth Data
 # Getting an Ca-Certificate validation error: Get the recent CA-cert from eg. Digicert copy and paste it in the beginning of /etc/ssl/certs/ca-certificates.crt
 # -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Paxton_auth = "https://milestone.agesen.dk:8443/api/v1/authorization/tokens"
-Paxton_open_door = "https://milestone.agesen.dk:8443/api/v1/commands/door/control"
-
-username = "Nanna Agesen"
-password = "Jekboapj110"
-grant_type = "password"
-client_id = "00aab996-6439-4f16-89b4-6c0cc851e8f3"
+Paxton_auth = f"{config['base_url']}/authorization/tokens"
+Paxton_open_door = f"{config['base_url']}/commands/door/control"
 
 # -----------------------------
 # Authentication Request
 # -----------------------------
 payload_auth = {
-    'username': username,
-    'password': password,
-    'grant_type': grant_type,
-    'client_id': client_id
+    'username': config['username'],
+    'password': config['password'],
+    'grant_type': config['grant_type'],
+    'client_id': config['client_id']
 }
 
 response_auth = requests.post(Paxton_auth, data=payload_auth)
