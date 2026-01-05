@@ -577,16 +577,24 @@ def poll_and_update():
                 door_html = generate_door_html(door_name, door_events, REFRESH_INTERVAL)
                 save_html(door_html, door_html_path)
         
-        # Clean up old HTML files
+        # Clean up old door HTML files (only those created by this script)
+        # Only remove files that match our naming pattern (sanitized door names)
         if os.path.exists(DOOR_DIR):
             for filename in os.listdir(DOOR_DIR):
+                # Only process files that end with .html and match our pattern
                 if filename.endswith('.html') and filename not in valid_door_files:
-                    old_file_path = os.path.join(DOOR_DIR, filename)
-                    try:
-                        os.remove(old_file_path)
-                        log(f"Removed old door file: {old_file_path}")
-                    except Exception as e:
-                        log(f"Warning: Could not remove {old_file_path}: {e}")
+                    # Only remove if it looks like a door file (contains door identifiers)
+                    # Skip net2_activity.html and other non-door files
+                    if filename == 'net2_activity.html':
+                        continue
+                    # Only remove files with our specific naming pattern (door names with ACU, etc.)
+                    if any(pattern in filename.lower() for pattern in ['acu', 'central', 'hikvision', 'ford_r', 'garage']):
+                        old_file_path = os.path.join(DOOR_DIR, filename)
+                        try:
+                            os.remove(old_file_path)
+                            log(f"Removed old door file: {old_file_path}")
+                        except Exception as e:
+                            log(f"Warning: Could not remove {old_file_path}: {e}")
         
         log(f"Poll cycle completed: {event_summary['total_events']} events, {len(event_summary['unique_users'])} users, {len(door_activity)} doors")
         

@@ -148,11 +148,11 @@ sitemap myhouse label="Nanna Agesen"
 					Switch item=actions label="Reset Mop" mappings=["mop-reset-mop-life"="Reset"] icon="reset-clock"
 			}
 		}
-		//Text label="Paxton" icon="lock" {
-			//Frame label="Who is in" {
-				// Webview url="/static/paxton.html" height=20 icon=none
-				//}
-
+		Text label="Paxton" icon="lock" {
+			Frame label="Who is in" {
+				 Webview url="/static/kirkegade50_hikvision_faceid_acu_6612642.html" height=20 icon=none
+				}
+}
 			}
 			Frame label="House Control" {
 				Text icon="house" label="1st Floor" {
