@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 07:38:26
+- Added: scripts/git-autopush-no-html.sh
+- Added: services/openhab-git-autopush-no-html.service
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 07:15:01
 - Modified: "html/doors/kirkegade50_andreas_udvk303246lder_acu_01038236_ind.html"
 - Modified: "html/doors/kirkegade50_ford303270r_marine_reader_acu_6612642.html"

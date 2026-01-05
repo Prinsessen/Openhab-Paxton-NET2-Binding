@@ -1,0 +1,23 @@
+[Unit]
+Description=OpenHAB Git Auto-Push Service (Excluding HTML)
+Documentation=file:///etc/openhab/README.md
+After=network.target
+
+[Service]
+Type=oneshot
+User=openhab
+Group=openhab
+WorkingDirectory=/etc/openhab
+ExecStart=/bin/bash /etc/openhab/scripts/git-autopush-no-html.sh
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+PrivateTmp=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/etc/openhab /var/log/openhab
+
+[Install]
+WantedBy=multi-user.target
