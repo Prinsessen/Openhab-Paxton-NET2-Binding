@@ -25,19 +25,36 @@ REFRESH_INTERVAL = 1800  # 30 minutes in seconds
 LOG_FILE = "/var/log/openhab/net2-daemon.log"
 HOURS_TO_RETRIEVE = 24
 
-# API Configuration
-BASE_URL = "https://milestone.agesen.dk:8443/api/v1"
-AUTH_ENDPOINT = f"{BASE_URL}/authorization/tokens"
-EVENTS_ENDPOINT = f"{BASE_URL}/events"
-USERS_ENDPOINT = f"{BASE_URL}/users"
-
-username = "Nanna Agesen"
-password = "Jekboapj110"
-grant_type = "password"
-client_id = "00aab996-6439-4f16-89b4-6c0cc851e8f3"
+# Configuration file path
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'net2_config.json')
 
 # Global flag for graceful shutdown
 shutdown_requested = False
+
+# -----------------------------
+# Configuration Loading
+# -----------------------------
+def load_config():
+    """Load configuration from net2_config.json file"""
+    try:
+        if not os.path.exists(CONFIG_FILE):
+            log(f"ERROR: Configuration file not found: {CONFIG_FILE}")
+            sys.exit(1)
+        
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        
+        required_fields = ['base_url', 'username', 'password', 'grant_type', 'client_id']
+        missing_fields = [field for field in required_fields if field not in config]
+        
+        if missing_fields:
+            log(f"ERROR: Missing required fields in config: {', '.join(missing_fields)}")
+            sys.exit(1)
+        
+        return config
+    except Exception as e:
+        log(f"ERROR: Failed to load config: {e}")
+        sys.exit(1)
 
 # -----------------------------
 # Signal Handlers
@@ -65,19 +82,21 @@ def log(message):
     except Exception as e:
         print(f"Failed to write to log file: {e}")
 
-def authenticate():
+def authenticate(config):
     """Authenticate with Paxton Net2 API and return access token"""
     log("Authenticating with Paxton Net2 API...")
     
     payload = {
-        'username': username,
-        'password': password,
-        'grant_type': grant_type,
-        'client_id': client_id
+        'username': config['username'],
+        'password': config['password'],
+        'grant_type': config['grant_type'],
+        'client_id': config['client_id']
     }
+    
+    auth_endpoint = f"{config['base_url']}/authorization/tokens"
 
     try:
-        response = requests.post(AUTH_ENDPOINT, data=payload, timeout=10)
+        response = requests.post(auth_endpoint, data=payload, timeout=10)
         
         if response.status_code != 200:
             log(f"ERROR: Authentication failed with status {response.status_code}")
@@ -91,7 +110,7 @@ def authenticate():
         log(f"ERROR: Connection failed - {e}")
         return None
 
-def get_user_events(token, hours=24):
+def get_user_events(config, token, hours=24):
     """Retrieve user access events from the API"""
     log(f"Retrieving events from last {hours} hours...")
     
@@ -110,8 +129,10 @@ def get_user_events(token, hours=24):
         'pageSize': 1000
     }
     
+    events_endpoint = f"{config['base_url']}/events"
+    
     try:
-        response = requests.get(EVENTS_ENDPOINT, headers=headers, params=params, timeout=30)
+        response = requests.get(events_endpoint, headers=headers, params=params, timeout=30)
         
         if response.status_code == 200:
             events = response.json()
@@ -536,17 +557,17 @@ def save_html(html_content, output_path):
     except Exception as e:
         log(f"ERROR: Failed to save HTML file - {e}")
 
-def poll_and_update():
+def poll_and_update(config):
     """Single poll cycle - retrieve and update reports"""
     try:
         # Authenticate
-        token = authenticate()
+        token = authenticate(config)
         if not token:
             log("Failed to authenticate, skipping this poll cycle")
             return
         
         # Retrieve events
-        events = get_user_events(token, HOURS_TO_RETRIEVE)
+        events = get_user_events(config, token, HOURS_TO_RETRIEVE)
         if not events:
             log("No events retrieved, skipping update")
             return
@@ -614,8 +635,12 @@ def main():
     log(f"Door reports: {DOOR_DIR}")
     log("=" * 60)
     
+    # Load configuration
+    config = load_config()
+    log(f"Configuration loaded from {CONFIG_FILE}")
+    
     # Initial poll
-    poll_and_update()
+    poll_and_update(config)
     
     # Main loop
     while not shutdown_requested:
@@ -627,7 +652,7 @@ def main():
                 time.sleep(1)
             
             if not shutdown_requested:
-                poll_and_update()
+                poll_and_update(config)
         
         except KeyboardInterrupt:
             log("Received keyboard interrupt")

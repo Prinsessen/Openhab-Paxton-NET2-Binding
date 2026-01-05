@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 12:00:01
+- Added: scripts/net2_config.json
+- Modified: scripts/net2_temp_user.py
+- Modified: scripts/net2_user_activity_daemon.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 11:30:01
 - Added: scripts/NET2_TEMP_USER_SUMMARY.md
 - Added: scripts/README_net2_temp_user.md

@@ -37,6 +37,7 @@ Date: 2026-01-05
 import requests
 import json
 import argparse
+import os
 from datetime import datetime, timedelta
 from urllib3.exceptions import InsecureRequestWarning
 import sys
@@ -44,12 +45,8 @@ import sys
 # Disable SSL warnings for self-signed certificates
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-# Paxton Net2 API Configuration
-BASE_URL = "https://milestone.agesen.dk:8443/api/v1"
-USERNAME = "Nanna Agesen"
-PASSWORD = "Jekboapj110"
-GRANT_TYPE = "password"
-CLIENT_ID = "00aab996-6439-4f16-89b4-6c0cc851e8f3"
+# Configuration file path
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'net2_config.json')
 
 # Temporary user prefix for easy identification
 TEMP_USER_PREFIX = "TEMP_"
@@ -64,6 +61,47 @@ ACCESS_LEVELS = {
     5: "Porsevej 19",
     6: "Terndrupvej 81"
 }
+
+
+def load_config():
+    """
+    Load configuration from net2_config.json file
+    
+    Returns:
+        dict: Configuration dictionary with base_url, username, password, grant_type, client_id
+    """
+    try:
+        if not os.path.exists(CONFIG_FILE):
+            print(f"❌ Configuration file not found: {CONFIG_FILE}")
+            print(f"\nPlease create a configuration file with the following structure:")
+            print(json.dumps({
+                "base_url": "https://your-server:8443/api/v1",
+                "username": "Your Username",
+                "password": "Your Password",
+                "grant_type": "password",
+                "client_id": "your-client-id"
+            }, indent=2))
+            sys.exit(1)
+        
+        with open(CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+        
+        # Validate required fields
+        required_fields = ['base_url', 'username', 'password', 'grant_type', 'client_id']
+        missing_fields = [field for field in required_fields if field not in config]
+        
+        if missing_fields:
+            print(f"❌ Missing required fields in config file: {', '.join(missing_fields)}")
+            sys.exit(1)
+        
+        return config
+        
+    except json.JSONDecodeError as e:
+        print(f"❌ Invalid JSON in config file: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Error loading config file: {e}")
+        sys.exit(1)
 
 
 def parse_access_level(access_level_input):
@@ -99,7 +137,9 @@ def parse_access_level(access_level_input):
 class Net2API:
     """Wrapper for Paxton Net2 API calls"""
     
-    def __init__(self):
+    def __init__(self, config):
+        self.config = config
+        self.base_url = config['base_url']
         self.token = None
         self.headers = None
         self.authenticate()
@@ -108,13 +148,13 @@ class Net2API:
         """Authenticate and get access token"""
         try:
             payload = {
-                'username': USERNAME,
-                'password': PASSWORD,
-                'grant_type': GRANT_TYPE,
-                'client_id': CLIENT_ID
+                'username': self.config['username'],
+                'password': self.config['password'],
+                'grant_type': self.config['grant_type'],
+                'client_id': self.config['client_id']
             }
             response = requests.post(
-                f"{BASE_URL}/authorization/tokens",
+                f"{self.base_url}/authorization/tokens",
                 data=payload,
                 verify=False,
                 timeout=10
@@ -140,7 +180,7 @@ class Net2API:
         """Get all users from the system"""
         try:
             response = requests.get(
-                f"{BASE_URL}/users",
+                f"{self.base_url}/users",
                 headers=self.headers,
                 verify=False,
                 timeout=10
@@ -155,7 +195,7 @@ class Net2API:
         """Create a new user"""
         try:
             response = requests.post(
-                f"{BASE_URL}/users",
+                f"{self.base_url}/users",
                 headers=self.headers,
                 json=user_data,
                 verify=False,
@@ -173,7 +213,7 @@ class Net2API:
         """Delete a user by ID"""
         try:
             response = requests.delete(
-                f"{BASE_URL}/users/{user_id}",
+                f"{self.base_url}/users/{user_id}",
                 headers=self.headers,
                 verify=False,
                 timeout=10
@@ -188,7 +228,7 @@ class Net2API:
         """Get all available access levels"""
         try:
             response = requests.get(
-                f"{BASE_URL}/accesslevels",
+                f"{self.base_url}/accesslevels",
                 headers=self.headers,
                 verify=False,
                 timeout=10
@@ -533,9 +573,12 @@ Examples:
         parser.print_help()
         sys.exit(1)
     
+    # Load configuration
+    config = load_config()
+    
     # Initialize API
     print("🔐 Authenticating with Paxton Net2...")
-    api = Net2API()
+    api = Net2API(config)
     
     if not api.token:
         print("❌ Failed to authenticate. Please check credentials.")
