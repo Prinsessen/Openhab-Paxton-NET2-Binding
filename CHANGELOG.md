@@ -7,6 +7,21 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 06:15:21
+- Added: "html/doors/kirkegade50_andreas_udvk303246lder_acu_01038236_ind.html"
+- Added: "html/doors/kirkegade50_ford303270r_marine_reader_acu_6612642.html"
+- Added: html/doors/kirkegade50_garage_port_acu7242929.html
+- Added: html/doors/kirkegade50_garage_port_acu7242929_ind.html
+- Added: html/doors/kirkegade50_hikvision_faceid_acu_6612642.html
+- Added: "html/doors/kirkegade50_v303246rksted_d303270r_central_03962494_ind.html"
+- Added: "html/doors/porsevej19_ford303270r_porsevej_acu967438_ind.html"
+- Added: "html/doors/terndrupvej_81_ford303270r_terndrupvej_acu6203980.html"
+- Added: "html/doors/terndrupvej_81_ford303270r_terndrupvej_acu6203980_ind.html"
+- Modified: html/net2_activity.html
+- Modified: scripts/net2_user_activity.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 06:00:01
 - Added: html/net2_activity.html
 - Added: scripts/NET2_ACTIVITY_README.md

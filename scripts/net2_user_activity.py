@@ -11,6 +11,8 @@ import argparse
 from datetime import datetime, timedelta
 from collections import defaultdict
 import sys
+import os
+import re
 
 # -----------------------------
 # Argument Parser
@@ -21,6 +23,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument("--hours", type=int, default=24, help="Number of hours to retrieve (default: 24)")
 parser.add_argument("--output", default="/etc/openhab/html/net2_activity.html", help="Output HTML file path")
+parser.add_argument("--door-dir", default="/etc/openhab/html/doors", help="Directory for per-door HTML files")
 parser.add_argument("--refresh", type=int, default=60, help="HTML auto-refresh interval in seconds (default: 60)")
 parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
 
@@ -129,6 +132,7 @@ def process_events(events):
         'total_events': 0,
         'access_granted': 0,
         'access_denied': 0,
+        'door_events': 0,
         'unique_users': set()
     }
     
@@ -139,35 +143,142 @@ def process_events(events):
     else:
         events_list = events if isinstance(events, list) else []
     
+    # Event types for door access (based on Paxton Net2 API)
+    ACCESS_GRANTED_TYPES = [20, 26]  # 20=card, 26=PIN
+    ACCESS_DENIED_TYPES = [23, 24, 25, 27]  # Various denial reasons
+    DOOR_EVENT_TYPES = [20, 23, 24, 25, 26, 27, 28, 29, 46, 47, 93]  # All door-related events
+    
     for event in events_list:
+        event_type_code = event.get('eventType', 0)
+        
+        # Only process door-related events
+        if event_type_code not in DOOR_EVENT_TYPES:
+            continue
+        
         event_summary['total_events'] += 1
+        event_summary['door_events'] += 1
         
-        # Extract user information (field names may vary)
-        user_name = event.get('userName', event.get('UserName', event.get('user', 'Unknown')))
-        event_type = event.get('eventType', event.get('EventType', event.get('type', 'Unknown')))
-        timestamp = event.get('timestamp', event.get('Timestamp', event.get('dateTime', '')))
-        door_name = event.get('doorName', event.get('DoorName', event.get('door', 'Unknown')))
-        result = event.get('result', event.get('Result', event.get('status', 'Unknown')))
+        # Build full user name from components
+        first_name = event.get('firstName', '')
+        middle_name = event.get('middleName', '')
+        surname = event.get('surname', '')
         
-        # Track statistics
-        if 'grant' in str(result).lower() or 'success' in str(result).lower():
+        name_parts = [first_name, middle_name, surname]
+        user_name = ' '.join([p for p in name_parts if p]).strip()
+        
+        if not user_name:
+            user_name = 'Unknown User'
+        
+        # Get event details
+        event_description = event.get('eventDescription', 'Unknown')
+        event_details = event.get('eventDetails', '')
+        timestamp = event.get('eventTime', '')
+        device_name = event.get('deviceName', 'Unknown Location')
+        card_no = event.get('cardNo', '')
+        
+        # Determine result based on event type
+        if event_type_code in ACCESS_GRANTED_TYPES:
+            result = 'Access Granted'
             event_summary['access_granted'] += 1
-        elif 'deni' in str(result).lower() or 'fail' in str(result).lower():
+        elif event_type_code in ACCESS_DENIED_TYPES:
+            result = 'Access Denied'
             event_summary['access_denied'] += 1
+        elif event_type_code in [28, 46]:
+            result = 'Door Opened'
+        elif event_type_code in [29, 47]:
+            result = 'Door Closed'
+        elif event_type_code == 93:
+            result = 'Door Held Open'
+        else:
+            result = event_description
         
         event_summary['unique_users'].add(user_name)
         
         user_activity[user_name].append({
             'timestamp': timestamp,
-            'event_type': event_type,
-            'door': door_name,
+            'event_type': event_description,
+            'event_type_code': event_type_code,
+            'door': device_name,
             'result': result,
+            'details': event_details,
+            'card_no': card_no,
             'raw': event  # Keep raw data for debugging
         })
     
-    log(f"Processed {event_summary['total_events']} events for {len(event_summary['unique_users'])} users")
+    log(f"Processed {event_summary['door_events']} door events (out of {len(events_list)} total) for {len(event_summary['unique_users'])} users")
     
     return user_activity, event_summary
+
+def process_events_by_door(events):
+    """Process events and organize by door"""
+    log("Processing events by door...")
+    
+    door_activity = defaultdict(list)
+    
+    # Handle different response structures
+    if isinstance(events, dict):
+        events_list = events.get('events', events.get('data', events.get('results', [])))
+    else:
+        events_list = events if isinstance(events, list) else []
+    
+    # Event types for door access
+    DOOR_EVENT_TYPES = [20, 23, 24, 25, 26, 27, 28, 29, 46, 47, 93]
+    ACCESS_GRANTED_TYPES = [20, 26]
+    ACCESS_DENIED_TYPES = [23, 24, 25, 27]
+    
+    for event in events_list:
+        event_type_code = event.get('eventType', 0)
+        
+        # Only process door-related events
+        if event_type_code not in DOOR_EVENT_TYPES:
+            continue
+        
+        # Get door/device name
+        device_name = event.get('deviceName', 'Unknown Location')
+        if not device_name or device_name == 'Unknown Location':
+            continue
+        
+        # Build full user name
+        first_name = event.get('firstName', '')
+        middle_name = event.get('middleName', '')
+        surname = event.get('surname', '')
+        name_parts = [first_name, middle_name, surname]
+        user_name = ' '.join([p for p in name_parts if p]).strip()
+        
+        if not user_name:
+            user_name = 'Unknown User'
+        
+        # Get event details
+        event_description = event.get('eventDescription', 'Unknown')
+        event_details = event.get('eventDetails', '')
+        timestamp = event.get('eventTime', '')
+        card_no = event.get('cardNo', '')
+        
+        # Determine result
+        if event_type_code in ACCESS_GRANTED_TYPES:
+            result = 'Access Granted'
+        elif event_type_code in ACCESS_DENIED_TYPES:
+            result = 'Access Denied'
+        elif event_type_code in [28, 46]:
+            result = 'Door Opened'
+        elif event_type_code in [29, 47]:
+            result = 'Door Closed'
+        elif event_type_code == 93:
+            result = 'Door Held Open'
+        else:
+            result = event_description
+        
+        door_activity[device_name].append({
+            'user_name': user_name,
+            'timestamp': timestamp,
+            'event_type': event_description,
+            'result': result,
+            'details': event_details,
+            'card_no': card_no
+        })
+    
+    log(f"Processed events for {len(door_activity)} doors")
+    return door_activity
 
 def format_timestamp(timestamp_str):
     """Format timestamp for display"""
@@ -175,18 +286,25 @@ def format_timestamp(timestamp_str):
         return "Unknown"
     
     try:
-        # Try different timestamp formats
-        for fmt in ['%Y-%m-%dT%H:%M:%S', '%Y-%m-%dT%H:%M:%S.%f', '%Y-%m-%d %H:%M:%S']:
-            try:
-                dt = datetime.strptime(timestamp_str.split('.')[0].split('+')[0], fmt)
-                return dt.strftime('%d-%m-%Y %H:%M:%S')
-            except ValueError:
-                continue
-        return timestamp_str
+        # Paxton Net2 format: 2026-01-05T06:00:01.017+01:00
+        # Remove timezone and milliseconds for parsing
+        clean_timestamp = timestamp_str.split('+')[0].split('.')[0]
+        dt = datetime.strptime(clean_timestamp, '%Y-%m-%dT%H:%M:%S')
+        return dt.strftime('%d-%m-%Y %H:%M:%S')
     except:
-        return str(timestamp_str)
+        try:
+            # Fallback: try other formats
+            for fmt in ['%Y-%m-%d %H:%M:%S', '%Y-%m-%dT%H:%M:%S.%f']:
+                try:
+                    dt = datetime.strptime(timestamp_str.split('.')[0].split('+')[0], fmt)
+                    return dt.strftime('%d-%m-%Y %H:%M:%S')
+                except ValueError:
+                    continue
+            return timestamp_str
+        except:
+            return str(timestamp_str)
 
-def generate_html(user_activity, event_summary, hours):
+def generate_html(user_activity, event_summary, hours, username):
     """Generate HTML report"""
     log("Generating HTML report...")
     
@@ -465,11 +583,21 @@ def generate_html(user_activity, event_summary, hours):
                 event_type = event.get('event_type', 'Unknown')
                 door = event.get('door', 'Unknown')
                 result = str(event.get('result', 'Unknown'))
+                details = event.get('details', '')
+                card_no = event.get('card_no', '')
+                
+                # Add card number to event type if present
+                if card_no:
+                    event_type = f"{event_type} (Card: {card_no})"
+                
+                # Add details if present
+                if details:
+                    event_type = f"{event_type} - {details}"
                 
                 # Determine result CSS class
                 if 'grant' in result.lower() or 'success' in result.lower():
                     result_class = 'result-granted'
-                elif 'deni' in result.lower() or 'fail' in result.lower():
+                elif 'deni' in result.lower() or 'deny' in result.lower() or 'fail' in result.lower():
                     result_class = 'result-denied'
                 else:
                     result_class = 'result-unknown'
@@ -493,7 +621,225 @@ def generate_html(user_activity, event_summary, hours):
         </div>
         
         <div class="footer">
-            Auto-refresh every {args.refresh} seconds | OpenHAB Paxton Net2 Integration
+            Auto-refresh every {args.refresh} seconds | OpenHAB Paxton Net2 Integration<br>
+            Generated by: {username}
+        </div>
+    </div>
+</body>
+</html>
+"""
+    
+    return html_content
+
+def sanitize_filename(name):
+    """Convert door name to safe filename"""
+    # Remove special characters and replace spaces with underscores
+    safe_name = re.sub(r'[^\w\s-]', '', name)
+    safe_name = re.sub(r'[-\s]+', '_', safe_name)
+    return safe_name.lower()
+
+def generate_door_html(door_name, events, refresh_interval, username):
+    """Generate HTML report for a specific door"""
+    log(f"Generating HTML for door: {door_name}")
+    
+    now = datetime.now()
+    
+    # Sort events by timestamp (most recent first) and take top 10
+    sorted_events = sorted(events, key=lambda x: x.get('timestamp', ''), reverse=True)[:10]
+    
+    html_content = f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Refresh" content="{refresh_interval}">
+    <title>{door_name} - Recent Activity</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }}
+        
+        .container {{
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }}
+        
+        .header {{
+            background: linear-gradient(135deg, #2d2e30 0%, #434449 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }}
+        
+        .header h1 {{
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }}
+        
+        .header .subtitle {{
+            font-size: 1em;
+            opacity: 0.9;
+        }}
+        
+        .content {{
+            padding: 30px;
+        }}
+        
+        .events-table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }}
+        
+        .events-table th {{
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }}
+        
+        .events-table td {{
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+        }}
+        
+        .events-table tr:hover {{
+            background: #f8f9fa;
+        }}
+        
+        .event-result {{
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }}
+        
+        .result-granted {{
+            background: #d4edda;
+            color: #155724;
+        }}
+        
+        .result-denied {{
+            background: #f8d7da;
+            color: #721c24;
+        }}
+        
+        .result-unknown {{
+            background: #fff3cd;
+            color: #856404;
+        }}
+        
+        .footer {{
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9em;
+            border-top: 1px solid #dee2e6;
+        }}
+        
+        .badge {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin: 20px 0;
+            font-weight: 600;
+        }}
+        
+        @media (max-width: 768px) {{
+            .events-table {{
+                font-size: 0.9em;
+            }}
+            
+            .events-table th,
+            .events-table td {{
+                padding: 8px;
+            }}
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚪 {door_name}</h1>
+            <div class="subtitle">Last 10 Access Events</div>
+            <div class="subtitle">Updated: {now.strftime('%d-%m-%Y %H:%M:%S')}</div>
+        </div>
+        
+        <div class="content">
+            <div class="badge">Latest Activity</div>
+            
+            <table class="events-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Timestamp</th>
+                        <th>Event</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+"""
+    
+    for event in sorted_events:
+        user_name = event.get('user_name', 'Unknown')
+        timestamp = format_timestamp(event.get('timestamp', ''))
+        event_type = event.get('event_type', 'Unknown')
+        result = str(event.get('result', 'Unknown'))
+        details = event.get('details', '')
+        card_no = event.get('card_no', '')
+        
+        # Add card number if present
+        if card_no:
+            event_type = f"{event_type} (Card: {card_no})"
+        
+        # Add details if present
+        if details:
+            event_type = f"{event_type} - {details}"
+        
+        # Determine result CSS class
+        if 'grant' in result.lower() or 'success' in result.lower():
+            result_class = 'result-granted'
+        elif 'deni' in result.lower() or 'deny' in result.lower() or 'fail' in result.lower():
+            result_class = 'result-denied'
+        else:
+            result_class = 'result-unknown'
+        
+        html_content += f"""
+                    <tr>
+                        <td><strong>{user_name}</strong></td>
+                        <td>{timestamp}</td>
+                        <td>{event_type}</td>
+                        <td><span class="event-result {result_class}">{result}</span></td>
+                    </tr>
+"""
+    
+    html_content += f"""
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="footer">
+            Auto-refresh every {refresh_interval} seconds | OpenHAB Paxton Net2 Integration<br>
+            Generated by: {username}
         </div>
     </div>
 </body>
@@ -530,17 +876,40 @@ def main():
     # Process events
     user_activity, event_summary = process_events(events)
     
-    # Generate HTML
-    html_content = generate_html(user_activity, event_summary, args.hours)
-    
-    # Save HTML
+    # Generate and save main HTML report
+    html_content = generate_html(user_activity, event_summary, args.hours, username)
     save_html(html_content, args.output)
+    
+    # Process events by door
+    door_activity = process_events_by_door(events)
+    
+    # Create door directory if it doesn't exist
+    door_dir = args.door_dir
+    if not os.path.exists(door_dir):
+        os.makedirs(door_dir, exist_ok=True)
+        log(f"Created directory: {door_dir}")
+    
+    # Generate HTML for each door
+    door_files = []
+    for door_name, door_events in door_activity.items():
+        if len(door_events) > 0:
+            safe_name = sanitize_filename(door_name)
+            door_html_path = os.path.join(door_dir, f"{safe_name}.html")
+            door_html = generate_door_html(door_name, door_events, args.refresh, username)
+            save_html(door_html, door_html_path)
+            door_files.append((door_name, door_html_path, len(door_events)))
     
     print("=" * 60)
     print(f"Total Events: {event_summary['total_events']}")
     print(f"Unique Users: {len(event_summary['unique_users'])}")
     print(f"Access Granted: {event_summary['access_granted']}")
     print(f"Access Denied: {event_summary['access_denied']}")
+    print("=" * 60)
+    print(f"\nPer-Door Reports Generated: {len(door_files)}")
+    for door_name, file_path, event_count in sorted(door_files, key=lambda x: x[2], reverse=True)[:10]:
+        print(f"  - {door_name}: {event_count} events -> {file_path}")
+    if len(door_files) > 10:
+        print(f"  ... and {len(door_files) - 10} more doors")
     print("=" * 60)
 
 if __name__ == "__main__":
