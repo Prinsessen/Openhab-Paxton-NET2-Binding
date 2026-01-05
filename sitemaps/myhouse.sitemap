@@ -72,10 +72,49 @@ sitemap myhouse label="Nanna Agesen"
 			Default item=WestTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
 			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
 	}
-	Text label="Paxton Door Events" icon="lock" {
-			Frame label="Door Events" {
-				 Webview url="/static/doors/kirkegade50_-_hikvision_faceid_-_acu_6612642.html" height=85 icon=none
-				}
+Text label="Paxton Door Events" icon="lock" {
+	Frame label="Door Events" {
+		Text label="Kirkegade 50 - Frontdoor Face" icon="door" {
+			Frame label="FaceID Events" {
+				Webview url="/static/doors/kirkegade50_-_hikvision_faceid_-_acu_6612642.html" height=85 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Marine Reader" icon="door" {
+			Frame label="Marine Reader Events" {
+				Webview url="/static/doors/kirkegade50_-_ford_r_marine_reader_-_acu_6612642.html" height=85 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Door 3" icon="door" {
+			Frame label="Door 3 Events" {
+				Webview url="/static/doors/door3_events.html" height=85 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Door 4" icon="door" {
+			Frame label="Door 4 Events" {
+				Webview url="/static/doors/door4_events.html" height=85 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Door 5" icon="door" {
+			Frame label="Door 5 Events" {
+				Webview url="/static/doors/door5_events.html" height=85 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Door 6" icon="door" {
+			Frame label="Door 6 Events" {
+				Webview url="/static/doors/door6_events.html" height=85 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Door 7" icon="door" {
+			Frame label="Door 7 Events" {
+				Webview url="/static/doors/door7_events.html" height=85 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Door 8" icon="door" {
+			Frame label="Door 8 Events" {
+				Webview url="/static/doors/door8_events.html" height=85 icon=none
+			}
+		}
+	}
 }
 	Frame label="Romeo Robot" {
 		Text icon="vacuum" label="Romeo Robot"{
