@@ -484,7 +484,8 @@ def generate_door_html(door_name, door_events, refresh_interval):
                 <tbody>
 """
     
-    for event in sorted_events:
+    # Limit to last 25 events
+    for event in sorted_events[:25]:
         user_name = event.get('user_name', 'Unknown')
         timestamp = format_timestamp(event.get('timestamp', ''))
         event_type = event.get('event_type', 'Unknown')
