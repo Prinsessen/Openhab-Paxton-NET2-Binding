@@ -19,6 +19,7 @@ DateTime Net2_Stats_LastSync "Last Sync [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> 
 // ==============================================
 String Net2_Security_LastEvent "Last Security Event" <alarm> (Net2_Security)
 String Net2_Security_LastUser "Last Alert User" <user> (Net2_Security)
+String Net2_Security_LastDoor "Last Alert Door" <door> (Net2_Security)
 DateTime Net2_Security_LastTime "Last Alert Time [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Security)
 Number Net2_Security_AlertCount "Alert Count [%d]" <alarm> (Net2_Security)
 

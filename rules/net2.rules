@@ -79,8 +79,9 @@ then
     val eventText = Net2_Security_LastEvent.state.toString
     val userText  = Net2_Security_LastUser.state.toString
     val timeText  = Net2_Security_LastTime.state.toString
+    val doorText  = Net2_Security_LastDoor.state.toString
     if(eventText.contains("held open")) {
-        logWarn("Net2Security", "⚠️ Door held open: {} (user: {}, time: {})", eventText, userText, timeText)
+        logWarn("Net2Security", "⚠️ Door held open: door={}, event={}, user={}, time={}", doorText, eventText, userText, timeText)
         // Add automation: send notification, sound alarm, etc.
     }
 end
@@ -92,8 +93,9 @@ then
     val eventText = Net2_Security_LastEvent.state.toString
     val userText  = Net2_Security_LastUser.state.toString
     val timeText  = Net2_Security_LastTime.state.toString
+    val doorText  = Net2_Security_LastDoor.state.toString
     val count     = Net2_Security_AlertCount.state
-    logWarn("Net2Security", "⚠️ Security alert: {} | user: {} | time: {} | count: {}", eventText, userText, timeText, count)
+    logWarn("Net2Security", "⚠️ Security alert: door={} | event={} | user={} | time={} | count={}", doorText, eventText, userText, timeText, count)
 end
 
 rule "Net2 - Log Sync Status"

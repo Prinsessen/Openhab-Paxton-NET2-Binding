@@ -36,20 +36,47 @@ sitemap net2 label="Paxton Net2" {
     }
 
     Frame label="Familiemedlemmer Tilstede" {
-        Switch item=Net2_User_Nanna_Sloth_Agesen_Present label="Nanna" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
-        Text item=Net2_User_Nanna_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Nanna_Sloth_Agesen_Present==ON]
+        Switch item=Net2_User_Andreas_Fage_Sloth_Agesen_Present label="Andreas" icon="boy_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Andreas_Fage_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Andreas_Fage_Sloth_Agesen_Present==ON]
 
         Switch item=Net2_User_Anna_Fage_Sloth_Agesen_Present label="Anna" icon="girl_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Anna_Fage_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Anna_Fage_Sloth_Agesen_Present==ON]
 
-        Switch item=Net2_User_Andreas_Fage_Sloth_Agesen_Present label="Andreas" icon="boy_1" mappings=[ON="Hjemme", OFF="Ude"]
-        Text item=Net2_User_Andreas_Fage_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Andreas_Fage_Sloth_Agesen_Present==ON]
+        Switch item=Net2_User_Vanda_Sloth_Agesen_Present label="Vanda" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Vanda_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Vanda_Sloth_Agesen_Present==ON]
 
         Switch item=Net2_User_Keld_Agesen_Present label="Keld" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
         Text item=Net2_User_Keld_Agesen_Location icon="location" visibility=[Net2_User_Keld_Agesen_Present==ON]
 
-        Switch item=Net2_User_Vanda_Sloth_Agesen_Present label="Vanda" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
-        Text item=Net2_User_Vanda_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Vanda_Sloth_Agesen_Present==ON]
+        Switch item=Net2_User_Nanna_Sloth_Agesen_Present label="Nanna" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Nanna_Sloth_Agesen_Location icon="location" visibility=[Net2_User_Nanna_Sloth_Agesen_Present==ON]
+
+        Switch item=Net2_User_Henrik_Brander_Present label="Henrik" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Henrik_Brander_Location icon="location" visibility=[Net2_User_Henrik_Brander_Present==ON]
+
+        Switch item=Net2_User_Torben_Christensen_Present label="Torben" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Torben_Christensen_Location icon="location" visibility=[Net2_User_Torben_Christensen_Present==ON]
+
+        Switch item=Net2_User_Jan_Christensen_Present label="Jan" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Jan_Christensen_Location icon="location" visibility=[Net2_User_Jan_Christensen_Present==ON]
+
+        Switch item=Net2_User_Jens_A_Jakobsen_Present label="Jens" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Jens_A_Jakobsen_Location icon="location" visibility=[Net2_User_Jens_A_Jakobsen_Present==ON]
+
+        Switch item=Net2_User_Alexander_Agesen_Present label="Alexander" icon="boy_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Alexander_Agesen_Location icon="location" visibility=[Net2_User_Alexander_Agesen_Present==ON]
+
+        Switch item=Net2_User_Mette_Brander_Present label="Mette" icon="woman_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Mette_Brander_Location icon="location" visibility=[Net2_User_Mette_Brander_Present==ON]
+
+        Switch item=Net2_User_Christian_Brander_Present label="Christian" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Christian_Brander_Location icon="location" visibility=[Net2_User_Christian_Brander_Present==ON]
+
+        Switch item=Net2_User_Frederik_Brander_Present label="Frederik" icon="boy_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Frederik_Brander_Location icon="location" visibility=[Net2_User_Frederik_Brander_Present==ON]
+
+        Switch item=Net2_User_Birthe_og_Poul_Brander_Present label="Birthe og Poul" icon="man_1" mappings=[ON="Hjemme", OFF="Ude"]
+        Text item=Net2_User_Birthe_og_Poul_Brander_Location icon="location" visibility=[Net2_User_Birthe_og_Poul_Brander_Present==ON]
     }
     
     Frame label="Andre Brugere" {
@@ -66,6 +93,7 @@ sitemap net2 label="Paxton Net2" {
     Frame label="Sikkerhed" {
         Text item=Net2_Security_LastEvent icon="alarm" valuecolor=[!="NULL"="red"]
         Text item=Net2_Security_LastUser icon="user"
+        Text item=Net2_Security_LastDoor icon="door"
         Text item=Net2_Security_LastTime label="Sidste alarm [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
         Text item=Net2_Security_AlertCount icon="alarm" valuecolor=[>0="red", ==0="green"]
     }

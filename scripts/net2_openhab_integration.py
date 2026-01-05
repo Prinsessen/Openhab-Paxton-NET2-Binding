@@ -458,6 +458,7 @@ def sync_to_openhab(token):
         latest_security_event = security_events[-1]
         update_openhab_item("Net2_Security_LastEvent", latest_security_event['description'], "String")
         update_openhab_item("Net2_Security_LastUser", latest_security_event['user'], "String")
+        update_openhab_item("Net2_Security_LastDoor", latest_security_event['door'], "String")
         update_openhab_item("Net2_Security_LastTime", latest_security_event['time'], "DateTime")
         update_openhab_item("Net2_Security_AlertCount", len(security_events), "Number")
     
