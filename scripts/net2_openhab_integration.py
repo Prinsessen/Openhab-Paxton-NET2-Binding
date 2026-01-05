@@ -204,8 +204,11 @@ def get_recent_events(token, minutes=5):
         "Content-Type": "application/json",
         "Accept": "application/json",
         "Authorization": f"Bearer {token}"
-    }
-    
+            # Only write last user when known to avoid overwriting with "Unknown"
+            if state_info.get('user') and state_info.get('user') != 'Unknown':
+                update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
+            # Always write timestamp from the event
+            update_openhab_item(f"{item_name}_LastUpdate", state_info['time'], "DateTime")
     end_time = datetime.now()
     start_time = end_time - timedelta(minutes=minutes)
     
@@ -292,17 +295,10 @@ def process_events_for_openhab(events):
         event_time = event.get('eventTime', '')
         event_desc = event.get('eventDescription', '')
         
-        # Track door states
-        if device_name and event_type in DOOR_OPENED_TYPES:
+        # Track door entry using ACCESS_GRANTED (contains the actual entry time/user)
+        if device_name and event_type in ACCESS_GRANTED_TYPES and user_name and user_name != 'Unknown':
             door_states[device_name] = {
-                'state': 'OPEN',
-                'time': event_time,
-                'user': user_name,
-                'event_type': event_type
-            }
-        elif device_name and event_type in DOOR_CLOSED_TYPES:
-            door_states[device_name] = {
-                'state': 'CLOSED',
+                'state': 'ACCESS_GRANTED',
                 'time': event_time,
                 'user': user_name,
                 'event_type': event_type
@@ -373,7 +369,8 @@ def sync_to_openhab(token):
             if elapsed >= AUTO_CLOSE_SECONDS:
                 door_states[door_name] = {
                     'state': 'CLOSED',
-                    'time': now_ts.isoformat(),
+                    # keep original event time so LastUpdate reflects entry time, not auto-close
+                    'time': state_info.get('time'),
                     'user': state_info.get('user', 'auto-close'),
                     'event_type': 'auto_close'
                 }
@@ -383,8 +380,12 @@ def sync_to_openhab(token):
         # Extract the door key without location/direction
         door_key = extract_door_key(door_name)
         item_name = f"Net2_Door_{sanitize_item_name(door_key)}"
-        update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
-        update_openhab_item(f"{item_name}_LastUpdate", state_info['time'], "DateTime")
+        # Only write last user when known to avoid overwriting with "Unknown"
+        if state_info.get('user') and state_info.get('user') != 'Unknown':
+            update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")
+        # Only write timestamp when it's from a real event (skip auto_close)
+        if state_info.get('event_type') != 'auto_close':
+            update_openhab_item(f"{item_name}_LastUpdate", state_info['time'], "DateTime")
     
     # Update user presence
     for user_name, presence_info in user_presence.items():
