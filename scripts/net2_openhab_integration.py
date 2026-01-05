@@ -28,7 +28,7 @@ NET2_GRANT_TYPE = "password"
 NET2_CLIENT_ID = "00aab996-6439-4f16-89b4-6c0cc851e8f3"
 
 # OpenHAB Configuration
-OPENHAB_URL = "http://localhost:8080"
+OPENHAB_URL = "https://openhab5.agesen.dk"
 OPENHAB_REST_API = f"{OPENHAB_URL}/rest/items"
 
 # Event type mappings
