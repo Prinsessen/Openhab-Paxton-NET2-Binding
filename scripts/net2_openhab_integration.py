@@ -279,7 +279,7 @@ def normalize_event_time(value):
 
 def process_events_for_openhab(events):
     """Process events and extract OpenHAB-relevant information"""
-    door_states = {}  # door_id: last_event
+    door_states = {}  # device_name: last_event
     user_presence = {}  # user_name: last_seen
     security_events = []
     
@@ -308,12 +308,17 @@ def process_events_for_openhab(events):
         
         # Track door entry using ACCESS_GRANTED (contains the actual entry time/user)
         if device_name and event_type in ACCESS_GRANTED_TYPES and user_name and user_name != 'Unknown':
-            door_states[device_name] = {
-                'state': 'ACCESS_GRANTED',
-                'time': event_time,
-                'user': user_name,
-                'event_type': event_type
-            }
+            current = door_states.get(device_name)
+            # Only keep the newest ACCESS_GRANTED per device_name
+            incoming_ts = parse_iso_datetime(event_time)
+            current_ts = parse_iso_datetime(current['time']) if current else None
+            if current is None or (incoming_ts and current_ts and incoming_ts > current_ts) or (incoming_ts and current_ts is None):
+                door_states[device_name] = {
+                    'state': 'ACCESS_GRANTED',
+                    'time': event_time,
+                    'user': user_name,
+                    'event_type': event_type
+                }
         
         # Track user presence (access granted means user entered)
         if event_type in ACCESS_GRANTED_TYPES:
@@ -386,14 +391,24 @@ def sync_to_openhab(token):
                     'event_type': 'auto_close'
                 }
     
-    # Update door states
+    # Merge door states by canonical item to avoid older sister-reader events overwriting newer ones
+    merged_door_states = {}
     for door_name, state_info in door_states.items():
-        # Extract the door key without location/direction
         door_key = extract_door_key(door_name)
-        # Normalize known multi-reader ACU names to a single canonical door key
         if "6612642" in door_key:
             door_key = "Fordør ACU 6612642"
         item_name = f"Net2_Door_{sanitize_item_name(door_key)}"
+
+        incoming_ts = parse_iso_datetime(state_info.get('time'))
+        existing = merged_door_states.get(item_name)
+        existing_ts = parse_iso_datetime(existing['time']) if existing else None
+
+        # Keep the newest event per item_name
+        if existing is None or (incoming_ts and existing_ts and incoming_ts > existing_ts) or (incoming_ts and existing_ts is None):
+            merged_door_states[item_name] = {**state_info, 'door_key': door_key}
+
+    # Update door states
+    for item_name, state_info in merged_door_states.items():
         # Only write last user when known to avoid overwriting with "Unknown"
         if state_info.get('user') and state_info.get('user') != 'Unknown':
             update_openhab_item(f"{item_name}_LastUser", state_info['user'], "String")

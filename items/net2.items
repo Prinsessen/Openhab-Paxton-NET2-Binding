@@ -12,14 +12,14 @@ Group Net2_Stats "Net2 Statistics" <chart> (gNet2)
 // ==============================================
 Number Net2_Stats_EventCount "Event Count [%d]" <chart> (Net2_Stats)
 Number Net2_Stats_ActiveUsers "Active Users [%d]" <user> (Net2_Stats)
-DateTime Net2_Stats_LastSync "Last Sync [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Stats)
+DateTime Net2_Stats_LastSync "Last Sync [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Stats)
 
 // ==============================================
 // Security Events
 // ==============================================
 String Net2_Security_LastEvent "Last Security Event" <alarm> (Net2_Security)
 String Net2_Security_LastUser "Last Alert User" <user> (Net2_Security)
-DateTime Net2_Security_LastTime "Last Alert Time [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Security)
+DateTime Net2_Security_LastTime "Last Alert Time [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Security)
 Number Net2_Security_AlertCount "Alert Count [%d]" <alarm> (Net2_Security)
 
 // ==============================================
@@ -28,31 +28,31 @@ Number Net2_Security_AlertCount "Alert Count [%d]" <alarm> (Net2_Security)
 
 // Andreas Udv.Kælder -  ACU 01038236 (ID: 6626578)
 String Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser "Last User" <user> (Net2_Doors)
-DateTime Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
+DateTime Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
 
 // Fordør - ACU 6612642 (ID: 6612642)
 String Net2_Door_Fordoer_ACU_6612642_LastUser "Last User" <user> (Net2_Doors)
-DateTime Net2_Door_Fordoer_ACU_6612642_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
+DateTime Net2_Door_Fordoer_ACU_6612642_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
 
 // Fordør Porsevej - ACU:967438 (ID: 7319051)
 String Net2_Door_Fordoer_Porsevej_ACU967438_LastUser "Last User" <user> (Net2_Doors)
-DateTime Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
+DateTime Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
 
 // Fordør Terndrupvej - ACU:6203980 (ID: 6203980)
 String Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser "Last User" <user> (Net2_Doors)
-DateTime Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
+DateTime Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
 
 // Garage Port - ACU:7242929 (ID: 7242929)
 String Net2_Door_Garage_Port_ACU7242929_LastUser "Last User" <user> (Net2_Doors)
-DateTime Net2_Door_Garage_Port_ACU7242929_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
+DateTime Net2_Door_Garage_Port_ACU7242929_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
 
 // Værksted - ACU 01265688 (ID: 1265688)
 String Net2_Door_Vaerksted_ACU_01265688_LastUser "Last User" <user> (Net2_Doors)
-DateTime Net2_Door_Vaerksted_ACU_01265688_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
+DateTime Net2_Door_Vaerksted_ACU_01265688_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
 
 // Værksted Dør - Central 03962494 (ID: 3962494)
 String Net2_Door_Vaerksted_Doer_Central_03962494_LastUser "Last User" <user> (Net2_Doors)
-DateTime Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate "Last Update [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Doors)
+DateTime Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate "Last Update [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Doors)
 
 // ==============================================
 // Users
@@ -61,154 +61,154 @@ DateTime Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate "Last Update [%1$t
 // Andreas Fage Sloth Agesen (ID: 3)
 Switch Net2_User_Andreas_Fage_Sloth_Agesen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Andreas_Fage_Sloth_Agesen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Andreas_Fage_Sloth_Agesen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Andreas_Fage_Sloth_Agesen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Anna Fage Sloth Agesen (ID: 4)
 Switch Net2_User_Anna_Fage_Sloth_Agesen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Anna_Fage_Sloth_Agesen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Anna_Fage_Sloth_Agesen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Anna_Fage_Sloth_Agesen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Vanda Sloth Agesen (ID: 5)
 Switch Net2_User_Vanda_Sloth_Agesen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Vanda_Sloth_Agesen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Vanda_Sloth_Agesen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Vanda_Sloth_Agesen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Keld Agesen (ID: 6)
 Switch Net2_User_Keld_Agesen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Keld_Agesen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Keld_Agesen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Keld_Agesen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Nanna Sloth Agesen (ID: 8)
 Switch Net2_User_Nanna_Sloth_Agesen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Nanna_Sloth_Agesen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Nanna_Sloth_Agesen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Nanna_Sloth_Agesen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Henrik Brander (ID: 9)
 Switch Net2_User_Henrik_Brander_Present "Present" <presence> (Net2_Users)
 String Net2_User_Henrik_Brander_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Henrik_Brander_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Henrik_Brander_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Torben Christensen (ID: 10)
 Switch Net2_User_Torben_Christensen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Torben_Christensen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Torben_Christensen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Torben_Christensen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Jan Christensen (ID: 11)
 Switch Net2_User_Jan_Christensen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Jan_Christensen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Jan_Christensen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Jan_Christensen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Jens A Jakobsen (ID: 13)
 Switch Net2_User_Jens_A_Jakobsen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Jens_A_Jakobsen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Jens_A_Jakobsen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Jens_A_Jakobsen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Alexander Agesen (ID: 14)
 Switch Net2_User_Alexander_Agesen_Present "Present" <presence> (Net2_Users)
 String Net2_User_Alexander_Agesen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Alexander_Agesen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Alexander_Agesen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Mette Brander (ID: 22)
 Switch Net2_User_Mette_Brander_Present "Present" <presence> (Net2_Users)
 String Net2_User_Mette_Brander_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Mette_Brander_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Mette_Brander_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Christian Brander (ID: 23)
 Switch Net2_User_Christian_Brander_Present "Present" <presence> (Net2_Users)
 String Net2_User_Christian_Brander_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Christian_Brander_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Christian_Brander_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Frederik Brander (ID: 24)
 Switch Net2_User_Frederik_Brander_Present "Present" <presence> (Net2_Users)
 String Net2_User_Frederik_Brander_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Frederik_Brander_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Frederik_Brander_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Birthe og Poul Brander (ID: 25)
 Switch Net2_User_Birthe_og_Poul_Brander_Present "Present" <presence> (Net2_Users)
 String Net2_User_Birthe_og_Poul_Brander_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Birthe_og_Poul_Brander_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Birthe_og_Poul_Brander_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Vagn og Bente (ID: 26)
 Switch Net2_User_Vagn_og_Bente_Present "Present" <presence> (Net2_Users)
 String Net2_User_Vagn_og_Bente_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Vagn_og_Bente_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Vagn_og_Bente_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Gæster (ID: 27)
 Switch Net2_User_Gaester_Present "Present" <presence> (Net2_Users)
 String Net2_User_Gaester_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Gaester_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Gaester_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Betinna og Søren (ID: 28)
 Switch Net2_User_Betinna_og_Soeren_Present "Present" <presence> (Net2_Users)
 String Net2_User_Betinna_og_Soeren_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Betinna_og_Soeren_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Betinna_og_Soeren_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Birthe Brander (ID: 36)
 Switch Net2_User_Birthe_Brander_Present "Present" <presence> (Net2_Users)
 String Net2_User_Birthe_Brander_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Birthe_Brander_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Birthe_Brander_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Poul Brander (ID: 37)
 Switch Net2_User_Poul_Brander_Present "Present" <presence> (Net2_Users)
 String Net2_User_Poul_Brander_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Poul_Brander_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Poul_Brander_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Lemvigh Muller (ID: 38)
 Switch Net2_User_Lemvigh_Muller_Present "Present" <presence> (Net2_Users)
 String Net2_User_Lemvigh_Muller_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Lemvigh_Muller_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Lemvigh_Muller_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // AO Johansen (ID: 39)
 Switch Net2_User_AO_Johansen_Present "Present" <presence> (Net2_Users)
 String Net2_User_AO_Johansen_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_AO_Johansen_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_AO_Johansen_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Midlertidig (ID: 40)
 Switch Net2_User_Midlertidig_Present "Present" <presence> (Net2_Users)
 String Net2_User_Midlertidig_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Midlertidig_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Midlertidig_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Post Nord (ID: 41)
 Switch Net2_User_Post_Nord_Present "Present" <presence> (Net2_Users)
 String Net2_User_Post_Nord_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Post_Nord_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Post_Nord_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Danske Fragtmænd (ID: 42)
 Switch Net2_User_Danske_Fragtmaend_Present "Present" <presence> (Net2_Users)
 String Net2_User_Danske_Fragtmaend_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Danske_Fragtmaend_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Danske_Fragtmaend_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Lis Revisor (ID: 43)
 Switch Net2_User_Lis_Revisor_Present "Present" <presence> (Net2_Users)
 String Net2_User_Lis_Revisor_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Lis_Revisor_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Lis_Revisor_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // GLS (ID: 46)
 Switch Net2_User_GLS_Present "Present" <presence> (Net2_Users)
 String Net2_User_GLS_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_GLS_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_GLS_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // P.P Jensen Vogn 45 (ID: 48)
 Switch Net2_User_PP_Jensen_Vogn_45_Present "Present" <presence> (Net2_Users)
 String Net2_User_PP_Jensen_Vogn_45_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_PP_Jensen_Vogn_45_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_PP_Jensen_Vogn_45_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // DHL (ID: 49)
 Switch Net2_User_DHL_Present "Present" <presence> (Net2_Users)
 String Net2_User_DHL_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_DHL_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_DHL_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // GN belysning (ID: 51)
 Switch Net2_User_GN_belysning_Present "Present" <presence> (Net2_Users)
 String Net2_User_GN_belysning_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_GN_belysning_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_GN_belysning_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // test (ID: 55)
 Switch Net2_User_test_Present "Present" <presence> (Net2_Users)
 String Net2_User_test_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_test_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_test_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
 
 // Whiteaway (ID: 59)
 Switch Net2_User_Whiteaway_Present "Present" <presence> (Net2_Users)
 String Net2_User_Whiteaway_Location "Location" <location> (Net2_Users)
-DateTime Net2_User_Whiteaway_LastSeen "Last Seen [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" <time> (Net2_Users)
+DateTime Net2_User_Whiteaway_LastSeen "Last Seen [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" <time> (Net2_Users)
