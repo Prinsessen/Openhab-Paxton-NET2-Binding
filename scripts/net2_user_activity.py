@@ -639,8 +639,8 @@ def generate_door_html(door_name, events, refresh_interval, username):
     
     now = datetime.now()
     
-    # Sort events by timestamp (most recent first) and take top 10
-    sorted_events = sorted(events, key=lambda x: x.get('timestamp', ''), reverse=True)[:10]
+    # Sort events by timestamp (most recent first) and take top 25
+    sorted_events = sorted(events, key=lambda x: x.get('timestamp', ''), reverse=True)[:25]
     
     html_content = f"""<!DOCTYPE html>
 <html>
@@ -775,7 +775,7 @@ def generate_door_html(door_name, events, refresh_interval, username):
     <div class="container">
         <div class="header">
             <h1>🚪 {door_name}</h1>
-            <div class="subtitle">Last 10 Access Events</div>
+            <div class="subtitle">Last 25 Access Events</div>
             <div class="subtitle">Updated: {now.strftime('%d-%m-%Y %H:%M:%S')}</div>
         </div>
         

@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-05 11:00:01
+- Modified: scripts/net2_user_activity.py
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-05 10:45:01
 - Modified: scripts/net2_user_activity.py
 - Modified: scripts/net2_user_activity_daemon.py

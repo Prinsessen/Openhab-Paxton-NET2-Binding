@@ -76,37 +76,37 @@ Text label="Paxton Door Events" icon="lock" {
 	Frame label="Door Events" {
 		Text label="Kirkegade 50 - Frontdoor Face" icon="door" {
 			Frame label="FaceID Events" {
-				Webview url="/static/doors/kirkegade50_-_hikvision_faceid_-_acu_6612642.html" height=200 icon=none
+				Webview url="/static/doors/kirkegade50_hikvision_faceid_acu_6612642.html" height=50 icon=none
 			}
 		}
 		Text label="Kirkegade 50 - Marine Reader" icon="door" {
 			Frame label="Marine Reader Events" {
-				Webview url="/static/doors/kirkegade50_-_ford_r_marine_reader_-_acu_6612642.html" height=200 icon=none
+				Webview url="/static/doors/kirkegade50_fordør_marine_reader_acu_6612642.html" height=50 icon=none
 			}
 		}
 		Text label="Kirkegade 50 - Garage Port" icon="door" {
 			Frame label="Garage Port Events" {
-				Webview url="/static/doors/kirkegade50_-_garage_port_-_acu_7242929_ind.html" height=200 icon=none
+				Webview url="/static/doors/kirkegade50_garage_port_acu7242929_ind.html" height=50 icon=none
 			}
 		}
 		Text label="Kirkegade 50 - Basement" icon="door" {
 			Frame label="Basement Events" {
-				Webview url="/static/doors/kirkegade50_-_andreas_udv_k_lder_-_acu_01038236_ind.html" height=200 icon=none
+				Webview url="/static/doors/kirkegade50_andreas_udvkælder_acu_01038236_ind.html" height=50 icon=none
 			}
 		}
 		Text label="Kirkegade 50 - Værksted" icon="door" {
 			Frame label="Værksted Events" {
-				Webview url="/static/doors/kirkegade50_-_v_rksted_d_r_-_central_03962494_ind.html" height=200 icon=none
+				Webview url="/static/doors/kirkegade50_-_v_rksted_d_r_-_central_03962494_ind.html" height=50 icon=none
 			}
 		}
 		Text label="Terndrupvej 81 - Frontdoor" icon="door" {
 			Frame label="Fordør Events" {
-				Webview url="/static/doors/terndrupvej_81_-_ford_r_terndrupvej_-_acu_6203980_ind.html" height=200 icon=none
+				Webview url="/static/doors/terndrupvej_81_-_ford_r_terndrupvej_-_acu_6203980_ind.html" height=50 icon=none
 			}
 		}
 		Text label="Porsevej 19 - Frontdoor" icon="door" {
 			Frame label="Fordør Events" {
-				Webview url="/static/doors/porsevej19_-_ford_r_porsevej_-_acu_967438_ind.html" height=200 icon=none
+				Webview url="/static/doors/porsevej19_-_ford_r_porsevej_-_acu_967438_ind.html" height=50 icon=none
 			}
 		//}
 		//Text label="Kirkegade 50 - Door 8" icon="door" {
