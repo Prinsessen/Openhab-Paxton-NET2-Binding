@@ -1,44 +1,64 @@
 sitemap net2 label="Paxton Net2" {
 
+
     Frame label="Kirkegade 50 - Fordør - ACU 6612642" {
-        Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text label="| 🚪 Fordør | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
+            valuecolor=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"="black"]
+            visibility=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"]
+        Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="" visibility=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"]
+        Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate label="" visibility=[Net2_Door_Fordoer_ACU_6612642_LastUpdate!="NULL"]
     }
 
     Frame label="Kirkegade 50 - Garage Port - ACU 7242929" {
-        Text item=Net2_Door_Garage_Port_ACU7242929_LastUser label="Seneste bruger [%s]" icon="garagedoor"
-        Text item=Net2_Door_Garage_Port_ACU7242929_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text label="| 🚗 Garage Port | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="garagedoor" 
+            valuecolor=[Net2_Door_Garage_Port_ACU7242929_LastUser!="NULL"="black"]
+            visibility=[Net2_Door_Garage_Port_ACU7242929_LastUser!="NULL"]
+        Text item=Net2_Door_Garage_Port_ACU7242929_LastUser label="" visibility=[Net2_Door_Garage_Port_ACU7242929_LastUser!="NULL"]
+        Text item=Net2_Door_Garage_Port_ACU7242929_LastUpdate label="" visibility=[Net2_Door_Garage_Port_ACU7242929_LastUpdate!="NULL"]
     }
 
     Frame label="Kirkegade 50 - Værksted - ACU 03962494" {
-        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text label="| 🛠️ Værksted | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
+            valuecolor=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUser!="NULL"="black"]
+            visibility=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUser!="NULL"]
+        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="" visibility=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUser!="NULL"]
+        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate label="" visibility=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate!="NULL"]
     }
 
     Frame label="Kirkegade 50 - Kælder Dør - ACU 01038236" {
-        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text label="| 🚪 Kælder Dør | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
+            valuecolor=[Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser!="NULL"="black"]
+            visibility=[Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser!="NULL"]
+        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser label="" visibility=[Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUser!="NULL"]
+        Text item=Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate label="" visibility=[Net2_Door_Andreas_UdvKaelder_ACU_01038236_LastUpdate!="NULL"]
     }
 
     Frame label="Terndrupvej 81 - Fordør - ACU 6203980" {
-        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text label="| 🚪 Fordør (Terndrupvej) | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
+            valuecolor=[Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser!="NULL"="black"]
+            visibility=[Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser!="NULL"]
+        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser label="" visibility=[Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUser!="NULL"]
+        Text item=Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate label="" visibility=[Net2_Door_Fordoer_Terndrupvej_ACU6203980_LastUpdate!="NULL"]
     }
 
     Frame label="Porsevej 19 - Fordør- ACU 967438" {
-        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text label="| 🚪 Fordør (Porsevej) | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
+            valuecolor=[Net2_Door_Fordoer_Porsevej_ACU967438_LastUser!="NULL"="black"]
+            visibility=[Net2_Door_Fordoer_Porsevej_ACU967438_LastUser!="NULL"]
+        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUser label="" visibility=[Net2_Door_Fordoer_Porsevej_ACU967438_LastUser!="NULL"]
+        Text item=Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate label="" visibility=[Net2_Door_Fordoer_Porsevej_ACU967438_LastUpdate!="NULL"]
     }
 
     Frame label="Bohrsvej 2 - Garage -ACU 01265688" {
-        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser label="Seneste bruger [%s]" icon="door"
-        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate label="Sidst opdateret [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
+        Text label="| 🛠️ Garage (Bohrsvej) | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
+            valuecolor=[Net2_Door_Vaerksted_ACU_01265688_LastUser!="NULL"="black"]
+            visibility=[Net2_Door_Vaerksted_ACU_01265688_LastUser!="NULL"]
+        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUser label="" visibility=[Net2_Door_Vaerksted_ACU_01265688_LastUser!="NULL"]
+        Text item=Net2_Door_Vaerksted_ACU_01265688_LastUpdate label="" visibility=[Net2_Door_Vaerksted_ACU_01265688_LastUpdate!="NULL"]
         Text item=Net2_User_Birthe_og_Poul_Brander_LastSeen label="Poul & Birte sidst set [%1$td:%1$tm:%1$ty %1$tH:%1$tM]" icon="time"
     }
 
     Frame label="User location" {
-        Text label="| Bruger | Lokation |" icon="none"
-        // Text label="|---|---|" icon="none"
         Text item=Net2_User_Nanna_Sloth_Agesen_Location label="| 🧑‍🦰 Nanna | [%s] |" icon="woman_1" visibility=[Net2_User_Nanna_Sloth_Agesen_Present==ON]
         Text item=Net2_User_Anna_Fage_Sloth_Agesen_Location label="| 👧 Anna | [%s] |" icon="girl_1" visibility=[Net2_User_Anna_Fage_Sloth_Agesen_Present==ON]
         Text item=Net2_User_Alexander_Agesen_Location label="| 👦 Alexander | [%s] |" icon="boy_1" visibility=[Net2_User_Alexander_Agesen_Present==ON]
