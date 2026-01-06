@@ -307,9 +307,13 @@ def format_timestamp(timestamp_str):
 
 def sanitize_filename(name):
     """Convert door name to safe filename"""
+    import unicodedata
     name = name.lower()
-    # Allow Danish characters æøå in addition to a-z0-9_
-    name = re.sub(r'[^a-zæøå0-9_]', '_', name)
+    # Normalize to NFKD and encode to ASCII, ignoring non-ASCII
+    name = unicodedata.normalize('NFKD', name)
+    name = name.encode('ascii', 'ignore').decode('ascii')
+    # Replace any non a-z0-9_ with _
+    name = re.sub(r'[^a-z0-9_]', '_', name)
     # Replace multiple underscores or patterns like _-_ with single underscore
     name = re.sub(r'_+', '_', name)
     name = re.sub(r'_-_', '_', name)
