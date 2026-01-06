@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 11:15:08
+- Deleted: scripts/net2_door_control.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 11:00:00
 - Added: scripts/net2_door_control.py
 - Modified: sitemaps/myhouse.sitemap
