@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="net2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+    xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0
+    https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+    <!-- Bridge Thing Type for Net2 API Server -->
+    <bridge-type id="net2server">
+        <label>Net2 Server</label>
+        <description>Represents the Paxton Net2 Access Control Server</description>
+
+        <config-description>
+            <parameter name="hostname" type="text" required="true">
+                <label>Hostname</label>
+                <description>Net2 server hostname or IP address</description>
+            </parameter>
+            <parameter name="port" type="integer" required="false" default="8443">
+                <label>Port</label>
+                <description>HTTPS port for API (default: 8443)</description>
+            </parameter>
+            <parameter name="username" type="text" required="true">
+                <label>Username</label>
+                <description>Net2 API user (First Name Last Name format)</description>
+            </parameter>
+            <parameter name="password" type="password" required="true">
+                <label>Password</label>
+                <description>Net2 API user password</description>
+            </parameter>
+            <parameter name="clientId" type="text" required="true">
+                <label>Client ID</label>
+                <description>Net2 API license Client ID (from license file)</description>
+            </parameter>
+            <parameter name="tlsVerification" type="boolean" required="false" default="true">
+                <label>TLS Verification</label>
+                <description>Enable TLS certificate verification</description>
+            </parameter>
+            <parameter name="refreshInterval" type="integer" required="false" default="30">
+                <label>Refresh Interval</label>
+                <description>Door status polling interval in seconds</description>
+            </parameter>
+        </config-description>
+    </bridge-type>
+
+    <!-- Door Thing Type -->
+    <thing-type id="door">
+        <supported-bridge-type-refs>
+            <bridge-type-ref id="net2server"/>
+        </supported-bridge-type-refs>
+
+        <label>Net2 Door</label>
+        <description>Paxton Net2 Access Control Door</description>
+
+        <channels>
+            <channel id="status" typeId="doorStatus"/>
+            <channel id="action" typeId="doorAction"/>
+            <channel id="lastAccessUser" typeId="lastAccessUser"/>
+            <channel id="lastAccessTime" typeId="lastAccessTime"/>
+        </channels>
+
+        <config-description>
+            <parameter name="doorId" type="integer" required="true">
+                <label>Door ID</label>
+                <description>Net2 Door ID (serial number)</description>
+            </parameter>
+            <parameter name="name" type="text" required="false">
+                <label>Door Name</label>
+                <description>User-friendly name for the door</description>
+            </parameter>
+        </config-description>
+    </thing-type>
+
+    <!-- Channel Types -->
+    <channel-type id="doorStatus">
+        <item-type>Switch</item-type>
+        <label>Door Status</label>
+        <description>Current door lock/unlock status (ON=Open, OFF=Closed)</description>
+        <state readOnly="true"/>
+    </channel-type>
+
+    <channel-type id="doorAction">
+        <item-type>Switch</item-type>
+        <label>Door Action</label>
+        <description>Control door unlock (ON) or lock (OFF)</description>
+    </channel-type>
+
+    <channel-type id="lastAccessUser">
+        <item-type>String</item-type>
+        <label>Last Access User</label>
+        <description>Last user who accessed the door</description>
+        <state readOnly="true"/>
+    </channel-type>
+
+    <channel-type id="lastAccessTime">
+        <item-type>DateTime</item-type>
+        <label>Last Access Time</label>
+        <description>Timestamp of last door access</description>
+        <state readOnly="true"/>
+    </channel-type>
+
+</thing:thing-descriptions>

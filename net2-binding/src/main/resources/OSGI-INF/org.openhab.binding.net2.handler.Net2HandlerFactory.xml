@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.3.0"
+    name="org.openhab.binding.net2.handler.Net2HandlerFactory" immediate="true"
+    service="org.openhab.core.thing.binding.ThingHandlerFactory">
+
+    <scr:property name="service.pid" value="org.openhab.binding.net2"/>
+
+    <implementation class="org.openhab.binding.net2.handler.Net2HandlerFactory"/>
+
+</scr:component>
