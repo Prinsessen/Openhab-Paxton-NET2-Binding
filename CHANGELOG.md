@@ -7,6 +7,20 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 17:45:01
+- Modified: .vscode/settings.json
+- Added: net2-binding/BUILD_STATUS.md
+- Added: net2-binding/build.log
+- Modified: net2-binding/pom.xml
+- Added: net2-binding/target/classes/OH-INF/thing/thing-types.xml
+- Added: net2-binding/target/classes/OSGI-INF/org.openhab.binding.net2.discovery.Net2DoorDiscoveryService.xml
+- Added: net2-binding/target/classes/OSGI-INF/org.openhab.binding.net2.handler.Net2HandlerFactory.xml
+- Added: net2-binding/target/classes/feature.xml
+- Added: net2-binding/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+- Added: net2-binding/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 17:30:02
 - Added: net2-binding/DEVELOPMENT.md
 - Added: net2-binding/EXAMPLES.md
