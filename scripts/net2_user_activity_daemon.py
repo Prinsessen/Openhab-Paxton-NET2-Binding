@@ -577,9 +577,13 @@ def poll_and_update(config):
         # Process events
         user_activity, event_summary = process_events(events)
         
-        # Generate and save main HTML report
-        html_content = generate_html(user_activity, event_summary, HOURS_TO_RETRIEVE, REFRESH_INTERVAL, config['username'])
+        # Process events by door
+        door_activity = process_events_by_door(events)
+
+        # Generate and save main HTML report in per-door, mobile-friendly format
+        html_content = generate_all_doors_html(door_activity, REFRESH_INTERVAL, config['username'])
         save_html(html_content, OUTPUT_HTML)
+
         
         # Process events by door
         door_activity = process_events_by_door(events)
@@ -624,6 +628,114 @@ def poll_and_update(config):
         
     except Exception as e:
         log(f"ERROR in poll cycle: {e}")
+
+
+# -----------------------------
+# Helper to parse event time safely (move up for visibility)
+def parse_event_time(ts):
+    from datetime import timezone
+    try:
+        dt = datetime.fromisoformat(ts.replace('Z', '+00:00'))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except Exception:
+        return datetime.min.replace(tzinfo=timezone.utc)
+
+# -----------------------------
+# New: Generate all doors in one mobile-friendly HTML (move up for visibility)
+def generate_all_doors_html(door_activity, refresh_interval, username):
+    """Generate a mobile-friendly HTML report for all doors, each as a section"""
+    log("Generating all-doors HTML report...")
+    html_content = f"""<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <meta http-equiv=\"refresh\" content=\"{refresh_interval}\">
+    <meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate, max-age=0\">
+    <meta http-equiv=\"Pragma\" content=\"no-cache\">
+    <meta http-equiv=\"Expires\" content=\"0\">
+    <title>All Doors - Paxton Net2 Activity</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 0; margin: 0; overflow-x: hidden; }}
+        .container {{ width: 100%; margin: 0; background: white; overflow: hidden; }}
+        .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px; text-align: center; }}
+        .header h1 {{ font-size: 1.1em; margin-bottom: 5px; word-wrap: break-word; word-break: break-word; line-height: 1.3; }}
+        .header p {{ font-size: 0.8em; opacity: 0.9; }}
+        .door-section {{ margin-bottom: 18px; background: #f8f9fa; border-radius: 8px; overflow: hidden; }}
+        .door-header {{ background: #667eea; color: white; padding: 8px 12px; font-size: 1em; font-weight: bold; }}
+        .content {{ padding: 8px; }}
+        .event-card {{ background: #fff; border-left: 4px solid #667eea; margin-bottom: 8px; padding: 8px; border-radius: 4px; word-wrap: break-word; }}
+        .event-user {{ font-weight: bold; font-size: 0.85em; color: #333; margin-bottom: 4px; word-break: break-word; }}
+        .event-time {{ font-size: 0.7em; color: #666; margin-bottom: 4px; }}
+        .event-type {{ font-size: 0.75em; color: #555; margin-bottom: 4px; word-break: break-word; }}
+        .event-result {{ padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.7em; display: inline-block; }}
+        .result-granted {{ background: #d4edda; color: #155724; }}
+        .result-denied {{ background: #f8d7da; color: #721c24; }}
+        .result-unknown {{ background: #e2e3e5; color: #383d41; }}
+        .footer {{ background: #f8f9fa; padding: 8px; text-align: center; color: #666; font-size: 0.7em; line-height: 1.4; }}
+    </style>
+</head>
+<body>
+    <div class=\"container\">
+        <div class=\"header\">
+            <h1>🚪 All Doors - Paxton Net2 Activity</h1>
+            <p>Last 24 hours of access activity</p>
+            <p style=\"margin-top: 10px;\">Updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+        </div>
+"""
+    from datetime import timezone
+    now_utc = datetime.now(timezone.utc)
+    cutoff = now_utc - timedelta(hours=24)
+    for door_name in sorted(door_activity.keys()):
+        door_events = door_activity[door_name]
+        filtered_events = [e for e in door_events if parse_event_time(e.get('timestamp')) >= cutoff]
+        sorted_events = sorted(filtered_events, key=lambda x: x.get('timestamp', ''), reverse=True)
+        if not sorted_events:
+            continue
+        html_content += f"""
+        <div class=\"door-section\">
+            <div class=\"door-header\">{door_name}</div>
+            <div class=\"content\">
+        """
+        for event in sorted_events[:25]:
+            user_name = event.get('user_name', 'Unknown')
+            timestamp = format_timestamp(event.get('timestamp', ''))
+            event_type = event.get('event_type', 'Unknown')
+            result = str(event.get('result', 'Unknown'))
+            details = event.get('details', '')
+            if details:
+                event_type = f"{event_type} - {details}"
+            if 'grant' in result.lower() or 'success' in result.lower():
+                result_class = 'result-granted'
+            elif 'deni' in result.lower() or 'deny' in result.lower() or 'fail' in result.lower():
+                result_class = 'result-denied'
+            else:
+                result_class = 'result-unknown'
+            html_content += f"""
+                <div class=\"event-card\">
+                    <div class=\"event-user\">👤 {user_name}</div>
+                    <div class=\"event-time\">🕐 {timestamp}</div>
+                    <div class=\"event-type\">{event_type}</div>
+                    <span class=\"event-result {result_class}\">{result}</span>
+                </div>
+            """
+        html_content += """
+            </div>
+        </div>
+        """
+    html_content += f"""
+        <div class=\"footer\">
+            Auto-refresh every {refresh_interval // 60} minutes | OpenHAB Paxton Net2 Integration<br>
+            Generated by: {username}
+        </div>
+    </div>
+</body>
+</html>
+"""
+    return html_content
 
 # -----------------------------
 # Main Daemon Loop
