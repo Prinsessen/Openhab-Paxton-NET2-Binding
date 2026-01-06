@@ -75,7 +75,7 @@ sitemap myhouse label="Nanna Agesen"
 Text label="Paxton Door Events" icon="lock" {
 	Frame label="Door Events" {
 		
-		Text label="Kirkegade 50 - Frontdoor Face" icon="door" {
+		Text label="All Door Events" icon="door" {
 			Frame label="NET2 Activity" {
 				Webview url="/static/net2_activity.html" height=80 icon=none
 			}
