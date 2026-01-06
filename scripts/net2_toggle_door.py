@@ -53,7 +53,6 @@ def hold_door_open(config, token, door_id):
     }
     data = {"DoorId": int(door_id)}
     resp = requests.post(url, headers=headers, json=data, verify=False)
-    print(f"DEBUG holdopen: {resp.status_code} - {resp.text}")
     return resp.status_code == 200
 
 def close_door(config, token, door_id):
@@ -65,7 +64,6 @@ def close_door(config, token, door_id):
     }
     data = {"DoorId": int(door_id)}
     resp = requests.post(url, headers=headers, json=data, verify=False)
-    print(f"DEBUG close: {resp.status_code} - {resp.text}")
     return resp.status_code == 200
 
 def get_door_status(config, token, door_id):
@@ -148,10 +146,6 @@ def main():
             print("No doors found or unable to retrieve door list")
             sys.exit(1)
         
-        # Debug: print first door structure
-        if len(doors) > 0:
-            print(f"\nDEBUG - First door structure: {json.dumps(doors[0], indent=2)}")
-        
         print("\nAvailable doors:")
         for idx, door in enumerate(doors, 1):
             # Try both uppercase and lowercase field names
@@ -171,19 +165,24 @@ def main():
         
         selected_door = doors[choice_idx]
         door_id = str(selected_door.get('id') or selected_door.get('Id'))
+        door_name = selected_door.get('name') or selected_door.get('Name') or 'Unknown'
+        print(f"\n✓ Selected: {door_name} (ID: {door_id})")
         action = None
     
     # If action not provided, check status and prompt
     if action is None:
-        print(f"\nChecking current status for door {door_id}...")
+        print(f"\n━━━ Current Door Status ━━━")
+        print(f"Door ID: {door_id}")
+        print(f"Checking status...")
         status = get_door_status(config, token, door_id)
         
         if status:
             door_state = status.get('doorStatus', {})
             is_held_open = door_state.get('isHeldOpen', False)
-            print(f"Current state: {'HELD OPEN' if is_held_open else 'CLOSED'}")
+            state_text = 'HELD OPEN' if is_held_open else 'CLOSED/NORMAL'
+            print(f"Current state: {state_text}")
         else:
-            print("Current state: Unknown")
+            print("Current state: Unknown (unable to query API)")
         
         print("\nWhat would you like to do?")
         print("1. Open (hold door open)")
@@ -205,34 +204,49 @@ def main():
     
     # Handle status command
     if action == "status":
+        print(f"\n━━━ Door Status ━━━")
         print(f"Checking status for door {door_id}...")
         status = get_door_status(config, token, door_id)
         if status:
-            print(f"Door Status: {json.dumps(status, indent=2)}")
+            door_state = status.get('doorStatus', {})
+            is_held_open = door_state.get('isHeldOpen', False)
+            is_online = door_state.get('isOnline', 'Unknown')
+            print(f"\nDoor ID: {door_id}")
+            print(f"Status: {'HELD OPEN' if is_held_open else 'CLOSED/NORMAL'}")
+            print(f"Online: {is_online}")
+            print(f"\nFull status: {json.dumps(status, indent=2)}")
         else:
-            print("Could not retrieve door status")
+            print("✗ Could not retrieve door status")
         sys.exit(0)
     
     # Handle open command
     if action == "open":
-        print(f"Holding door {door_id} open...")
+        print(f"\n━━━ Opening Door ━━━")
+        print(f"Door ID: {door_id}")
+        print(f"Action: Hold door open indefinitely...")
         success = hold_door_open(config, token, door_id)
         if success:
             set_door_state(door_id, True)
-            print("✓ Door held open (until closed)")
+            print("\n✓ SUCCESS: Door is now held open")
+            print("  The door will remain open until you run the close command")
         else:
-            print("✗ Failed to open door")
+            print("\n✗ FAILED: Could not open door")
+            print("  Check permissions and door ID")
         sys.exit(0)
     
     # Handle close command
     if action == "close":
-        print(f"Closing door {door_id}...")
+        print(f"\n━━━ Closing Door ━━━")
+        print(f"Door ID: {door_id}")
+        print(f"Action: Closing door...")
         success = close_door(config, token, door_id)
         if success:
             set_door_state(door_id, False)
-            print("✓ Door closed")
+            print("\n✓ SUCCESS: Door is now closed")
+            print("  The door has returned to normal operation")
         else:
-            print("✗ Failed to close door")
+            print("\n✗ FAILED: Could not close door")
+            print("  Check permissions and door ID")
         sys.exit(0)
     
     print(f"Unknown action: {action}")
