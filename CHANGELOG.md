@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 13:45:00
+- Added: scripts/NET2_DOOR_CONTROL_README.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 13:30:02
 - Modified: scripts/.door_state.json
 - Deleted: scripts/BUILD_WINDOWS_EXE.md
