@@ -8,7 +8,7 @@ Bridge net2:net2server:server "Net2 Server" [
     refreshInterval=30
 ] {
     Thing door door1 "Front Door" [
-        doorId=12345,
+        doorId=6612642,
         name="Front Door"
     ]
 }
