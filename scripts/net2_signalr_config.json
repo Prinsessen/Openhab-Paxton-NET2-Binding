@@ -1,0 +1,17 @@
+{
+  "host": "milestone.agesen.dk",
+  "port": 8443,
+  "username": "Nanna Agesen",
+  "password": "Jekboapj110",
+  "clientId": "00aab996-6439-4f16-89b4-6c0cc851e8f3",
+  "tlsVerify": true,
+  "openhabUrl": "http://localhost:8080",
+  "openhabToken": "",
+  "doors": [
+    {
+      "doorId": 6612642,
+      "itemLastUser": "Net2_Door1_LastUser",
+      "itemLastTime": "Net2_Door1_LastTime"
+    }
+  ]
+}

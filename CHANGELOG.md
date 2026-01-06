@@ -7,6 +7,30 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 22:30:01
+- Modified: net2-binding/pom.xml
+- Deleted: net2-binding/target/classes/OH-INF/thing/thing-types.xml
+- Deleted: net2-binding/target/classes/OSGI-INF/org.openhab.binding.net2.discovery.Net2DoorDiscoveryService.xml
+- Deleted: net2-binding/target/classes/OSGI-INF/org.openhab.binding.net2.handler.Net2HandlerFactory.xml
+- Deleted: net2-binding/target/classes/feature.xml
+- Added: net2-binding/target/classes/org/openhab/binding/net2/Net2BindingConstants.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ApiClient$NoopTrustManager.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ApiClient.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2DoorConfiguration.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2DoorHandler.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2HandlerFactory.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ServerConfiguration.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ServerHandler.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2SignalRClient$NoopTrustManager.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2SignalRClient.class
+- Added: net2-binding/target/classes/org/openhab/binding/net2/internal/Net2Utils.class
+- Added: net2-binding/target/test-classes/org/openhab/binding/net2/handler/Net2DoorHandlerTest.class
+- Added: scripts/net2_signalr_bridge.py
+- Added: scripts/net2_signalr_config.json
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 22:15:01
 - Modified: items/paxton_net2_binding.items
 - Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
