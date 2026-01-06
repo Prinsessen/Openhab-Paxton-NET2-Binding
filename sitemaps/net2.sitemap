@@ -3,8 +3,8 @@ sitemap net2 label="Paxton Net2" {
 
     Frame label="Kirkegade 50 - Fordør - ACU 6612642" {
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="| 🚪 Fordør | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
-            valuecolor=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"="black"]
-            visibility=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"]
+     //       valuecolor=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"="black"]
+     //       visibility=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"]
        // Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="" visibility=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"]
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUpdate label="" visibility=[Net2_Door_Fordoer_ACU_6612642_LastUpdate!="NULL"]
     }
@@ -21,7 +21,7 @@ sitemap net2 label="Paxton Net2" {
         Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="| 🛠️ Værksted | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door"
             valuecolor=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUser!="NULL"="black"]
             visibility=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUser!="NULL"]
-        Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="" visibility=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUser!="NULL"]
+     //   Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUser label="" visibility=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUser!="NULL"]
         Text item=Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate label="" visibility=[Net2_Door_Vaerksted_Doer_Central_03962494_LastUpdate!="NULL"]
     }
 
