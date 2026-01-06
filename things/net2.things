@@ -1,9 +1,9 @@
 Bridge net2:net2server:server "Net2 Server" [
-    hostname="net2.local",
+    hostname="https://milestone.agesen.dk:8443/api/v1",
     port=8443,
-    username="First Last",
-    password="REPLACE_ME",
-    clientId="REPLACE_ME",
+    username="Nanna Agesen",
+    password="Jekboapj110",
+    clientId="00aab996-6439-4f16-89b4-6c0cc851e8f3",
     tlsVerification=true,
     refreshInterval=30
 ] {
