@@ -38,23 +38,27 @@ def get_token(config):
         sys.exit(1)
     return resp.json()['access_token']
 
-def control_door(config, token, door_id, open_time_ms):
-    """Send door control command"""
-    url = f"{config['base_url']}/commands/door/control"
+def hold_door_open(config, token, door_id):
+    """Hold door open until closed"""
+    url = f"{config['base_url']}/commands/door/holdopen"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
     }
-    data = {
-        "DoorId": int(door_id),
-        "RelayFunction": {
-            "RelayId": "Relay1",
-            "RelayAction": "TimedOpen",
-            "RelayOpenTime": open_time_ms
-        },
-        "LedFlash": 3
-    }
+    data = {"DoorId": int(door_id)}
     resp = requests.post(url, headers=headers, json=data, verify=False)
+    return resp.status_code == 200
+
+def close_door(config, token, door_id):
+    """Close door - use same holdopen endpoint (might be a toggle)"""
+    url = f"{config['base_url']}/commands/door/holdopen"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
+    data = {"DoorId": int(door_id)}
+    resp = requests.post(url, headers=headers, json=data, verify=False)
+    print(f"DEBUG: Status {resp.status_code}, Response: {resp.text}")
     return resp.status_code == 200
 
 def get_door_state(door_id):
@@ -94,21 +98,21 @@ def main():
     is_currently_open = get_door_state(door_id)
     
     if is_currently_open:
-        # Close door (use 0ms to close/lock)
+        # Close door
         print(f"Closing door {door_id}...")
-        success = control_door(config, token, door_id, 0)  # 0ms = close/lock
+        success = close_door(config, token, door_id)
         if success:
             set_door_state(door_id, False)
             print("✓ Door closed")
         else:
             print("✗ Failed to close door")
     else:
-        # Open door for 10 seconds
-        print(f"Opening door {door_id} for 10 seconds...")
-        success = control_door(config, token, door_id, 10000)  # 10 seconds
+        # Hold door open until closed
+        print(f"Holding door {door_id} open...")
+        success = hold_door_open(config, token, door_id)
         if success:
             set_door_state(door_id, True)
-            print("✓ Door opened (10 seconds)")
+            print("✓ Door held open (until closed)")
         else:
             print("✗ Failed to open door")
 
