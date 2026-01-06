@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 12:00:00
+- Deleted: scripts/net2_test_open_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 11:45:00
 - Added: scripts/net2_test_open_door.py
 
