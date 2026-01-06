@@ -101,8 +101,8 @@ Text label="Paxton Door Events" icon="lock" {
 		}
 		Text label="Terndrupvej 81 - Frontdoor" icon="door" {
 			Frame label="Fordør Events" {
-			//	Webview url="/static/doors/terndrupvej_81_fordør_terndrupvej_acu_6203980.html" height=80 icon=none
-			    Webview url="/static/doors/terndrupvej_81_ford%C3%B8r_terndrupvej_acu_6203980.html" height=80 icon=none
+			//	Webview url="/static/doors/terndrupvej_81_fordør_terndrupvej_acu_6203980_ind.html" height=80 icon=none
+			    Webview url="/static/doors/terndrupvej_81_ford%C3%B8r_terndrupvej_acu_6203980_ind.html" height=80 icon=none
 			}
 		}
 		Text label="Porsevej 19 - Frontdoor" icon="door" {
