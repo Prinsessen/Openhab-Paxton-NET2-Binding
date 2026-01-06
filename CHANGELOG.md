@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 12:15:00
+- Added: scripts/.door_state.json
+- Added: scripts/net2_toggle_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 12:00:00
 - Deleted: scripts/net2_test_open_door.py
 
