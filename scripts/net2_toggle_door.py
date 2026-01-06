@@ -79,9 +79,6 @@ def get_door_status(config, token, door_id):
             doors = resp.json()
             for door in doors:
                 if door.get('id') == int(door_id):
-                    # Debug: print the full door status structure
-                    print(f"\nDEBUG - Full door status response:")
-                    print(json.dumps(door, indent=2))
                     return door
             return None
         except:
@@ -180,9 +177,9 @@ def main():
         status = get_door_status(config, token, door_id)
         
         if status:
-            door_state = status.get('doorStatus', {})
-            is_held_open = door_state.get('isHeldOpen', False)
-            state_text = 'HELD OPEN' if is_held_open else 'CLOSED/NORMAL'
+            door_state = status.get('status', {})
+            is_relay_open = door_state.get('doorRelayOpen', False)
+            state_text = 'HELD OPEN' if is_relay_open else 'CLOSED/NORMAL'
             print(f"Current state: {state_text}")
         else:
             print("Current state: Unknown (unable to query API)")
@@ -211,12 +208,13 @@ def main():
         print(f"Checking status for door {door_id}...")
         status = get_door_status(config, token, door_id)
         if status:
-            door_state = status.get('doorStatus', {})
-            is_held_open = door_state.get('isHeldOpen', False)
-            is_online = door_state.get('isOnline', 'Unknown')
-            print(f"\nDoor ID: {door_id}")
-            print(f"Status: {'HELD OPEN' if is_held_open else 'CLOSED/NORMAL'}")
-            print(f"Online: {is_online}")
+            door_state = status.get('status', {})
+            is_relay_open = door_state.get('doorRelayOpen', False)
+            door_contact_closed = door_state.get('doorContactClosed', 'Unknown')
+            print(f"\nDoor Name: {status.get('name', 'Unknown')}")
+            print(f"Door ID: {door_id}")
+            print(f"Relay Status: {'HELD OPEN' if is_relay_open else 'CLOSED/NORMAL'}")
+            print(f"Door Contact: {'CLOSED' if door_contact_closed else 'OPEN'}")
             print(f"\nFull status: {json.dumps(status, indent=2)}")
         else:
             print("✗ Could not retrieve door status")

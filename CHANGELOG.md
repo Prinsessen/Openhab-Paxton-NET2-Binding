@@ -7,6 +7,19 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 13:30:02
+- Modified: scripts/.door_state.json
+- Deleted: scripts/BUILD_WINDOWS_EXE.md
+- Deleted: scripts/Close_Door_6203980.bat
+- Deleted: scripts/Close_Door_6612642.bat
+- Deleted: scripts/Interactive_Door_Control.bat
+- Deleted: scripts/Open_Door_6203980.bat
+- Deleted: scripts/Open_Door_6612642.bat
+- Deleted: scripts/build_windows_exe.bat
+- Modified: scripts/net2_toggle_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 13:15:00
 - Added: scripts/Close_Door_6203980.bat
 - Added: scripts/Close_Door_6612642.bat
