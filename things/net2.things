@@ -1,0 +1,14 @@
+Bridge net2:net2server:server "Net2 Server" [
+    hostname="net2.local",
+    port=8443,
+    username="First Last",
+    password="REPLACE_ME",
+    clientId="REPLACE_ME",
+    tlsVerification=true,
+    refreshInterval=30
+] {
+    Thing door door1 "Front Door" [
+        doorId=12345,
+        name="Front Door"
+    ]
+}
