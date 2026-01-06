@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 19:15:08
+- Modified: openhab-addons
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 18:00:00
 - Added: openhab-addons
 
