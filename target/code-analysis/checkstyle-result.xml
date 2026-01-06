@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.17.0">
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/feature/feature.xml">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/resources/OH-INF/thing/thing-types.xml">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/resources/OH-INF/binding/binding.xml">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java">
+<error line="30" column="8" severity="info" message="Unused import - org.openhab.core.types.UnDefType." source="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2ServerConfiguration.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2DoorConfiguration.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java">
+</file>
+<file name="/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/pom.xml">
+</file>
+</checkstyle>

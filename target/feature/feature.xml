@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0" name="org.openhab.binding.net2-5.1.0">
+    <repository>mvn:org.openhab.core.features.karaf/org.openhab.core.features.karaf.openhab-core/5.1.0/xml/features</repository>
+    <feature name="openhab-binding-net2" description="Paxton Net2 Access Control binding" version="5.1.0">
+        <feature>openhab-runtime-base</feature>
+        <bundle start-level="80">mvn:org.openhab.addons.bundles/org.openhab.binding.net2/5.1.0</bundle>
+    </feature>
+    <feature name="org.openhab.binding.net2" description="openHAB Add-ons :: Bundles :: Net2 Binding" version="5.1.0">
+        <details>This is the Net2 binding for Paxton Net2 door control system</details>
+        <feature prerequisite="true" dependency="false">wrap</feature>
+        <bundle start-level="80">wrap:mvn:org.lastnpe.eea/eea-all/2.4.0</bundle>
+    </feature>
+</features>
