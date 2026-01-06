@@ -96,7 +96,7 @@ def authenticate(config):
     auth_endpoint = f"{config['base_url']}/authorization/tokens"
 
     try:
-        response = requests.post(auth_endpoint, data=payload, timeout=10)
+        response = requests.post(auth_endpoint, data=payload, timeout=30)
         
         if response.status_code != 200:
             log(f"ERROR: Authentication failed with status {response.status_code}")
