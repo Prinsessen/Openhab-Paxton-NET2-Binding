@@ -7,6 +7,17 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 13:15:00
+- Added: scripts/Close_Door_6203980.bat
+- Added: scripts/Close_Door_6612642.bat
+- Added: scripts/Interactive_Door_Control.bat
+- Added: scripts/Open_Door_6203980.bat
+- Added: scripts/Open_Door_6612642.bat
+- Added: scripts/SHORTCUTS_README.md
+- Modified: scripts/net2_toggle_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 13:00:02
 - Added: scripts/BUILD_WINDOWS_EXE.md
 - Added: scripts/build_windows_exe.bat

@@ -79,6 +79,9 @@ def get_door_status(config, token, door_id):
             doors = resp.json()
             for door in doors:
                 if door.get('id') == int(door_id):
+                    # Debug: print the full door status structure
+                    print(f"\nDEBUG - Full door status response:")
+                    print(json.dumps(door, indent=2))
                     return door
             return None
         except:
