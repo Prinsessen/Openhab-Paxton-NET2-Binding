@@ -2,7 +2,7 @@ sitemap net2 label="Paxton Net2" {
 
 
     Frame label="Kirkegade 50 - Fordør - ACU 6612642" {
-        Text label="| 🚪 Fordør | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
+        Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="| 🚪 Fordør | [%s] | [%1$td:%1$tm:%1$ty %1$tH:%1$tM] |" icon="door" 
             valuecolor=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"="black"]
             visibility=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"]
         Text item=Net2_Door_Fordoer_ACU_6612642_LastUser label="" visibility=[Net2_Door_Fordoer_ACU_6612642_LastUser!="NULL"]
