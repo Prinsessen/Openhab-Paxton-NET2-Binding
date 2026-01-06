@@ -7,6 +7,15 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-06 22:15:01
+- Modified: items/paxton_net2_binding.items
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java
+- Modified: things/net2.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 20:45:08
 - Added: items/paxton_net2_binding.items
 

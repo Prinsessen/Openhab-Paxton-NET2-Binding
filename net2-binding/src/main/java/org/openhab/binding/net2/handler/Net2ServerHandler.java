@@ -29,6 +29,7 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
     private ScheduledFuture<?> refreshJob;
     private Net2ApiClient apiClient;
+    private Net2SignalRClient signalRClient;
 
     public Net2ServerHandler(Bridge bridge) {
         super(bridge);
@@ -85,6 +86,21 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 30;
             refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval, TimeUnit.SECONDS);
             
+            // Start SignalR for live events (best-effort)
+            try {
+                String token = apiClient.getAccessToken();
+                if (token != null && !token.isEmpty()) {
+                    signalRClient = new Net2SignalRClient(apiClient.getHostname(), apiClient.getPort(), token,
+                            apiClient.isTlsVerification());
+                    signalRClient.onDoorStatusChanged(msg -> logger.debug("SignalR event: {}", msg));
+                    signalRClient.connect();
+                } else {
+                    logger.debug("No access token available for SignalR startup");
+                }
+            } catch (Exception se) {
+                logger.debug("SignalR startup failed", se);
+            }
+            
         } catch (Exception e) {
             logger.error("Failed to initialize Net2 API client", e);
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
@@ -103,6 +119,10 @@ public class Net2ServerHandler extends BaseBridgeHandler {
         
         if (apiClient != null) {
             apiClient.close();
+        }
+        if (signalRClient != null) {
+            try { signalRClient.disconnect(); } catch (Exception ignore) {}
+            signalRClient = null;
         }
     }
 

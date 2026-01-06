@@ -1,5 +1,5 @@
 Bridge net2:net2server:server "Net2 Server" [
-    hostname="https://milestone.agesen.dk:8443/api/v1",
+    hostname="milestone.agesen.dk",
     port=8443,
     username="Nanna Agesen",
     password="Jekboapj110",

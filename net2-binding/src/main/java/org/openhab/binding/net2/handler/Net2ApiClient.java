@@ -24,6 +24,8 @@ public class Net2ApiClient {
     private final Logger logger = LoggerFactory.getLogger(Net2ApiClient.class);
 
     private final String baseUrl;
+    private final String hostname;
+    private final int port;
     private final String username;
     private final String password;
     private final String clientId;
@@ -36,10 +38,9 @@ public class Net2ApiClient {
     private final ReentrantLock tokenLock = new ReentrantLock();
 
     public Net2ApiClient(Net2ServerConfiguration config) {
-        this.baseUrl = String.format("https://%s:%d/api/%s", 
-            config.hostname, 
-            config.port != null ? config.port : 8443,
-            "v1");
+        this.hostname = config.hostname;
+        this.port = config.port != null ? config.port : 8443;
+        this.baseUrl = String.format("https://%s:%d/api/%s", hostname, port, "v1");
         this.username = config.username;
         this.password = config.password;
         this.clientId = config.clientId;
@@ -267,6 +268,30 @@ public class Net2ApiClient {
      */
     public void close() {
         // HTTP client is managed by the JVM, no explicit close needed
+    }
+
+    /**
+     * Expose current access token (for SignalR auth)
+     */
+    public String getAccessToken() {
+        tokenLock.lock();
+        try {
+            return accessToken;
+        } finally {
+            tokenLock.unlock();
+        }
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public boolean isTlsVerification() {
+        return tlsVerification;
     }
 
     /**
