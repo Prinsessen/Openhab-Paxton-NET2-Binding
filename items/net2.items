@@ -8,8 +8,7 @@
 // ==============================================
 String Net2_CreateUser "Create User [firstName,lastName,accessLevel,pin,expireDate]" { channel="net2:net2server:server:createUser" }
 String Net2_DeleteUser "Delete User [User ID]" { channel="net2:net2server:server:deleteUser" }
-String Net2_GetUserPermissionSet "Get User Permission Set [userId]" { channel="net2:net2server:server:getUserPermissionSet" }
-String Net2_SetUserPermissionSet "Set User Permission Set [userId|json]" { channel="net2:net2server:server:setUserPermissionSet" }
+String Net2_ListAccessLevels "List Access Levels [trigger]" { channel="net2:net2server:server:listAccessLevels" }
 
 // ==============================================
 // Door Items (Basic Examples)
