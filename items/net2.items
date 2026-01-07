@@ -6,11 +6,7 @@
 // ==============================================
 // Net2 Bridge - User Management
 // ==============================================
-String Net2_UserToCreate "User To Create [%s]" <user> (Net2_Users)
-Number Net2_UserAccessLevel "User Access Level [%d]" <user> (Net2_Users)
-String Net2_UserPin "User PIN [%s]" <key> (Net2_Users)
-DateTime Net2_UserExpireTime "User Expire Time [%1$tF %1$tT]" <time> (Net2_Users)
-String Net2_AddUser "Add User [Format: firstName,lastName[,middleName][,pin][,cardNumber]]" { channel="net2:net2server:server:addUser" }
+String Net2_CreateUser "Create User [firstName,lastName,accessLevel,pin,expireDate]" { channel="net2:net2server:server:createUser" }
 String Net2_DeleteUser "Delete User [User ID]" { channel="net2:net2server:server:deleteUser" }
 
 // ==============================================
