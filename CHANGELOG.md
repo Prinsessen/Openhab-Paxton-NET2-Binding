@@ -7,6 +7,17 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 19:15:10
+- Added: net2-binding/CHANGELOG.md
+- Added: net2-binding/CONTRIBUTING.md
+- Added: net2-binding/README-RELEASE.md
+- Added: net2-binding/RELEASE-REQUIREMENTS.md
+- Added: net2-binding/RELEASE_QUICK_REFERENCE.md
+- Added: net2-binding/RELEASE_STATUS.md
+- Modified: net2-binding/target/org.openhab.binding.net2-5.1.0.jar
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 19:00:02
 - Added: net2-binding/src/main/feature/feature.xml
 - Added: net2-binding/src/main/history/dependencies.xml
