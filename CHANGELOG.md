@@ -7,6 +7,27 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 19:00:02
+- Added: net2-binding/src/main/feature/feature.xml
+- Added: net2-binding/src/main/history/dependencies.xml
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorConfiguration.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerConfiguration.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java
+- Deleted: net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java
+- Added: net2-binding/src/main/resources/OH-INF/binding/binding.xml
+- Modified: net2-binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Deleted: net2-binding/src/main/resources/OSGI-INF/org.openhab.binding.net2.discovery.Net2DoorDiscoveryService.xml
+- Modified: net2-binding/src/main/resources/OSGI-INF/org.openhab.binding.net2.handler.Net2HandlerFactory.xml
+- Deleted: net2-binding/src/test/java/org/openhab/binding/net2/handler/Net2DoorHandlerTest.java
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 18:45:02
 - Modified: net2-binding/DEVELOPMENT.md
 - Modified: net2-binding/EXAMPLES.md

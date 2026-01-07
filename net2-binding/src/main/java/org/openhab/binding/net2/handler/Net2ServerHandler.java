@@ -1,12 +1,35 @@
+/*
+ * Copyright (c) 2010-2025 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.net2.handler;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.net2.Net2BindingConstants;
+import org.openhab.binding.net2.discovery.Net2DoorDiscoveryService;
+import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.binding.BaseBridgeHandler;
+import org.openhab.core.thing.binding.ThingHandlerService;
 import org.openhab.core.types.Command;
-import org.openhab.core.library.types.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,24 +37,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.IOException;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 /**
  * The {@link Net2ServerHandler} is responsible for handling communication
  * with the Paxton Net2 API server.
+ *
+ * @author openHAB Community - Initial contribution
  */
+@NonNullByDefault
 public class Net2ServerHandler extends BaseBridgeHandler {
 
     private final Logger logger = LoggerFactory.getLogger(Net2ServerHandler.class);
 
-    private ScheduledFuture<?> refreshJob;
-    private Net2ApiClient apiClient;
-    private Net2SignalRClient signalRClient;
+    private @Nullable ScheduledFuture<?> refreshJob;
+    private @Nullable Net2ApiClient apiClient;
+    private @Nullable Net2SignalRClient signalRClient;
 
     public Net2ServerHandler(Bridge bridge) {
         super(bridge);
@@ -39,24 +58,33 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        String channelId = channelUID.getId();
+        logger.info("handleCommand received for channel: {} with command: {}", channelUID.getId(), command);
+        if (command == null) {
+            logger.warn("Command is null");
+            return;
+        }
+        if (!isOnline()) {
+            logger.warn("Bridge handler is not online, ignoring command");
+            return;
+        }
+
         try {
-            switch (channelId) {
-                case org.openhab.binding.net2.Net2BindingConstants.CHANNEL_CREATE_USER:
+            switch (channelUID.getId()) {
+                case Net2BindingConstants.CHANNEL_CREATE_USER:
                     handleCreateUser(command);
                     break;
-                case org.openhab.binding.net2.Net2BindingConstants.CHANNEL_DELETE_USER:
+                case Net2BindingConstants.CHANNEL_DELETE_USER:
                     handleDeleteUser(command);
                     break;
-                case org.openhab.binding.net2.Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
+                case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
                     handleListAccessLevels(command);
                     break;
                 default:
-                    // No-op for unknown bridge channel
-                    break;
+                    logger.debug("Unsupported channel: {}", channelUID.getId());
             }
         } catch (Exception e) {
-            logger.error("Error handling command for channel {}: {}", channelId, e.getMessage());
+            logger.error("Error handling command for channel {}", channelUID.getId(), e);
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error: " + e.getMessage());
         }
     }
 
@@ -64,28 +92,23 @@ public class Net2ServerHandler extends BaseBridgeHandler {
     public void initialize() {
         logger.debug("Initializing Net2 Server handler");
 
-        Bridge bridge = getThing();
         Net2ServerConfiguration config = getConfigAs(Net2ServerConfiguration.class);
 
         // Validate configuration
         if (config.hostname == null || config.hostname.isEmpty()) {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-                    "Hostname is required");
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Hostname is required");
             return;
         }
         if (config.username == null || config.username.isEmpty()) {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-                    "Username is required");
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Username is required");
             return;
         }
         if (config.password == null || config.password.isEmpty()) {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-                    "Password is required");
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Password is required");
             return;
         }
         if (config.clientId == null || config.clientId.isEmpty()) {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-                    "Client ID is required");
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Client ID is required");
             return;
         }
 
@@ -96,7 +119,7 @@ public class Net2ServerHandler extends BaseBridgeHandler {
         scheduler.execute(() -> {
             try {
                 apiClient = new Net2ApiClient(config);
-                
+
                 // Test authentication
                 if (!apiClient.authenticate()) {
                     updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
@@ -105,26 +128,16 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                 }
 
                 updateStatus(ThingStatus.ONLINE);
-                
+
+                Net2ApiClient client = apiClient;
+                if (client != null) {
+                    startSignalR(client, config);
+                }
+
                 // Schedule periodic refresh
                 int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 30;
-                refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval, TimeUnit.SECONDS);
-                
-                // Start SignalR for live events (best-effort)
-                try {
-                    String token = apiClient.getAccessToken();
-                    if (token != null && !token.isEmpty()) {
-                        signalRClient = new Net2SignalRClient(apiClient.getHostname(), apiClient.getPort(), token,
-                                apiClient.isTlsVerification());
-                        signalRClient.onDoorStatusChanged(msg -> logger.debug("SignalR event: {}", msg));
-                        signalRClient.connect();
-                    } else {
-                        logger.debug("No access token available for SignalR startup");
-                    }
-                } catch (Exception se) {
-                    logger.debug("SignalR startup failed", se);
-                }
-                
+                refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval,
+                        TimeUnit.SECONDS);
             } catch (Exception e) {
                 logger.error("Failed to initialize Net2 API client", e);
                 updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
@@ -136,28 +149,65 @@ public class Net2ServerHandler extends BaseBridgeHandler {
     @Override
     public void dispose() {
         logger.debug("Disposing Net2 Server handler");
-        
+
         if (refreshJob != null) {
             refreshJob.cancel(true);
             refreshJob = null;
         }
-        
+
         if (apiClient != null) {
             apiClient.close();
         }
+
         if (signalRClient != null) {
-            try { signalRClient.disconnect(); } catch (Exception ignore) {}
+            signalRClient.disconnect();
             signalRClient = null;
         }
+    }
+
+    private void startSignalR(Net2ApiClient client, Net2ServerConfiguration config) {
+        if (signalRClient != null && signalRClient.isConnected()) {
+            return;
+        }
+
+        try {
+            String token = client.getValidAccessToken();
+            boolean verify = config.tlsVerification != null ? config.tlsVerification : true;
+            Net2SignalRClient newClient = new Net2SignalRClient(client.getServerRootUri(), token, verify);
+            newClient.setEventConsumer(this::handleSignalREvent);
+            newClient.connect();
+            newClient.subscribeToEvents();
+            signalRClient = newClient;
+        } catch (Exception e) {
+            logger.debug("SignalR startup failed", e);
+        }
+    }
+
+    private void handleSignalREvent(String target, JsonObject payload) {
+        if (!payload.has("deviceId")) {
+            return;
+        }
+
+        int deviceId = payload.get("deviceId").getAsInt();
+        getThing().getThings().forEach(childThing -> {
+            if (childThing.getHandler() instanceof Net2DoorHandler handler && handler.getDoorId() == deviceId) {
+                handler.applyEvent(payload, target);
+            }
+        });
     }
 
     /**
      * Refresh door status for all child things
      */
     private void refreshDoorStatus() {
-        if (apiClient == null || !apiClient.isAuthenticated()) {
+        Net2ApiClient client = apiClient;
+        if (client == null || !client.isAuthenticated()) {
             try {
-                if (!apiClient.authenticate()) {
+                if (client == null) {
+                    logger.error("API client not initialized");
+                    return;
+                }
+                if (!client.authenticate()) {
                     updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
                             "Failed to re-authenticate");
                     return;
@@ -169,9 +219,10 @@ public class Net2ServerHandler extends BaseBridgeHandler {
         }
 
         try {
-            String statusResponse = apiClient.getDoorStatus();
+            String statusResponse = client.getDoorStatus();
+            // Note: SignalR is started once during initialization, not on every refresh
             JsonElement element = JsonParser.parseString(statusResponse);
-            
+
             if (element.isJsonArray()) {
                 // Notify child handlers of status update
                 getThing().getThings().forEach(childThing -> {
@@ -190,6 +241,26 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
                     "Error refreshing: " + e.getMessage());
         }
+    }
+
+    /**
+     * Get the API client for child door handlers
+     */
+    public @Nullable Net2ApiClient getApiClient() {
+        return apiClient;
+    }
+
+    /**
+     * Check if bridge is online
+     */
+    public boolean isOnline() {
+        Net2ApiClient client = apiClient;
+        return getThing().getStatus() == ThingStatus.ONLINE && client != null && client.isAuthenticated();
+    }
+
+    @Override
+    public Collection<Class<? extends ThingHandlerService>> getServices() {
+        return Set.of(Net2DoorDiscoveryService.class);
     }
 
     private void handleCreateUser(Command command) throws Exception {
@@ -211,6 +282,7 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
                 logger.info("Creating user: {} {}, accessLevel: {}, pin: {}", firstName, lastName, accessLevelStr, pin);
 
+                // Resolve access level to an ID if possible (validate it exists in the system)
                 Integer accessLevelId = null;
                 try {
                     accessLevelId = client.resolveAccessLevelId(accessLevelStr);
@@ -218,7 +290,9 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                     logger.warn("Unable to resolve access level '{}': {}", accessLevelStr, ex.getMessage());
                 }
                 if (accessLevelId == null) {
-                    logger.warn("Access level '{}' not found among system access levels; proceeding without assignment.", accessLevelStr);
+                    logger.warn(
+                            "Access level '{}' not found among system access levels; proceeding without assignment.",
+                            accessLevelStr);
                 } else {
                     logger.info("Resolved access level '{}' to ID {}", accessLevelStr, accessLevelId);
                 }
@@ -227,6 +301,7 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                 if (userId > 0) {
                     logger.info("User created successfully with ID: {}", userId);
 
+                    // Assign the access level to the created user
                     if (accessLevelId == null) {
                         logger.warn("User {} created without assigning access level (no valid ID resolved)", userId);
                     } else {
@@ -238,7 +313,8 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                                 logger.error("Failed to assign access level {} to user {}", accessLevelId, userId);
                             }
                         } catch (Exception ex) {
-                            logger.error("Error assigning access level {} to user {}: {}", accessLevelId, userId, ex.getMessage());
+                            logger.error("Error assigning access level {} to user {}: {}", accessLevelId, userId,
+                                    ex.getMessage());
                         }
                     }
                 } else {
@@ -282,19 +358,5 @@ public class Net2ServerHandler extends BaseBridgeHandler {
         StringBuilder sb = new StringBuilder("Access levels: ");
         levels.forEach((id, name) -> sb.append("[" + id + ":" + name + "] "));
         logger.info(sb.toString());
-    }
-
-    /**
-     * Get the API client for child door handlers
-     */
-    public Net2ApiClient getApiClient() {
-        return apiClient;
-    }
-
-    /**
-     * Check if bridge is online
-     */
-    public boolean isOnline() {
-        return getThing().getStatus() == ThingStatus.ONLINE && apiClient != null && apiClient.isAuthenticated();
     }
 }

@@ -1,48 +1,71 @@
+/*
+ * Copyright (c) 2010-2025 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
 package org.openhab.binding.net2.handler;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * The {@link Net2ApiClient} handles all HTTP communication with the Paxton Net2 API
+ * The {@link Net2ApiClient} handles all HTTP communication with the Paxton Net2 API.
+ *
+ * @author OpenHAB Community - Initial contribution
  */
+@NonNullByDefault
 public class Net2ApiClient {
 
     private final Logger logger = LoggerFactory.getLogger(Net2ApiClient.class);
 
     private final String baseUrl;
-    private final String hostname;
-    private final int port;
     private final String username;
     private final String password;
     private final String clientId;
     private final boolean tlsVerification;
     private final HttpClient httpClient;
+    private final URI serverRootUri;
 
-    private String accessToken;
-    private String refreshToken;
-    private ZonedDateTime tokenExpiry;
+    private String accessToken = "";
+    private String refreshToken = "";
+    private ZonedDateTime tokenExpiry = ZonedDateTime.now(ZoneOffset.UTC);
     private final ReentrantLock tokenLock = new ReentrantLock();
 
     public Net2ApiClient(Net2ServerConfiguration config) {
-        this.hostname = config.hostname;
-        this.port = config.port != null ? config.port : 8443;
-        this.baseUrl = String.format("https://%s:%d/api/%s", hostname, port, "v1");
+        String host = config.hostname;
+        if (host.startsWith("http://") || host.startsWith("https://")) {
+            // Allow full base URL in hostname param (compat with external config)
+            this.baseUrl = host.replaceAll("/+$", "");
+        } else {
+            this.baseUrl = String.format("https://%s:%d/api/%s", host, config.port != null ? config.port : 8443, "v1");
+        }
         this.username = config.username;
         this.password = config.password;
         this.clientId = config.clientId;
@@ -50,19 +73,15 @@ public class Net2ApiClient {
 
         // Create HTTP client
         HttpClient.Builder builder = HttpClient.newBuilder();
-        if (!this.tlsVerification) {
-            try {
-                // Disable SSL verification if not required
-                javax.net.ssl.SSLContext sslContext = javax.net.ssl.SSLContext.getInstance("TLS");
-                sslContext.init(null, 
-                    new javax.net.ssl.TrustManager[] { new NoopTrustManager() }, 
-                    new java.security.SecureRandom());
-                builder.sslContext(sslContext);
-            } catch (Exception e) {
-                logger.warn("Failed to disable SSL verification", e);
-            }
-        }
         this.httpClient = builder.build();
+
+        try {
+            URI apiUri = URI.create(this.baseUrl);
+            this.serverRootUri = new URI(apiUri.getScheme(), null, apiUri.getHost(), apiUri.getPort(), null, null,
+                    null);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid base URL for Net2 API", e);
+        }
     }
 
     /**
@@ -80,11 +99,9 @@ public class Net2ApiClient {
 
             String body = encodeFormData(formData);
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + "/authorization/tokens"))
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/authorization/tokens"))
                     .POST(HttpRequest.BodyPublishers.ofString(body))
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .build();
+                    .header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8").build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -93,7 +110,7 @@ public class Net2ApiClient {
                 accessToken = jsonResponse.get("access_token").getAsString();
                 refreshToken = jsonResponse.get("refresh_token").getAsString();
                 int expiresIn = jsonResponse.get("expires_in").getAsInt();
-                tokenExpiry = ZonedDateTime.now().plusSeconds(expiresIn);
+                tokenExpiry = ZonedDateTime.now(ZoneOffset.UTC).plusSeconds(expiresIn);
 
                 logger.debug("Successfully authenticated with Net2 API. Token expires in {} seconds", expiresIn);
                 return true;
@@ -124,11 +141,9 @@ public class Net2ApiClient {
 
             String body = encodeFormData(formData);
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl + "/authorization/tokens"))
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/authorization/tokens"))
                     .POST(HttpRequest.BodyPublishers.ofString(body))
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .build();
+                    .header("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8").build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -139,7 +154,7 @@ public class Net2ApiClient {
                     refreshToken = jsonResponse.get("refresh_token").getAsString();
                 }
                 int expiresIn = jsonResponse.get("expires_in").getAsInt();
-                tokenExpiry = ZonedDateTime.now().plusSeconds(expiresIn);
+                tokenExpiry = ZonedDateTime.now(ZoneOffset.UTC).plusSeconds(expiresIn);
 
                 logger.debug("Token refreshed successfully");
                 return true;
@@ -162,7 +177,7 @@ public class Net2ApiClient {
                 throw new IllegalStateException("Not authenticated");
             }
 
-            if (tokenExpiry != null && ZonedDateTime.now().plusSeconds(300).isAfter(tokenExpiry)) {
+            if (tokenExpiry != null && ZonedDateTime.now(ZoneOffset.UTC).plusSeconds(300).isAfter(tokenExpiry)) {
                 logger.debug("Token expiring soon, refreshing...");
                 refreshAccessToken();
             }
@@ -177,11 +192,8 @@ public class Net2ApiClient {
     public String getDoorStatus() throws IOException, InterruptedException {
         ensureTokenValid();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/doors/status"))
-                .GET()
-                .header("Authorization", "Bearer " + accessToken)
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/doors/status")).GET()
+                .header("Authorization", "Bearer " + accessToken).build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -198,11 +210,8 @@ public class Net2ApiClient {
     public String listDoors() throws IOException, InterruptedException {
         ensureTokenValid();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/doors"))
-                .GET()
-                .header("Authorization", "Bearer " + accessToken)
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/doors")).GET()
+                .header("Authorization", "Bearer " + accessToken).build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -211,6 +220,75 @@ public class Net2ApiClient {
         } else {
             throw new IOException("Failed to list doors. Status: " + response.statusCode());
         }
+    }
+
+    /**
+     * Hold door open
+     */
+    public boolean holdDoorOpen(int doorId) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        JsonObject body = new JsonObject();
+        body.addProperty("DoorId", doorId);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/commands/door/holdopen"))
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode() == 200;
+    }
+
+    /**
+     * Close door
+     */
+    public boolean closeDoor(int doorId) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        JsonObject body = new JsonObject();
+        body.addProperty("DoorId", doorId);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/commands/door/close"))
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode() == 200;
+    }
+
+    /**
+     * Check if authenticated and token is valid
+     */
+    public boolean isAuthenticated() {
+        tokenLock.lock();
+        try {
+            return accessToken != null
+                    && (tokenExpiry == null || ZonedDateTime.now(ZoneOffset.UTC).isBefore(tokenExpiry));
+        } finally {
+            tokenLock.unlock();
+        }
+    }
+
+    /**
+     * Returns a valid access token, refreshing if needed.
+     */
+    public String getValidAccessToken() throws IOException, InterruptedException {
+        ensureTokenValid();
+        return accessToken;
+    }
+
+    /**
+     * Returns the root URI (scheme/host/port) for the server, without the API path.
+     */
+    public URI getServerRootUri() {
+        return serverRootUri;
+    }
+
+    /**
+     * Indicates whether TLS verification is enabled in the configuration.
+     */
+    public boolean isTlsVerificationEnabled() {
+        return tlsVerification;
     }
 
     /**
@@ -247,6 +325,31 @@ public class Net2ApiClient {
         } else {
             logger.error("Failed to add user. Status: {}, Response: {}", response.statusCode(), response.body());
             return -1;
+        }
+    }
+
+    /**
+     * Add a token (card) to a user
+     */
+    public boolean addUserToken(int userId, String tokenNumber, int tokenType)
+            throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        JsonObject body = new JsonObject();
+        body.addProperty("tokenNumber", tokenNumber);
+        body.addProperty("tokenType", tokenType);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/users/" + userId + "/tokens"))
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200 || response.statusCode() == 201) {
+            logger.info("Token added to user {}: {}", userId, tokenNumber);
+            return true;
+        } else {
+            logger.error("Failed to add token. Status: {}, Response: {}", response.statusCode(), response.body());
+            return false;
         }
     }
 
@@ -309,7 +412,7 @@ public class Net2ApiClient {
      * Resolve an access level input (ID or name) to a valid ID present in the system.
      * Returns null if it cannot be resolved.
      */
-    public Integer resolveAccessLevelId(String accessLevelInput) throws IOException, InterruptedException {
+    public @Nullable Integer resolveAccessLevelId(String accessLevelInput) throws IOException, InterruptedException {
         Map<Integer, String> levels = listAccessLevels();
 
         // Try numeric ID first
@@ -388,61 +491,9 @@ public class Net2ApiClient {
             }
             json.append(accessLevelIds[i]);
         }
-        json.append("] ,\"individualPermissions\":[]}");
+        json.append("],\"individualPermissions\":[]}");
 
         return replaceUserDoorPermissionSet(userId, json.toString());
-    }
-
-    /**
-     * Hold door open
-     */
-    public boolean holdDoorOpen(int doorId) throws IOException, InterruptedException {
-        ensureTokenValid();
-
-        JsonObject body = new JsonObject();
-        body.addProperty("DoorId", doorId);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/commands/door/holdopen"))
-                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
-                .header("Authorization", "Bearer " + accessToken)
-                .header("Content-Type", "application/json")
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.statusCode() == 200;
-    }
-
-    /**
-     * Close door
-     */
-    public boolean closeDoor(int doorId) throws IOException, InterruptedException {
-        ensureTokenValid();
-
-        JsonObject body = new JsonObject();
-        body.addProperty("DoorId", doorId);
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(baseUrl + "/commands/door/close"))
-                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
-                .header("Authorization", "Bearer " + accessToken)
-                .header("Content-Type", "application/json")
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.statusCode() == 200;
-    }
-
-    /**
-     * Check if authenticated and token is valid
-     */
-    public boolean isAuthenticated() {
-        tokenLock.lock();
-        try {
-            return accessToken != null && (tokenExpiry == null || ZonedDateTime.now().isBefore(tokenExpiry));
-        } finally {
-            tokenLock.unlock();
-        }
     }
 
     /**
@@ -450,30 +501,6 @@ public class Net2ApiClient {
      */
     public void close() {
         // HTTP client is managed by the JVM, no explicit close needed
-    }
-
-    /**
-     * Expose current access token (for SignalR auth)
-     */
-    public String getAccessToken() {
-        tokenLock.lock();
-        try {
-            return accessToken;
-        } finally {
-            tokenLock.unlock();
-        }
-    }
-
-    public String getHostname() {
-        return hostname;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public boolean isTlsVerification() {
-        return tlsVerification;
     }
 
     /**
@@ -485,24 +512,9 @@ public class Net2ApiClient {
             if (sb.length() > 0) {
                 sb.append("&");
             }
-            sb.append(entry.getKey()).append("=").append(entry.getValue());
+            sb.append(URLEncoder.encode(entry.getKey(), java.nio.charset.StandardCharsets.UTF_8)).append("=")
+                    .append(URLEncoder.encode(entry.getValue(), java.nio.charset.StandardCharsets.UTF_8));
         }
         return sb.toString();
-    }
-
-    /**
-     * No-op trust manager for SSL verification bypass
-     */
-    private static class NoopTrustManager implements javax.net.ssl.X509TrustManager {
-        @Override
-        public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
-
-        @Override
-        public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) {}
-
-        @Override
-        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-            return new java.security.cert.X509Certificate[0];
-        }
     }
 }
