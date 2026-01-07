@@ -7,6 +7,21 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 20:45:16
+- Added: Backup old sitemaps
+- Renamed: items/ipobserver.removed	items/Backup/ipobserver.removed
+- Renamed: items/Unused Item Files/myhouse (copy 1).old	items/Backup/myhouse (copy 1).old
+- Renamed: items/myhouse.backup2	items/Backup/myhouse.backup2
+- Renamed: items/telegram.removed	items/Backup/telegram.removed
+- Renamed: items/alexa.unused	items/Unused Item Files/alexa.unused
+- Renamed: sitemaps/myhouse.buggy	myhouse.buggy
+- Renamed: sitemaps/myhouse.newest	myhouse.newest
+- Renamed: sitemaps/myhouse.working	myhouse.working
+- Modified: sitemaps/myhouse.sitemap
+- Renamed: things/hue_api2.test	things/Backup/hue_api2.test
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 20:30:02
 - Modified: sitemaps/myhouse.sitemap
 
