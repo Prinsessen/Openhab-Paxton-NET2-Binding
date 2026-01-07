@@ -202,6 +202,19 @@ case "newChannel":
     break;
 ```
 
+### Bridge Channels (User Management)
+
+Implemented bridge-level channels in `thing-types.xml` and `Net2ServerHandler`:
+
+- `createUser` → parses `firstName,lastName,accessLevel,pin`, calls `Net2ApiClient.addUser()` then `assignAccessLevels()`
+- `deleteUser` → calls `Net2ApiClient.deleteUser(id)`
+- `listAccessLevels` → calls `Net2ApiClient.listAccessLevels()` and logs results
+
+API client helpers:
+- `addUser`, `deleteUser`
+- `listAccessLevels`, `resolveAccessLevelId`
+- `replaceUserDoorPermissionSet`, `assignAccessLevels`
+
 ### Adding Configuration Parameter
 
 1. Update `thing-types.xml` config-description

@@ -6,6 +6,7 @@ import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.binding.BaseBridgeHandler;
 import org.openhab.core.types.Command;
+import org.openhab.core.library.types.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +39,25 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        // Bridge has no channels to command
+        String channelId = channelUID.getId();
+        try {
+            switch (channelId) {
+                case org.openhab.binding.net2.Net2BindingConstants.CHANNEL_CREATE_USER:
+                    handleCreateUser(command);
+                    break;
+                case org.openhab.binding.net2.Net2BindingConstants.CHANNEL_DELETE_USER:
+                    handleDeleteUser(command);
+                    break;
+                case org.openhab.binding.net2.Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
+                    handleListAccessLevels(command);
+                    break;
+                default:
+                    // No-op for unknown bridge channel
+                    break;
+            }
+        } catch (Exception e) {
+            logger.error("Error handling command for channel {}: {}", channelId, e.getMessage());
+        }
     }
 
     @Override
@@ -170,6 +190,98 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
                     "Error refreshing: " + e.getMessage());
         }
+    }
+
+    private void handleCreateUser(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+
+        if (command instanceof StringType) {
+            String userData = command.toString();
+            // Expected format: firstName,lastName,accessLevel,pin
+            String[] parts = userData.split(",");
+            if (parts.length >= 4) {
+                String firstName = parts[0].trim();
+                String lastName = parts[1].trim();
+                String accessLevelStr = parts[2].trim();
+                String pin = parts[3].trim();
+
+                logger.info("Creating user: {} {}, accessLevel: {}, pin: {}", firstName, lastName, accessLevelStr, pin);
+
+                Integer accessLevelId = null;
+                try {
+                    accessLevelId = client.resolveAccessLevelId(accessLevelStr);
+                } catch (Exception ex) {
+                    logger.warn("Unable to resolve access level '{}': {}", accessLevelStr, ex.getMessage());
+                }
+                if (accessLevelId == null) {
+                    logger.warn("Access level '{}' not found among system access levels; proceeding without assignment.", accessLevelStr);
+                } else {
+                    logger.info("Resolved access level '{}' to ID {}", accessLevelStr, accessLevelId);
+                }
+
+                int userId = client.addUser(firstName, lastName, "", pin, "");
+                if (userId > 0) {
+                    logger.info("User created successfully with ID: {}", userId);
+
+                    if (accessLevelId == null) {
+                        logger.warn("User {} created without assigning access level (no valid ID resolved)", userId);
+                    } else {
+                        try {
+                            boolean assigned = client.assignAccessLevels(userId, accessLevelId);
+                            if (assigned) {
+                                logger.info("Access level {} assigned successfully to user {}", accessLevelId, userId);
+                            } else {
+                                logger.error("Failed to assign access level {} to user {}", accessLevelId, userId);
+                            }
+                        } catch (Exception ex) {
+                            logger.error("Error assigning access level {} to user {}: {}", accessLevelId, userId, ex.getMessage());
+                        }
+                    }
+                } else {
+                    logger.error("Failed to create user");
+                }
+            } else {
+                logger.error("Invalid user data format. Expected: firstName,lastName,accessLevel,pin");
+            }
+        }
+    }
+
+    private void handleDeleteUser(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+
+        if (command instanceof StringType) {
+            String userIdentifier = command.toString();
+            logger.info("Deleting user: {}", userIdentifier);
+            if (client.deleteUser(userIdentifier)) {
+                logger.info("User deleted successfully");
+            } else {
+                logger.error("Failed to delete user");
+            }
+        }
+    }
+
+    private void handleListAccessLevels(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+        Map<Integer, String> levels = client.listAccessLevels();
+        if (levels.isEmpty()) {
+            logger.warn("No access levels returned by API");
+            return;
+        }
+        StringBuilder sb = new StringBuilder("Access levels: ");
+        levels.forEach((id, name) -> sb.append("[" + id + ":" + name + "] "));
+        logger.info(sb.toString());
     }
 
     /**

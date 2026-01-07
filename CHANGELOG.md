@@ -7,6 +7,19 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 18:45:02
+- Modified: net2-binding/DEVELOPMENT.md
+- Modified: net2-binding/EXAMPLES.md
+- Modified: net2-binding/QUICKSTART.md
+- Modified: net2-binding/README.md
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Added: net2-binding/target/org.openhab.binding.net2-5.1.0.jar
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 18:15:17
 - Modified: items/net2.items
 

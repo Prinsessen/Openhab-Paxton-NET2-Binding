@@ -20,6 +20,11 @@ public class Net2BindingConstants {
     public static final String CHANNEL_LAST_ACCESS_USER = "lastAccessUser";
     public static final String CHANNEL_LAST_ACCESS_TIME = "lastAccessTime";
 
+    // Bridge-level Channel ids (user management)
+    public static final String CHANNEL_CREATE_USER = "createUser";
+    public static final String CHANNEL_DELETE_USER = "deleteUser";
+    public static final String CHANNEL_LIST_ACCESS_LEVELS = "listAccessLevels";
+
     // API Configuration
     public static final String API_VERSION = "v1";
     public static final int DEFAULT_PORT = 8443;

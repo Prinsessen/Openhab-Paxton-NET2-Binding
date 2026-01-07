@@ -2,6 +2,42 @@
 
 ## Example Automation Rules
 
+### User Management (Bridge Channels)
+
+**File: items/net2_users.items**
+
+```
+String Net2_CreateUser        "Create User"        { channel="net2:net2server:myserver:createUser" }
+String Net2_DeleteUser        "Delete User"        { channel="net2:net2server:myserver:deleteUser" }
+String Net2_ListAccessLevels  "List Access Levels" { channel="net2:net2server:myserver:listAccessLevels" }
+```
+
+**File: rules/net2_users.rules**
+
+```java
+rule "Create test user"
+when
+    System started
+then
+    // Format: firstName,lastName,accessLevel,pin
+    Net2_CreateUser.sendCommand("Michael,Agesen,3,7654")
+end
+
+rule "List access levels"
+when
+    Time cron "0 0/30 * * * ?" // every 30 minutes
+then
+    Net2_ListAccessLevels.sendCommand("REFRESH")
+end
+
+rule "Delete test user by ID"
+when
+    Item Some_Admin_Switch received command ON
+then
+    Net2_DeleteUser.sendCommand("79")
+end
+```
+
 ### Rule 1: Automatic Door Lock on Schedule
 
 **File: rules/net2_schedule_lock.rules**
@@ -123,6 +159,25 @@ sitemap net2_doors label="Net2 Door Control" {
         Text item=Garage_Door_Status label="Status [%s]"
     }
 }
+
+## REST Quick Test
+
+```bash
+# Create user
+curl -X POST "http://localhost:8080/rest/items/Net2_CreateUser" \
+    -H "Content-Type: text/plain" \
+    --data "Michael,Agesen,3,7654"
+
+# List access levels
+curl -X POST "http://localhost:8080/rest/items/Net2_ListAccessLevels" \
+    -H "Content-Type: text/plain" \
+    --data "REFRESH"
+
+# Delete user (replace 79 with the created ID)
+curl -X POST "http://localhost:8080/rest/items/Net2_DeleteUser" \
+    -H "Content-Type: text/plain" \
+    --data "79"
+```
 ```
 
 ## Items Configuration with Persistence

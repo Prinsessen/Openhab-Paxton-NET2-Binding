@@ -80,6 +80,11 @@ Switch Front_Door { channel="net2:door:myserver:fordoor:action" }
 Switch Front_Door_Status { channel="net2:door:myserver:fordoor:status" }
 String Front_Door_LastUser { channel="net2:door:myserver:fordoor:lastAccessUser" }
 DateTime Front_Door_LastTime { channel="net2:door:myserver:fordoor:lastAccessTime" }
+
+// Bridge channels (user management)
+String Net2_CreateUser        "Create User"        { channel="net2:net2server:myserver:createUser" }
+String Net2_DeleteUser        "Delete User"        { channel="net2:net2server:myserver:deleteUser" }
+String Net2_ListAccessLevels  "List Access Levels" { channel="net2:net2server:myserver:listAccessLevels" }
 ```
 
 ### Step 4: Use in Rules
@@ -121,6 +126,32 @@ end
 | `action` | Switch | Read/Write |
 | `lastAccessUser` | String | Read-only |
 | `lastAccessTime` | DateTime | Read-only |
+
+✅ **User Management (Bridge Channels)**
+| Channel | Type | Purpose |
+|---------|------|---------|
+| `createUser` | String | Create user with access level and PIN: `firstName,lastName,accessLevel,pin` |
+| `deleteUser` | String | Delete user by ID |
+| `listAccessLevels` | String | Log available access levels |
+
+### Quick Test via REST
+
+```bash
+# Create user and assign access level 3
+curl -X POST "http://localhost:8080/rest/items/Net2_CreateUser" \
+    -H "Content-Type: text/plain" \
+    --data "Michael,Agesen,3,7654"
+
+# List access levels
+curl -X POST "http://localhost:8080/rest/items/Net2_ListAccessLevels" \
+    -H "Content-Type: text/plain" \
+    --data "REFRESH"
+
+# Delete user (replace 79 with created ID from logs)
+curl -X POST "http://localhost:8080/rest/items/Net2_DeleteUser" \
+    -H "Content-Type: text/plain" \
+    --data "79"
+```
 
 ## File Organization
 
