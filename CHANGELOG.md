@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 20:15:17
+- Renamed: scripts/net2_signalr_bridge.py	scripts/Test Scripts/net2_signalr_bridge.py
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 19:15:10
 - Added: net2-binding/CHANGELOG.md
 - Added: net2-binding/CONTRIBUTING.md
