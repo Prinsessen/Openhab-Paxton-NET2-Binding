@@ -1,15 +1,7 @@
 {
     "openhab.useRestApi": false,
     "java.enabled": false,
-    "java.jdt.ls.java.home": null,
-    "java.configuration.updateBuildConfiguration": "disabled",
-    "java.compile.nullAnalysis.mode": "disabled",
-    "java.import.gradle.enabled": false,
-    "java.autobuild.enabled": false,
-    "java.maxConcurrentBuilds": 1,
-    "java.import.maven.enabled": false,
-    "java.server.launchMode": "Disabled",
-    "java.jdt.ls.vmargs": "-Xmx256m",
+    "redhat.telemetry.enabled": false,
     "files.exclude": {
         "**/*.class": true,
         "**/*.jar": true
