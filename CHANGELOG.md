@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 09:45:11
+- Modified: .vscode/settings.json
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 04:30:02
 - Modified: things/net2.things
 
