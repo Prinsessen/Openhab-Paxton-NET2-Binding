@@ -183,7 +183,16 @@ Bridge handler managing:
 
 ## License
 
-[Insert your license here - e.g., EPL 2.0]
+This project is licensed under the **Eclipse Public License 2.0** (EPL-2.0) - see the [LICENSE](LICENSE) file for details.
+
+This is the same license used by the openHAB project, ensuring compatibility and adherence to community standards.
+
+**What this means:**
+- ✅ Free to use, modify, and distribute
+- ✅ Commercial use allowed
+- ✅ Must include copyright notice and license
+- ✅ Changes must be documented
+- ✅ Patent grant included
 
 ## Support
 

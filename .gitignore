@@ -1,0 +1,36 @@
+# Sensitive files - DO NOT COMMIT
+net2_config.json
+*_config.json
+*.credentials
+*.secret
+.env
+.env.*
+secrets/
+credentials/
+auth.json
+config.json
+
+# API keys and tokens
+*_api_key*
+*_token*
+*_secret*
+
+# Generated/compiled
+target/
+build/
+*.class
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# System
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
