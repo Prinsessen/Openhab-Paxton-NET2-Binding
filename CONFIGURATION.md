@@ -27,7 +27,7 @@ The **Net2 Server** bridge requires the following settings:
 
 ```openhab
 Bridge net2:server:server "Net2 Server" [
-    host="milestone.agesen.dk",
+    host="prinsessen.agesen.dk", // e.g., milestone.agesen.dk or prinsessen.agesen.dk
     port=8443,
     useHttps=true,
     username="admin@company.com",

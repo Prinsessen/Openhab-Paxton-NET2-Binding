@@ -27,7 +27,7 @@ See [INSTALLATION.md](INSTALLATION.md) for detailed setup instructions.
 1. Copy `org.openhab.binding.net2-5.1.0.jar` to `/usr/share/openhab/addons/`
 2. Restart openHAB
 3. Create a bridge in Things with:
-   - **Host**: Your Net2 server hostname (e.g., `milestone.agesen.dk`)
+    - **Host**: Your Net2 server hostname (e.g., `milestone.agesen.dk` or `prinsessen.agesen.dk`)
    - **Port**: API port (default: 8443)
    - **Username**: Admin credentials
    - **Password**: Admin credentials

@@ -71,7 +71,7 @@ Or check via openHAB UI:
 
 | Field | Example | Notes |
 |-------|---------|-------|
-| Host | `milestone.agesen.dk` | Net2 server hostname/IP |
+| Host | `milestone.agesen.dk` or `prinsessen.agesen.dk` | Net2 server hostname/IP |
 | Port | `8443` | WebAPI port (usually 8443 for HTTPS) |
 | Use HTTPS | ☑ checked | Enable for secure connection |
 | Username | `admin` | Net2 admin account |
@@ -87,7 +87,7 @@ Create `/etc/openhab/things/net2.things`:
 
 ```openhab
 Bridge net2:server:server [ 
-    host="milestone.agesen.dk",
+    host="prinsessen.agesen.dk", // e.g., milestone.agesen.dk or prinsessen.agesen.dk
     port=8443,
     useHttps=true,
     username="admin",

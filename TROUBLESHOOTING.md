@@ -11,10 +11,14 @@
 
 #### Diagnosis Steps
 
-1. **Check network connectivity**:
+1. **Check network connectivity** (replace with your host, e.g., milestone.agesen.dk or prinsessen.agesen.dk):
    ```bash
    ping milestone.agesen.dk
+   # or
+   ping prinsessen.agesen.dk
    curl -k https://milestone.agesen.dk:8443/api/v1/version
+   # or
+   curl -k https://prinsessen.agesen.dk:8443/api/v1/version
    ```
 
 2. **Verify credentials**:
@@ -22,9 +26,11 @@
    - Check OAuth Client ID and Secret
    - Verify OAuth app exists on Net2 server
 
-3. **Check firewall**:
+3. **Check firewall** (replace with your host):
    ```bash
    nc -zv milestone.agesen.dk 8443
+   # or
+   nc -zv prinsessen.agesen.dk 8443
    # Should output: Connection successful
    ```
 
@@ -60,7 +66,7 @@ javax.net.ssl.SSLHandshakeException: CERTIFICATE_VERIFY_FAILED
 Connection refused
 java.net.ConnectException: Connection refused
 ```
-- Verify `host` setting (check DNS resolution)
+- Verify `host` setting (check DNS resolution; e.g., milestone.agesen.dk or prinsessen.agesen.dk)
 - Verify `port` setting (default 8443)
 - Check if Net2 service is running: `telnet milestone.agesen.dk 8443`
 
@@ -110,13 +116,15 @@ java.net.SocketTimeoutException
 grep -i "token\|oauth\|refresh" /var/log/openhab/openhab.log | tail -20
 ```
 
-**Manual Token Refresh Test**:
+**Manual Token Refresh Test** (replace with your host):
 ```bash
 # Using Basic Auth to get Bearer token
 curl -u admin:password \
-  -X POST \
-  https://milestone.agesen.dk:8443/api/v1/auth/token \
+   -X POST \
+   https://milestone.agesen.dk:8443/api/v1/auth/token \
   -k
+   # or
+   curl -u admin:password -X POST https://prinsessen.agesen.dk:8443/api/v1/auth/token -k
 
 # Response should include access_token and expires_in
 ```
