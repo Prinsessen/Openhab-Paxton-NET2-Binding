@@ -17,5 +17,12 @@
     },
     "search.exclude": {
         "**/openhab-addons/bundles/org.openhab.binding.!(net2)*/**": true
-    }
+    },
+    "java.import.exclusions": [
+        "**/openhab-addons/bundles/org.openhab.automation.*/**",
+        "**/openhab-addons/bundles/org.openhab.binding.!(net2)*/**",
+        "**/openhab-addons/itests/**"
+    ],
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "java.autobuild.enabled": false
 }
