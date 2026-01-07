@@ -103,6 +103,12 @@ public class Net2DoorDiscoveryService extends AbstractDiscoveryService implement
         }
     }
 
+    public void unsetThingHandler(ThingHandler thingHandler) {
+        if (thingHandler instanceof Net2ServerHandler) {
+            this.bridgeHandler = null;
+        }
+    }
+
     @Override
     public @Nullable ThingHandler getThingHandler() {
         return bridgeHandler;
