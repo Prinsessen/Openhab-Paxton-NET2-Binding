@@ -307,6 +307,7 @@
     <module>org.openhab.binding.netatmo</module>
     <module>org.openhab.binding.network</module>
     <module>org.openhab.binding.networkupstools</module>
+    <module>org.openhab.binding.net2</module>
     <module>org.openhab.binding.nibeheatpump</module>
     <module>org.openhab.binding.nikobus</module>
     <module>org.openhab.binding.nikohomecontrol</module>
