@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 11:15:19
+- Modified: services/addons.cfg
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 11:00:04
 - Modified: services/addons.cfg
 
