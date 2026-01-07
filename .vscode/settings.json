@@ -1,5 +1,17 @@
 {
     "openhab.useRestApi": false,
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "automatic"
+    "java.compile.nullAnalysis.mode": "automatic",
+    "files.watcherExclude": {
+        "**/openhab-addons/bundles/**": true,
+        "!**/openhab-addons/bundles/org.openhab.binding.net2/**": false
+    },
+    "search.exclude": {
+        "**/openhab-addons/bundles/**": true,
+        "!**/openhab-addons/bundles/org.openhab.binding.net2/**": false
+    },
+    "java.import.exclusions": [
+        "**/openhab-addons/bundles/org.openhab.binding.!(net2)**",
+        "**/openhab-addons/itests/**"
+    ]
 }
