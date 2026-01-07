@@ -87,9 +87,10 @@ public class Net2DoorDiscoveryService extends AbstractDiscoveryService implement
                             .withProperty("name", doorName).withRepresentationProperty("doorId").build();
 
                     thingDiscovered(result);
-                    logger.debug("Discovered door: {} (ID: {})", doorName, doorId);
+                    logger.info("Discovered door: {} (ID: {})", doorName, doorId);
                 }
             }
+            logger.debug("Discovery scan completed");
         } catch (Exception e) {
             logger.error("Error discovering Net2 doors", e);
         }
