@@ -11,4 +11,8 @@ Bridge net2:net2server:server "Net2 Server" [
         doorId=6612642,
         name="Front Door"
     ]
+    Thing door door2 "Terndrupvej 81" [
+        doorId=6203980,
+        name="Terndrupvej 81"
+    ]
 }

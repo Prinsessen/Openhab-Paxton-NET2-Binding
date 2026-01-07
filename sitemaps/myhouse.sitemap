@@ -12,7 +12,12 @@ sitemap myhouse label="Nanna Agesen"
 		Default item=Net2_Door1_Action label="Net2 Door 1 Action" icon="door"
 		Default item=Net2_Door1_Status label="Net2 Door 1 Status" icon="door"
  		Default item=Net2_Door1_LastTime label="Net2 Door 1 Last Time Access" icon="door"	
-		Default item=Net2_Door1_LastUser label="Net2 Door 1 Last User Access" icon="door"		
+		Default item=Net2_Door1_LastUser label="Net2 Door 1 Last User Access" icon="door"
+
+		Default item=Net2_Door2_Action label="Net2 Door 2 Action" icon="door"
+		Default item=Net2_Door2_Status label="Net2 Door 2 Status" icon="door"
+ 		Default item=Net2_Door2_LastTime label="Net2 Door 2 Last Time Access" icon="door"	
+		Default item=Net2_Door2_LastUser label="Net2 Door 2 Last User Access" icon="door"		
 
 	}
 	Frame label="Home Security" {
