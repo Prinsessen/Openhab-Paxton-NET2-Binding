@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 12:00:04
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 11:45:13
 - Modified: services/addons.cfg
 

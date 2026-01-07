@@ -69,43 +69,48 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             return;
         }
 
-        // Create API client
-        try {
-            apiClient = new Net2ApiClient(config);
-            
-            // Test authentication
-            if (!apiClient.authenticate()) {
-                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
-                        "Failed to authenticate with Net2 server");
-                return;
-            }
+        // Set status to UNKNOWN during initialization
+        updateStatus(ThingStatus.UNKNOWN, ThingStatusDetail.CONFIGURATION_PENDING, "Connecting to Net2 server...");
 
-            updateStatus(ThingStatus.ONLINE);
-            
-            // Schedule periodic refresh
-            int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 30;
-            refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval, TimeUnit.SECONDS);
-            
-            // Start SignalR for live events (best-effort)
+        // Create API client and authenticate in background to avoid blocking openHAB startup
+        scheduler.execute(() -> {
             try {
-                String token = apiClient.getAccessToken();
-                if (token != null && !token.isEmpty()) {
-                    signalRClient = new Net2SignalRClient(apiClient.getHostname(), apiClient.getPort(), token,
-                            apiClient.isTlsVerification());
-                    signalRClient.onDoorStatusChanged(msg -> logger.debug("SignalR event: {}", msg));
-                    signalRClient.connect();
-                } else {
-                    logger.debug("No access token available for SignalR startup");
+                apiClient = new Net2ApiClient(config);
+                
+                // Test authentication
+                if (!apiClient.authenticate()) {
+                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
+                            "Failed to authenticate with Net2 server");
+                    return;
                 }
-            } catch (Exception se) {
-                logger.debug("SignalR startup failed", se);
+
+                updateStatus(ThingStatus.ONLINE);
+                
+                // Schedule periodic refresh
+                int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 30;
+                refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval, TimeUnit.SECONDS);
+                
+                // Start SignalR for live events (best-effort)
+                try {
+                    String token = apiClient.getAccessToken();
+                    if (token != null && !token.isEmpty()) {
+                        signalRClient = new Net2SignalRClient(apiClient.getHostname(), apiClient.getPort(), token,
+                                apiClient.isTlsVerification());
+                        signalRClient.onDoorStatusChanged(msg -> logger.debug("SignalR event: {}", msg));
+                        signalRClient.connect();
+                    } else {
+                        logger.debug("No access token available for SignalR startup");
+                    }
+                } catch (Exception se) {
+                    logger.debug("SignalR startup failed", se);
+                }
+                
+            } catch (Exception e) {
+                logger.error("Failed to initialize Net2 API client", e);
+                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
+                        "Error initializing API: " + e.getMessage());
             }
-            
-        } catch (Exception e) {
-            logger.error("Failed to initialize Net2 API client", e);
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
-                    "Error initializing API: " + e.getMessage());
-        }
+        });
     }
 
     @Override
