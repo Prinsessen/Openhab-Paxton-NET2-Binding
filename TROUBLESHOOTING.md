@@ -1,4 +1,4 @@
-# Net2 Binding Troubleshooting Guide
+# Paxton Net2 Binding Troubleshooting Guide
 
 ## Common Issues and Solutions
 

@@ -1,4 +1,4 @@
-# Net2 Binding Configuration Guide
+# Paxton Net2 Binding Configuration Guide
 
 ## Overview
 

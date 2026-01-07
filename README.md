@@ -1,6 +1,6 @@
-# openHAB Net2 SignalR Binding
+# openHAB Paxton Net2 SignalR Binding
 
-A real-time door access binding for openHAB that integrates with [Paxton Net2 access control systems](https://www.paxton.co.uk) via their WebAPI and classic ASP.NET SignalR 2 protocol.
+A real-time door access control binding for openHAB that integrates with [Paxton Net2 access control systems](https://www.paxton.co.uk) via their WebAPI and classic ASP.NET SignalR 2 protocol.
 
 ## Features
 

@@ -1,4 +1,4 @@
-# Net2 Binding Installation Guide
+# Paxton Net2 Binding Installation Guide
 
 ## Prerequisites
 
