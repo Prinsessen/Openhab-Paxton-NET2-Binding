@@ -13,10 +13,10 @@
 **Method**: POST
 
 **Credentials**:
-- Username: Nanna Agesen
+- Username: [your_username]
 - Password: [configured]
 - Grant Type: password
-- Client ID: 00aab996-6439-4f16-89b4-6c0cc851e8f3
+- Client ID: [your_oauth_client_id]
 
 **Returns**: Bearer token for subsequent API calls
 
@@ -222,9 +222,9 @@
 [
   {
     "userID": 8,
-    "firstName": "Nanna",
-    "surname": "Agesen",
-    "displayName": "Nanna Agesen"
+    "firstName": "John",
+    "surname": "Doe",
+    "displayName": "John Doe"
   }
 ]
 ```

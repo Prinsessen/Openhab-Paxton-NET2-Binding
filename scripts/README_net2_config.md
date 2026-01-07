@@ -14,11 +14,11 @@ The configuration file is in JSON format with the following structure:
 
 ```json
 {
-  "base_url": "https://milestone.agesen.dk:8443/api/v1",
-  "username": "Nanna Agesen",
-  "password": "Jekboapj110",
+  "base_url": "https://your-net2-server.com:8443/api/v1",
+  "username": "your_username",
+  "password": "your_secure_password",
   "grant_type": "password",
-  "client_id": "00aab996-6439-4f16-89b4-6c0cc851e8f3"
+  "client_id": "your_oauth_client_id"
 }
 ```
 
@@ -28,11 +28,11 @@ All fields are required:
 
 | Field | Description | Example |
 |-------|-------------|---------|
-| `base_url` | Paxton Net2 API base URL | `https://milestone.agesen.dk:8443/api/v1` |
-| `username` | API username | `Nanna Agesen` |
-| `password` | API password | `Jekboapj110` |
+| `base_url` | Paxton Net2 API base URL | `https://your-net2-server.com:8443/api/v1` |
+| `username` | API username | `your_username` |
+| `password` | API password | `your_secure_password` |
 | `grant_type` | OAuth2 grant type | `password` |
-| `client_id` | OAuth2 client ID | `00aab996-6439-4f16-89b4-6c0cc851e8f3` |
+| `client_id` | OAuth2 client ID | `your_oauth_client_id` |
 
 ## Security
 

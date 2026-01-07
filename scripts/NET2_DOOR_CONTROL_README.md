@@ -71,11 +71,11 @@ pip install -r requirements.txt
 
 | Field | Description | Example |
 |-------|-------------|---------|
-| `base_url` | Net2 API base URL (must include /api/v1) | `https://milestone.agesen.dk:8443/api/v1` |
-| `username` | Net2 operator name (First Last) | `John Smith` |
-| `password` | Operator password | `YourPassword123` |
+| `base_url` | Net2 API base URL (must include /api/v1) | `https://your-net2-server.com:8443/api/v1` |
+| `username` | Net2 operator name (First Last) | `Your Name` |
+| `password` | Operator password | `your_secure_password` |
 | `grant_type` | OAuth2 grant type (always "password") | `password` |
-| `client_id` | From API licence file | `00aab996-6439-4f16-89b4-6c0cc851e8f3` |
+| `client_id` | From API licence file | `your_oauth_client_id` |
 
 ## Usage
 

@@ -7,6 +7,17 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 01:15:09
+- Modified: net2-binding/QUICKSTART.md
+- Modified: net2-binding/README.md
+- Modified: scripts/NET2_DOOR_CONTROL_README.md
+- Modified: scripts/PAXTON_NET2_API_ANALYSIS.md
+- Added: scripts/README-WORKFLOW.md
+- Modified: scripts/README_net2_config.md
+- Added: scripts/net2-binding-workflow.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-06 22:30:01
 - Modified: net2-binding/pom.xml
 - Deleted: net2-binding/target/classes/OH-INF/thing/thing-types.xml

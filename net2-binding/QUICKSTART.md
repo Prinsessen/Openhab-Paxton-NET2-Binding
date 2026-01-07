@@ -67,8 +67,8 @@ Bridge net2:net2server:myserver [
     hostname="net2.example.com",
     port=8443,
     username="Your Name",
-    password="password",
-    clientId="00aab996-6439-4f16-89b4-6c0cc851e8f3"
+    password="your_secure_password",
+    clientId="your_oauth_client_id"
 ] {
     Thing door fordoor [doorId=6203980, name="Front Door"]
 }
