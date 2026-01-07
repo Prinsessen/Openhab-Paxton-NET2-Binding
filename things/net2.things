@@ -1,3 +1,4 @@
+// Alternative Net2 host example: use "prinsessen.agesen.dk" if applicable
 Bridge net2:net2server:server "Net2 Server" [
     hostname="milestone.agesen.dk",
     port=8443,
