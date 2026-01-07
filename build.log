@@ -1,0 +1,457 @@
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--------< [0;36morg.openhab.addons.bindings:org.openhab.binding.net2[0;1m >--------[m
+[[1;34mINFO[m] [1mBuilding Net2 Binding 5.1.0[m
+[[1;34mINFO[m]   from pom.xml
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-clean-plugin/3.2.0/maven-clean-plugin-3.2.0.pom
+Progress (1): 4.1 kBProgress (1): 5.3 kB                    Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-clean-plugin/3.2.0/maven-clean-plugin-3.2.0.pom[90m (5.3 kB at 1.8 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-plugins/35/maven-plugins-35.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 9.9 kB                    Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-plugins/35/maven-plugins-35.pom[90m (9.9 kB at 50 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/maven-parent/35/maven-parent-35.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 12 kB Progress (1): 16 kBProgress (1): 20 kBProgress (1): 25 kBProgress (1): 29 kBProgress (1): 33 kBProgress (1): 37 kBProgress (1): 41 kBProgress (1): 45 kBProgress (1): 45 kB                   Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/maven-parent/35/maven-parent-35.pom[90m (45 kB at 236 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/apache/25/apache-25.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 12 kB Progress (1): 16 kBProgress (1): 20 kBProgress (1): 21 kB                   Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/apache/25/apache-25.pom[90m (21 kB at 174 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-surefire-plugin/2.17/maven-surefire-plugin-2.17.pom
+Progress (1): 4.1 kBProgress (1): 5.0 kB                    Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-surefire-plugin/2.17/maven-surefire-plugin-2.17.pom[90m (5.0 kB at 35 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/surefire/surefire/2.17/surefire-2.17.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 12 kB Progress (1): 16 kBProgress (1): 17 kB                   Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/surefire/surefire/2.17/surefire-2.17.pom[90m (17 kB at 142 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-surefire-plugin/2.17/maven-surefire-plugin-2.17.jar
+Progress (1): 2.3/34 kBProgress (1): 6.4/34 kBProgress (1): 10/34 kB Progress (1): 15/34 kBProgress (1): 19/34 kBProgress (1): 23/34 kBProgress (1): 27/34 kBProgress (1): 31/34 kBProgress (1): 34 kB                      Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-surefire-plugin/2.17/maven-surefire-plugin-2.17.jar[90m (34 kB at 218 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-jar-plugin/3.3.0/maven-jar-plugin-3.3.0.pom
+Progress (1): 4.1 kBProgress (1): 6.8 kB                    Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-jar-plugin/3.3.0/maven-jar-plugin-3.3.0.pom[90m (6.8 kB at 57 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-plugins/37/maven-plugins-37.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 9.9 kB                    Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-plugins/37/maven-plugins-37.pom[90m (9.9 kB at 105 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/maven-parent/37/maven-parent-37.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 12 kB Progress (1): 16 kBProgress (1): 20 kBProgress (1): 25 kBProgress (1): 29 kBProgress (1): 33 kBProgress (1): 37 kBProgress (1): 41 kBProgress (1): 45 kBProgress (1): 46 kB                   Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/maven-parent/37/maven-parent-37.pom[90m (46 kB at 326 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-install-plugin/3.1.2/maven-install-plugin-3.1.2.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 8.5 kB                    Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-install-plugin/3.1.2/maven-install-plugin-3.1.2.pom[90m (8.5 kB at 60 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-plugins/42/maven-plugins-42.pom
+Progress (1): 4.1 kBProgress (1): 7.7 kB                    Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/plugins/maven-plugins/42/maven-plugins-42.pom[90m (7.7 kB at 75 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/maven-parent/42/maven-parent-42.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 12 kB Progress (1): 16 kBProgress (1): 20 kBProgress (1): 25 kBProgress (1): 29 kBProgress (1): 33 kBProgress (1): 37 kBProgress (1): 41 kBProgress (1): 45 kBProgress (1): 49 kBProgress (1): 50 kB                   Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/maven/maven-parent/42/maven-parent-42.pom[90m (50 kB at 323 kB/s)[0m
+[90mDownloading from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/apache/32/apache-32.pom
+Progress (1): 4.1 kBProgress (1): 8.2 kBProgress (1): 12 kB Progress (1): 16 kBProgress (1): 20 kBProgress (1): 24 kB                   Downloaded[90m from [0mcentral[90m: https://repo.maven.apache.org/maven2/[0morg/apache/apache/32/apache-32.pom[90m (24 kB at 179 kB/s)[0m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mclean:3.2.0:clean[m [1m(default-clean)[m @ [36morg.openhab.binding.net2[0;1m ---[m
+[[1;34mINFO[m] Deleting /etc/openhab/net2-binding/target
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mresources:3.3.1:resources[m [1m(default-resources)[m @ [36morg.openhab.binding.net2[0;1m ---[m
+[[1;34mINFO[m] Copying 4 resources from src/main/resources to target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mcompiler:3.11.0:compile[m [1m(default-compile)[m @ [36morg.openhab.binding.net2[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module! :source
+[[1;34mINFO[m] Compiling 10 source files with javac [debug target 21] to target/classes
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;31mERROR[m] COMPILATION ERROR : 
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[4,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[6,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[7,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[8,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[9,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[10,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[11,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[12,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[13,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[22,38] cannot find symbol
+  symbol: class BaseThingHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[24,19] cannot find symbol
+  symbol:   class Logger
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[3,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[4,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[6,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[7,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[8,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[9,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[10,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[26,40] cannot find symbol
+  symbol: class BaseBridgeHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[29,28] cannot find symbol
+  symbol:   class Thing
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[59,31] cannot find symbol
+  symbol:   class ChannelUID
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[59,54] cannot find symbol
+  symbol:   class Command
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[79,35] cannot find symbol
+  symbol:   class Command
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[150,59] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[28,19] cannot find symbol
+  symbol:   class Logger
+  location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java:[5,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java:[6,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[33,30] cannot find symbol
+  symbol:   class Bridge
+  location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[38,31] cannot find symbol
+  symbol:   class ChannelUID
+  location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[38,54] cannot find symbol
+  symbol:   class Command
+  location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java:[24,19] cannot find symbol
+  symbol:   class Logger
+  location: class org.openhab.binding.net2.handler.Net2ApiClient
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[3,38] package org.openhab.core.library.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[4,38] package org.openhab.core.library.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[6,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[7,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[17,19] cannot find symbol
+  symbol:   class OnOffType
+  location: class org.openhab.binding.net2.internal.Net2Utils
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[31,19] cannot find symbol
+  symbol:   class State
+  location: class org.openhab.binding.net2.internal.Net2Utils
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[6,41] package org.openhab.core.config.discovery does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[7,41] package org.openhab.core.config.discovery does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[8,41] package org.openhab.core.config.discovery does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[9,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[10,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[11,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[12,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[13,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[25,47] cannot find symbol
+  symbol: class AbstractThingHandlerDiscoveryService
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[26,20] cannot find symbol
+  symbol: class ThingHandlerService
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[28,19] cannot find symbol
+  symbol:   class Logger
+  location: class org.openhab.binding.net2.discovery.Net2DoorDiscoveryService
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[4,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[6,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[7,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[8,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[9,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[10,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[18,41] cannot find symbol
+  symbol: class BaseThingHandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[20,19] cannot find symbol
+  symbol:   class Logger
+  location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[22,30] cannot find symbol
+  symbol:   class ThingTypeUID
+  location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[27,38] cannot find symbol
+  symbol:   class ThingTypeUID
+  location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[32,42] cannot find symbol
+  symbol:   class Thing
+  location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[32,15] cannot find symbol
+  symbol:   class ThingHandler
+  location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java:[3,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java:[4,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java:[26,19] cannot find symbol
+  symbol:   class Logger
+  location: class org.openhab.binding.net2.handler.Net2SignalRClient
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[24,35] cannot find symbol
+  symbol:   variable LoggerFactory
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[33,5] method does not override or implement a method from a supertype
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[35,68] cannot find symbol
+  symbol:   method getThing()
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[38,45] cannot find symbol
+  symbol:   method getBridge()
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[40,26] cannot find symbol
+  symbol:   variable ThingStatus
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[40,47] cannot find symbol
+  symbol:   variable ThingStatusDetail
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[46,40] cannot find symbol
+  symbol:   method getConfigAs(java.lang.Class<org.openhab.binding.net2.handler.Net2DoorConfiguration>)
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[49,26] cannot find symbol
+  symbol:   variable ThingStatus
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[49,47] cannot find symbol
+  symbol:   variable ThingStatusDetail
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[55,22] cannot find symbol
+  symbol:   variable ThingStatus
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[58,5] method does not override or implement a method from a supertype
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[74,26] cannot find symbol
+  symbol:   variable ThingStatus
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[74,47] cannot find symbol
+  symbol:   variable ThingStatusDetail
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[82,24] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[86,71] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[87,71] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[91,31] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[95,71] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[96,71] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[115,25] cannot find symbol
+  symbol:   class OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[115,77] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[115,92] cannot find symbol
+  symbol:   variable OnOffType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[122,59] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[124,84] cannot find symbol
+  symbol:   variable UnDefType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[131,51] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[132,63] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[138,84] cannot find symbol
+  symbol:   variable UnDefType
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[149,5] method does not override or implement a method from a supertype
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[151,45] cannot find symbol
+  symbol:   variable ThingStatus
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[152,26] cannot find symbol
+  symbol:   variable ThingStatus
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[154,26] cannot find symbol
+  symbol:   variable ThingStatus
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[154,47] cannot find symbol
+  symbol:   variable ThingStatusDetail
+  location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[28,35] cannot find symbol
+  symbol:   variable LoggerFactory
+  location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;34mINFO[m] 100 errors 
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  20.664 s
+[[1;34mINFO[m] Finished at: 2026-01-06T17:33:54+01:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal [32morg.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile[m [1m(default-compile)[m on project [36morg.openhab.binding.net2[m: [1;31mCompilation failure[m: Compilation failure: 
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[4,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[6,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[7,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[8,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[9,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[10,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[11,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[12,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[13,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[22,38] cannot find symbol
+[[1;31mERROR[m]   symbol: class BaseThingHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[24,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Logger
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[3,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[4,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[6,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[7,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[8,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[9,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[10,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[26,40] cannot find symbol
+[[1;31mERROR[m]   symbol: class BaseBridgeHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[29,28] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Thing
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[59,31] cannot find symbol
+[[1;31mERROR[m]   symbol:   class ChannelUID
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[59,54] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Command
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[79,35] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Command
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[150,59] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[28,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Logger
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java:[5,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java:[6,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[33,30] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Bridge
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[38,31] cannot find symbol
+[[1;31mERROR[m]   symbol:   class ChannelUID
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[38,54] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Command
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java:[24,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Logger
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2ApiClient
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[3,38] package org.openhab.core.library.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[4,38] package org.openhab.core.library.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[6,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[7,30] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[17,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.internal.Net2Utils
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/internal/Net2Utils.java:[31,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class State
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.internal.Net2Utils
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[6,41] package org.openhab.core.config.discovery does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[7,41] package org.openhab.core.config.discovery does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[8,41] package org.openhab.core.config.discovery does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[9,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[10,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[11,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[12,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[13,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[25,47] cannot find symbol
+[[1;31mERROR[m]   symbol: class AbstractThingHandlerDiscoveryService
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[26,20] cannot find symbol
+[[1;31mERROR[m]   symbol: class ThingHandlerService
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java:[28,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Logger
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.discovery.Net2DoorDiscoveryService
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[4,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[5,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[6,30] package org.openhab.core.thing does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[7,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[8,38] package org.openhab.core.thing.binding does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[9,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[10,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[18,41] cannot find symbol
+[[1;31mERROR[m]   symbol: class BaseThingHandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[20,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Logger
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[22,30] cannot find symbol
+[[1;31mERROR[m]   symbol:   class ThingTypeUID
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[27,38] cannot find symbol
+[[1;31mERROR[m]   symbol:   class ThingTypeUID
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[32,42] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Thing
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java:[32,15] cannot find symbol
+[[1;31mERROR[m]   symbol:   class ThingHandler
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2HandlerFactory
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java:[3,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java:[4,17] package org.slf4j does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java:[26,19] cannot find symbol
+[[1;31mERROR[m]   symbol:   class Logger
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2SignalRClient
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[24,35] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable LoggerFactory
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[33,5] method does not override or implement a method from a supertype
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[35,68] cannot find symbol
+[[1;31mERROR[m]   symbol:   method getThing()
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[38,45] cannot find symbol
+[[1;31mERROR[m]   symbol:   method getBridge()
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[40,26] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatus
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[40,47] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatusDetail
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[46,40] cannot find symbol
+[[1;31mERROR[m]   symbol:   method getConfigAs(java.lang.Class<org.openhab.binding.net2.handler.Net2DoorConfiguration>)
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[49,26] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatus
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[49,47] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatusDetail
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[55,22] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatus
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[58,5] method does not override or implement a method from a supertype
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[74,26] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatus
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[74,47] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatusDetail
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[82,24] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[86,71] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[87,71] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[91,31] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[95,71] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[96,71] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[115,25] cannot find symbol
+[[1;31mERROR[m]   symbol:   class OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[115,77] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[115,92] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable OnOffType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[122,59] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[124,84] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable UnDefType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[131,51] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[132,63] package org.openhab.core.types does not exist
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[138,84] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable UnDefType
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[149,5] method does not override or implement a method from a supertype
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[151,45] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatus
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[152,26] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatus
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[154,26] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatus
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java:[154,47] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable ThingStatusDetail
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2DoorHandler
+[[1;31mERROR[m] /etc/openhab/net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java:[28,35] cannot find symbol
+[[1;31mERROR[m]   symbol:   variable LoggerFactory
+[[1;31mERROR[m]   location: class org.openhab.binding.net2.handler.Net2ServerHandler
+[[1;31mERROR[m] -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
