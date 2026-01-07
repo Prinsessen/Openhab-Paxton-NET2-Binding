@@ -3,6 +3,18 @@
 // ==============================================
 // TODO: Replace credentials and doorId in things file, then clean up/merge
 
+// ==============================================
+// Net2 Bridge - User Management
+// ==============================================
+String Net2_AddUser "Add User [Format: firstName,lastName[,middleName][,pin][,cardNumber]]" { channel="net2:net2server:server:addUser" }
+String Net2_DeleteUser "Delete User [User ID]" { channel="net2:net2server:server:deleteUser" }
+Number Net2_UserAccessLevel "User Access Level [%d]" <user> (Net2_Users) { channel="net2:net2server:server:userAccessLevel" }
+DateTime Net2_UserExpireTime "User Expire Time [%1$tF %1$tT]" <time> (Net2_Users) { channel="net2:net2server:server:userExpireTime" }
+
+// ==============================================
+// Door Items (Basic Examples)
+// ==============================================
+
 Switch Net2_Door1_Action "Door Action" { channel="net2:door:server:door1:action" }
 Switch Net2_Door1_Status "Door Status" { channel="net2:door:server:door1:status" }
 String Net2_Door1_LastUser "Last Access User [%s]" { channel="net2:door:server:door1:lastAccessUser" }
