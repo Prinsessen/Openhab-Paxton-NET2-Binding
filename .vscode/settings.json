@@ -8,9 +8,20 @@
     "java.autobuild.enabled": false,
     "java.maxConcurrentBuilds": 1,
     "java.import.maven.enabled": false,
+    "java.server.launchMode": "Disabled",
+    "java.jdt.ls.vmargs": "-Xmx256m",
+    "files.exclude": {
+        "**/*.class": true,
+        "**/*.jar": true
+    },
     "files.watcherExclude": {
         "**/openhab-addons/bundles/org.openhab.binding.!(net2)*/**": true,
-        "**/openhab-addons/itests/**": true
+        "**/openhab-addons/itests/**": true,
+        "**/*.items": true,
+        "**/*.rules": true,
+        "**/*.things": true,
+        "**/*.sitemap": true,
+        "**/*.persist": true
     },
     "search.exclude": {
         "**/openhab-addons/bundles/org.openhab.binding.!(net2)*/**": true
