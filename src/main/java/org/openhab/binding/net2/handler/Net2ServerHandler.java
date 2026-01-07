@@ -12,16 +12,20 @@
  */
 package org.openhab.binding.net2.handler;
 
+import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.net2.discovery.Net2DoorDiscoveryService;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.binding.BaseBridgeHandler;
+import org.openhab.core.thing.binding.ThingHandlerService;
 import org.openhab.core.types.Command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,5 +221,10 @@ public class Net2ServerHandler extends BaseBridgeHandler {
     public boolean isOnline() {
         Net2ApiClient client = apiClient;
         return getThing().getStatus() == ThingStatus.ONLINE && client != null && client.isAuthenticated();
+    }
+
+    @Override
+    public Collection<Class<? extends ThingHandlerService>> getServices() {
+        return Set.of(Net2DoorDiscoveryService.class);
     }
 }
