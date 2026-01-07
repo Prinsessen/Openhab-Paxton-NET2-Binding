@@ -154,3 +154,7 @@ For issues related to:
 - **OpenHAB binding**: Check OpenHAB logs and community forum
 - **Net2 API**: Contact Paxton Access support
 - **Door hardware**: Contact your door system installer
+
+## Maintainer
+
+- Nanna Agesen (@Prinsessen) — Nanna@agesen.dk

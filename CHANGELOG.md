@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-07 10:00:07
+- Modified: net2-binding/README.md
+- Added: net2-binding/net2-readme.patch
+- Modified: openhab-addons
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-07 09:45:11
 - Modified: .vscode/settings.json
 
