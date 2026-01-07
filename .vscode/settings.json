@@ -1,17 +1,18 @@
 {
     "openhab.useRestApi": false,
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "automatic",
+    "java.enabled": false,
+    "java.jdt.ls.java.home": null,
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "java.compile.nullAnalysis.mode": "disabled",
+    "java.import.gradle.enabled": false,
+    "java.autobuild.enabled": false,
+    "java.maxConcurrentBuilds": 1,
+    "java.import.maven.enabled": false,
     "files.watcherExclude": {
-        "**/openhab-addons/bundles/**": true,
-        "!**/openhab-addons/bundles/org.openhab.binding.net2/**": false
+        "**/openhab-addons/bundles/org.openhab.binding.!(net2)*/**": true,
+        "**/openhab-addons/itests/**": true
     },
     "search.exclude": {
-        "**/openhab-addons/bundles/**": true,
-        "!**/openhab-addons/bundles/org.openhab.binding.net2/**": false
-    },
-    "java.import.exclusions": [
-        "**/openhab-addons/bundles/org.openhab.binding.!(net2)**",
-        "**/openhab-addons/itests/**"
-    ]
+        "**/openhab-addons/bundles/org.openhab.binding.!(net2)*/**": true
+    }
 }
