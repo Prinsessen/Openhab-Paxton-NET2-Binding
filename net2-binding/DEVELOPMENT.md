@@ -346,5 +346,5 @@ This binding is part of the openHAB project and follows EPL-2.0 license.
 
 - **OpenHAB Docs**: https://www.openhab.org/docs/
 - **OpenHAB Community**: https://community.openhab.org/
-- **Net2 API Docs**: https://milestone.agesen.dk:8443/webapihelp/
+- **Net2 API Docs**: https://milestone.agesen.dk:8443/webapihelp/ (or https://prinsessen.agesen.dk:8443/webapihelp/)
 - **Maven Guide**: https://maven.apache.org/guides/
