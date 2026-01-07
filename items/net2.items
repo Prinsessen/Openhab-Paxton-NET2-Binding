@@ -6,7 +6,7 @@
 // ==============================================
 // Net2 Bridge - User Management
 // ==============================================
-String Net2_CreateUser "Create User [firstName,lastName,accessLevel,pin,expireDate]" { channel="net2:net2server:server:createUser" }
+String Net2_CreateUser "Create User [firstName,lastName,accessLevel,pin]" { channel="net2:net2server:server:createUser" }
 String Net2_DeleteUser "Delete User [User ID]" { channel="net2:net2server:server:deleteUser" }
 String Net2_ListAccessLevels "List Access Levels [trigger]" { channel="net2:net2server:server:listAccessLevels" }
 
