@@ -108,6 +108,7 @@ public class Net2DoorHandler extends BaseThingHandler {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error: " + e.getMessage());
         }
         private void handleDoorControlTimed(Command command) throws Exception {
+                logger.error("TEST LOG Net2DoorHandler: handleDoorControlTimed triggered with command: {}", command);
             Net2ServerHandler bridge = bridgeHandler;
             if (bridge == null) {
                 logger.error("Bridge handler not available");
