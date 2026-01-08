@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 13:45:15
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Modified: net2-binding/src/main/resources/OH-INF/thing/thing-types.xml
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 13:30:16
 - Added: openhab-addons
 - Modified: sitemaps/myhouse.sitemap

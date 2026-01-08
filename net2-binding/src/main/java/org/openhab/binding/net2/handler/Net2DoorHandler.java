@@ -97,12 +97,33 @@ public class Net2DoorHandler extends BaseThingHandler {
                 case Net2BindingConstants.CHANNEL_DOOR_ACTION:
                     handleDoorAction(command);
                     break;
+                case Net2BindingConstants.CHANNEL_DOOR_CONTROL_TIMED:
+                    handleDoorControlTimed(command);
+                    break;
                 default:
                     logger.debug("Unsupported channel: {}", channelUID.getId());
             }
         } catch (Exception e) {
             logger.error("Error handling command for channel {}", channelUID.getId(), e);
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error: " + e.getMessage());
+        }
+        private void handleDoorControlTimed(Command command) throws Exception {
+            Net2ServerHandler bridge = bridgeHandler;
+            if (bridge == null) {
+                logger.error("Bridge handler not available");
+                return;
+            }
+            Net2ApiClient apiClient = bridge.getApiClient();
+            if (apiClient == null) {
+                logger.error("API client not available");
+                return;
+            }
+            logger.debug("Triggering fire-and-forget door control for door {} (Net2 server will handle timing)", doorId);
+            if (apiClient.controlDoorFireAndForget(doorId)) {
+                updateState(Net2BindingConstants.CHANNEL_DOOR_CONTROL_TIMED, command);
+            } else {
+                logger.error("Failed to trigger fire-and-forget control for door {}", doorId);
+            }
         }
     }
 
