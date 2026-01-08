@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial release for openHAB 5.1
+- Timed door control channel (`controlTimed`) for advanced server-side timed open
 - **Bridge Channels (User Management)**
   - `createUser` channel: Create users with access level assignment
   - `deleteUser` channel: Remove users by ID
@@ -33,9 +34,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Door permission set management
 - **Documentation**
   - Comprehensive README with examples
+  - EXAMPLES.md with detailed usage for timed and default door control
   - Contributing guidelines
   - Troubleshooting section
   - Configuration examples for text and UI
+## Author
+
+**Nanna Agesen** (@Prinsessen)
+- Email: nanna@agesen.dk
+- GitHub: https://github.com/Prinsessen
 
 ### Fixed
 - Token refresh handling to prevent authentication timeouts
