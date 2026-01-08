@@ -16,4 +16,12 @@ Bridge net2:net2server:server "Net2 Server" [
         doorId=6203980,
         name="Terndrupvej 81"
     ]
+    Thing door door3 "Garage Port - Kirkegade" [
+        doorId=7242929,
+        name="Garage Port - Kirkegade"
+    ]
+    Thing door door4 "Udv.Basement - Kirkegade" [
+        doorId=6626578,
+        name="Udv.Basement - Kirkegade"
+    ]
 }
