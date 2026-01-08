@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 11:15:15
+- Deleted: openhab-addons
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 11:00:02
 - Modified: scripts/reload_sitemap.sh
 
