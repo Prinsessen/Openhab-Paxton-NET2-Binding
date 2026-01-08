@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 13:30:16
+- Added: openhab-addons
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 12:30:00
 - Deleted: items/paxton_net2_binding.items
 - Modified: sitemaps/myhouse.sitemap

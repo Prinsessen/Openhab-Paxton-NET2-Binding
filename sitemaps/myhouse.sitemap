@@ -16,7 +16,6 @@ sitemap myhouse label="Nanna Agesen"
 
 		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Terndrupvej 81" icon="door" 
 		Text item=Net2_Door2_Status label="Terndrupvej 81 Activity [MAP(net2doorstatus.map):%s]" icon="door"
-		Default item=Net2_Door2_Status label="Terndrupvej 81 Status" icon="door"
  		Default item=Net2_Door2_LastTime label="Terndrupvej 81 Last Time Access" icon="door"	
 		Default item=Net2_Door2_LastUser label="Terndrupvej 81 Last User Access" icon="door"		
 
