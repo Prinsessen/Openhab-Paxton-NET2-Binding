@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 11:00:02
+- Modified: scripts/reload_sitemap.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 10:45:06
 - Modified: items/astro.items
 
