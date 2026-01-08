@@ -1,5 +1,0 @@
-// Paxton Net2 binding items for door1 (disabled to avoid duplicates; see items/net2.items)
-// Switch Net2_Door1_Status "Net2 Door Status" { channel="net2:door:server:door1:status" }
-// Switch Net2_Door1_Action "Net2 Door Action" { channel="net2:door:server:door1:action" }
-// String Net2_Door1_LastAccessUser "Net2 Last Access User" { channel="net2:door:server:door1:lastAccessUser" }
-// DateTime Net2_Door1_LastAccessTime "Net2 Last Access Time" { channel="net2:door:server:door1:lastAccessTime" }
