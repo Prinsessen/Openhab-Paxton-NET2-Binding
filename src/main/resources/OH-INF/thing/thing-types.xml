@@ -62,6 +62,7 @@
 			<channel id="action" typeId="doorAction"/>
 			<channel id="lastAccessUser" typeId="lastAccessUser"/>
 			<channel id="lastAccessTime" typeId="lastAccessTime"/>
+			<channel id="controlTimed" typeId="doorControlTimed"/>
 		</channels>
 
 		<config-description>
@@ -77,6 +78,11 @@
 	</thing-type>
 
 	<!-- Channel Types -->
+	<channel-type id="doorControlTimed">
+		<item-type>Number</item-type>
+		<label>Timed Door Control</label>
+		<description>Activate door for a specified duration in seconds (e.g., send 1 to open for 1 second)</description>
+	</channel-type>
 	<channel-type id="doorStatus">
 		<item-type>Switch</item-type>
 		<label>Door Status</label>

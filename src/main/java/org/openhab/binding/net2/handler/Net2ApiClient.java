@@ -1,3 +1,20 @@
+    /**
+     * Fire-and-forget advanced door control (uses Net2 server's programmed time)
+     * @param payload Full JSON payload as string (should include DoorId, RelayFunction, LedFlash)
+     * @return true if command accepted
+     */
+    public boolean controlDoorFireAndForget(String payload) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/commands/door/control"))
+                .POST(HttpRequest.BodyPublishers.ofString(payload))
+                .header("Authorization", "Bearer " + accessToken)
+                .header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode() == 200 || response.statusCode() == 202;
+    }
 /*
  * Copyright (c) 2010-2025 Contributors to the openHAB project
  *

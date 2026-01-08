@@ -97,12 +97,56 @@ public class Net2DoorHandler extends BaseThingHandler {
                 case Net2BindingConstants.CHANNEL_DOOR_ACTION:
                     handleDoorAction(command);
                     break;
+                case Net2BindingConstants.CHANNEL_DOOR_CONTROL_TIMED:
+                    handleDoorControlTimed(command);
+                    break;
                 default:
                     logger.debug("Unsupported channel: {}", channelUID.getId());
             }
         } catch (Exception e) {
             logger.error("Error handling command for channel {}", channelUID.getId(), e);
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error: " + e.getMessage());
+        }
+        private void handleDoorControlTimed(Command command) throws Exception {
+                logger.error("TEST LOG Net2DoorHandler: handleDoorControlTimed triggered with command: {}", command);
+            Net2ServerHandler bridge = bridgeHandler;
+            if (bridge == null) {
+                logger.error("Bridge handler not available");
+                return;
+            }
+            Net2ApiClient apiClient = bridge.getApiClient();
+            if (apiClient == null) {
+                logger.error("API client not available");
+                return;
+            }
+            String payload;
+            try {
+                // If command is a JSON string, use it directly
+                String cmdStr = command.toString();
+                if (cmdStr.trim().startsWith("{")) {
+                    payload = cmdStr;
+                } else {
+                    // Otherwise, use defaults (customize as needed)
+                    JsonObject relayFunction = new JsonObject();
+                    relayFunction.addProperty("RelayId", "Relay1");
+                    relayFunction.addProperty("RelayAction", "TimedOpen");
+                    relayFunction.addProperty("RelayOpenTime", 500);
+                    JsonObject body = new JsonObject();
+                    body.addProperty("DoorId", doorId);
+                    body.add("RelayFunction", relayFunction);
+                    body.addProperty("LedFlash", 3);
+                    payload = body.toString();
+                }
+            } catch (Exception e) {
+                logger.error("Failed to build JSON payload for controlTimed: {}", e.getMessage());
+                return;
+            }
+            logger.debug("Sending advanced door control payload: {}", payload);
+            if (apiClient.controlDoorFireAndForget(payload)) {
+                updateState(Net2BindingConstants.CHANNEL_DOOR_CONTROL_TIMED, command);
+            } else {
+                logger.error("Failed to trigger fire-and-forget control for door {}", doorId);
+            }
         }
     }
 
