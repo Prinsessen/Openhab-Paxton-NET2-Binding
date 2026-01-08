@@ -1,0 +1,11 @@
+org/openhab/binding/net2/handler/Net2SignalRClient$Mode.class
+org/openhab/binding/net2/handler/Net2ServerHandler.class
+org/openhab/binding/net2/handler/Net2HandlerFactory.class
+org/openhab/binding/net2/handler/Net2DoorHandler.class
+org/openhab/binding/net2/handler/Net2SignalRClient.class
+org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.class
+org/openhab/binding/net2/handler/Net2SignalRClient$PermissiveTrustManager.class
+org/openhab/binding/net2/handler/Net2DoorConfiguration.class
+org/openhab/binding/net2/handler/Net2ApiClient.class
+org/openhab/binding/net2/Net2BindingConstants.class
+org/openhab/binding/net2/handler/Net2ServerConfiguration.class

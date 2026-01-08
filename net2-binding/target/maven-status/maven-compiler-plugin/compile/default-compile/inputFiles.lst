@@ -1,0 +1,9 @@
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2DoorConfiguration.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2ServerConfiguration.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java
