@@ -7,6 +7,28 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 18:00:16
+- Modified: net2-binding/EXAMPLES.md
+- Modified: net2-binding/README.md
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/Net2BindingConstants.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ApiClient$NoopTrustManager.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ApiClient.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2DoorConfiguration.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2DoorHandler.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2HandlerFactory.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ServerConfiguration.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ServerHandler.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2SignalRClient$NoopTrustManager.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2SignalRClient.class
+- Deleted: net2-binding/target/classes/org/openhab/binding/net2/internal/Net2Utils.class
+- Deleted: net2-binding/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+- Deleted: net2-binding/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+- Deleted: net2-binding/target/org.openhab.binding.net2-5.1.0.jar
+- Deleted: net2-binding/target/test-classes/org/openhab/binding/net2/handler/Net2DoorHandlerTest.class
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 17:45:05
 - Modified: openhab-addons
 
