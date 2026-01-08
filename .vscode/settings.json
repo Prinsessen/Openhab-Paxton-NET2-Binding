@@ -7,6 +7,7 @@
         "**/*.jar": true
     },
     "files.watcherExclude": {
+        "**/.venv/**": true,
         "**/openhab-addons/bundles/org.openhab.binding.!(net2)*/**": true,
         "**/openhab-addons/itests/**": true,
         "**/*.items": true,
