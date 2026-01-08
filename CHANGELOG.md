@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 10:00:02
+- Modified: scripts/reload_sitemap.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 09:45:06
 - Modified: .vscode/settings.json
 - Added: scripts/reload_sitemap.sh

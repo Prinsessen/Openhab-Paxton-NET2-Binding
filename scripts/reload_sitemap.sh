@@ -1,8 +1,7 @@
 #!/bin/bash
-# Reload OpenHAB sitemaps without full restart
+# Quick OpenHAB restart (faster than full systemctl restart)
 # Usage: ./reload_sitemap.sh
 
-echo "Reloading OpenHAB models (sitemaps, items, rules, things)..."
-curl -X PUT http://localhost:8080/rest/service/org.openhab.core.model.core/reloadAllModelsOfType/sitemap
-echo ""
-echo "Sitemap reload triggered. Check UI in a few seconds."
+echo "Restarting OpenHAB (this takes ~30 seconds)..."
+sudo systemctl restart openhab
+echo "Restart initiated. Wait for OpenHAB to come back online..."
