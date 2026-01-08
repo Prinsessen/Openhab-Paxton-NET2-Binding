@@ -1,18 +1,14 @@
     /**
      * Fire-and-forget advanced door control (uses Net2 server's programmed time)
-     * @param doorId Door ID
+     * @param payload Full JSON payload as string (should include DoorId, RelayFunction, LedFlash)
      * @return true if command accepted
      */
-    public boolean controlDoorFireAndForget(int doorId) throws IOException, InterruptedException {
+    public boolean controlDoorFireAndForget(String payload) throws IOException, InterruptedException {
         ensureTokenValid();
-
-        JsonObject body = new JsonObject();
-        body.addProperty("DoorId", doorId);
-        // Add more advanced options here if needed (e.g., relay, flashLed)
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/commands/door/control"))
-                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .header("Authorization", "Bearer " + accessToken)
                 .header("Content-Type", "application/json").build();
 

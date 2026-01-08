@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 14:45:06
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Renamed: rules/net2.rules	rules/net2.old
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 14:30:16
 - Modified: items/net2.items
 

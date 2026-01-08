@@ -118,8 +118,30 @@ public class Net2DoorHandler extends BaseThingHandler {
                 logger.error("API client not available");
                 return;
             }
-            logger.debug("Triggering fire-and-forget door control for door {} (Net2 server will handle timing)", doorId);
-            if (apiClient.controlDoorFireAndForget(doorId)) {
+            String payload;
+            try {
+                // If command is a JSON string, use it directly
+                String cmdStr = command.toString();
+                if (cmdStr.trim().startsWith("{")) {
+                    payload = cmdStr;
+                } else {
+                    // Otherwise, use defaults (customize as needed)
+                    JsonObject relayFunction = new JsonObject();
+                    relayFunction.addProperty("RelayId", "Relay1");
+                    relayFunction.addProperty("RelayAction", "TimedOpen");
+                    relayFunction.addProperty("RelayOpenTime", 500);
+                    JsonObject body = new JsonObject();
+                    body.addProperty("DoorId", doorId);
+                    body.add("RelayFunction", relayFunction);
+                    body.addProperty("LedFlash", 3);
+                    payload = body.toString();
+                }
+            } catch (Exception e) {
+                logger.error("Failed to build JSON payload for controlTimed: {}", e.getMessage());
+                return;
+            }
+            logger.debug("Sending advanced door control payload: {}", payload);
+            if (apiClient.controlDoorFireAndForget(payload)) {
                 updateState(Net2BindingConstants.CHANNEL_DOOR_CONTROL_TIMED, command);
             } else {
                 logger.error("Failed to trigger fire-and-forget control for door {}", doorId);
