@@ -10,7 +10,7 @@ sitemap myhouse label="Nanna Agesen"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
 
 		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="door" 
-		Default item=Net2_Door1_Status label="Net2 Door 1 Status" icon="door"
+		Text item=Net2_Door1_Status label="Frontdoor Activity [MAP(net2door1status.map):%s]" icon="door"
  		Default item=Net2_Door1_LastTime label="Net2 Door 1 Last Time Access" icon="door"	
 		Default item=Net2_Door1_LastUser label="Net2 Door 1 Last User Access" icon="door"
 
