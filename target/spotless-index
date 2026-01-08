@@ -1,0 +1,15 @@
+dkyLZuQk67i0MI6X3USg0gPncBfluZzXcrY6X705rds=
+pom.xml 2026-01-07T18:08:09.668763222Z
+src/main/feature/feature.xml 2026-01-06T18:08:46.399706963Z
+src/main/java/org/openhab/binding/net2/Net2BindingConstants.java 2026-01-08T14:11:58.654665921Z
+src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java 2026-01-07T14:21:39.983945215Z
+src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java 2026-01-08T14:55:41.176192851Z
+src/main/java/org/openhab/binding/net2/handler/Net2DoorConfiguration.java 2026-01-06T18:15:52.014570491Z
+src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java 2026-01-08T16:10:10.345899588Z
+src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java 2026-01-06T18:44:40.805729492Z
+src/main/java/org/openhab/binding/net2/handler/Net2ServerConfiguration.java 2026-01-06T18:15:46.962536533Z
+src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java 2026-01-07T17:23:43.507780226Z
+src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java 2026-01-07T10:53:02.036209983Z
+src/main/resources/OH-INF/binding/binding.xml 2026-01-07T18:08:02.316726918Z
+src/main/resources/OH-INF/thing/thing-types.xml 2026-01-08T13:07:34.612931076Z
+src/main/resources/OSGI-INF/org.openhab.binding.net2.handler.Net2HandlerFactory.xml 2026-01-06T18:08:46.399706963Z
