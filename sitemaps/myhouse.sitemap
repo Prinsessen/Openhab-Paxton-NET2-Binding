@@ -1,7 +1,7 @@
 // Nanna Agesen
 sitemap myhouse label="Nanna Agesen"
 {
-	Frame label="Kirkegade 51" {
+	Frame label="Kirkegade 50" {
 		Text item=CurrentDate label="System Date" icon="time"
 		Switch item=Energy_Crisis icon="alarm"
 	}
