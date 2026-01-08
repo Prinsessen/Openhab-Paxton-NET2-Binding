@@ -2,7 +2,8 @@
     "openhab.useRestApi": false,
     "java.enabled": false,
     "redhat.telemetry.enabled": false,
-    "files.exclude": {
+    "files.atomicSave": false,
+    "files.watcherExclude": {
         "**/*.class": true,
         "**/*.jar": true
     },
