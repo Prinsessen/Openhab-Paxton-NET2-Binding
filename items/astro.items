@@ -1,3 +1,4 @@
+
 Group       Astro                                                                              <sun_clouds>    (gALL)
 DateTime    CurrDateTime             "Idag [%1$tA, %1$td.%1$tm.%1$tY]"                         <clock>         (Astro)    {channel="ntp:ntp:local:dateTime"}
 String      SeasonName               "Årstid [MAP(astro.map):%s]"                                              (Astro)    {channel="astro:sun:home:season#name"}
