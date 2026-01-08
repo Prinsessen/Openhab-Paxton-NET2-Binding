@@ -27,7 +27,8 @@ DateTime Net2_Door2_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:do
 
 Switch Net2_Door3_Action "Door Action" { channel="net2:door:server:door3:action" }
 Switch Net2_Door3_Status "Door Status" { channel="net2:door:server:door3:status" }
-String Net2_Door3_LastUser "Last Access User [%s]" { channel="net2:door:server:door3:lastAccessUser" }   
+String Net2_Door3_LastUser "Last Access User [%s]" { channel="net2:door:server:door3:lastAccessUser" } 
+Number Net2_Door3_ControlTimed "Door 3 Timed Control" { channel="net2:door:server:door3:controlTimed" }
 DateTime Net2_Door3_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:door:server:door3:lastAccessTime" }       
 
 Switch Net2_Door4_Action "Door Action" { channel="net2:door:server:door4:action" }

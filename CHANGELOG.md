@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-08 18:45:15
+- Modified: items/net2.items
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-08 18:15:15
 - Modified: net2-binding/CHANGELOG.md
 - Deleted: openhab-addons
