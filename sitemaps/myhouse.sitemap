@@ -9,8 +9,8 @@ sitemap myhouse label="Nanna Agesen"
 		Text item=next_event_name label="Next Event [%s]" icon="time"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
 
-		Switch item=Net2_Door1_Action label="Frontdoor Action" icon="door" mappings=[ON="Open"] visibility=[Net2_Door1_Status=="Active"]
-		Switch item=Net2_Door1_Action label="Frontdoor Action" icon="door" mappings=[OFF="Close"] visibility=[Net2_Door1_Status=="Active"]
+		Switch item=Net2_Door1_Action label="Frontdoor Action" icon="door" mappings=[ON="Open"] visibility=[Net2_Door1_Status=="On"]
+		Switch item=Net2_Door1_Action label="Frontdoor Action" icon="door" mappings=[OFF="Close"] visibility=[Net2_Door1_Status=="off"]
 		
 		Default item=Net2_Door1_Status label="Net2 Door 1 Status" icon="door"
  		Default item=Net2_Door1_LastTime label="Net2 Door 1 Last Time Access" icon="door"	
