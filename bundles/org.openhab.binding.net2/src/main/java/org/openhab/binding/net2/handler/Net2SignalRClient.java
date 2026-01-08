@@ -59,8 +59,10 @@ public class Net2SignalRClient implements Listener {
     private final AtomicBoolean connected = new AtomicBoolean(false);
 
     private enum Mode {
-        CORE, CLASSIC
+        CORE,
+        CLASSIC
     }
+
     private Mode mode = Mode.CORE;
 
     private @Nullable WebSocket webSocket;
@@ -84,7 +86,8 @@ public class Net2SignalRClient implements Listener {
             HttpClient httpClient = createHttpClient();
 
             // Try ASP.NET Core SignalR first
-            @Nullable HttpResponse<String> coreResp = coreNegotiate(httpClient);
+            @Nullable
+            HttpResponse<String> coreResp = coreNegotiate(httpClient);
             if (coreResp != null && coreResp.statusCode() == 200) {
                 mode = Mode.CORE;
                 JsonObject negotiate = JsonParser.parseString(coreResp.body()).getAsJsonObject();
@@ -100,7 +103,8 @@ public class Net2SignalRClient implements Listener {
             }
 
             // Fallback to classic ASP.NET SignalR
-            @Nullable HttpResponse<String> classicResp = classicNegotiate(httpClient);
+            @Nullable
+            HttpResponse<String> classicResp = classicNegotiate(httpClient);
             if (classicResp == null || classicResp.statusCode() != 200) {
                 int status = classicResp != null ? classicResp.statusCode() : -1;
                 String body = classicResp != null ? classicResp.body() : "";
@@ -110,18 +114,15 @@ public class Net2SignalRClient implements Listener {
 
             mode = Mode.CLASSIC;
             JsonObject classic = JsonParser.parseString(classicResp.body()).getAsJsonObject();
-            String connectionToken = classic.has("ConnectionToken") ? classic.get("ConnectionToken").getAsString()
-                    : "";
-                URI wsUri = buildClassicWebSocketUri(connectionToken);
-                logger.debug("Opening SignalR (Classic) WebSocket to {}", wsUri);
-                webSocket = httpClient.newWebSocketBuilder()
-                    .header("Authorization", "Bearer " + accessToken)
-                    .buildAsync(wsUri, this)
-                    .join();
+            String connectionToken = classic.has("ConnectionToken") ? classic.get("ConnectionToken").getAsString() : "";
+            URI wsUri = buildClassicWebSocketUri(connectionToken);
+            logger.debug("Opening SignalR (Classic) WebSocket to {}", wsUri);
+            webSocket = httpClient.newWebSocketBuilder().header("Authorization", "Bearer " + accessToken)
+                    .buildAsync(wsUri, this).join();
             logger.info("SignalR WebSocket connected successfully");
             connected.set(true);
-                // Some classic SignalR servers require a start call after connect
-                classicStart(httpClient, connectionToken);
+            // Some classic SignalR servers require a start call after connect
+            classicStart(httpClient, connectionToken);
             logger.info("SignalR classic start completed, subscribing to events...");
         } catch (Exception e) {
             logger.warn("Failed to connect to SignalR hub", e);
@@ -302,8 +303,7 @@ public class Net2SignalRClient implements Listener {
         if (socket == null) {
             return;
         }
-        String invocation = String.format("{\"H\":\"%s\",\"M\":\"%s\",\"A\":[],\"I\":0}", hub,
-                method);
+        String invocation = String.format("{\"H\":\"%s\",\"M\":\"%s\",\"A\":[],\"I\":0}", hub, method);
         socket.sendText(invocation, true);
     }
 
@@ -350,7 +350,7 @@ public class Net2SignalRClient implements Listener {
             return appendQueryToken(negotiatedUri, connectionId, token);
         }
         URI defaultWs = new URI("wss", null, hubBaseUri.getHost(), hubBaseUri.getPort(), hubBaseUri.getPath(), null,
-            null);
+                null);
         return appendQueryToken(defaultWs, connectionId, token);
     }
 
@@ -367,7 +367,7 @@ public class Net2SignalRClient implements Listener {
                     .append(java.net.URLEncoder.encode(token, java.nio.charset.StandardCharsets.UTF_8));
         }
         return new URI(wsUri.getScheme(), null, wsUri.getHost(), wsUri.getPort(), wsUri.getPath(), query.toString(),
-            null);
+                null);
     }
 
     private @Nullable HttpResponse<String> coreNegotiate(HttpClient httpClient) {
@@ -388,16 +388,16 @@ public class Net2SignalRClient implements Listener {
             String connectionData = java.net.URLEncoder.encode("[{\"name\":\"eventHubLocal\"}]",
                     java.nio.charset.StandardCharsets.UTF_8);
             String query = "clientProtocol=1.5&connectionData=" + connectionData + "&_=" + System.currentTimeMillis();
-            
+
             // Build full URL string instead of using URI constructor (which would double-encode)
             String urlString = hubBaseUri.getScheme() + "://" + hubBaseUri.getHost() + ":" + hubBaseUri.getPort()
-                + "/signalr/negotiate?" + query;
+                    + "/signalr/negotiate?" + query;
             URI classicUri = URI.create(urlString);
-            
+
             logger.debug("Classic negotiate URI: {}", classicUri);
-            logger.debug("Classic negotiate with token: {} (length: {})", 
-                accessToken == null ? "NULL" : accessToken.substring(0, Math.min(20, accessToken.length())) + "...",
-                accessToken == null ? 0 : accessToken.length());
+            logger.debug("Classic negotiate with token: {} (length: {})",
+                    accessToken == null ? "NULL" : accessToken.substring(0, Math.min(20, accessToken.length())) + "...",
+                    accessToken == null ? 0 : accessToken.length());
             HttpRequest request = HttpRequest.newBuilder(classicUri).header("Authorization", "Bearer " + accessToken)
                     .GET().build();
             return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -418,28 +418,26 @@ public class Net2SignalRClient implements Listener {
         return URI.create(uriString);
     }
 
-        private void classicStart(HttpClient httpClient, String connectionToken) {
+    private void classicStart(HttpClient httpClient, String connectionToken) {
         try {
             String connTokenParam = java.net.URLEncoder.encode(connectionToken,
-                java.nio.charset.StandardCharsets.UTF_8);
+                    java.nio.charset.StandardCharsets.UTF_8);
             String connectionData = java.net.URLEncoder.encode("[{\"name\":\"eventHubLocal\"}]",
-                java.nio.charset.StandardCharsets.UTF_8);
+                    java.nio.charset.StandardCharsets.UTF_8);
             String query = "transport=webSockets&clientProtocol=1.5&connectionToken=" + connTokenParam
-                + "&connectionData=" + connectionData + "&_=" + System.currentTimeMillis();
+                    + "&connectionData=" + connectionData + "&_=" + System.currentTimeMillis();
             // Build full URL to avoid double-encoding
             String urlString = hubBaseUri.getScheme() + "://" + hubBaseUri.getHost() + ":" + hubBaseUri.getPort()
-                + "/signalr/start?" + query;
+                    + "/signalr/start?" + query;
             URI startUri = URI.create(urlString);
-            HttpRequest request = HttpRequest.newBuilder(startUri)
-                .header("Authorization", "Bearer " + accessToken)
-                .GET()
-                .build();
+            HttpRequest request = HttpRequest.newBuilder(startUri).header("Authorization", "Bearer " + accessToken)
+                    .GET().build();
             HttpResponse<String> resp = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (resp.statusCode() != 200) {
-            logger.debug("Classic start returned status {}", resp.statusCode());
+                logger.debug("Classic start returned status {}", resp.statusCode());
             }
         } catch (Exception e) {
             logger.debug("Classic start failed", e);
         }
-        }
+    }
 }

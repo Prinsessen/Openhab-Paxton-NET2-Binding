@@ -13,13 +13,16 @@
 package org.openhab.binding.net2.handler;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.net2.Net2BindingConstants;
 import org.openhab.binding.net2.discovery.Net2DoorDiscoveryService;
+import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.ThingStatus;
@@ -55,7 +58,34 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-        // Bridge has no channels to command
+        logger.info("handleCommand received for channel: {} with command: {}", channelUID.getId(), command);
+        if (command == null) {
+            logger.warn("Command is null");
+            return;
+        }
+        if (!isOnline()) {
+            logger.warn("Bridge handler is not online, ignoring command");
+            return;
+        }
+
+        try {
+            switch (channelUID.getId()) {
+                case Net2BindingConstants.CHANNEL_CREATE_USER:
+                    handleCreateUser(command);
+                    break;
+                case Net2BindingConstants.CHANNEL_DELETE_USER:
+                    handleDeleteUser(command);
+                    break;
+                case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
+                    handleListAccessLevels(command);
+                    break;
+                default:
+                    logger.debug("Unsupported channel: {}", channelUID.getId());
+            }
+        } catch (Exception e) {
+            logger.error("Error handling command for channel {}", channelUID.getId(), e);
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error: " + e.getMessage());
+        }
     }
 
     @Override
@@ -82,33 +112,38 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             return;
         }
 
-        // Create API client
-        try {
-            apiClient = new Net2ApiClient(config);
+        // Set status to UNKNOWN during initialization
+        updateStatus(ThingStatus.UNKNOWN, ThingStatusDetail.CONFIGURATION_PENDING, "Connecting to Net2 server...");
 
-            // Test authentication
-            if (!apiClient.authenticate()) {
+        // Create API client and authenticate in background to avoid blocking openHAB startup
+        scheduler.execute(() -> {
+            try {
+                apiClient = new Net2ApiClient(config);
+
+                // Test authentication
+                if (!apiClient.authenticate()) {
+                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
+                            "Failed to authenticate with Net2 server");
+                    return;
+                }
+
+                updateStatus(ThingStatus.ONLINE);
+
+                Net2ApiClient client = apiClient;
+                if (client != null) {
+                    startSignalR(client, config);
+                }
+
+                // Schedule periodic refresh
+                int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 30;
+                refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval,
+                        TimeUnit.SECONDS);
+            } catch (Exception e) {
+                logger.error("Failed to initialize Net2 API client", e);
                 updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
-                        "Failed to authenticate with Net2 server");
-                return;
+                        "Error initializing API: " + e.getMessage());
             }
-
-            updateStatus(ThingStatus.ONLINE);
-
-            Net2ApiClient client = apiClient;
-            if (client != null) {
-                startSignalR(client, config);
-            }
-
-            // Schedule periodic refresh
-            int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 30;
-            refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval,
-                    TimeUnit.SECONDS);
-        } catch (Exception e) {
-            logger.error("Failed to initialize Net2 API client", e);
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
-                    "Error initializing API: " + e.getMessage());
-        }
+        });
     }
 
     @Override
@@ -226,5 +261,102 @@ public class Net2ServerHandler extends BaseBridgeHandler {
     @Override
     public Collection<Class<? extends ThingHandlerService>> getServices() {
         return Set.of(Net2DoorDiscoveryService.class);
+    }
+
+    private void handleCreateUser(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+
+        if (command instanceof StringType) {
+            String userData = command.toString();
+            // Expected format: firstName,lastName,accessLevel,pin
+            String[] parts = userData.split(",");
+            if (parts.length >= 4) {
+                String firstName = parts[0].trim();
+                String lastName = parts[1].trim();
+                String accessLevelStr = parts[2].trim();
+                String pin = parts[3].trim();
+
+                logger.info("Creating user: {} {}, accessLevel: {}, pin: {}", firstName, lastName, accessLevelStr, pin);
+
+                // Resolve access level to an ID if possible (validate it exists in the system)
+                Integer accessLevelId = null;
+                try {
+                    accessLevelId = client.resolveAccessLevelId(accessLevelStr);
+                } catch (Exception ex) {
+                    logger.warn("Unable to resolve access level '{}': {}", accessLevelStr, ex.getMessage());
+                }
+                if (accessLevelId == null) {
+                    logger.warn(
+                            "Access level '{}' not found among system access levels; proceeding without assignment.",
+                            accessLevelStr);
+                } else {
+                    logger.info("Resolved access level '{}' to ID {}", accessLevelStr, accessLevelId);
+                }
+
+                int userId = client.addUser(firstName, lastName, "", pin, "");
+                if (userId > 0) {
+                    logger.info("User created successfully with ID: {}", userId);
+
+                    // Assign the access level to the created user
+                    if (accessLevelId == null) {
+                        logger.warn("User {} created without assigning access level (no valid ID resolved)", userId);
+                    } else {
+                        try {
+                            boolean assigned = client.assignAccessLevels(userId, accessLevelId);
+                            if (assigned) {
+                                logger.info("Access level {} assigned successfully to user {}", accessLevelId, userId);
+                            } else {
+                                logger.error("Failed to assign access level {} to user {}", accessLevelId, userId);
+                            }
+                        } catch (Exception ex) {
+                            logger.error("Error assigning access level {} to user {}: {}", accessLevelId, userId,
+                                    ex.getMessage());
+                        }
+                    }
+                } else {
+                    logger.error("Failed to create user");
+                }
+            } else {
+                logger.error("Invalid user data format. Expected: firstName,lastName,accessLevel,pin");
+            }
+        }
+    }
+
+    private void handleDeleteUser(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+
+        if (command instanceof StringType) {
+            String userIdentifier = command.toString();
+            logger.info("Deleting user: {}", userIdentifier);
+            if (client.deleteUser(userIdentifier)) {
+                logger.info("User deleted successfully");
+            } else {
+                logger.error("Failed to delete user");
+            }
+        }
+    }
+
+    private void handleListAccessLevels(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+        Map<Integer, String> levels = client.listAccessLevels();
+        if (levels.isEmpty()) {
+            logger.warn("No access levels returned by API");
+            return;
+        }
+        StringBuilder sb = new StringBuilder("Access levels: ");
+        levels.forEach((id, name) -> sb.append("[" + id + ":" + name + "] "));
+        logger.info(sb.toString());
     }
 }

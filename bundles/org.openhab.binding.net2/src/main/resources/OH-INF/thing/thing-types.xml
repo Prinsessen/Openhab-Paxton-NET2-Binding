@@ -10,6 +10,12 @@
 		<label>Net2 Server</label>
 		<description>Represents the Paxton Net2 Access Control Server</description>
 
+		<channels>
+			<channel id="createUser" typeId="createUser"/>
+			<channel id="deleteUser" typeId="deleteUser"/>
+			<channel id="listAccessLevels" typeId="listAccessLevels"/>
+		</channels>
+
 		<config-description>
 			<parameter name="hostname" type="text" required="true">
 				<label>Hostname</label>
@@ -56,6 +62,7 @@
 			<channel id="action" typeId="doorAction"/>
 			<channel id="lastAccessUser" typeId="lastAccessUser"/>
 			<channel id="lastAccessTime" typeId="lastAccessTime"/>
+			<channel id="controlTimed" typeId="doorControlTimed"/>
 		</channels>
 
 		<config-description>
@@ -71,6 +78,12 @@
 	</thing-type>
 
 	<!-- Channel Types -->
+	<channel-type id="doorControlTimed">
+		<item-type>Number</item-type>
+		<label>Timed Door Control</label>
+		<description>Trigger advanced door control (fire-and-forget, uses Net2 server timing)</description>
+	</channel-type>
+
 	<channel-type id="doorStatus">
 		<item-type>Switch</item-type>
 		<label>Door Status</label>
@@ -96,6 +109,25 @@
 		<label>Last Access Time</label>
 		<description>Timestamp of last door access</description>
 		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="createUser">
+		<item-type>String</item-type>
+		<label>Create User</label>
+		<description>Create user in Net2 system. Format: firstName,lastName,accessLevel,pin (e.g., John,Doe,3,1234)</description>
+	</channel-type>
+
+	<channel-type id="deleteUser">
+		<item-type>String</item-type>
+		<label>Delete User</label>
+		<description>Delete user by user ID</description>
+	</channel-type>
+
+	<channel-type id="listAccessLevels">
+		<item-type>String</item-type>
+		<label>List Access Levels</label>
+		<description>Trigger to list all available access levels; results logged to openhab.log</description>
+		<state readOnly="false"/>
 	</channel-type>
 
 </thing:thing-descriptions>

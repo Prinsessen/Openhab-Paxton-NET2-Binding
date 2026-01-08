@@ -27,7 +27,6 @@ import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.binding.BaseThingHandler;
 import org.openhab.core.types.Command;
-import org.openhab.core.types.UnDefType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,15 +87,22 @@ public class Net2DoorHandler extends BaseThingHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
+        logger.debug("handleCommand called: channel={}, command={}", channelUID.getId(), command);
         Net2ServerHandler bridge = bridgeHandler;
         if (command == null || bridge == null || !bridge.isOnline()) {
+            logger.debug("Command ignored: null command or bridge offline");
             return;
         }
 
         try {
             switch (channelUID.getId()) {
                 case Net2BindingConstants.CHANNEL_DOOR_ACTION:
+                    logger.debug("Invoking handleDoorAction");
                     handleDoorAction(command);
+                    break;
+                case Net2BindingConstants.CHANNEL_DOOR_CONTROL_TIMED:
+                    logger.debug("Invoking handleDoorControlTimed");
+                    handleDoorControlTimed(command);
                     break;
                 default:
                     logger.debug("Unsupported channel: {}", channelUID.getId());
@@ -104,6 +110,52 @@ public class Net2DoorHandler extends BaseThingHandler {
         } catch (Exception e) {
             logger.error("Error handling command for channel {}", channelUID.getId(), e);
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error: " + e.getMessage());
+        }
+    }
+
+    // Advanced timed control handler (copied from previous patch)
+    private void handleDoorControlTimed(Command command) throws Exception {
+        logger.debug("handleDoorControlTimed called with command: {}", command);
+        Net2ServerHandler bridge = bridgeHandler;
+        if (bridge == null) {
+            logger.error("Bridge handler not available");
+            return;
+        }
+        Net2ApiClient apiClient = bridge.getApiClient();
+        if (apiClient == null) {
+            logger.error("API client not available");
+            return;
+        }
+        String payload;
+        try {
+            // If command is a JSON string, use it directly
+            String cmdStr = command.toString();
+            if (cmdStr.trim().startsWith("{")) {
+                payload = cmdStr;
+            } else {
+                // Otherwise, use defaults (customize as needed)
+                JsonObject relayFunction = new JsonObject();
+                relayFunction.addProperty("RelayId", "Relay1");
+                relayFunction.addProperty("RelayAction", "TimedOpen");
+                relayFunction.addProperty("RelayOpenTime", 500);
+                JsonObject body = new JsonObject();
+                body.addProperty("DoorId", String.valueOf(doorId));
+                body.add("RelayFunction", relayFunction);
+                body.addProperty("LedFlash", 3);
+                payload = body.toString();
+            }
+        } catch (Exception e) {
+            logger.error("Failed to build JSON payload for controlTimed: {}", e.getMessage());
+            return;
+        }
+        logger.debug("Sending advanced door control payload: {}", payload);
+        if (apiClient.controlDoorFireAndForget(payload)) {
+            logger.debug("controlDoorFireAndForget returned true");
+            if (command instanceof org.openhab.core.types.State) {
+                updateState(Net2BindingConstants.CHANNEL_DOOR_CONTROL_TIMED, (org.openhab.core.types.State) command);
+            }
+        } else {
+            logger.error("Failed to trigger fire-and-forget control for door {}", doorId);
         }
     }
 
@@ -188,16 +240,16 @@ public class Net2DoorHandler extends BaseThingHandler {
                     }
 
                     // Update last access user
-                        if (doorStatus.has("lastAccessUser") && !doorStatus.get("lastAccessUser").isJsonNull()) {
-                            updateState(Net2BindingConstants.CHANNEL_LAST_ACCESS_USER,
-                                    new StringType(doorStatus.get("lastAccessUser").getAsString()));
-                        }
+                    if (doorStatus.has("lastAccessUser") && !doorStatus.get("lastAccessUser").isJsonNull()) {
+                        updateState(Net2BindingConstants.CHANNEL_LAST_ACCESS_USER,
+                                new StringType(doorStatus.get("lastAccessUser").getAsString()));
+                    }
 
                     // Update last access time
-                        if (doorStatus.has("lastAccessTime") && !doorStatus.get("lastAccessTime").isJsonNull()) {
-                            updateState(Net2BindingConstants.CHANNEL_LAST_ACCESS_TIME,
-                                    new DateTimeType(doorStatus.get("lastAccessTime").getAsString()));
-                        }
+                    if (doorStatus.has("lastAccessTime") && !doorStatus.get("lastAccessTime").isJsonNull()) {
+                        updateState(Net2BindingConstants.CHANNEL_LAST_ACCESS_TIME,
+                                new DateTimeType(doorStatus.get("lastAccessTime").getAsString()));
+                    }
 
                     return;
                 }
@@ -215,13 +267,13 @@ public class Net2DoorHandler extends BaseThingHandler {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_OFFLINE);
         }
     }
-    
+
     private void scheduleStatusOff() {
         cancelStatusOff();
         statusReset = scheduler.schedule(() -> updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, OnOffType.OFF), 5,
                 TimeUnit.SECONDS);
     }
-    
+
     private void cancelStatusOff() {
         ScheduledFuture<?> future = statusReset;
         if (future != null && !future.isDone()) {

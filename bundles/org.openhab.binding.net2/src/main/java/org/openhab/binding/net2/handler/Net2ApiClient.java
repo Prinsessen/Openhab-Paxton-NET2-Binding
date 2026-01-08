@@ -26,9 +26,12 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -39,6 +42,25 @@ import com.google.gson.JsonParser;
  */
 @NonNullByDefault
 public class Net2ApiClient {
+
+    /**
+     * Fire-and-forget advanced door control (uses Net2 server's programmed time)
+     * 
+     * @param payload Full JSON payload as string (should include DoorId, RelayFunction, LedFlash)
+     * @return true if command accepted
+     */
+    public boolean controlDoorFireAndForget(String payload) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        logger.debug("controlDoorFireAndForget: POST {} with payload: {}", baseUrl + "/commands/door/control", payload);
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/commands/door/control"))
+                .POST(HttpRequest.BodyPublishers.ofString(payload)).header("Authorization", "Bearer " + accessToken)
+                .header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        logger.debug("controlDoorFireAndForget: Response status: {}, body: {}", response.statusCode(), response.body());
+        return response.statusCode() == 200 || response.statusCode() == 202;
+    }
 
     private final Logger logger = LoggerFactory.getLogger(Net2ApiClient.class);
 
@@ -74,7 +96,8 @@ public class Net2ApiClient {
 
         try {
             URI apiUri = URI.create(this.baseUrl);
-            this.serverRootUri = new URI(apiUri.getScheme(), null, apiUri.getHost(), apiUri.getPort(), null, null, null);
+            this.serverRootUri = new URI(apiUri.getScheme(), null, apiUri.getHost(), apiUri.getPort(), null, null,
+                    null);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Invalid base URL for Net2 API", e);
         }
@@ -285,6 +308,211 @@ public class Net2ApiClient {
      */
     public boolean isTlsVerificationEnabled() {
         return tlsVerification;
+    }
+
+    /**
+     * Add a user to the Net2 system
+     * Returns the new user ID on success, or -1 on failure
+     */
+    public int addUser(String firstName, String lastName, String middleName, String pin, String expireTime)
+            throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        JsonObject body = new JsonObject();
+        body.addProperty("firstName", firstName);
+        body.addProperty("lastName", lastName);
+        if (middleName != null && !middleName.isEmpty()) {
+            body.addProperty("middleName", middleName);
+        }
+        if (pin != null && !pin.isEmpty()) {
+            body.addProperty("pin", pin);
+        }
+        if (expireTime != null && !expireTime.isEmpty()) {
+            body.addProperty("expiryDate", expireTime);
+        }
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/users"))
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200 || response.statusCode() == 201) {
+            JsonObject responseObj = JsonParser.parseString(response.body()).getAsJsonObject();
+            int userId = responseObj.get("id").getAsInt();
+            logger.info("User added successfully: {} {} (ID: {})", firstName, lastName, userId);
+            return userId;
+        } else {
+            logger.error("Failed to add user. Status: {}, Response: {}", response.statusCode(), response.body());
+            return -1;
+        }
+    }
+
+    /**
+     * Add a token (card) to a user
+     */
+    public boolean addUserToken(int userId, String tokenNumber, int tokenType)
+            throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        JsonObject body = new JsonObject();
+        body.addProperty("tokenNumber", tokenNumber);
+        body.addProperty("tokenType", tokenType);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/users/" + userId + "/tokens"))
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200 || response.statusCode() == 201) {
+            logger.info("Token added to user {}: {}", userId, tokenNumber);
+            return true;
+        } else {
+            logger.error("Failed to add token. Status: {}, Response: {}", response.statusCode(), response.body());
+            return false;
+        }
+    }
+
+    /**
+     * Delete a user from the Net2 system
+     */
+    public boolean deleteUser(String userIdentifier) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/users/" + userIdentifier)).DELETE()
+                .header("Authorization", "Bearer " + accessToken).build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200 || response.statusCode() == 204) {
+            logger.info("User deleted successfully: {}", userIdentifier);
+            return true;
+        } else {
+            logger.error("Failed to delete user. Status: {}, Response: {}", response.statusCode(), response.body());
+            return false;
+        }
+    }
+
+    /**
+     * List all access levels available in the Net2 system.
+     * Returns a map of id -> name.
+     */
+    public Map<Integer, String> listAccessLevels() throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/accesslevels")).GET()
+                .header("Authorization", "Bearer " + accessToken).build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) {
+            Map<Integer, String> map = new HashMap<>();
+            JsonElement el = JsonParser.parseString(response.body());
+            if (el.isJsonArray()) {
+                JsonArray arr = el.getAsJsonArray();
+                for (JsonElement e : arr) {
+                    if (e.isJsonObject()) {
+                        JsonObject obj = e.getAsJsonObject();
+                        if (obj.has("id")) {
+                            int id = obj.get("id").getAsInt();
+                            String name = obj.has("name") ? obj.get("name").getAsString() : String.valueOf(id);
+                            map.put(id, name);
+                        }
+                    }
+                }
+            }
+            logger.debug("Fetched {} access levels", map.size());
+            return map;
+        } else {
+            logger.error("Failed to list access levels. Status: {}, Response: {}", response.statusCode(),
+                    response.body());
+            throw new IOException("GET /accesslevels failed with status " + response.statusCode());
+        }
+    }
+
+    /**
+     * Resolve an access level input (ID or name) to a valid ID present in the system.
+     * Returns null if it cannot be resolved.
+     */
+    public @Nullable Integer resolveAccessLevelId(String accessLevelInput) throws IOException, InterruptedException {
+        Map<Integer, String> levels = listAccessLevels();
+
+        // Try numeric ID first
+        try {
+            int id = Integer.parseInt(accessLevelInput);
+            if (levels.containsKey(id)) {
+                return id;
+            }
+        } catch (NumberFormatException ignore) {
+            // Not a number, fall through to name match
+        }
+
+        // Try to match by name (case-insensitive)
+        String wanted = accessLevelInput.trim().toLowerCase();
+        for (Map.Entry<Integer, String> e : levels.entrySet()) {
+            if (e.getValue() != null && e.getValue().trim().toLowerCase().equals(wanted)) {
+                return e.getKey();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve a user's door permission composite set
+     */
+    public String getUserDoorPermissionSet(int userId) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/users/" + userId + "/doorpermissionset")).GET()
+                .header("Authorization", "Bearer " + accessToken).build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) {
+            logger.info("Fetched door permission set for user {}", userId);
+            return response.body();
+        } else {
+            logger.error("Failed to fetch door permission set for user {}. Status: {}, Response: {}", userId,
+                    response.statusCode(), response.body());
+            throw new IOException("GET doorpermissionset failed with status " + response.statusCode());
+        }
+    }
+
+    /**
+     * Replace a user's door permission composite set
+     */
+    public boolean replaceUserDoorPermissionSet(int userId, String permissionSetJson)
+            throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(baseUrl + "/users/" + userId + "/doorpermissionset"))
+                .PUT(HttpRequest.BodyPublishers.ofString(permissionSetJson))
+                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200 || response.statusCode() == 204) {
+            logger.info("Replaced door permission set for user {}", userId);
+            return true;
+        } else {
+            logger.error("Failed to replace door permission set for user {}. Status: {}, Response: {}", userId,
+                    response.statusCode(), response.body());
+            return false;
+        }
+    }
+
+    /**
+     * Assign access levels to a user (replaces existing levels)
+     */
+    public boolean assignAccessLevels(int userId, Integer... accessLevelIds) throws IOException, InterruptedException {
+        StringBuilder json = new StringBuilder("{\"accessLevels\":[");
+        for (int i = 0; i < accessLevelIds.length; i++) {
+            if (i > 0) {
+                json.append(",");
+            }
+            json.append(accessLevelIds[i]);
+        }
+        json.append("],\"individualPermissions\":[]}");
+
+        return replaceUserDoorPermissionSet(userId, json.toString());
     }
 
     /**

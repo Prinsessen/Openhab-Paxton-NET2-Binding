@@ -13,11 +13,35 @@
   <packaging>jar</packaging>
   <name>openHAB Add-ons :: Bundles :: Net2 Binding</name>
 
-  <description>This is the Net2 binding for Paxton Net2 door control system</description>
+  <description>This binding provides integration with the Paxton Net2 Access Control system.
+    It enables remote door control, real-time status monitoring, and user management through openHAB.
+    Features include door control (hold open/close), real-time status via SignalR, user creation/deletion,
+    access level management, and automatic discovery of connected doors.</description>
+
+  <developers>
+    <developer>
+      <id>prinsessen</id>
+      <name>Nanna Agesen</name>
+      <email>Nanna@agesen.dk</email>
+      <url>https://github.com/Prinsessen</url>
+      <roles>
+        <role>Lead Developer</role>
+        <role>Maintainer</role>
+      </roles>
+      <timezone>Europe/Copenhagen</timezone>
+    </developer>
+  </developers>
 
   <scm>
-    <url>https://github.com/openhab/openhab-addons</url>
+    <connection>scm:git:https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding.git</connection>
+    <developerConnection>scm:git:https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding.git</developerConnection>
+    <url>https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding</url>
   </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding/issues</url>
+  </issueManagement>
 
   <properties>
     <bnd.importpackage>org.openhab.binding.net2*;version="[$(version;==;$(@)),$(version;+;$(@)))",*</bnd.importpackage>

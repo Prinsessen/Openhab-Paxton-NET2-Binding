@@ -22,10 +22,13 @@ import org.openhab.binding.net2.handler.Net2ServerHandler;
 import org.openhab.core.config.discovery.AbstractDiscoveryService;
 import org.openhab.core.config.discovery.DiscoveryResult;
 import org.openhab.core.config.discovery.DiscoveryResultBuilder;
+import org.openhab.core.config.discovery.DiscoveryService;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.ThingHandler;
 import org.openhab.core.thing.binding.ThingHandlerService;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.ServiceScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +41,10 @@ import com.google.gson.JsonParser;
  *
  * @author openHAB Community - Initial contribution
  */
+@Component(service = { DiscoveryService.class,
+        ThingHandlerService.class }, configurationPid = "binding.net2", property = {
+                "service.pid=org.openhab.binding.net2.discovery",
+                "openhab.discovery.binding=" + Net2BindingConstants.BINDING_ID }, scope = ServiceScope.PROTOTYPE)
 @NonNullByDefault
 public class Net2DoorDiscoveryService extends AbstractDiscoveryService implements ThingHandlerService {
 
@@ -48,7 +55,17 @@ public class Net2DoorDiscoveryService extends AbstractDiscoveryService implement
 
     public Net2DoorDiscoveryService() {
         super(Set.of(new ThingTypeUID(Net2BindingConstants.BINDING_ID, Net2BindingConstants.THING_TYPE_DOOR)),
-                SEARCH_TIME);
+                SEARCH_TIME, true);
+    }
+
+    @Override
+    protected void startBackgroundDiscovery() {
+        startScan();
+    }
+
+    @Override
+    protected void stopBackgroundDiscovery() {
+        // No background resources to clean up
     }
 
     @Override
