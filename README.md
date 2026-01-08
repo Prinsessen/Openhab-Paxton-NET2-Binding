@@ -4,7 +4,7 @@ This binding provides integration with the Paxton Net2 Access Control system via
 
 ## Features
 
-- **Door Control**: Open/close doors remotely
+- **Door Control**: Open/close doors remotely, timed open (advanced)
 - **Status Monitoring**: Real-time door lock/unlock status
 - **Access Logging**: Track last user and access time per door
 - **Multi-Door Support**: Control multiple doors from a single Net2 server
@@ -49,14 +49,23 @@ Add door things as children of the Net2 Server bridge:
 
 ## Channels
 
+
 Each door exposes the following channels:
 
-| Channel | Type | Access | Description |
-|---------|------|--------|-------------|
-| `status` | Switch | RO | Door lock/unlock status (ON=Open, OFF=Closed) |
-| `action` | Switch | RW | Control door (ON=Hold Open, OFF=Close) |
-| `lastAccessUser` | String | RO | Last user who accessed the door |
-| `lastAccessTime` | DateTime | RO | Timestamp of last door access |
+| Channel         | Type     | Access | Description                                 |
+|-----------------|----------|--------|---------------------------------------------|
+| `status`        | Switch   | RO     | Door lock/unlock status (ON=Open, OFF=Closed) |
+| `action`        | Switch   | RW     | Control door (ON=Hold Open, OFF=Close)      |
+| `controlTimed`  | Number   | RW     | Timed open with server-side timing (seconds) |
+| `lastAccessUser`| String   | RO     | Last user who accessed the door             |
+| `lastAccessTime`| DateTime | RO     | Timestamp of last door access               |
+
+See [EXAMPLES.md](EXAMPLES.md) for advanced timed control usage and custom payloads.
+## Author
+
+- Nanna Agesen (@Prinsessen)
+- Email: nanna@agesen.dk
+- GitHub: https://github.com/Prinsessen
 
 The Net2 Server bridge exposes the following user-management channels:
 
