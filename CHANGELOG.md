@@ -7,6 +7,15 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-09 23:00:15
+- Modified: net2-binding/.gitignore
+- Modified: net2-binding/CHANGELOG.md
+- Modified: net2-binding/SYNCHRONIZATION.md
+- Modified: net2-binding/VERSION_5.2.0_NOTES.md
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-09 17:45:00
 - Added: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260106211352
 - Added: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260107145603

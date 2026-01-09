@@ -134,13 +134,13 @@ if ("LiveEvents".equalsIgnoreCase(target)) {
         // Door closed - update both channels
         updateState(CHANNEL_DOOR_ACTION, OnOffType.OFF);
         updateState(CHANNEL_DOOR_STATUS, OnOffType.OFF);
-        cancelStatusOff();
         logger.info("Door {} closed (eventType 47)", doorId);
     } 
     else if (eventType == 28 || eventType == 46 || eventType == 20) {
-        // Door opened - update both channels
+        // Door opened - update both channels instantly
         updateState(CHANNEL_DOOR_STATUS, OnOffType.ON);
         updateState(CHANNEL_DOOR_ACTION, OnOffType.ON);
+        // No timer - API polling handles door close detection
         logger.info("Door {} opened (eventType {})", doorId, eventType);
     }
 }
@@ -174,9 +174,7 @@ public void updateFromApiResponse(JsonArray doorStatusArray) {
             updateState(CHANNEL_DOOR_ACTION, status);
             updateState(CHANNEL_DOOR_STATUS, status);
             
-            if (status == OnOffType.OFF) {
-                cancelStatusOff(); // Clear any pending timers
-            }
+            logger.info("Door {} doorRelayOpen={} -> {}", doorId, doorRelayOpen, status);
         }
     }
 }
@@ -204,11 +202,11 @@ public void updateFromApiResponse(JsonArray doorStatusArray) {
 
 ### `status` Channel (Switch, RO)
 - **Purpose**: Monitor door relay status
-- **Behavior**: Momentary pulse for timed operations
+- **Behavior**: Mirrors actual door state from Net2 server
 - **Synchronization**: 
-  - Mirrors `action` channel for consistency
-  - Auto-off timer for timed operations
-  - Shows current relay state
+  - Set to ON instantly via SignalR when door opens
+  - Set to OFF by API polling when door closes (within refresh interval)
+  - Always reflects actual `doorRelayOpen` status
 - **Use Case**: UI display of real-time door status
 
 ## Configuration

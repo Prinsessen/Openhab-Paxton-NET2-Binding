@@ -30,10 +30,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - SignalR event logs show real-time door events with eventType
 
 ### Changed
-- `action` channel now maintains persistent state until door physically closes
-- `status` channel shows momentary door relay state
-- Both channels update from API polling to prevent desynchronization
+- `action` channel now maintains persistent state until door physically closes (via API polling detection)
+- `status` channel now mirrors actual door relay state from Net2 server
+- Both channels update from API polling to ensure accurate synchronization
 - Door handlers notified via callback when SignalR connection ready (not during connect)
+- **Removed 5-second auto-off timer** - API polling now provides authoritative door close detection
 
 ### Fixed
 - Door state not synchronizing when closed physically or via Net2 UI
@@ -41,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Incorrect API field parsing (`state` → `status.doorRelayOpen`)
 - EventType 47 (door closed) unreliability addressed by API polling fallback
 - Missing state updates for `action` channel during API refresh
+- False door status OFF after 5 seconds while door remained open (timer removed)
 
 ### Technical Details
 - API response structure: `{"id": doorId, "status": {"doorRelayOpen": boolean}}`
@@ -48,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Net2 API does not implement documented `doorEvents` or `doorStatusEvents` hubs
 - EventType 47 inconsistently sent, requiring API polling backup
 - Default refresh interval: 30 seconds (configurable)
+- **Door closes detected by API polling only** (within refresh interval, no timer)
 
 ## [5.1.0] - 2026-01-07
 
