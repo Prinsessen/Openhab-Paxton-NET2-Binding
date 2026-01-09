@@ -8,6 +8,10 @@
 // ==============================================
 String Net2_CreateUser "Create User [firstName,lastName,accessLevel,pin]" { channel="net2:net2server:server:createUser" }
 String Net2_DeleteUser "Delete User [User ID]" { channel="net2:net2server:server:deleteUser" }
+
+// List Access Levels - Query available access levels from Net2 system
+// Usage: Send any command (e.g., ON or REFRESH) to trigger the query
+// Results appear in OpenHAB log: grep "Access levels" /var/log/openhab/openhab.log
 String Net2_ListAccessLevels "List Access Levels [trigger]" { channel="net2:net2server:server:listAccessLevels" }
 
 // ==============================================
