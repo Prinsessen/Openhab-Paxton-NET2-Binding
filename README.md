@@ -85,7 +85,7 @@ The Net2 Server bridge exposes the following user-management channels:
 |---------|------|--------|-------------|
 | `createUser` | String | WO | Create a user: `firstName,lastName,accessLevel,pin` (e.g., `Michael,Agesen,3,7654`). Access level may be ID or name; it is assigned after creation. |
 | `deleteUser` | String | WO | Delete a user by ID (e.g., `79`). |
-| `listAccessLevels` | String | WO | Send any command (e.g., `REFRESH`) to log all available access levels. |
+| `listAccessLevels` | String | WO | Query available access levels. Send any command (e.g., `REFRESH` or `ON`) to trigger. Results logged to `/var/log/openhab/openhab.log` as: `Access levels: [1:Public] [2:Staff] ...` |
 
 ## Example Configuration
 
