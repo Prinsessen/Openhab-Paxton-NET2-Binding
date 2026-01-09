@@ -5,11 +5,12 @@ This binding provides integration with the Paxton Net2 Access Control system via
 ## Features
 
 - **Door Control**: Open/close doors remotely, timed open (advanced)
-- **Status Monitoring**: Real-time door lock/unlock status
+- **Real-time Synchronization**: Hybrid sync with SignalR real-time events + API polling fallback
+- **Status Monitoring**: Live door lock/unlock status synchronized with Net2 server
 - **Access Logging**: Track last user and access time per door
 - **Multi-Door Support**: Control multiple doors from a single Net2 server
 - **Token Management**: Automatic JWT token refresh (30-min tokens)
-- **User Management (new)**: Create/delete users and assign access levels from the bridge
+- **User Management**: Create/delete users and assign access levels from the bridge
 
 ## Requirements
 
@@ -49,18 +50,29 @@ Add door things as children of the Net2 Server bridge:
 
 ## Channels
 
+### Door Channels
 
 Each door exposes the following channels:
 
 | Channel         | Type     | Access | Description                                 |
 |-----------------|----------|--------|---------------------------------------------|
-| `status`        | Switch   | RO     | Door lock/unlock status (ON=Open, OFF=Closed) |
-| `action`        | Switch   | RW     | Control door (ON=Hold Open, OFF=Close)      |
+| `status`        | Switch   | RO     | Door lock/unlock status (ON=Open, OFF=Closed) - Synchronized in real-time |
+| `action`        | Switch   | RW     | Control door (ON=Hold Open, OFF=Close) - Synchronized with server state |
 | `controlTimed`  | Number   | RW     | Timed open with server-side timing (seconds) |
 | `lastAccessUser`| String   | RO     | Last user who accessed the door             |
 | `lastAccessTime`| DateTime | RO     | Timestamp of last door access               |
 
+**Synchronization Behavior:**
+- `action` channel: Persistent state that stays ON until door is closed (manually, via Net2 UI, or by timeout)
+- `status` channel: Momentary state showing current door relay status
+- Both channels automatically sync with Net2 server state via:
+  - **SignalR real-time events** - Instant updates when doors open (eventType 20, 28, 46)
+  - **API polling** - Fallback synchronization every 30 seconds (configurable via `refreshInterval`)
+- Door state synchronized regardless of control method (OpenHAB, Net2 UI, physical card reader, etc.)
+
 See [EXAMPLES.md](EXAMPLES.md) for advanced timed control usage and custom payloads.
+
+### Bridge Channels
 ## Author
 
 - Nanna Agesen (@Prinsessen)
@@ -147,11 +159,43 @@ end
 - Automatic refresh token handling
 - Credentials stored securely in OpenHAB configuration
 
-### Endpoints
+### Real-time Synchronization
+
+The binding uses a hybrid synchronization approach for reliable door state tracking:
+
+**SignalR Real-time Events:**
+- WebSocket connection to Net2 server using SignalR 2 Classic protocol
+- Subscribes to LiveEvents hub for all doors on the server
+- Door-specific subscriptions for each configured door
+- Instant notifications for door access events (eventType 20, 28, 46)
+- Event-driven state updates without polling delays
+
+**API Polling Fallback:**
+- Periodic status checks via REST API (`GET /api/v1/doors/status`)
+- Default interval: 30 seconds (configurable via `refreshInterval`)
+- Reads actual door relay status (`doorRelayOpen` field)
+- Updates both `action` and `status` channels with current state
+- Ensures synchronization even if SignalR events are missed
+
+**Why Hybrid Approach?**
+- SignalR `doorEvents` and `doorStatusEvents` documented but not implemented by Net2 API
+- Only `LiveEvents` hub available, providing eventType-based notifications
+- EventType 47 (door closed) is inconsistently sent by the server
+- API polling guarantees state accuracy within the refresh interval
+- Combination provides both immediate response and guaranteed correctness
+
+**Event Types:**
+- `20` - Access granted (door opened via card reader)
+- `28` - Door relay opened (timed control)
+- `46` - Door forced/held open
+- `47` - Door closed/secured (unreliable, hence API polling backup)
+
+### REST API Endpoints
 - **Authentication**: `POST /api/v1/authorization/tokens`
 - **Door Control**: `POST /api/v1/commands/door/holdopen`, `POST /api/v1/commands/door/close`
-- **Status**: `GET /api/v1/doors/status`
+- **Door Status**: `GET /api/v1/doors/status` (used for polling)
 - **List Doors**: `GET /api/v1/doors`
+- **SignalR Hub**: `wss://host:port/signalr` (LiveEvents hub)
 
 ## Security Considerations
 
@@ -175,9 +219,12 @@ end
 - Check OpenHAB logs for error messages
 
 ### Status not updating
-- Verify refreshInterval is set appropriately
+- Verify refreshInterval is set appropriately (default: 30 seconds)
 - Check bridge status is ONLINE
 - Review OpenHAB logs for API errors
+- For real-time debugging, filter logs: `grep -E "refreshDoorStatus|updateFromApiResponse|SignalR event" openhab.log`
+- Verify SignalR connection: Look for "Subscribed to door events for door ID" in logs
+- Check door relay status in API response: `doorRelayOpen` field should match UI state
 
 ## Building from Source
 

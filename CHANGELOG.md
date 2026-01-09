@@ -7,6 +7,35 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-09 16:45:16
+- Modified: net2-binding/CHANGELOG.md
+- Modified: net2-binding/README.md
+- Modified: net2-binding/pom.xml
+- Modified: net2-binding/src/main/history/dependencies.xml
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java
+- Modified: net2-binding/target/classes/META-INF/MANIFEST.MF
+- Modified: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ApiClient.class
+- Modified: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2DoorHandler.class
+- Modified: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2ServerHandler.class
+- Modified: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2SignalRClient$PermissiveTrustManager.class
+- Modified: net2-binding/target/classes/org/openhab/binding/net2/handler/Net2SignalRClient.class
+- Modified: net2-binding/target/feature/feature.xml
+- Modified: net2-binding/target/feature/filteredInputFeature.xml
+- Added: net2-binding/target/history/dependencies.added.xml
+- Added: net2-binding/target/history/dependencies.removed.xml
+- Modified: net2-binding/target/history/dependencies.xml
+- Modified: net2-binding/target/history/treeListing.txt
+- Modified: net2-binding/target/maven-archiver/pom.properties
+- Modified: net2-binding/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+- Added: net2-binding/target/org.openhab.binding.net2-5.2.0-SNAPSHOT-sources.jar
+- Added: net2-binding/target/org.openhab.binding.net2-5.2.0-SNAPSHOT.jar
+- Modified: net2-binding/target/spotless-index
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-09 12:30:15
 - Added: icons/classic/activity-time.svg
 - Modified: sitemaps/myhouse.sitemap

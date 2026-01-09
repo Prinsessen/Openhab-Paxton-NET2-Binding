@@ -1,14 +1,10 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: org.openhab.binding.net2
-Bnd-LastModified: 1767888818931
-Bundle-Description: This binding provides integration with the Paxton 
- Net2 Access Control system.     It enables remote door control, real-
- time status monitoring, and user management through openHAB.     Feat
- ures include door control (hold open/close), real-time status via Sig
- nalR, user creation/deletion,     access level management, and automa
- tic discovery of connected doors.
-Bundle-Developers: prinsessen;email="Nanna@agesen.dk";name="Nanna Ages
- en";roles="Lead Developer,Maintainer";timezone="Europe/Copenhagen"
+Bnd-LastModified: 1767972779845
+Bundle-Description: This project contains the official add-ons of open
+ HAB
+Bundle-Developers: openhab;email="info@openhab.org";name=openHAB;organ
+ ization=openHAB;organizationUrl="https://www.openHAB.org"
 Bundle-DocURL: https://github.com/openhab/infrastructure/org.openhab.a
  ddons.reactor/org.openhab.addons.reactor.bundles/org.openhab.binding.
  net2
@@ -16,23 +12,26 @@ Bundle-License: "Eclipse Public License 2.0";link="https://www.eclipse
  .org/legal/epl-2.0/"
 Bundle-ManifestVersion: 2
 Bundle-Name: openHAB Add-ons :: Bundles :: Net2 Binding
-Bundle-SCM: url="https://github.com/Prinsessen/Openhab-Paxton-NET2-Bin
- ding",connection="scm:git:https://github.com/Prinsessen/Openhab-Paxto
- n-NET2-Binding.git",developer-connection="scm:git:https://github.com/
- Prinsessen/Openhab-Paxton-NET2-Binding.git",tag=HEAD
+Bundle-SCM: url="https://github.com/openhab/openhab-addons/org.openhab
+ .addons.reactor.bundles/org.openhab.binding.net2",connection="scm:git
+ :https://github.com/openhab/openhab-addons.git/org.openhab.addons.rea
+ ctor.bundles/org.openhab.binding.net2",developer-connection="scm:git:
+ https://github.com/openhab/openhab-addons.git/org.openhab.addons.reac
+ tor.bundles/org.openhab.binding.net2",tag=HEAD
 Bundle-SymbolicName: org.openhab.binding.net2
 Bundle-Vendor: openHAB.org
-Bundle-Version: 5.1.0
+Bundle-Version: 5.2.0.202601091532
 Created-By: 21.0.9 (Debian)
 Export-Package: org.openhab.binding.net2;version="5.1.0",org.openhab.b
- inding.net2.discovery;uses:="org.openhab.core.config.discovery,org.op
- enhab.core.thing.binding";version="5.1.0",org.openhab.binding.net2.ha
- ndler;uses:="com.google.gson,org.openhab.core.thing,org.openhab.core.
- thing.binding,org.openhab.core.types";version="5.1.0"
-Import-Package: org.openhab.core.config.discovery,org.openhab.core.lib
- rary.types,org.openhab.core.thing,org.openhab.core.thing.binding,org.
- openhab.core.types,com.google.gson;version="[2.13,3)",javax.net.ssl,o
- rg.slf4j;version="[2.0,3)"
+ inding.net2.discovery;version="5.1.0";uses:="org.openhab.core.config.
+ discovery,org.openhab.core.thing.binding",org.openhab.binding.net2.ha
+ ndler;version="5.1.0";uses:="com.google.gson,org.openhab.core.thing,o
+ rg.openhab.core.thing.binding,org.openhab.core.types"
+Import-Package: org.openhab.binding.net2.discovery,org.openhab.binding
+ .net2.handler,org.openhab.core.config.discovery,org.openhab.core.libr
+ ary.types,org.openhab.core.thing,org.openhab.core.thing.binding,org.o
+ penhab.core.types,com.google.gson;version="[2.13,3)",javax.net.ssl,or
+ g.slf4j;version="[2.0,3)"
 Private-Package: OH-INF.binding,OH-INF.thing
 Provide-Capability: osgi.service;objectClass:List<String>="org.openhab
  .core.config.discovery.DiscoveryService,org.openhab.core.thing.bindin
