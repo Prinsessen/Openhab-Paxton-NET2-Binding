@@ -11,8 +11,8 @@ sitemap myhouse label="Nanna Agesen"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
 	}
 	Frame label="Home Security" {
-			Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="door" 
-			Switch item=Net2_Door3_ControlTimed label="Garage Port" mappings=[1="Open"] icon="door"
+			Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="lock-key" 
+			Switch item=Net2_Door3_ControlTimed label="Garage Port" mappings=[1="Open"] icon="lock-key"
 			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="alarm"
 			Text item=Alarmsystem_Info icon="alarm"
 	}

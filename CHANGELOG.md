@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-09 12:00:15
+- Added: icons/classic/lock-key.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-09 11:45:15
 - Modified: sitemaps/myhouse.sitemap
 
