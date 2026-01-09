@@ -1,0 +1,29 @@
+# Maven build artifacts
+target/
+*.jar
+*.class
+
+# Eclipse / IDE files
+.classpath
+.project
+.settings/
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+
+# VS Code
+.vscode/
+
+# Mac OS
+.DS_Store
+
+# Log files
+*.log
+
+# Temporary files
+*~
+*.swp
+*.bak
