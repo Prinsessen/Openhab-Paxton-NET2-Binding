@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-09 12:15:15
+- Added: icons/classic/activity.svg
+- Added: icons/classic/color-user.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-09 12:00:15
 - Added: icons/classic/lock-key.svg
 - Modified: sitemaps/myhouse.sitemap
