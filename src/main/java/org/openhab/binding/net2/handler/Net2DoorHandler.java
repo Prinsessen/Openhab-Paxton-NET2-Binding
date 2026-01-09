@@ -12,7 +12,6 @@
  */
 package org.openhab.binding.net2.handler;
 
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -47,7 +46,6 @@ public class Net2DoorHandler extends BaseThingHandler {
 
     private @Nullable Net2ServerHandler bridgeHandler;
     private int doorId;
-    private @Nullable ScheduledFuture<?> statusReset;
 
     public Net2DoorHandler(Thing thing) {
         super(thing);
@@ -259,9 +257,6 @@ public class Net2DoorHandler extends BaseThingHandler {
                     
                     updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
                     logger.info("Door {} status updated to: {}", doorId, doorStatus);
-                    
-                    // Cancel any pending auto-off since we have real status
-                    cancelStatusOff();
                 }
             }
             
@@ -282,9 +277,6 @@ public class Net2DoorHandler extends BaseThingHandler {
                     
                     updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
                     logger.info("Door {} physical state changed to: {}", doorId, doorStatus);
-                    
-                    // Cancel any pending auto-off since we have real status
-                    cancelStatusOff();
                 }
             }
             
@@ -299,23 +291,18 @@ public class Net2DoorHandler extends BaseThingHandler {
                     // eventType 20 = Access granted
                     
                     if (eventType == 47) {
-                        // Door closed - update door-action and status to OFF, cancel any timers
+                        // Door closed - update both channels to OFF
                         updateState(Net2BindingConstants.CHANNEL_DOOR_ACTION, OnOffType.OFF);
                         updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, OnOffType.OFF);
-                        cancelStatusOff();
                         logger.info("Door {} closed (eventType 47)", doorId);
                     } else if (eventType == 28 || eventType == 46 || eventType == 20) {
                         // Door opened/accessed
-                        // Update status to ON
+                        // Update both channels to ON
                         updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, OnOffType.ON);
-                        
-                        // For door-action channel, update to ON and keep it there (no timer)
-                        // The state will persist until we receive eventType 47 (close)
                         updateState(Net2BindingConstants.CHANNEL_DOOR_ACTION, OnOffType.ON);
                         
-                        // For door-control-timed, we still auto-off after 5 seconds
-                        // This provides feedback for timed operations
-                        scheduleStatusOff();
+                        // No timer - API polling will detect door close and set to OFF
+                        // SignalR provides instant open detection, API polling handles close detection
                         
                         logger.info("Door {} opened (eventType {})", doorId, eventType);
                     }
@@ -349,11 +336,6 @@ public class Net2DoorHandler extends BaseThingHandler {
                         // Update both door-action and door-status channels to sync with actual state
                         updateState(Net2BindingConstants.CHANNEL_DOOR_ACTION, status);
                         updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, status);
-                        
-                        if (status == OnOffType.OFF) {
-                            // Door is closed, cancel any pending timers
-                            cancelStatusOff();
-                        }
                     }
 
                     // Update last access user
@@ -385,16 +367,4 @@ public class Net2DoorHandler extends BaseThingHandler {
         }
     }
 
-    private void scheduleStatusOff() {
-        cancelStatusOff();
-        statusReset = scheduler.schedule(() -> updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, OnOffType.OFF), 5,
-                TimeUnit.SECONDS);
-    }
-
-    private void cancelStatusOff() {
-        ScheduledFuture<?> future = statusReset;
-        if (future != null && !future.isDone()) {
-            future.cancel(false);
-        }
-    }
 }
