@@ -175,9 +175,13 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             boolean verify = config.tlsVerification != null ? config.tlsVerification : true;
             Net2SignalRClient newClient = new Net2SignalRClient(client.getServerRootUri(), token, verify);
             newClient.setEventConsumer(this::handleSignalREvent);
+            newClient.setOnConnectedCallback(this::onSignalRConnected);
+            
+            // Assign before connecting so callback can access it
+            signalRClient = newClient;
+            
             newClient.connect();
             newClient.subscribeToEvents();
-            signalRClient = newClient;
         } catch (Exception e) {
             logger.debug("SignalR startup failed", e);
         }
@@ -200,6 +204,7 @@ public class Net2ServerHandler extends BaseBridgeHandler {
      * Refresh door status for all child things
      */
     private void refreshDoorStatus() {
+        logger.debug("refreshDoorStatus: Starting API poll");
         Net2ApiClient client = apiClient;
         if (client == null || !client.isAuthenticated()) {
             try {
@@ -220,17 +225,22 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
         try {
             String statusResponse = client.getDoorStatus();
+            logger.debug("refreshDoorStatus: Got API response: {}", statusResponse);
             // Note: SignalR is started once during initialization, not on every refresh
             JsonElement element = JsonParser.parseString(statusResponse);
 
             if (element.isJsonArray()) {
+                logger.debug("refreshDoorStatus: Parsed array with {} doors", element.getAsJsonArray().size());
                 // Notify child handlers of status update
                 getThing().getThings().forEach(childThing -> {
                     Net2DoorHandler handler = (Net2DoorHandler) childThing.getHandler();
                     if (handler != null) {
+                        logger.debug("refreshDoorStatus: Calling updateFromApiResponse on handler");
                         handler.updateFromApiResponse(element.getAsJsonArray());
                     }
                 });
+            } else {
+                logger.warn("refreshDoorStatus: Response is not a JSON array");
             }
 
             if (getThing().getStatus() != ThingStatus.ONLINE) {
@@ -248,6 +258,25 @@ public class Net2ServerHandler extends BaseBridgeHandler {
      */
     public @Nullable Net2ApiClient getApiClient() {
         return apiClient;
+    }
+
+    /**
+     * Get the SignalR client for child door handlers
+     */
+    public @Nullable Net2SignalRClient getSignalRClient() {
+        return signalRClient;
+    }
+
+    /**
+     * Called when SignalR connection is established, notifies all door handlers to subscribe
+     */
+    public void onSignalRConnected() {
+        logger.debug("SignalR connected, notifying door handlers");
+        getThing().getThings().forEach(childThing -> {
+            if (childThing.getHandler() instanceof Net2DoorHandler doorHandler) {
+                doorHandler.subscribeToSignalREvents();
+            }
+        });
     }
 
     /**

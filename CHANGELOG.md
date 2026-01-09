@@ -5,6 +5,50 @@ All notable changes to the Paxton Net2 Binding are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2026-01-09
+
+### Added
+- **Hybrid Synchronization System**
+  - SignalR real-time event subscription for each door
+  - Door-specific LiveEvents subscriptions for instant notifications
+  - API polling fallback for guaranteed state accuracy (every 30s by default)
+  - Both `action` and `status` channels now sync with Net2 server state
+  - Synchronization works regardless of control method (OpenHAB, Net2 UI, physical access)
+- **Enhanced Event Handling**
+  - EventType-based state tracking (20, 28, 46 for door open; 47 for door close)
+  - Proper handling of `doorRelayOpen` field from API status endpoint
+  - Door state updates from both SignalR events and API polling
+- **Improved SignalR Integration**
+  - Connection callback mechanism to notify door handlers when SignalR ready
+  - Automatic door-specific subscriptions after SignalR connection established
+  - Fixed race condition in SignalR client initialization
+  - Subscriptions logged for debugging: "Subscribed to door events for door ID"
+- **Debug Logging**
+  - Comprehensive logging for synchronization events
+  - `refreshDoorStatus` logs show API polling activity
+  - `updateFromApiResponse` logs show door state updates from API
+  - SignalR event logs show real-time door events with eventType
+
+### Changed
+- `action` channel now maintains persistent state until door physically closes
+- `status` channel shows momentary door relay state
+- Both channels update from API polling to prevent desynchronization
+- Door handlers notified via callback when SignalR connection ready (not during connect)
+
+### Fixed
+- Door state not synchronizing when closed physically or via Net2 UI
+- SignalR client race condition where callback fired before client was assigned
+- Incorrect API field parsing (`state` → `status.doorRelayOpen`)
+- EventType 47 (door closed) unreliability addressed by API polling fallback
+- Missing state updates for `action` channel during API refresh
+
+### Technical Details
+- API response structure: `{"id": doorId, "status": {"doorRelayOpen": boolean}}`
+- SignalR Classic mode protocol with LiveEvents hub
+- Net2 API does not implement documented `doorEvents` or `doorStatusEvents` hubs
+- EventType 47 inconsistently sent, requiring API polling backup
+- Default refresh interval: 30 seconds (configurable)
+
 ## [5.1.0] - 2026-01-07
 
 ### Added

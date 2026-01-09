@@ -67,6 +67,7 @@ public class Net2SignalRClient implements Listener {
 
     private @Nullable WebSocket webSocket;
     private @Nullable BiConsumer<String, JsonObject> eventConsumer;
+    private @Nullable Runnable onConnectedCallback;
 
     public Net2SignalRClient(URI serverRoot, String accessToken, boolean tlsVerification) {
         this.hubBaseUri = serverRoot.resolve(Net2BindingConstants.SIGNALR_HUB_PATH);
@@ -76,6 +77,10 @@ public class Net2SignalRClient implements Listener {
 
     public void setEventConsumer(BiConsumer<String, JsonObject> eventConsumer) {
         this.eventConsumer = eventConsumer;
+    }
+
+    public void setOnConnectedCallback(Runnable callback) {
+        this.onConnectedCallback = callback;
     }
 
     /**
@@ -148,6 +153,11 @@ public class Net2SignalRClient implements Listener {
             sendInvocationClassic("eventHubLocal", "subscribeToLiveEvents");
         }
         logger.info("Event subscription sent");
+        
+        // Notify server handler that connection is ready for door-specific subscriptions
+        if (onConnectedCallback != null) {
+            onConnectedCallback.run();
+        }
     }
 
     @Override
@@ -298,6 +308,16 @@ public class Net2SignalRClient implements Listener {
         socket.sendText(invocation, true);
     }
 
+    private void sendInvocationCoreWithParam(String target, int param) {
+        WebSocket socket = webSocket;
+        if (socket == null) {
+            return;
+        }
+        String invocation = String.format("{\"type\":1,\"target\":\"%s\",\"arguments\":[%d]}%s", target, param,
+                RECORD_SEPARATOR);
+        socket.sendText(invocation, true);
+    }
+
     private void sendInvocationClassic(String hub, String method) {
         WebSocket socket = webSocket;
         if (socket == null) {
@@ -305,6 +325,35 @@ public class Net2SignalRClient implements Listener {
         }
         String invocation = String.format("{\"H\":\"%s\",\"M\":\"%s\",\"A\":[],\"I\":0}", hub, method);
         socket.sendText(invocation, true);
+    }
+
+    private void sendInvocationClassicWithParam(String hub, String method, int param) {
+        WebSocket socket = webSocket;
+        if (socket == null) {
+            return;
+        }
+        String invocation = String.format("{\"H\":\"%s\",\"M\":\"%s\",\"A\":[%d],\"I\":0}", hub, method, param);
+        socket.sendText(invocation, true);
+    }
+
+    /**
+     * Subscribe to door-specific events for a given door ID (serial number)
+     */
+    public void subscribeToDoorEvents(int doorId) {
+        if (!connected.get() || webSocket == null) {
+            logger.debug("SignalR not connected; skipping door subscription");
+            return;
+        }
+
+        logger.info("Subscribing to door events for door ID: {}", doorId);
+        if (mode == Mode.CORE) {
+            sendInvocationCoreWithParam("subscribeToDoorEvents", doorId);
+            sendInvocationCoreWithParam("subscribeToDoorStatusEvents", doorId);
+        } else {
+            sendInvocationClassicWithParam("eventHubLocal", "subscribeToDoorEvents", doorId);
+            sendInvocationClassicWithParam("eventHubLocal", "subscribeToDoorStatusEvents", doorId);
+        }
+        logger.info("Door-specific event subscription sent for door {}", doorId);
     }
 
     private HttpClient createHttpClient() throws NoSuchAlgorithmException, KeyManagementException {
