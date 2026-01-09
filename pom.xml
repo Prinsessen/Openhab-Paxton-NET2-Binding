@@ -1,107 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.openhab.addons.bindings</groupId>
+    <parent>
+        <groupId>org.openhab.addons.bundles</groupId>
+        <artifactId>org.openhab.addons.reactor.bundles</artifactId>
+        <version>5.2.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>org.openhab.binding.net2</artifactId>
-    <version>5.1.0</version>
-    <name>Net2 Binding</name>
-    <description>Paxton Net2 Access Control binding for OpenHAB</description>
-    <packaging>jar</packaging>
 
-    <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <openhab.version>5.1.0</openhab.version>
-    </properties>
+    <name>openHAB Add-ons :: Bundles :: Net2 Binding</name>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.openhab.core.bom</groupId>
-                <artifactId>org.openhab.core.bom</artifactId>
-                <version>${openhab.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <dependencies>
-        <!-- OpenHAB Core APIs -->
-        <dependency>
-            <groupId>org.openhab.core</groupId>
-            <artifactId>org.openhab.core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openhab.core</groupId>
-            <artifactId>org.openhab.core.thing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openhab.core</groupId>
-            <artifactId>org.openhab.core.config.discovery</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openhab.core.bundles</groupId>
-            <artifactId>org.openhab.core.ui.iconset.classic</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Logging API -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.13</version>
-        </dependency>
-
-        <!-- JSON -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.10.1</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
-                <configuration>
-                    <source>21</source>
-                    <target>21</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.openhab.binding.net2.Net2Binding</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <repositories>
-        <repository>
-            <id>openhab-release</id>
-            <url>https://openhab.jfrog.io/artifactory/libs-release</url>
-        </repository>
-        <repository>
-            <id>openhab-snapshot</id>
-            <url>https://openhab.jfrog.io/artifactory/libs-snapshot</url>
-        </repository>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-    </repositories>
 </project>

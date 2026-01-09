@@ -19,20 +19,22 @@ Version 5.2.0 introduces a comprehensive synchronization system that ensures Ope
 
 ```
 Door Opens → SignalR Event (instant) → OpenHAB UI updates immediately
-Door Closes → API Poll (30s max) → OpenHAB UI syncs within refresh interval
+Door Closes → API Poll (≤30s) → OpenHAB UI syncs within refresh interval
 ```
 
 **Why Both?**
 - Net2 API's eventType 47 (door closed) is unreliable
-- SignalR provides speed, API polling provides accuracy
-- Best of both worlds: responsive + reliable
+- SignalR provides instant open detection
+- API polling provides authoritative close detection
+- No timer needed - real state from API
 
 ## Key Changes
 
 ### Updated Channels
-- `action` (Switch): Now persistent until door actually closes
-- `status` (Switch): Synchronized with actual relay state
-- Both channels update from API polling
+- `action` (Switch): Persistent state reflecting actual door position
+- `status` (Switch): Mirrors actual relay state from Net2 server
+- Both channels synchronized via SignalR (opens) + API polling (closes)
+- **No auto-off timer** - state changes only when door physically changes
 
 ### New Configuration
 - `refreshInterval` parameter (default: 30 seconds)
@@ -87,11 +89,13 @@ See the following files for details:
 1. **Close Events**: May take up to `refreshInterval` seconds to sync
    - This is by design due to Net2 API limitations
    - SignalR eventType 47 is inconsistent
-   - API polling provides guarantee
+   - API polling provides authoritative state
+   - **No timer used** - waits for actual API confirmation
 
 2. **Refresh Interval**: Minimum 5 seconds recommended
    - Lower values increase API load
    - 30 seconds provides good balance
+   - Determines max delay for close detection
 
 ## Debug Logging
 
