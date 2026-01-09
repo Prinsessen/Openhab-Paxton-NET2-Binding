@@ -122,11 +122,28 @@ sendCommand(Net2_CreateUser, "Michael,Agesen,3,7654")
 
 List access levels (query Net2 system and log results):
 
-```
+**From Rules:**
+```java
 sendCommand(Net2_ListAccessLevels, ON)
 // or
 sendCommand(Net2_ListAccessLevels, "REFRESH")
-// or from UI: Click the item and send any command (ON, OFF, REFRESH, etc.)
+```
+
+**From OpenHAB UI:**
+- Navigate to the item `Net2_ListAccessLevels`
+- Click and send any command (ON, OFF, REFRESH, etc.)
+
+**From REST API:**
+```bash
+curl -X POST "http://localhost:8080/rest/items/Net2_ListAccessLevels" \
+  -H "Content-Type: text/plain" \
+  -d "ON"
+```
+
+**From Karaf Console:**
+```bash
+openhab-cli console -p habopen
+openhab> openhab:send Net2_ListAccessLevels ON
 ```
 
 View the results in log:
