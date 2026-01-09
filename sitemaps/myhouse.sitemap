@@ -9,32 +9,10 @@ sitemap myhouse label="Nanna Agesen"
 	Frame label="Events" {
 		Text item=next_event_name label="Next Event [%s]" icon="time"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
-
-		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="door" 
-		Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"]
-		Text item=Net2_Door1_Status label="Frontdoor Activity [MAP(net2doorstatus.map):%s]" icon="door"
- 		Default item=Net2_Door1_LastTime label="Frontdoor Last Time Access" icon="door"	
-		Default item=Net2_Door1_LastUser label="Frontdoor Last User Access" icon="door"
-
-		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Terndrupvej 81" icon="door" 
-		Text item=Net2_Door2_Status label="Terndrupvej 81 Activity [MAP(net2doorstatus.map):%s]" icon="door"
- 		Default item=Net2_Door2_LastTime label="Terndrupvej 81 Last Time Access" icon="door"	
-		Default item=Net2_Door2_LastUser label="Terndrupvej 81 Last User Access" icon="door"		
-
-		Switch item=Net2_Door3_Action mappings=[ON="Open", OFF="Closed"] label="Garage Port" icon="door"
-		Switch item=Net2_Door3_ControlTimed label="Garage Port Timed Control" mappings=[1="Open"]
-		Text item=Net2_Door3_Status label="Garage Port Activity [MAP(net2doorstatus.map):%s]" icon="door"
- 		Default item=Net2_Door3_LastTime label="Garage Port Last Time Access" icon="door"
-		Default item=Net2_Door3_LastUser label="Garage Port Last User Access" icon="door"
-
-		Switch item=Net2_Door4_Action mappings=[ON="Open", OFF="Closed"] label="Basement Door" icon="door"
-		Text item=Net2_Door4_Status label="Basement Door Activity [MAP(net2doorstatus.map):%s]" icon="door"
- 		Default item=Net2_Door4_LastTime label="Basement Door Last Time Access" icon="door"
-		Default item=Net2_Door4_LastUser label="Basement Door Last User Access" icon="door"
 	}
 	Frame label="Home Security" {
 			Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="door" 
-			Switch item=Net2_Door3_ControlTimed label="Garage Port" mappings=[1="Open"]
+			Switch item=Net2_Door3_ControlTimed label="Garage Port" mappings=[1="Open"] icon="door"
 			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="alarm"
 			Text item=Alarmsystem_Info icon="alarm"
 	}
@@ -97,26 +75,29 @@ sitemap myhouse label="Nanna Agesen"
 			Default item=WestTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
 			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
 	}
-Text label="Paxton Door Events" icon="lock" {
-Frame label="Door Access Control" {
+Text label="Access Control" icon="lock" {
+Frame label="Fordør Kirkegade" {
 		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="door" 
 		Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"]
 		Text item=Net2_Door1_Status label="Frontdoor Activity [MAP(net2doorstatus.map):%s]" icon="door"
  		Default item=Net2_Door1_LastTime label="Frontdoor Last Time Access" icon="door"	
 		Default item=Net2_Door1_LastUser label="Frontdoor Last User Access" icon="door"
 	}
-Frame label="Door Access Control" {
+Frame label="Terndrupvej 81" {
 		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Terndrupvej 81" icon="door" 
 		Text item=Net2_Door2_Status label="Terndrupvej 81 Activity [MAP(net2doorstatus.map):%s]" icon="door"
  		Default item=Net2_Door2_LastTime label="Terndrupvej 81 Last Time Access" icon="door"	
 		Default item=Net2_Door2_LastUser label="Terndrupvej 81 Last User Access" icon="door"		
 
+	}
+Frame label="Garage Kirkegade" {
 		Switch item=Net2_Door3_Action mappings=[ON="Open", OFF="Closed"] label="Garage Port" icon="door"
 		Switch item=Net2_Door3_ControlTimed label="Garage Port Timed Control" mappings=[1="Open"]
 		Text item=Net2_Door3_Status label="Garage Port Activity [MAP(net2doorstatus.map):%s]" icon="door"
  		Default item=Net2_Door3_LastTime label="Garage Port Last Time Access" icon="door"
 		Default item=Net2_Door3_LastUser label="Garage Port Last User Access" icon="door"
-
+}
+Frame label="Basement Door Kirkegade" {
 		Switch item=Net2_Door4_Action mappings=[ON="Open", OFF="Closed"] label="Basement Door" icon="door"
 		Text item=Net2_Door4_Status label="Basement Door Activity [MAP(net2doorstatus.map):%s]" icon="door"
  		Default item=Net2_Door4_LastTime label="Basement Door Last Time Access" icon="door"
