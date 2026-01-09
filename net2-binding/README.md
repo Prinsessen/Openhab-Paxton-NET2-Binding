@@ -120,10 +120,36 @@ Create a user and assign access level 3 with PIN 7654:
 sendCommand(Net2_CreateUser, "Michael,Agesen,3,7654")
 ```
 
-List access levels in the log:
+List access levels (query Net2 system and log results):
 
-```
+**From Rules:**
+```java
+sendCommand(Net2_ListAccessLevels, ON)
+// or
 sendCommand(Net2_ListAccessLevels, "REFRESH")
+```
+
+**From OpenHAB UI:**
+- Navigate to the item `Net2_ListAccessLevels`
+- Click and send any command (ON, OFF, REFRESH, etc.)
+
+**From REST API:**
+```bash
+curl -X POST "http://localhost:8080/rest/items/Net2_ListAccessLevels" \
+  -H "Content-Type: text/plain" \
+  -d "ON"
+```
+
+**From Karaf Console:**
+```bash
+openhab-cli console -p habopen
+openhab> openhab:send Net2_ListAccessLevels ON
+```
+
+View the results in log:
+```bash
+grep "Access levels" /var/log/openhab/openhab.log | tail -1
+# Output example: Access levels: [1:Public] [2:Staff] [3:Admin] [5:Maintenance]
 ```
 
 Delete a user by ID:
