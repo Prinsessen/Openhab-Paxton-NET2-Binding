@@ -106,7 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Author
 
 **Nanna Agesen** (@Prinsessen)
-- Email: nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
 
 ### Fixed
@@ -157,7 +157,7 @@ This binding follows semantic versioning:
 ## Contributors
 
 - **Nanna Agesen** (@Prinsessen) - Lead Developer, Maintainer
-  - Email: Nanna@agesen.dk
+  - Email: author@example.com
   - GitHub: https://github.com/Prinsessen
 
 ## License
@@ -200,5 +200,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 ## Contact & Support
 
 - **Issues**: https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding/issues
-- **Email**: Nanna@agesen.dk
+- **Email**: author@example.com
 - **Community**: https://community.openhab.org/

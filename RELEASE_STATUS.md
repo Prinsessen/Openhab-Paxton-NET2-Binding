@@ -12,7 +12,7 @@
 |-------|-------|
 | **Author Name** | Nanna Agesen |
 | **GitHub Username** | @Prinsessen |
-| **Email** | Nanna@agesen.dk |
+| **Email** | author@example.com |
 | **Timezone** | Europe/Copenhagen |
 | **Repository** | https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding |
 
@@ -189,7 +189,7 @@ The binding supports all 7 access levels from the Net2 system:
 ✅ **Testing** - All scenarios tested manually and verified  
 ✅ **Security** - TLS/JWT properly implemented  
 ✅ **Documentation** - Comprehensive per openHAB standards  
-✅ **Author Attribution** - Nanna Agesen (@Prinsessen, Nanna@agesen.dk)  
+✅ **Author Attribution** - Nanna Agesen (@Prinsessen, author@example.com)  
 ✅ **License** - EPL-2.0 properly declared  
 ✅ **Repository** - GitHub public, accessible, maintained  
 
@@ -217,7 +217,7 @@ The binding can be submitted to the openHAB add-ons repository for approval via:
 1. Fork openhab-addons repository
 2. Create pull request with this binding
 3. Reference this release status report
-4. Author: Nanna Agesen (@Prinsessen, Nanna@agesen.dk)
+4. Author: Nanna Agesen (@Prinsessen, author@example.com)
 
 ---
 

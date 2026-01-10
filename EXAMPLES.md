@@ -275,7 +275,7 @@ The handler automatically converts your command (in seconds) to the correct JSON
 ## Author
 
 - Nanna Agesen (@Prinsessen)
-- Email: nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
 
 ### Rule 1: Automatic Door Lock on Schedule
@@ -515,7 +515,7 @@ Example queries for Grafana using RRD4j persistence:
 import requests
 
 # Control door via OpenHAB
-OPENHAB_API = "https://openhab5.agesen.dk/rest/items"
+OPENHAB_API = "https://openhab.example.com/rest/items"
 
 def unlock_door(door_name):
     """Unlock a door via OpenHAB binding"""

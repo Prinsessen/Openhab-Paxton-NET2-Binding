@@ -328,10 +328,10 @@ For issues related to:
 
 ## Maintainer
 
-- Nanna Agesen (@Prinsessen) — Nanna@agesen.dk
+- Nanna Agesen (@Prinsessen) — author@example.com
 
 ## Author
 
 - Nanna Agesen (@Prinsessen)
-- Email: nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
