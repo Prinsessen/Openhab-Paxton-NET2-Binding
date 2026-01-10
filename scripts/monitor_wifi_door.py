@@ -159,7 +159,7 @@ class Net2SignalRMonitor:
         # 1. Subscribe to LiveEvents (all monitorable events)
         subscribe_live = {
             "H": "eventHubLocal",
-            "M": "SubscribeToLiveEvents",
+            "M": "subscribeToLiveEvents",
             "A": [],
             "I": 1
         }
