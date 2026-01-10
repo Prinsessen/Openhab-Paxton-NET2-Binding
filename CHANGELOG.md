@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 12:45:15
+- Added: sitemaps/myhouse.sitemap.backup
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 12:00:16
 - Modified: rules/Traccar.rules
 - Added: rules/Traccar.rules.backup

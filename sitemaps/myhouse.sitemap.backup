@@ -1,0 +1,1566 @@
+// Nanna Agesen
+sitemap myhouse label="Nanna Agesen"
+{
+
+	Frame label="Kirkegade 50" {
+		Text item=CurrentDate label="System Date" icon="time"
+		Switch item=Energy_Crisis icon="alarm"
+	}
+	Frame label="Events" {
+		Text item=next_event_name label="Next Event [%s]" icon="time"
+		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
+	}
+	Frame label="Home Security" {
+			Switch item=Net2_Door1_Status mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="lock-key" 
+			Switch item=Net2_Door3_ControlTimed label="Garage Port" mappings=[1="Open"] icon="lock-key"
+			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="alarm"
+			Text item=Alarmsystem_Info icon="alarm"
+	}
+	Frame label="Temperature and Weather" {
+		Text item=Temperature label="Avg. Temperature" icon="thermometer1"
+		Text item=Temperature_Have label="Outdoor Temperature" icon="thermometer1"
+		Text item=Weather_Max_Week label="Max Outdoor Temp This Week" icon="thermometer1"
+		Text item=Weather_Min_Week label="Min Outdoor Temp This Week" icon="thermometer1"
+		Text item=owmCurrentCondition label="Current Weather Conditions" icon="thermometer1"
+	}
+	Frame label="House Status" {
+		Group item=Windows label="Door & window" icon="blinds"
+			Switch item=Lights mappings=[OFF="All Off"] label="All Lights Off" icon="turned_off"
+			Text label="Heating Settings" icon="thermometer1" {
+				Text item=Heat_Mode
+				Group item=Heating icon="valve"
+				Webview url="/static/Kampstrup_flow.html" height=12 icon=none
+				Setpoint item=Setpoint_Stue label="Stue Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Stue_T2 label="Stue Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Alrum label="Alrum Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Alrum_T2 label="Alrum Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Udestue label="UdeStue Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Udestue_T2 label="UdeStue Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Bad label="Bathroom Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Bad_T2 label="Bathroom Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Sove label="Bedroom Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Sove_T2 label="Bedroom Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Kokken label="Kitchen Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Kokken_T2 label="Kitchen Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Anna label="Anna Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Anna_T2 label="Anna Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Guestroom label="Guestroom Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Guestroom_T2 label="Guestroom Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Wineroom label="Wineroom Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Wineroom_T2 label="Wineroom Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Lauge label="Lauge Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Lauge_T2 label="Lauge Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Kontor label="Office Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Kontor_T2 label="Office Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Bryggers label="Utility Room Setpoint T1" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+				Setpoint item=Setpoint_Bryggers_T2 label="Utility Room Setpoint T2" minValue=16 maxValue=28 step=0.5 icon="setpoint"
+		}
+		Text item=SMA_Active_Power label="Current Solar Output" icon="solar_energy"
+		Text item=Solar_Energy_Day label="Daily Solar Production" valuecolor=[Solar_Energy_Day> 0="green"] icon="money"
+		Text item=Energy_Balance_Day label="Daily Grid Supply" valuecolor=[Energy_Balance_Day> 0="red"] icon="money"
+		Text item=Bought_Energy label="Daily Grid Supply (Test)" icon="money"
+		//Text item=EM24_Energy_Grid label="Grid Import/Solar Production" icon="money"
+		Text item=Solar_Diff_Send label="Energy sent to grid" visibility=[Solar_Diff_Send>=0] valuecolor=[Solar_Diff_Send>=0="green"] icon="up_arrow_blue"
+		Text item=EM24_Energy_Grid label="Grid supply" visibility=[EM24_Energy_Grid>=0] valuecolor=[EM24_Energy_Grid>=0="red"] icon="down_arrow_red"
+	}
+	Frame label="Access Control" {
+		Video url="http://openhab5.agesen.dk:8080/ipcamera/Driveway/ipcamera.mjpeg" encoding="mjpeg"
+		Default item=DrivewayPan label="Camera Pan (Left/Right)" icon="speed-camera"
+		Default item=DrivewayTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
+		Setpoint item=DrivewayZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
+			Selection item=PTZ label="Main Entrance PTZ Camera" mappings=[1="Entrance", 2="House", 3="Parking east", 4="Garage port", 5="Front door"] icon="speed-camera"
+			Selection item=Net2 label="Access Control" mappings=[1="Port", 2="Front Door", 3="Workshop", 4="Company", 5="Bohrsvej", 6="Basement Door"] icon="lock-key"
+			Video url="http://openhab5.agesen.dk:8080/ipcamera/West/ipcamera.mjpeg" encoding="mjpeg"
+			Default item=WestPan label="Camera Pan (Left/Right)" icon="speed-camera"
+			Default item=WestTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
+			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
+	}
+Text label="Access Control" icon="lock-key" {
+Frame label="Fordør Kirkegade" {
+		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
+		Switch item=Net2_Door1_Status label="Door Physical Status" icon="activity" 
+		Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"] icon="lock-key"
+		Text item=Net2_Door1_Status label="Frontdoor Activity [MAP(net2doorstatus.map):%s]" icon="activity"
+ 		Default item=Net2_Door1_LastTime label="Frontdoor Last Time Access" icon="activity-time"	
+		Default item=Net2_Door1_LastUser label="Frontdoor Last User Access" icon="color-user"
+	}
+Frame label="Terndrupvej 81" {
+		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
+		Switch item=Net2_Door2_Status label="Door Physical Status" icon="activity" 
+		Switch item=Net2_Door2_ControlTimed label="Terndrupvej 81 Timed Door" mappings=[1="Open"] icon="lock-key"
+		Text item=Net2_Door2_Status label="Terndrupvej 81 Activity [MAP(net2doorstatus.map):%s]" icon="activity"
+ 		Default item=Net2_Door2_LastTime label="Terndrupvej 81 Last Time Access" icon="activity-time"	
+		Default item=Net2_Door2_LastUser label="Terndrupvej 81 Last User Access" icon="color-user"		
+
+	}
+Frame label="Garage Kirkegade" {
+		Switch item=Net2_Door3_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
+		Switch item=Net2_Door3_Status label="Door Physical Status" icon="activity" 
+		Switch item=Net2_Door3_ControlTimed label="Garage Port Timed Door" mappings=[1="Open"] icon="lock-key"
+		Text item=Net2_Door3_Status label="Garage Port Activity [MAP(net2doorstatus.map):%s]" icon="activity"
+ 		Default item=Net2_Door3_LastTime label="Garage Port Last Time Access" icon="activity-time"
+		Default item=Net2_Door3_LastUser label="Garage Port Last User Access" icon="color-user"
+}
+Frame label="Basement Door Kirkegade" {
+		Switch item=Net2_Door4_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
+		Switch item=Net2_Door4_Status label="Door Physical Status" icon="activity" 
+		Switch item=Net2_Door4_ControlTimed label="Basement Door Timed Door" mappings=[1="Open"] icon="lock-key"
+		Text item=Net2_Door4_Status label="Basement Door Activity [MAP(net2doorstatus.map):%s]" icon="activity"
+ 		Default item=Net2_Door4_LastTime label="Basement Door Last Time Access" icon="activity-time"
+		Default item=Net2_Door4_LastUser label="Basement Door Last User Access" icon="color-user"
+}
+
+
+
+	Frame label="Door Events" {
+		
+		Text label="All Door Events" icon="door" {
+			Frame label="NET2 Activity" {
+				Webview url="/static/net2_activity.html" height=80 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Frontdoor Face" icon="door" {
+			Frame label="FaceID Events" {
+				Webview url="/static/doors/kirkegade50_hikvision_faceid_acu_6612642.html" height=80 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Marine Reader" icon="door" {
+			Frame label="Marine Reader Events" {
+				   Webview url="/static/doors/kirkegade50_fordr_marine_reader_acu_6612642.html" height=80 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Garage Port" icon="door" {
+			Frame label="Garage Port Events" {
+				Webview url="/static/doors/kirkegade50_garage_port_acu_7242929_ind.html" height=80 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Basement" icon="door" {
+			Frame label="Basement Events" {
+				   Webview url="/static/doors/kirkegade50_andreas_udv_klder_acu_01038236_ind.html" height=80 icon=none
+			}
+		}
+		Text label="Kirkegade 50 - Værksted" icon="door" {
+			Frame label="Værksted Events" {
+				   Webview url="/static/doors/kirkegade50_vrksted_dr_central_03962494_ind.html" height=80 icon=none
+			}
+		}
+		Text label="Terndrupvej 81 - Frontdoor" icon="door" {
+			Frame label="Fordør Events" {
+			    Webview url="/static/doors/terndrupvej_81_fordr_terndrupvej_acu_6203980_ind.html" height=80 icon=none
+
+			}
+		}
+		Text label="Porsevej 19 - Frontdoor" icon="door" {
+			Frame label="Fordør Events" {
+				   Webview url="/static/doors/porsevej19_fordr_porsevej_acu_967438_ind.html" height=80 icon=none
+			}
+		//}
+		//Text label="Kirkegade 50 - Door 8" icon="door" {
+		//	Frame label="Door 8 Events" {
+		//		Webview url="/static/doors/door8_events.html" height=80 icon=none
+		//	}
+		}
+	}
+}
+	Frame label="Romeo Robot" {
+		Text icon="vacuum" label="Romeo Robot"{
+			Frame label="Smart Control" {
+				// En stor switch til de primære handlinger
+					Switch item=actions label="Status/Control" icon="vacuum" mappings=[
+					"vacuum-start-sweep-mop"="START",
+					"vacuum-pause-sweeping"="PAUSE",
+					"vacuum-stop-sweeping"="STOP",
+					"vacuum-stop-and-gocharge"="DOCK"
+					]
+				// Vigtige informationer lige under knapperne
+				Text item=status label="Current Status: [%s]" icon="icon-park--info"
+				Text item=battery_level label="Battery Level: [%.0f %%]" icon="noto-v1--battery"
+				// Brug en Selection til hurtigt at vælge styrke (mere mobilvenlig end Slider)
+				Selection item=mode label="Cleaning Mode" icon="clean-broom-wipe-flat"
+				Text item=CronTimeDisplay icon="live-schedule" label="Daily Cleaning Time: [%s]"
+					Switch item=EnableDailyCron label="Auto Run" mappings=[ON="On", OFF="Off"] icon="automatic"
+					Selection item=sweep_type label="Cleaning Type" icon="clean-broom-wipe-flat"
+					Switch item=Kitchen_Clean_Switch label="Start Kitchen Cleaning" icon="vacuum" mappings=[ON="Start"]
+			}
+
+			// Gruppering af mindre ofte brugte indstillinger i separate rammer
+
+			Frame label="Maintenance & Consumption" {
+				// Enkel liste med forbrugsstoffer
+				Text item=brush_life_level label="Main Brush Life [%.0f %%]" icon="time"
+				Text item=filter_life_level label="Filter Life [%.0f %%]" icon="time"
+				Text item=mop_life_level label="Mop Life [%.0f %%]" icon="time"
+				Text item=mop_left_time label="Mop Lifetime Remaining [%s Hours]" icon="time"
+				Text item=mop_status label="Mop Information: [MAP(mop.map):%s]" icon="rotary-mop"
+			}
+			// Nulstillingshandlinger i en underordnet, skjult ramme for at rydde op i hovedvisningen
+			Frame label="Dustbin Station" {
+				Switch item=auto_dust_arrest label="Automatic Dust Collection" icon="empty-recycle" mappings=[ON="On", OFF="Off"]
+				Selection item=dust_arrest_frequency label="Dust Collection Frequency" icon="live-schedule"
+
+			}
+			Frame label="Features" {
+				Switch item=carpet_boost label="Carpet Boost" icon="boost" mappings=[ON="On", OFF="Off"]
+				Switch item=carpet_avoidance label="Avoid Carpets when Mopping" icon="stop" mappings=[ON="On", OFF="Off"]
+			}
+
+			Frame label="Mop Control & Settings" icon="water" {
+				Switch item=enable_mop_wash label="Auto Cleaning The Mop" icon="clean-broom-wipe-flat" mappings=[ON="On", OFF="Off"]
+
+				// Primær indstilling: Vand output niveau
+				Selection item=mop_water_output_level label="Water Output Level for Mopping [%s]" icon="water-level"
+
+				// Handling for at starte moppevask manuelt
+					Switch item=actions label="Start Mop Wash Now" mappings=["vacuum-start-mop-wash"="Start Wash"] icon="clean-broom-wipe-flat"
+
+					// Vandstation og sæbe indstillinger
+					Switch item=auto_water_charge label="Auto Water Charging" icon="water-level" mappings=[ON="On", OFF="Off"]
+				Switch item=use_detergent label="Use Detergent/Cleaning Agent" icon="soap" mappings=[ON="On", OFF="Off"]
+				Switch item=detergent_self_delivery label="Detergent Dosing" icon="liquid-soap" mappings=[ON="On", OFF="Off"]
+				Switch item=detergent_depletion_reminder label="Detergent Depletion Reminder" icon="icon-park--info" mappings=[ON="On", OFF="Off"]
+			}
+			Frame label="Advanced Mop Data" {
+				Selection item=wash_mop_water_temperature label="Mop Wash Water Temperature [%s]" icon="temperature"
+				Selection item=mop_outer_swing_frequency label="Mop Outer Swing Frequency [%s]" icon="live-schedule" mappings=[1="Every 7 Days", 2="Every Time"]
+				Selection item=frequency_mop_wash label="Mop Wash Frequency [%s]" icon="live-schedule"
+				Selection item=frequency_mop_wash_by_time label="Mop Wash Frequency By Time [%s]" icon="live-schedule" mappings=[10="10min", 15="15min", 20="20min", 25="25min"]
+				Selection item=water_output_for_washing_mop label="Water Output For Mop Washing [%s]" icon="water-level"
+				Selection item=frequency_mop_wash_no_tank label="Mop Wash Frequency By Area" icon="live-schedule"
+				Switch item=auto_water_change_installed label="Auto Water Change Installed" icon="water" mappings=[ON="On", OFF="Off"]
+				Switch item=auto_mop_dry label="Auto Mop Drying" icon="drying" mappings=[ON="On", OFF="Off"]
+				Selection item=drying_time label="Mop Drying Time [%s]" icon="timer_count"
+			}
+			Frame label="System" {
+				Selection item=actions label="Vacuum Actions" icon="vacuum-cleaner-linear"
+				Slider item=volume label="Volume [%.0f %%]" icon="speaker-volume"
+					Switch item=actions label="Reset Main Brush" mappings=["brush-cleaner-reset-brush-life"="Reset"] icon="reset-clock"
+					Switch item=actions label="Reset Filter" mappings=["filter-reset-filter-life"="Reset"] icon="reset-clock"
+					Switch item=actions label="Reset Mop" mappings=["mop-reset-mop-life"="Reset"] icon="reset-clock"
+			}
+		}
+		
+			}
+			Frame label="House Control" {
+				Text icon="house" label="1st Floor" {
+					Frame label="1st Floor" {
+						Text icon="video" label="Livingroom" {
+							Frame label="Illumination" {
+								Slider item=Light_GF_Stue_Led label="LED Ceiling [%d %%]"
+								Text label="LED Ceiling - Details" icon="info1" {
+									Setpoint item=Light_GF_Stue_Led label="Dimmer setpoint" minValue=0 maxValue=100 step=1
+									Setpoint item=Light_GF_Stue_Led_Constant label="Constant setpoint" minValue=101 maxValue=400 step=1
+									Text item=Smartlight_Lux_Stue label="LUX Niveau [%d Lux]" icon="brightness"
+									Text item=Smartlight_Stue_Timer label="Energy Timer [%d s]" icon="timer_count"
+									Text item=Smartlight_Stue_Virtualoff
+									Text item=Smartlight_Stue_Dimmermode
+									Text item=Smartlight_Stue_Presence icon="woman_1"
+								}
+								Slider item=Light_GF_Stue_Luceplan label="Luceplan [%d %%]"
+								Setpoint item=Light_GF_Stue_Luceplan label="Luceplan" minValue=0 maxValue=100 step=2
+								Slider item=Light2_Dimmer label="Hue TV Strip [%d %%]"
+								Setpoint item=Light2_Dimmer label="Hue TV Strip [%d %%]" minValue=0 maxValue=100 step=2
+								Slider item=Light4_Dimmer label="Hue Window [%d %%]"
+								Setpoint item=Light4_Dimmer label="Hue Window [%d %%]" minValue=0 maxValue=100 step=2
+								Slider item=Light_GF_VP_HUE_Bulb label="Verner Panton Kugle [%d %%]"
+								// Switch item=Light_GF_Stue_VP label="Panton Kugle" mappings=[ON=On, OFF=Off]
+								Switch item=Light_GF_Stue_Ryg label="Back Column" mappings=[ON=On, OFF=Off]
+								Switch item=Light_GF_Stue_Tree label="Christmas Tree etc." mappings=[ON=On, OFF=Off]
+								Switch item=Light_GF_Flowerpot_Stue label="Flowerpot" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Stue label="Living Room Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Stue_T2 label="Living Room Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Stue label="Living Room Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GF_Stue label="Heating Valve" icon="valve"
+								Webview url="/static/Temp_Stue.html" height=12 icon=none
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GF_Stue_Vindue label="Living Room Window [MAP(da.map):%s]"
+							}
+							Frame label="Entertainment" {
+								Switch item=smarthouse_Multimedia label="Override" mappings=[ON=On, OFF=Off]
+								Default item=Sonos_Controller
+								Slider item=Sonos_Volume icon="speaker"
+								Switch item=Sonos_Mute icon="speaker" mappings=[ON=On, OFF=Off]
+								Switch item=smarthouse_Multimedia icon="control" mappings=[ON=On, OFF=Off]
+								Switch item=Sonos_LED icon="light" mappings=[ON=On, OFF=Off]
+								Switch item=Sonos_TV mappings=[ON=On, OFF=Off]
+								Text item=Sonos_CurrentTrack icon="info1"
+								Text item=Sonos_State icon="info1"
+								Text item=Sonos_Ensuite_Radio icon="info1"
+									Selection item=Sonos_Ensuite_Preset label="Sonos Preset" mappings=[1="The Voice", 50="All Hit Remixes", 51="Armin van Buuren Radio", 52="Power Hits 97.5", 53="Nanna Hits", 54="Andreas"] icon="info1"
+									Text item=Sonos_Ensuite_Favorite icon="info1"
+									Image item=Sonos_Coverart
+							}
+						}
+						// Dining room
+						Text icon="party" label="Dining room" {
+							Frame label="Illumination" {
+								Slider item=Light_GF_Alrum_Loft label="LED Ceiling [%d %%]"
+								Setpoint item=Light_GF_Alrum_Loft label="LED Ceiling" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_GF_Alrum_Pendel label="Luceplan Pendel [%d %%]"
+								Setpoint item=Light_GF_Alrum_Pendel label="Luceplan Pendel" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light1_Dimmer label="Hue Led Strip [%d %%]"
+								Setpoint item=Light1_Dimmer label="Hue Led Strip [%d %%]" minValue=0 maxValue=100 step=2 icon="turned_off"
+							}
+							Frame label="Climate" {
+
+								Setpoint item=Setpoint_Alrum label="Dining Room Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Alrum_T2 label="Dining Room Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Alrum label="Dining Room Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GF_Alrum label="Heating Valve" icon="valve"
+								Webview url="/static/Temp_Spisestue.html" height=12 icon=none
+							}
+							Frame label="Living Room AC" {
+								Switch item=Mitsubishi_Drive_On_Off label="Power" mappings=[1="ON", 0="OFF"]
+									Selection item=Mitsubishi_Drive_Mode label="Drive Mode" mappings=[1="Heating", 2="Humidity reduction", 3="Cooling", 7="Ventilation, clean air operation", 8="Auto Operation", 9="i-see heating operation *", 10="i-see humidity reduction *", 11=" i-see cooling *"] icon="settings_colour"
+									Selection item=Mitsubishi_Air_Direction label="Air Direction" mappings=[0="AUTO", 1="Position 1", 2="Position 2", 3="Position 3", 4="Position 4", 5="Position 5", 7="SWING"] icon="swing"
+									Selection item=Mitsubishi_Fan_Speed label="Fan Speed" mappings=[0="AUTO", 2="Quiet", 3="Weak", 5="Strong", 6="Very strong (SH i)" ] icon="blue_fan"
+									Text item=Temperature_Panasonic label="Room Temperature" icon="thermometer1"
+									Text item=Mitsubishi_Room_Temperature label="Air flow Temperature" icon="thermometer1"
+									Setpoint item=Mitsubishi_Temperature_Setpoint label="Temperature Setpoint" minValue=16 maxValue=31 step=1 icon="thermometer1"
+									Switch item=Mitsubishi_Living_Override icon="settings_override" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GF_Alrum_Vindue label="Dining Room Window South [MAP(da.map):%s]"
+									Text item=Window_GF_Alrum_Door_Syd label="Dining Room Terrace Door South [MAP(da.map):%s]"
+									Text item=Window_GF_Alrum_Door_Vest label="Dining Room Terrace Door West [MAP(da.map):%s]"
+							}
+						}
+						// Kitchen
+						Text icon="kitchen" label="Kitchen" {
+							Frame label="Illumination" {
+								Slider item=Light_GF_Kokken_Loft label="LED Ceiling [%d %%]"
+								Setpoint item=Light_GF_Kokken_Loft label="LED Ceiling" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_GF_Flowerpot_Kokken label="Flowerpot [%d %%]"
+								Setpoint item=Light_GF_Flowerpot_Kokken label="Flowerpot" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_GF_Kokken_Skabe label="LED Canopy [%d %%]"
+								Setpoint item=Light_GF_Kokken_Skabe label="LED Canopy [%d %%]" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Switch item=Light_GF_Kokken_Deko label="Hood Decoration" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Entertainment" {
+
+								Default item=Sonos_Kitchen_Controller
+								Slider item=Sonos_Kitchen_Volume icon="speaker"
+								Switch item=Sonos_Kitchen_Mute icon="speaker" mappings=[ON=On, OFF=Off]
+								Switch item=Sonos_Kitchen_LED icon="light" mappings=[ON=On, OFF=Off]
+								Text item=Sonos_Kitchen_CurrentTrack icon="info1"
+								Text item=Sonos_Kitchen_State icon="info1"
+								Image item=Sonos_Kitchen_Coverart
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Kokken label="Kitchen Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Kokken_T2 label="Kitchen Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Kokken label="Kitchen Temperature [%.2f °C]" icon="thermometer1"
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GF_Kokken label="Kitchen Window [MAP(da.map):%s]"
+							}
+						}
+						// Bathroom
+						Text icon="bath" label="Bathroom" {
+							Frame label="Illumination" {
+								Slider item=Light_GF_Toilet_Led label="LED Ceiling [%d %%]"
+								Text label="LED Ceiling - Details" icon="info1" {
+									Setpoint item=Light_GF_Toilet_Led label="Dimmer setpoint" minValue=0 maxValue=100 step=1 icon="turned_off"
+									Setpoint item=Light_GF_Toilet_Led_Constant label="Constant setpoint" minValue=101 maxValue=400 step=1 icon="turned_off"
+									Text item=Smartlight_Toilet_Led_Lux label="LUX Niveau [%d Lux]" icon="brightness"
+									Text item=Smartlight_Toilet_Led_Timer label="Energy Timer [%d s]" icon="timer_count"
+									Text item=Smartlight_Toilet_Led_Virtualoff
+									Text item=Smartlight_Toilet_Led_Dimmermode
+									Text item=Smartlight_Toilet_Led_Presence icon="woman_1"
+								}
+								Slider item=Light_GF_Toilet_Spegl label="Mirror [%d %%]"
+								Text label="Mirror - Details" icon="info1" {
+									Setpoint item=Light_GF_Toilet_Spegl label="Dimmer setpoint [%d %%]" minValue=0 maxValue=100 step=1 icon="turned_off"
+									Setpoint item=Light_GF_Toilet_Spegl_Constant label="Constant setpoint" minValue=101 maxValue=400 step=1 icon="turned_off"
+									Text item=Smartlight_Toilet_Spegl_Lux label="LUX Niveau [%d Lux]" icon="brightness"
+									Text item=Smartlight_Toilet_Spegl_Timer label="Energy Timer [%d s]" icon="timer_count"
+									Text item=Smartlight_Toilet_Spegl_Virtualoff
+									Text item=Smartlight_Toilet_Spegl_Dimmermode
+									Text item=Smartlight_Toilet_Spegl_Presence icon="woman_1"
+								}
+							}
+							Frame label="Entertainment" {
+								Default item=Sonos_Bath_Controller
+								Slider item=Sonos_Bath_Volume icon="speaker"
+								Switch item=Sonos_Bath_Mute icon="speaker" mappings=[ON=On, OFF=Off]
+								Switch item=Sonos_Bath_LED icon="light" mappings=[ON=On, OFF=Off]
+								Text item=Sonos_Bath_CurrentTrack icon="info1"
+								Text item=Sonos_Bath_State icon="info1"
+								Image item=Sonos_Bath_Coverart
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Bad label="Bathroom Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Bad_T2 label="Bathroom Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Toilet label="Bathroom Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GF_Toilet label="Heating Valve" icon="valve"
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GF_Toilet1 label="Bathroom Window East [MAP(da.map):%s]"
+									Text item=Window_GF_Toilet2 label="Bathroom Window West [MAP(da.map):%s]"
+							}
+						}
+						// Bedroom
+						Text icon="bedroom" label="Bedroom" {
+							Frame label="Illumination" {
+								Slider item=Light_GF_Sove_Loft label="LED Ceiling [%d %%]"
+								Setpoint item=Light_GF_Sove_Loft label="LED Ceiling" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_GF_Sove_Seng label="LED Bed [%d %%]"
+								Setpoint item=Light_GF_Sove_Seng label="LED Bed" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light3_Dimmer label="Hue Led Strip [%d %%]"
+								Setpoint item=Light3_Dimmer label="Hue Led Strip [%d %%]" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Switch item=Light_GF_Sove_Bord label="Table Lamp" mappings=[ON=On, OFF=Off]
+								Switch item=Light_GF_Sove_TV label="TV" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Entertainment" {
+								Default item=Sonos_Bed_Controller
+								Slider item=Sonos_Bed_Volume icon="speaker"
+								Switch item=Sonos_Bed_Mute icon="speaker" mappings=[ON=On, OFF=Off]
+								Switch item=Sonos_Bed_LED icon="light" mappings=[ON=On, OFF=Off]
+								Text item=Sonos_Bed_CurrentTrack icon="info1"
+								Text item=Sonos_Bed_State icon="info1"
+								Image item=Sonos_Bed_Coverart
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Sove label="Bedroom Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Sove_T2 label="Bedroom Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Sove label="Bedroom Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Co2_Sove label="Bedroom CO2 [%.2f ppm]" icon="carbon_dioxide"
+								Text item=Humid_Sove label="Bedroom Humidity [%.2f %%rH]" icon="humidity"
+								Text item=Heating_GF_Sove label="Heating Valve" icon="valve"
+								Slider item=Sonos_Bed_Volume
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GF_Sove_Vindue1 label="Bedroom Window West [MAP(da.map):%s]"
+									Text item=Window_GF_Sove_Vindue2 label="Bedroom Window North [MAP(da.map):%s]"
+							}
+						}
+						// Office 1st floor
+						Text icon="office" label="Office" {
+							Frame label="Illumination" {
+								Switch item=Light_GF_Udestue label="Luceplan Armatur" mappings=[ON=On, OFF=Off]
+								Slider item=Light5_Dimmer label="Ensis Up [%d %%]"
+								Setpoint item=Light5_Dimmer label="Ensis Up [%d %%]" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light6_Dimmer label="Ensis Down [%d %%]"
+								Setpoint item=Light6_Dimmer label="Ensis Down [%d %%]" minValue=0 maxValue=100 step=2 icon="turned_off"
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Udestue label="Office Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Udestue_T2 label="Office Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Udestue label="Office Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GF_Udestue label="Heating Valve" icon="valve"
+							}
+							Frame label="Security" {
+
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GF_Udestue_Door label="Office Garden Door [MAP(da.map):%s]"
+									Text item=Window_GF_Udestue_Window label="Office Window [MAP(da.map):%s]"
+							}
+						}
+						// Bathroom children
+						Text icon="bath" label="Bathroom children" {
+							Frame label="Illumination" {
+								Slider item=Light_GF_Toilet1_Bald label="LED Canopy [%d %%]"
+								Setpoint item=Light_GF_Toilet1_Bald label="LED Canopy" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Switch item=Light_GF_Toilet1_Loft label="LED Ceiling" mappings=[ON=On, OFF=Off]
+							}
+						}
+						// Hallway
+						Text icon="corridor" label="Hallway" {
+							Frame label="Illumination" {
+								Switch item=Light_GF_Gang label="LED Ceiling" mappings=[ON=On, OFF=Off]
+							}
+						}
+						// Lauge
+						Text icon="boy_3" label="Lauge" {
+							Frame label="Illumination" {
+								Switch item=Light_GF_Lauge label="LED Ceiling" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Lauge label="Lauge's Room Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Lauge_T2 label="Lauge's Room Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Lauge label="Lauge's Room Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GF_Lauge label="Heating Valve" icon="valve"
+							}
+						}
+						// Wine
+						Text icon="corridor" label="Wineroom" {
+							Frame label="Illumination" {
+								Switch item=Light_GF_Wineroom label="LED Ceiling" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Wineroom label="Wine Room Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Wineroom_T2 label="Wine Room Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Wineroom label="Wine Room Temperature [%.2f °C]" icon="thermometer1"
+							}
+						}
+						// Andreas
+						Text icon="boy_2" label="Guestroom" {
+							Frame label="Illumination" {
+								Switch item=Light_GF_Guestroom label="LED Ceiling" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Guestroom label="Guest Room Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Guestroom_T2 label="Guest Room Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GF_Guestroom label="Guest Room Temperature [%.2f °C]" icon="thermometer1"
+							}
+						}
+						// Utility room
+						Text icon="corridor" label="Utility room" {
+							Frame label="Illumination" {
+								Switch item=Light_GF_Bryggers label="Ceiling Light" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GF_Bryggers_Door label="Front Door [MAP(da.map):%s]"
+							}
+						}
+						// Stairs
+						Text icon="cellar" label="Stairs" {
+							Frame label="Illumination" {
+								Switch item=Light_gGC label="Stairway Light" mappings=[ON=On, OFF=Off]
+							}
+						}
+						// Attic/Technic 1st floot
+						Text icon="electricity" label="Attic - Technical room" {
+							Switch item=Light_gGC label="Stairway Light" mappings=[ON=On, OFF=Off]
+						}
+					}
+				}
+				Text icon="house" label="Basement" {
+					Frame label="Basement" {
+						Text icon="girl_3" label="Anna" {
+							Frame label="Illumination" {
+								Switch item=Light_GC_Anna_Loft label="Ceiling Light" mappings=[ON=On, OFF=Off]
+								Switch item=Light_GC_Anna_Spot label="Cinema Lights" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Anna label="Anna's Room Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Anna_T2 label="Anna's Room Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GC_Anna label="Anna's Room Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GC_Anna label="Heating Valve" icon="valve"
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arm Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GC_Anna_Vindue1 label="Anna Window East [MAP(da.map):%s]"
+									Text item=Window_GC_Anna_Vindue2 label="Anna Window Center [MAP(da.map):%s]"
+									Text item=Window_GC_Anna_Vindue3 label="Anna Window West [MAP(da.map):%s]"
+							}
+						}
+						Text icon="office" label="Office" {
+							Frame label="Illumination" {
+								Switch item=Light_GC_Kontor_Loft label="Ceiling Light" mappings=[ON=On, OFF=Off]
+								Switch item=Light_GC_Kontor_Pendel label="Pendant Light" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Kontor label="Office Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Kontor_T2 label="Office Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GC_Kontor label="Office Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GC_Kontor label="Heating Valve" icon="valve"
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arming Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+									Text item=Window_GC_Kontor_Vindue label="Office Basement Window [MAP(da.map):%s]"
+							}
+						}
+						Text icon="corridor" label="Utility room " {
+							Frame label="Illumination" {
+								Switch item=Light_GC_Bryggers_Loft label="Ceiling Light" mappings=[ON=On, OFF=Off]
+							}
+							Frame label="Climate" {
+								Setpoint item=Setpoint_Bryggers label="Utility Room Setpoint T1 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Setpoint item=Setpoint_Bryggers_T2 label="Utility Room Setpoint T2 [%.2f °C]" minValue=10 maxValue=30 step=0.5 icon="setpoint"
+								Text item=Temperature_GC_Bryggers label="Utility Room Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Heating_GC_Bryggers label="Heating Valve" icon="valve"
+							}
+							Frame label="Security" {
+									Switch item=Alarm_System_Arm_Disarm label="Arming Alarm System" mappings=[ON=On, OFF=Off] icon="alarm"
+									Text item=Alarmsystem_Info label="Alarm System Info [MAP(Alarmsystem.map):%s]" icon="alarm"
+							}
+						}
+						Text icon="electricity" label="Technical room" {
+							Frame label="Illumination" {
+								Switch item=Light_GC_Teknik_Loft label="Ceiling Light" mappings=[ON=On, OFF=Off]
+								Text item=Light_GC_Teknik_Timer label="Energy Timer"
+							}
+							Frame label="Climate" {
+								Text item=Temperature_Teknik label="Technical Room Temperature [%.2f °C]" icon="thermometer1"
+							}
+						}
+					}
+				}
+				Text icon="colour_garage" label="Garage & Workshop" {
+					Frame label="Garage & Workshop Overview" {
+						Text icon="colour_garage" label="Garage" {
+							Frame label="Illumination" {
+								Slider item=Light_GA_Bil_Loft label="Ceiling Light"
+								Default item=Garageport_TopStop label="Garageport Top Stop"
+								Default item=Garageport_Bundstop label="Garageport Bund Stop"
+								Default item=UseruniqueID
+								Default item=GeofenceID
+								Default item=Geodirection
+								Default item=GeofenceIo155
+							}
+						}
+						Text icon="pantry" label="Workshop" {
+							Frame label="Illumination" {
+								Switch item=Light_GA_Vaerksted_Loft label="Ceiling Light" mappings=[ON=On, OFF=Off]
+							}
+						}
+					}
+				}
+				Text icon="lawn_mower1" label="Garden" {
+					Frame label="Garden" {
+						Text icon="colour_garage" label="Driveway" {
+							Frame label="Illumination" {
+								Slider item=Light_Have_Driveway label="Driveway [%d %%]"
+								Setpoint item=Light_Have_Driveway label="Driveway" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_Have_Downlight_West label="Downlight Overhang West[%d %%]"
+								Setpoint item=Light_Have_Downlight_West label="Downlight Overhang West" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_Have_Downlight_East label="Downlight Overhang East[%d %%]"
+								Setpoint item=Light_Have_Downlight_East label="Downlight Overhang East" minValue=0 maxValue=100 step=2 icon="turned_off"
+									Switch item=Smarthouse_PIR_Driveway label="PIR Driveway/PTZ Trigger" mappings=[ON=On, OFF=Off] icon="brightness"
+							}
+							Frame label="Climate" {
+
+								Text item=Temperature_Have label="Outdoor Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Max label="Maximum Outdoor Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Min label="Minimum Outdoor Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Max_Week label="Maximum Outdoor Temperature This Week [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Min_Week label="Minimum Outdoor Temperature This Week [%.2f °C]" icon="thermometer1"
+							}
+							Frame label="Weather" {
+								Text item=smarthouse_lux_Value label="Lux Level Outdoor [%.2f Lux]" icon="brightness"
+									Switch item=smarthouse_lux label="LUX Comparator ON/OFF" mappings=[ON=On, OFF=Off] icon="brightness"
+									Text item=Udv_humidity label="Humidity outdoor [%.2f %%r.H]" icon="humidity"
+									Text item=owmCurrentWindDirection icon="windsock"
+							}
+						}
+						Text icon="lawn_mower1" label="Park" {
+							Frame label="Illumination" {
+								Slider item=Light_Have_House label="SG House [%d %%]"
+								Setpoint item=Light_Have_House label="SG House" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=SG_Door label="SG Frontdoor[%d %%]"
+								Setpoint item=SG_Door label="SG Frontdoor" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_Have_Driveway label="Driveway [%d %%]"
+								Setpoint item=Light_Have_Driveway label="Driveway" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_Have_Downlight_West label="Downlight Overhang West [%d %%]"
+								Setpoint item=Light_Have_Downlight_West label="Downlight Overhang West" minValue=0 maxValue=100 step=2 icon="turned_off"
+								Slider item=Light_Have_Downlight_East label="Downlight Overhang East [%d %%]"
+								Setpoint item=Light_Have_Downlight_East label="Downlight Overhang East" minValue=0 maxValue=100 step=2 icon="turned_off"
+							}
+							Frame label="Climate" {
+								Text item=Temperature_Have label="Outdoor Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Max label="Maximum Outdoor Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Min label="Minimum Outdoor Temperature [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Max_Week label="Maximum Outdoor Temperature This Week [%.2f °C]" icon="thermometer1"
+								Text item=Weather_Min_Week label="Minimum Outdoor Temperature This Week [%.2f °C]" icon="thermometer1"
+							}
+							Frame label="Weather" {
+								Text item=smarthouse_lux_Value label="Lux niveau udvendig [%.2f Lux]" icon="brightness"
+									Switch item=smarthouse_lux label="LUX Komperator ON/OFF" mappings=[ON=On, OFF=Off] icon="brightness"
+									Text item=Udv_humidity label="Humidity Outdoor [%.2f %%r.H]" icon="humidity"
+									Text item=owmCurrentWindDirection icon="windsock"
+							}
+						}
+					}
+				}
+			}
+			Frame label="Device Control" {
+				Group item=gEnergi label="Energy Measurement" icon="electricity"
+				Text label="Energy History Charts" icon="info1" {
+					Frame label="Energy Grid History" {
+						Text item=MeterPower icon="info1"
+						Text item=LastHourPower icon="info1"
+						Text item=TodayPower icon="info1"
+						Text item=LastDayPower icon="info1"
+						Text item=LastWeekPower icon="info1"
+						Text item=LastMonthPower icon="info1"
+						Text item=LastYearPower icon="info1"
+					}
+				}
+				Text label="Freshwater" icon="tap" {
+					Text item= Fresh_Water
+					Text item= Fresh_Water_Day
+					Text item= Fresh_Water_Sensor
+					Text item= Fresh_Water_Test
+					Switch item= Tap_Test_Reset mappings=[ON="Click"]
+					Text item= Fresh_Water_Day_Alarm
+				}
+				Text label="Philips Hue" icon="rgblight" {
+					Text label="Dining Room LED Strip" icon="rgblight" {
+						// Bulb1
+						// Switch item= Light1_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light1_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light1_Dimmer label="Dimmer"
+						Colorpicker item= Light1_Color label="Hue colour picker"
+						Slider item= Light1_ColorTemp label="Colour temperature"
+						Switch item= Light1_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light1_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="TV Room LED Strip" icon="rgblight" {
+						// Bulb2
+						// Switch item= Light2_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light2_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light2_Dimmer label="Dimmer"
+						Colorpicker item= Light2_Color label="Colour picker"
+						Slider item= Light2_ColorTemp label="Colour temperature"
+						Switch item= Light2_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light2_Effect label="Effects" mappings=[ON=On, OFF=Off]
+						Switch item= LightsLava label="Lava effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Bedroom LED Strip" icon="rgblight" {
+						// Bulb3
+						// Switch item= Light3_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light3_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light3_Dimmer label="Dimmer"
+						Colorpicker item= Light3_Color label="Colour picker"
+						Slider item= Light3_ColorTemp label="Colour temperature"
+						Switch item= Light3_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light3_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Living Room Triangle Light" icon="rgblight" {
+						// Bulb4
+						// Switch item= Light4_Toggle label="HUE" mappings=[ON=On, OFF=Off]
+						Switch item= Light4_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light4_Dimmer label="Dimmer"
+						Colorpicker item= Light4_Color label="Colour picker"
+						Slider item= Light4_ColorTemp label="Colour temperature"
+						Switch item= Light4_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light4_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Kitchen Hood Accent" icon="rgblight" {
+						// Bulb10
+						// Switch item= Light10_Toggle label="HUE" mappings=[ON=On, OFF=Off]
+						Switch item= Light10_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light10_Dimmer label="Dimmer"
+						Colorpicker item= Light10_Color label="Colour picker"
+						Slider item= Light10_ColorTemp label="Colour temperature"
+						Switch item= Light10_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light10_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Ensis UP" icon="rgblight" {
+						// Bulb5
+						// Switch item= Light5_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light5_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light5_Dimmer label="Dimmer"
+						Colorpicker item= Light5_Color label="Colour picker"
+						Slider item= Light5_ColorTemp label="Colour temperature"
+						Switch item= Light5_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light5_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Ensis Down" icon="rgblight" {
+						// Bulb6
+						// Switch item= Light6_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light6_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light6_Dimmer label="Dimmer"
+						Colorpicker item= Light6_Color label="Colour picker"
+						Slider item= Light6_ColorTemp label="Colour temperature"
+						Switch item= Light6_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light6_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Festivitas" icon="rgblight" {
+						// Bulb13
+						// Switch item= Light13_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light13_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light13_Dimmer label="Dimmer"
+						Colorpicker item= Light13_Color label="Colour picker"
+						Slider item= Light13_ColorTemp label="Colour temperature"
+						Switch item= Light13_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light13_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Luceplan Livingroom" icon="rgblight" {
+						Slider item= Light14_Dimmer label="Dimmer"
+						Slider item= Light14_ColorTemp label="Colour temperature"
+
+					}
+					Text label="MOON Maxi" icon="rgblight" {
+						// Bulb7
+						//Switch item= Light7_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light7_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light7_Dimmer label="Dimmer"
+						Slider item= Light7_ColorTemp label="Colour temperature"
+						Switch item= Light7_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light7_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="MOON Midi" icon="rgblight" {
+						// Bulb8
+						// Switch item= Light8_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light8_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light8_Dimmer label="Dimmer"
+						Slider item= Light8_ColorTemp label="Colour temperature"
+						Switch item= Light8_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light8_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="MOON Mini" icon="rgblight" {
+						// Bulb9
+						//Switch item= Light9_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light9_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light9_Dimmer label="Dimmer"
+						Slider item= Light9_ColorTemp label="Colour temperature"
+						Switch item= Light9_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light9_Effect label="Effects" mappings=[ON=On, OFF=Off]
+
+					}
+					Text label="VP Kugle" icon="rgblight" {
+						// Bulb17
+						//Switch item= Light17_Toggle label="Hue" mappings=[ON=On, OFF=Off]
+						Switch item= Light17_ON label="Fade" mappings=[ON=On, OFF=Off]
+						Slider item= Light_GF_VP_HUE_Bulb label="Dimmer"
+						Slider item= Light17_ColorTemp label="Colour temperature"
+						Switch item= Light17_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
+						Switch item= Light17_Effect label="Effects" mappings=[ON=On, OFF=Off]
+					}
+					Text label="Office Dimmer Switch" icon="switch" {
+
+						Switch item= Hue_Switch_2
+						Text item= Hue_Switch_2_Battery_Level label="Battery Level"
+					}
+					Text label="Living Room Dimmer Switch" icon="switch" {
+
+						Switch item= Hue_Switch_1
+						Text item= Hue_Switch_1_Battery_Level label="Battery Level"
+					}
+				}
+				Text label="Carbondioxide" icon="carbon_dioxide" {
+					Text item=Nilan_Input_CO2 icon="carbon_dioxide"
+					Text item=Co2_Sove
+					Webview url="/static/Carbondioxide.html" height=12 icon=none
+				}
+				Text label="Main Hot Water Boiler" icon="water_heater" {
+					Text item=Boiler_Top icon="water_heater"
+					Text item=Boiler_Bottom icon="water_heater"
+					Text item=District_Heating icon="valve"
+					Setpoint item=District_Heation_Setpoint label="District Heating Setpoint " minValue=5 maxValue=65 step=0.5 icon="settings_colour"
+					Text item=metz_out1
+					Text item=metz_out1_10v
+					Text item=EM24_Boil_Energi_24_kW
+					Text item=Boiler_Energy_New
+					Text item=Solar_Diff_Send label="Energy sent to grid" visibility=[Solar_Diff_Send>=0] valuecolor=[Solar_Diff_Send>=0="green"] icon="up_arrow_blue"
+					Text item=EM24_Energy_Grid label="Energy bought from grid" visibility=[EM24_Energy_Grid>=0] valuecolor=[EM24_Energy_Grid>=0="red"] icon="down_arrow_red"
+					Text item=EM24_Boil_Charge_Avrg
+					Default item=metz_out_run
+					Frame label="Graphs" {
+						Webview url="/static/Hotwater.html" height=12 icon=none
+					}
+				}
+				Text label="Solar Energy System" icon="solar_energy" {
+					Frame label="SMA Inverter Information" {
+						Text item=SMA_Grid_Contactor icon="health_care"
+						Text item=SMA_Status icon="health_care"
+						Text item=MaxPower icon="health_care"
+						Text item=SetMaxPower icon="health_care"
+						Text item=SMA_Status_Operation icon="health_care"
+						Text item=SMA_Country icon="health_care"
+						// Text item=SMA_Ground_Fault
+					}
+					Frame label="SMA DC Side" {
+						Text item=SMA_Power_A icon="solar_energy"
+						Text item=SMA_Power_B icon="solar_energy"
+						Text item=DCVolt_input_A icon="solar_energy"
+						Text item=DCVolt_input_B icon="solar_energy"
+						Text item=DCCur_input_A icon="solar_energy"
+						Text item=DCCur_input_B icon="solar_energy"
+					}
+					Frame label="SMA AC Side" {
+						Text item=SMA_Daily_Yield icon="solar_energy"
+						Text item=SMA_Total_Yield icon="solar_energy"
+						Text item=SMA_Active_Power icon="solar_energy"
+						Text item=PowerL1 icon="solar_energy"
+						Text item=PowerL2 icon="solar_energy"
+						Text item=PowerL3 icon="solar_energy"
+						Text item=voltG1 icon="solar_energy"
+						Text item=voltG2 icon="solar_energy"
+						Text item=voltG3 icon="solar_energy"
+					}
+					Frame label="Energy Net Balance" {
+						Text item=Solar_Diff_Send label="Grid Injection" visibility=[Solar_Diff_Send>=0] valuecolor=[Solar_Diff_Send>=0="green"] icon="up_arrow_blue"
+						Text item=EM24_Energy_Grid label="Grid Supply" visibility=[EM24_Energy_Grid>=0] valuecolor=[EM24_Energy_Grid>=0="red"] icon="down_arrow_red"
+						Text item=Solar_Diff_Send_Phase1 label="Grid Injection (L1) " visibility=[Solar_Diff_Send_Phase1>=0] valuecolor=[Solar_Diff_Send_Phase1>=0="green"] icon="up_arrow_blue"
+						Text item= EM24_Energy_Balance_Phase1 label="Grid Supply (L1) " visibility=[EM24_Energy_Balance_Phase1>=0] valuecolor=[EM24_Energy_Balance_Phase1>=0="red"] icon="down_arrow_red"
+						Text item=Solar_Diff_Send_Phase2 label="Grid Injection (L2) " visibility=[Solar_Diff_Send_Phase2>=0] valuecolor=[Solar_Diff_Send_Phase2>=0="green"] icon="up_arrow_blue"
+						Text item= EM24_Energy_Balance_Phase2 label="Grid Supply (L2) " visibility=[EM24_Energy_Balance_Phase2>=0] valuecolor=[EM24_Energy_Balance_Phase2>=0="red"] icon="down_arrow_red"
+						Text item=Solar_Diff_Send_Phase3 label="Grid Injection (L3) " visibility=[Solar_Diff_Send_Phase3>=0] valuecolor=[Solar_Diff_Send_Phase3>=0="green"] icon="up_arrow_blue"
+						Text item= EM24_Energy_Balance_Phase3 label="Grid Supply (L3) " visibility=[EM24_Energy_Balance_Phase3>=0] valuecolor=[EM24_Energy_Balance_Phase3>=0="red"] icon="down_arrow_red"
+					}
+					Frame label="Graphical charts" {
+						Webview url="/static/Solar.html" height=12 icon=none
+						Webview url="/static/Solar1.html" height=12 icon=none
+						// Webview url="/static/norlys_spot_price.html" height=12 icon=none
+					}
+				}
+				Text label="Server Room Cooling" icon="air_conditioner" {
+						Switch item=HP_RunSet label="Heatpump" mappings=[ON=On, OFF=Off] icon="air_conditioner"
+						Selection item=HP_Mode mappings=[COOL="COOL", HEAT="HEAT", DRY="DRY", AUTO="AUTO"] icon="settings_colour"
+						Selection item=HP_Fan mappings=[1="1", 2="2", 3="3", 4="4", AUTO="AUTO", QUIET="QUIET"] icon="blue_fan"
+						Selection item=HP_Vane mappings=[1="1", 2="2", 3="3", 4="4", 5="5", AUTO="AUTO", SWING="SWING"] icon="swing"
+						Selection item=HP_WideVane mappings=["<<"="<<", "<"="<", "|"="|", ">"=">", ">>"=">>", "<>"="<>", SWING="SWING"] icon="swing"
+						Setpoint item=HP_Temp minValue=16 maxValue=30 step=1 icon="thermometer1"
+						Text item=HP_Status icon="fan_on"
+						Text item=HP_RoomTemp icon="thermometer1"
+						Text item=Temperature_Teknik icon="thermometer1"
+						Text item=EM111_Energi_cool_kW label="Energy"
+						Default item=Mitsubishi_Server_Avrg_Energy
+						Switch item=Mitsubishi_Server_Override mappings=[ON=On, OFF=Off]
+					Frame label="Ventilation System" {
+						Setpoint item=Vent_Server_SP1 label="Ventilation Serverroom T1" minValue=16 maxValue=25 step=0.5 icon="setpoint"
+						Default item=Vent_Server_Aout
+					}
+					Frame label="Heatpump Energy Usage" {
+						Webview url="/static/Heatpump_Energy.html" height=12 icon=none
+						Webview url="/static/Mitsubishi.html" height=12 icon=none
+						Webview url="/static/ventilator_speed.html" height=12 icon=none
+					}
+				}
+				Text label="Living Room AC" icon="air_conditioner" {
+					Frame label="Control" {
+						Switch item=Mitsubishi_Drive_On_Off label="Power" mappings=[1="ON", 0="OFF"]
+							Selection item=Mitsubishi_Drive_Mode label="Drive Mode" mappings=[1="Heating", 2="Humidity reduction", 3="Cooling", 7="Ventilation, clean air operation", 8="Auto Operation", 9="i-see heating operation *", 10="i-see humidity reduction *", 11=" i-see cooling *"] icon="settings_colour"
+							Selection item=Mitsubishi_Air_Direction label="Air Direction" mappings=[0="AUTO", 1="Position 1", 2="Position 2", 3="Position 3", 4="Position 4", 5="Position 5", 7="SWING"] icon="swing"
+							Selection item=Mitsubishi_Fan_Speed label="Fan Speed" mappings=[0="AUTO", 2="Quiet", 3="Weak", 5="Strong", 6="Very strong (SH i)" ] icon="blue_fan"
+							Text item=Temperature_Panasonic label="Room Temperature" icon="thermometer1"
+							Text item=Mitsubishi_Room_Temperature label="Air flow Temperature" icon="thermometer1"
+							Setpoint item=Mitsubishi_Temperature_Setpoint label="Temperature Setpoint" minValue=16 maxValue=31 step=1 icon="thermometer1"
+							Switch item=Mitsubishi_Living_Override icon="settings_override" mappings=[ON=On, OFF=Off]
+						Text item=Mitsubishi_Living_Avrg_Energy
+							Selection item=Mitsubishi_Fan_Speed_dim label="Fan Speed" mappings=[0="AUTO", 2="Quiet", 3="Weak", 5="Strong", 6="Very strong (SH i)" ] icon="blue_fan"
+					}
+					Frame label="Timer" {
+							Switch item=Mitsuibshi_timer label="Start timer" mappings=[ON=On, OFF=Off] icon="timer_set"
+							Selection item=Mitsubishi_Timer_Selector mappings=[0 = "Off", 15 = "15 minutes",30 = "30 minutes",60 = "60 minutes",120 = "120 minutes"] icon="timer_set"
+							Text item=Mitsubishi_Timer_Remaining visibility=[Mitsubishi_Timer_Selector>0] icon="timer_count"
+							Text item=Mitsubishi_Timer_DateTime_Start icon="schedule"
+							Text item=Mitsubishi_Timer_DateTime_Stop icon="schedule"
+					}
+					Frame label="Settings" {
+						Setpoint item=Heat_SP1_Mitsubishi label="Heat Setpoint 1" minValue=10 maxValue=31 step=0.5
+						Setpoint item=Cool_SP1_Mitsubishi label="Cool Setpoint 1" minValue=10 maxValue=31 step=0.5
+						Setpoint item=Heat_SP2_Mitsubishi label="Heat Setpoint 2" minValue=10 maxValue=31 step=0.5
+						Setpoint item=Cool_SP2_Mitsubishi label="Cool Setpoint 2" minValue=10 maxValue=31 step=0.5
+						Text item=Mitsubishi_BMS_Room_Temperature_signed label="BMS Room Temperature" icon="thermometer1"
+						Setpoint item=Mitsubishi_BMS_Virtual_Setpoint label="BMS Virtual Setpoint" minValue=10 maxValue=50 step=1 icon="thermometer1"
+						Setpoint item=Mitsubishi_Deadband_Heating_Setpoint label="Deadband Heating Setpoint" minValue=10 maxValue=40 step=1 icon="thermometer1"
+						Setpoint item=Mitsubishi_Deadband_Cooling_Setpoint label="Deadband Cooling Setpoint" minValue=10 maxValue=40 step=1 icon="thermometer1"
+						Webview url="/static/Mitsubishi_living.html" height=12 icon=none
+					}
+					Frame label="Information" {
+						Text item=Mitsubishi_System_Type_Detected label="System Type Detected" icon="settings_colour"
+						Text item=Mitsubishi_Modbus_Slave_ID label="Modbus Slave ID" icon="settings_colour"
+						Text item=Mitsubishi_Modbus_Baud_Rate label="Modbus RS-485 Baud Rate" icon="settings_colour"
+						Text item=Mitsubishi_Parity_Type label="RS-485 Parity Type" icon="settings_colour"
+						Text item=Mitsubishi_Modbus_Comms_Counter label="Modbus Comms Counter" icon="settings_colour"
+						Text item=Mitsubishi_Fault_Code_decimal label="Fault Code (decimal)" icon="settings_colour"
+						Text item=Mitsubishi_Deadband_Enabled_State label="Deadband Enabled State" icon="settings_colour"
+					}
+				}
+				Text label="Kitchen Dishwasher" icon="dishwasher" {
+					Switch item=DishwasherSimulator_PowerState label="Power" mappings=[ON=On, OFF=Off]
+					Selection item=DishwasherSimulator_Basic_Action_State label="Basic Action"
+					Selection item=DishwasherSimulator_SelectedProgramState label="Selected Program" Default item=DishwasherSimulator_DoorState label="Door State"
+					Text item=DishwasherSimulator_OperationState label="Operation"
+					Text item=DishwasherSimulator_RemoteStartAllowanceState label="Remote Start Allowance"
+					Text item=DishwasherSimulator_RemoteControlActiveState label="Remote Control Activation"
+					Text item=DishwasherSimulator_ActiveProgramState label="Active Program"
+					Text item=DishwasherSimulator_RemainingProgramTimeState label="Remaining program time [%d min]"
+					Text item=DishwasherSimulator_ProgramProgressState label="Progress"
+					Switch item=DishwasherSimulator_Solar label="Free energy wash" mappings=[ON=On, OFF=Off]
+					Text item=Dishwasher_Avrg_Energy
+				}
+				Text label="Dreamcatcher" icon="air_conditioner" {
+					Frame label="Rear Shock" {
+						Default item=Pressure_psi
+						Default item=Pressure_bar
+						Default item=Pressure_kPa
+						Default item=Temperature_C
+						Default item=Battery
+						Default item=BTrssi
+						Default item=Connected_ssid
+						Default item=Connected_ip_address
+						Default item=Alarm
+						Default item=Dc_Status
+						Default item=Innov
+						Default item=springRPM
+						Default item=powersource
+						Default item=fuel_level
+						Default item=throttle
+						Default item=enginerpm
+						Default item=can_speed
+						Default item=engineload
+						// Webview url="/static/rearshock.html" height=12 icon=none
+					}
+				}
+				Text label="Fresh Air System" icon="ventilation" {
+					Frame label="Fresh Air Management" {
+							Switch item=Nilan_Control_RunSet label="Ventilation" mappings=[ON=On, OFF=Off] icon="ventilation"
+							Selection item=Nilan_Control_ModeSet label="Ventilation Mode" mappings=[0="OFF", 1="Heat", 2="Cool", 3="Auto", 4="Service"] icon="settings_colour"
+							Selection item=Nilan_Control_State label="Operating mode" mappings=[0="Off", 1="Shift", 2="Stop", 3="Start", 4="Standby", 5="Ventilation stop", 6="Ventilation", 7="Heating", 8="Cooling", 9="Hot water", 10="Legionella", 11="Cooling + hot water", 12="Central heating", 13="Defrost", 14="Frost secure", 15="Service", 16="Alarm", 17="Heating + hot water"]
+						Switch item=Nilan_Control_VentSet label="Speed" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+						Setpoint item=Nilan_Control_TempSet label="Setpoint Bypass Valve [%.1f °C]" minValue=5 maxValue=30 step=1
+							Switch item=Nilan_Override label="Overide Solar Control" mappings=[ON=On, OFF=Off] icon="ventilation"
+					}
+					Frame label="Fresh Air System status" {
+						Text item=Activated_by_status icon="info1"
+						Text item=AirBypass_IsOpen label="Bypass Status" icon="info1"
+							Selection item=Nilan_AirTemp_CoolSet label="Cooling Offset" mappings=[0="Off (No cooling allowed)", 1="Set + 0 °C ", 2="Set + 1 °C", 3="Set + 2 °C", 4="Set + 3 °C", 5="Set + 4 °C", 6="Set + 5 °C", 7="Set + 7 °C", 8="Set + 10 °C"] icon="thermometer1"
+							Switch item=Smarthouse_Motorventil mappings=[ON=Closed, OFF=Open] icon="valve"
+							Text item=Nilan_Alarm_List_1_Importance label="Ventilation status" icon="info1"
+							Text item=Nilan_airFlow_toFiltDay label="Days to next air filter change" icon="info1"
+							Text item=Nilan_airFlow_sinceFiltDay label="Days since last air filter change " icon="info1"
+					}
+					Frame label="Fresh Air System Sensors" {
+						Text item=Nilan_Output_InletSpeed
+						Text item=Nilan_Output_ExhaustSpeed
+						Text item=Nilan_Input_T15_Room icon="thermometer1"
+						Text item=Nilan_Input_T3_Exhaust icon="thermometer1"
+						Text item=Nilan_Input_T4_Outlet icon="thermometer1"
+						Text item=Nilan_Input_T7_Inlet icon="thermometer1"
+						Text item=Nilan_Input_T8_Outdoor icon="thermometer1"
+						Text item=Nilan_Input_RH
+						Text item=Udv_humidity
+						Text item=Nilan_Input_CO2 icon="carbon_dioxide"
+					}
+					Frame label="Temporary High Speed" {
+							Selection item=Nilan_Timer_Selector mappings=[0 = "Off",15 = "15 minutes",30 = "30 minutes",60 = "60 minutes",120 = "120 minutes"] icon="timer_set"
+							Text item=Nilan_Timer_Remaining visibility=[Nilan_Timer_Selector>0] icon="timer_count"
+							Text item=Nilan_Timer_DateTime_Start icon="schedule"
+							Text item=Nilan_Timer_DateTime_Stop icon="schedule"
+					}
+					Frame label="Humidity Start Condition" {
+						Text item=Nilan_Input_RH_Avrg
+						Text item=Nilan_Input_RH_Trig
+					}
+					Frame label="Ventilator Adjust" {
+						Setpoint item=Nilan_AirFlow_InletSpd_1 label="Inlet speed - Step1" minValue=20 maxValue=100 step=1
+						Setpoint item=AirFlow_ExhaustSpd_1 label="Exhaust speed - Step1" minValue=20 maxValue=100 step=1
+						Setpoint item=Nilan_AirFlow_InletSpd_2 label="Inlet speed - Step2" minValue=20 maxValue=100 step=1
+						Setpoint item=AirFlow_ExhaustSpd_2 label="Exhaust speed - Step2" minValue=20 maxValue=100 step=1
+						Setpoint item=Nilan_AirFlow_InletSpd_3 label="Inlet speed - Step3" minValue=20 maxValue=100 step=1
+						Setpoint item=AirFlow_ExhaustSpd_3 label="Exhaust speed - Step3" minValue=20 maxValue=100 step=1
+						Setpoint item=Nilan_AirFlow_InletSpd_4 label="Inlet speed - Step4" minValue=20 maxValue=100 step=1
+						Setpoint item=AirFlow_ExhaustSpd_4 label="Exhaust speed - Step4" minValue=20 maxValue=100 step=1
+					}
+					Frame label="Settings" {
+						Setpoint item=Nilan_AirTemp_TempMinSum label="Inlet temp min summer" minValue=5 maxValue=14 step=1
+						Setpoint item=Nilan_AirTemp_TempMinWin label="Inlet temp min winter" minValue=5 maxValue=25 step=1
+						Setpoint item=Nilan_AirTemp_TempMaxSum label="Inlet temp max summer" minValue=5 maxValue=16 step=1
+						Setpoint item=Nilan_AirTemp_TempMaxWin label="Inlet temp max winter" minValue=5 maxValue=35 step=1
+						Setpoint item=Nilan_AirTemp_TempSummer label="Summer/winter limit" minValue=5 maxValue=30 step=1
+						Setpoint item=Nilan_AirTemp_NightDayLim label="Outdoor day temperature for night cooling activation" minValue=20 maxValue=40 step=1
+						Setpoint item=Nilan_AirTemp_NightSet label="Free energy night cooling room setpoint" minValue=10 maxValue=30 step=1
+						Selection item=Nilan_AirTemp_SensorSelect mappings=[0 = "User panel",1 = "External sensor",2 = "Inlet channel",3 = "Exhaust channel"]
+						Setpoint item=CentralHeat_HeatExtern label="Regulation deadband external room heating" minValue=-5 maxValue=5 step=1
+						Selection item=AirFlow_CoolVent label="High fan speed at high indoor temperature" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+						Setpoint item=AirFlow_WinterTemp label="Low outdoor temperature" minValue=-20 maxValue=10 step=1
+						Selection item=AirFlow_WinerVent label="Fan speed at low outdoor temperature" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+						Selection item=AirFlow_TestSelect label="Day for automatic test" mappings=[0="Off", 1="Mo", 2="Tu", 3="We", 4="Th",5="Fr", 6="Sa", 7="Su"]
+						Selection item=AirHeat_Type mappings=[0 = "No additional heat",1 = "Electrical",2 = "Electric on binary relays",3 = "Water"]
+						Setpoint item=AirHeat_Delay label="Delay timer for after-heat activation" minValue=0 maxValue=60 step=1
+					}
+					Frame label="Fresh Air System temperature" {
+						Webview url="/static/Ventilation.html" height=12 icon=none
+					}
+				}
+				Text label="Connectivity Status" icon="info1" {
+					Frame label="Fresh Air System" {
+						Text item=Nilan_error icon="info1"
+						Text item=Nilan_success icon="info1"
+					}
+					Frame label="Smart House" {
+						Text item=Smarthouse_error icon="info1"
+						Text item=Smarthouse_success icon="info1"
+					}
+					Frame label="Living Room AC" {
+						Text item=Mitsubishi_living_error icon="info1"
+						Text item=Mitsubishi_living_success icon="info1"
+					}
+					Frame label="SMA Inverter" {
+						Text item=SMA_error icon="info1"
+						Text item=SMA_success icon="info1"
+					}
+					Frame label="METZ Output Module" {
+						Text item=Metz_error icon="info1"
+						Text item=Metz_success icon="info1"
+					}
+					Frame label="Carbondioxide Sensor" {
+						Text item=carbondioxide_error icon="info1"
+						Text item=carbondioxide_success icon="info1"
+					}
+					Frame label="Kamstrup Multical 603" {
+						Text item=kampstrup_error icon="info1"
+						Text item=kampstrup_success icon="info1"
+					}
+					Frame label="Smarthouse Terndrupvej" {
+						Text item=Smarthouse_error_Terndrupvej icon="info1"
+						Text item=Smarthouse_success_Terndrupvej icon="info1"
+					}
+				}
+				Text label="Fingerprint Reader" icon="lock" {
+					Default item=Reader_Status
+					Default item=Reader_State
+					Default item=Reader_Mode
+					Default item=Reader_Match
+					Default item=Reader_FingerprintID
+					Default item=Reader_UserId
+					Default item=Reader_Confidence
+					Default item=Reader_gate
+					Default item=FingerprintID_last
+					Selection item=enroll_fingerprint mappings=[10="Id 10", 11="Id 11", 12="Id 12", 13="Id 13", 14="Id 14", 15="Id 15", 16="Id 16", 17="Id 17", 18="Id 18", 19="Id 19"]
+					Selection item=delete_fingerprint mappings=[10="Id 10", 11="Id 11", 12="Id 12", 13="Id 13", 14="Id 14", 15="Id 15", 16="Id 16", 17="Id 17", 18="Id 18", 19="Id 19"]
+				}
+				Text label="Home Security" icon="shield" {
+					Frame label="Kirkegade" {
+						Text item=Rfid_receive_num icon="info1"
+						Text item=Rfid_receive icon="info1"
+						Default item=Last_Scan_Stamp icon="Time"
+					}
+				}
+			}
+			Frame label="My Company" {
+				Video url="http://openhab5.agesen.dk:8080/ipcamera/Company/ipcamera.mjpeg" encoding="mjpeg"
+				Default item=CompanyPan label="Camera Pan (Left/Right)" icon="speed-camera"
+				Default item=CompanyTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
+				Setpoint item=CompanyZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
+				Text label="Company Light" icon="turned_off" {
+					Frame label="Grovlager" {
+						Slider item=Light_Grovlager label="Grovlager Light [%d %%]"
+						Text label="SG Amature - Details" icon="info1" {
+							Setpoint item=Light_Grovlager label="Dimmer Setpoint" minValue=0 maxValue=100 step=1 icon="turned_off"
+							Setpoint item=Light_Grovlager_Constant label="Constant setpoint" minValue=101 maxValue=400 step=1 icon="turned_off"
+							Text item=Smartlight_Lux_Grovlager label="LUX Niveau [%d Lux]" icon="brightness"
+							Text item=Smartlight_Grovlager_Timer label="Energy Timer [%d s]" icon="timer_count"
+							Text item=Smartlight_Grovlager_Virtualoff
+							Text item=Smartlight_Grovlager_Dimmermode
+							Text item=Smartlight_Grovlager_Presence icon="woman_1"
+						}
+					}
+					Frame label="Finlager" {
+						Slider item=Light_Finlager label="Finlager Light [%d %%]"
+						Text label="SG Amature - Details" icon="info1" {
+							Setpoint item=Light_Finlager label="Dimmer Setpoint" minValue=0 maxValue=100 step=1 icon="turned_off"
+							// Text item=Smartlight_Lux_Finlager label="LUX Niveau [%d Lux]" icon="brightness"
+							Text item=Smartlight_Finlager_Timer label="Energy Timer [%d s]" icon="timer_count"
+							Text item=Smartlight_Finlager_Virtualoff
+							Text item=Smartlight_Finlager_Dimmermode
+							Text item=Smartlight_Finlager_Presence icon="woman_1"
+						}
+					}
+					Frame label="Office" {
+						Switch item=Light_Office label="Office Light" mappings=[ON=On, OFF=Off]
+					}
+					Frame label="Workshop" {
+						Switch item=Light_Workshop label="Workshop Light" mappings=[ON=On, OFF=Off]
+					}
+					Frame label="Kitchen" {
+						Switch item=Light_Kitchen label="Kitchen Light" mappings=[ON=On, OFF=Off]
+					}
+					Frame label="Bathroom" {
+						Switch item=Light_Bathroom label="Bathroom Light" mappings=[ON=On, OFF=Off]
+					}
+					Frame label="Ceiling" {
+						Switch item=Light_Ceiling label="Ceiling Light" mappings=[ON=On, OFF=Off]
+					}
+					Frame label="Outdoor" {
+						Slider item=Light_Udvendig label="Outdoor Light Ceiling [%d %%]"
+						Slider item=Light_Udvendig_Extension label="Outdoor Light Extension [%d %%]"
+						Text label="SG Amature - Details" icon="info1" {
+							Setpoint item=Light_Udvendig label="Dimmer setpoint Ceiling" minValue=0 maxValue=100 step=1 icon="turned_off"
+							Setpoint item=Light_Udvendig_Extension label="Dimmer setpoint Extension" minValue=0 maxValue=100 step=1 icon="turned_off"
+						}
+					}
+				}
+				//Text icon="thermometer1" label="Heating" {
+					//Frame label="Grovlager" {
+						// Text item=Smartlight_Grovlager_Presence icon="woman_1"
+						//}
+						// }
+						Text label="Company Security System" icon="shield" {
+							Frame label="Alarm System" {
+									Switch item=Tex_QuickArm label="Alarm" mappings=[ON="Switch on now"] visibility=[Tex_QuickArm_visibility==ON] icon="blinds"
+									Text item=Allcontacts label="[%d Contacts are open]" icon="window" {
+										Text item=Tex_Zone_Z002
+										Text item=Tex_Zone_Z003
+										Text item=Tex_Zone_Z004
+										Text item=Tex_Zone_Z005
+										Text item=Tex_Zone_Z006
+								}
+							}
+							Frame label="Alarm status" {
+								Text item=Tex_Alarm_Status label="The alarm is" valuecolor=[0="green", 1="red", 2="orange", 3="red", 4="red"]
+								Text item=Tex_Alarm_Status_Update label="On"
+								Text item=Tex_Alarm_ArmDisarmUser label="By the user"
+							}
+							Frame label="Active Alarm" {
+								Text item=Tex_Alarm_Textline1 label="Alarm panel"
+								Text item=Tex_Alarm_Textline2 label="" icon="none"
+								Switch item=Tex_Alarm_Keypad label="Arm Alarm" icon="lock" mappings=[KEY1="1", KEY2="2", KEY3="3"]
+								Switch item=Tex_Alarm_Keypad label="" icon="none" mappings=[KEY4="4", KEY5="5", KEY6="6"]
+								Switch item=Tex_Alarm_Keypad label="" icon="none" mappings=[KEY7="7", KEY8="8", KEY9="9"]
+								Switch item=Tex_Alarm_Keypad label="" icon="none" mappings=[KEYN="❌", KEY0="0", KEYY="✔️"]
+							}
+							Frame label="History" {
+								Text item=Tex_History_01 icon="none"
+								Text item=Tex_History_02 icon="none"
+								Text item=Tex_History_03 icon="none"
+								Text item=Tex_History_04 icon="none"
+								Text item=Tex_History_05 icon="none"
+								Text item=Tex_History_06 icon="none"
+								Text item=Tex_History_07 icon="none"
+								Text item=Tex_History_08 icon="none"
+								Text item=Tex_History_09 icon="none"
+								Text item=Tex_History_10 icon="none"
+							}
+							Frame label="Status Alarm contacts" {
+								Group item=gAlarmcontact
+								Switch item=Tex_Get_LSTATUS
+								Switch item=Tex_Alarm_Keypad_visibility
+								Text item=Tex_Alarm_Keypad_counter
+								Switch item=Tex_QuickArm_visibility
+							}
+						}
+					}
+					Frame label="Weather And Astro" {
+						Text label="Astro" icon="brightness" {
+							Frame label="Nu" {
+								Text item=SunriseTime icon="sunrise"
+								Text item=SunsetTime icon="sunset"
+								Text item=SunElevation icon="sunmoon" visibility=[SunElevation > 0]
+								Text item=MoonElevation icon="sunmoon" visibility=[MoonElevation > 0]
+								Text item=MoonPhase
+								Text item=Zodiac icon="zodiac"
+								Text item=MoonFull icon="fullmoon" visibility=[MoonPhase == WAXING_CRESCENT, MoonPhase == FIRST_QUARTER, MoonPhase == WAXING_GIBBOUS, MoonPhase == FULL]
+								Text item=MoonNew icon="fullmoon" visibility=[MoonPhase == WANING_GIBBOUS, MoonPhase == THIRD_QUARTER, MoonPhase == WANING_CRESCENT, MoonPhase == NEW]
+								Text item=Sun_Height
+								Text item=Sun_Azimut
+								Text item=Sun_Dawn_Solar
+								Text item=Sun_Dawn_Civil
+								Text item=Sun_Dawn_Nautical
+								Text item=Sun_Dawn_Astronomical
+								Text item=Sun_Dusk_Civil
+								Text item=Sun_Dusk_Nautical
+								Text item=Sun_Dusk_Astronomical
+							}
+						}
+						Text label="Weather" icon="brightness" {
+							Frame label="Local Weather" {
+								Image item=owmCurrentIcon
+								Text item=owmCurrentCondition
+								/*Text item=owmCurrentConditionId
+								Text item=owmCurrentIconId*/
+								Text item=owmCurrentTemperature
+								Text item=owmCurrentPressure
+								Text item=owmCurrentHumidity
+								Text item=owmCurrentWindSpeed
+								Text item=owmCurrentWindDirection
+								Text item=owmCurrentCloudiness
+								Text item=owmCurrentRain
+								Text item=owmCurrentSnow
+							}
+							Frame label="Weather forecast" {
+								Group item=gOwmForecastHour label="Weather forecast" {
+									Frame label="3h Weather forecast" {
+										Image item=owmForecastHour03Icon
+										Text item=owmForecastHour03Condition
+										Text item=owmForecastHour03Temperature
+										Text item=owmForecastHour03Pressure
+										Text item=owmForecastHour03Humidity
+										Text item=owmForecastHour03WindSpeed
+										Text item=owmForecastHour03WindDirection
+										Text item=owmForecastHour03Cloudiness
+										Text item=owmForecastHour03Rain
+										Text item=owmForecastHour03Snow
+										Text item=owmForecastHour03Timestamp
+										Group item=gOwmForecastHour03 label="3h Weather forecast"
+										Group item=gOwmForecastHour06 label="6h Weather forecast"
+										Group item=gOwmForecastHour09 label="9h Weather forecast"
+										Group item=gOwmForecastHour12 label="12h Weather forecast"
+										Group item=gOwmForecastHour15 label="15h Weather forecast"
+										Group item=gOwmForecastHour18 label="18h Weather forecast"
+										Group item=gOwmForecastHour21 label="21h Weather forecast"
+										Group item=gOwmForecastHour24 label="24h Weather forecast"
+										Group item=gOwmForecastHourStation label="Weather forecast Station Details"
+									}
+								}
+								Group item=gOwmCurrentStation label="Local Weather Station Details"
+							}
+						}
+					}
+					Text label="AIR Quality" icon="line" {
+						Frame label="H.C.Andersens Boulevard, Copenhagen, Denmark" {
+							Text item=Aqi_Level valuecolor=[
+							Aqi_Level=="-"="lightgray",
+							Aqi_Level>=300="#7e0023",
+							>=201="#660099",
+							>=151="#cc0033",
+							>=101="#ff9933",
+							>=51="#ffde33",
+							>=0="#009966"
+							]
+							Text item=Aqi_Description valuecolor=[
+							Aqi_Description=="HAZARDOUS"="#7e0023",
+							=="VERY_UNHEALTHY"="#660099",
+							=="UNHEALTHY"="#cc0033",
+							=="UNHEALTHY_FSG"="#ff9933",
+							=="MODERATE"="#ffde33",
+							=="GOOD"="#009966"
+							]
+						}
+						Frame {
+							Text item=Aqi_Pm25
+							Text item=Aqi_Pm10
+							Text item=Aqi_O3
+							Text item=Aqi_No2
+							Text item=Aqi_Co
+							Text item=Aqi_So2
+							Text item=Aqi_LocationName
+							Text item=Aqi_ObservationTime
+							Text item=Aqi_Temperature
+							Text item=Aqi_Pressure
+							Text item=Aqi_Humidity
+						}
+					}
+					Frame label="Ventilation" {
+						Text icon="ventilation" label="Nilan Ventilations" {
+							Frame label="Overview" {
+								Text item=nilan_generated_time icon="schedule" {
+									Setpoint item=Nilan_Time_Second label="Seconds [%d]" minValue=0 maxValue=59 step=1
+									Setpoint item=Nilan_Time_Minute label="Minutes [%d]" minValue=0 maxValue=59 step=1
+									Setpoint item=Nilan_Time_Hour label="Hours [%d]" minValue=0 maxValue=23 step=1
+									Setpoint item=Nilan_Time_Day label="Day [%d]" minValue=1 maxValue=31 step=1
+									Setpoint item=Nilan_Time_Month label="Month [%d]" minValue=1 maxValue=12 step=1
+									Setpoint item=Nilan_Time_Year label="Year [%d]" minValue=1900 maxValue=2300 step=1
+								}
+								Switch item=Nilan_Control_RunSet label="Ventilation Active" mappings=[ON=On, OFF=Off]
+								Selection item=Nilan_Control_ModeSet label="Operation Start" mappings=[0="Off", 1="Heat", 2="Cool", 3="AUTO", 4="Service"]
+								Selection item=Nilan_Control_State label="Operation Mode" mappings=[0="Off", 1="Shift", 2="Stop", 3="Start", 4="Standby", 5="Ventilation stop", 6="Ventilation", 7="Heating", 8="Cooling", 9="Hot water", 10="Legionella", 11="Cooling + hot water", 12="Central heating", 13="Defrost", 14="Frost secure", 15="Service", 16="Alarm", 17="Heating + hot water"]
+								Setpoint item=Nilan_Control_TempSet label="Setpoint Bypass Valve [%.1f °C]" minValue=0 maxValue=65 step=1
+								Switch item=Nilan_Control_VentSet label="Stage" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+								Setpoint item=Nilan_Output_ExhaustSpeed label="Exhaust Speed [%.0f %%]"
+								Setpoint item=Nilan_Output_InletSpeed label="Inlet Speed [%.0f %%]"
+								Switch item=Smarthouse_Motorventil mappings=[ON=On, OFF=Off]
+									//Selection item=Nilan_Output_UserFunc label="Overtryk På Varmeflade" mappings=[OFF="Ikke Aktiv", ON="Aktiv"] icon="fire"
+									//Switch item=Nilan_Output_UserFunc_2
+							}
+							Frame label="Sensors" {
+								Selection item=nilan_generated_chartperiod label="Period" mappings=[0="Hour", 1="Day", 2="Week", 3="Month", 4="Year"]
+								Chart item=gAirSensor period=h refresh=3000 visibility=[nilan_generated_chartperiod==0, nilan_generated_chartperiod=="Uninitialized"]
+								Chart item=gAirSensor period=D refresh=3000 visibility=[nilan_generated_chartperiod==1]
+								Chart item=gAirSensor period=W refresh=3000 visibility=[nilan_generated_chartperiod==2]
+								Chart item=gAirSensor period=M refresh=3000 visibility=[nilan_generated_chartperiod==3]
+								Chart item=gAirSensor period=Y refresh=3000 visibility=[nilan_generated_chartperiod==4]
+								Text item=Nilan_Input_T4_Outlet label="Temperature Outlet"
+								Text item=Nilan_Input_T3_Exhaust label="Temperature Exhaust"
+								Text item=Nilan_Input_T7_Inlet label="Temperature Inlet"
+								Text item=Nilan_Input_T8_Outdoor label="Temperature Intake"
+								Text item=Nilan_Input_RH label="Humidity extraction"
+								Text item=Udv_humidity label="Humidity outdoor"
+							}
+							Frame label="Status" {
+								Text item=Nilan_Display_LED_1 label="Alarm" icon="light" {
+									//Switch item=Nilan_Display_LED_1 label="Brugerpanel LED"
+									//Switch item=Nilan_Display_LED_2
+									Selection item=Nilan_Alarm_Reset label="Alarm-Code Reset"
+										mappings=[
+										0="No command",
+										//1..99="1..99 : (reserved internal commands)",
+										//101..199="101..199 : Clear alarm display code 1..99",
+										101="Clear alarm display code 1",
+										102="Clear alarm display code 2",
+										103="Clear alarm display code 3",
+										104="Clear alarm display code 4",
+										//...
+										255="Clear all alarms"
+										]
+									Selection item=Nilan_Input_AirFilter label="Air Filter Alarm" mappings=[OFF="OK", ON="Alarm"]
+									Switch item=Nilan_Input_DoorOpen label="Door Contact" mappings=[ON=On, OFF=Off]
+									Selection item=Nilan_Input_Smoke label="Fire / Smoke Alarm" mappings=[OFF="OK", ON="Alarm"]
+									Selection item=Nilan_Input_MotorThermo label="Motor Thermal Fuse" mappings=[OFF="OK", ON="Burned"]
+									Selection item=Nilan_Input_Frost_Overht label="Frost / Overheating" mappings=[OFF="OK", ON="Alarm"]
+									Selection item=Nilan_Input_AirFlow label="Airflow Monitoring" mappings=[OFF="OK", ON="Alarm"]
+									Selection item=Nilan_Input_P_HI label="Overpressure Valve" mappings=[OFF="OK", ON="Alarm"]
+									Selection item=Nilan_Input_Defrost label="Defrosting" mappings=[OFF="OK", ON="Alarm"]
+									Text item=Nilan_Alarm_Status label="Alarm Code (Bitmask)"
+									//Bitmaks: 0x80 : Active / 0x03 : Nb. of alarms
+									Selection item=Nilan_Alarm_List_1_ID label="Alarm 1 - Code" visibility=[Nilan_Alarm_List_1_ID>=1]
+										mappings=[
+										0="None",
+										1="Hardware controller fault",
+										2="Warning alarm went critical",
+										3="Fire",
+										7="Frost 07",
+										8="Frost 08",
+										9="Overtemp",
+										10="Overheat",
+										11="Airflow",
+										15="Room temp low",
+										16="Control Software Err",
+										17="Control Software Watchdog",
+										18="Default settings reset",
+										19="Inspect filters",
+										21="Power failure detected",
+										22="Heatup impossible",
+										27="Shorted temp sensor",
+										57="Shorted temp sensor",
+										28="Disconnected temp sensor",
+										58="Disconnected temp sensor",
+										71="Max defrost time exceeded",
+										91="Accessories circuit board",
+										92="Electric adjustents write Err"
+										]
+									Text item=Nilan_Alarm_List_1_Date label="Alarm 1 - Date [%s]" visibility=[Nilan_Alarm_List_1_ID>=1]
+									Text item=Nilan_Alarm_List_1_Time label="Alarm 1 - Time [%s Uhr]" visibility=[Nilan_Alarm_List_1_ID>=1]
+									Selection item=Nilan_Alarm_List_2_ID label="Alarm 2 - Code" visibility=[Nilan_Alarm_List_2_ID>=1]
+										mappings=[
+										0="None",
+										1="Hardware controller fault",
+										2="Warning alarm went critical",
+										3="Fire",
+										7="Frost 07",
+										8="Frost 08",
+										9="Overtemp",
+										10="Overheat",
+										11="Airflow",
+										15="Room temp low",
+										16="Control Software Err",
+										17="Control Software Watchdog",
+										18="Default settings reset",
+										19="Inspect filters",
+										21="Power failure detected",
+										22="Heatup impossible",
+										27="Shorted temp sensor",
+										57="Shorted temp sensor",
+										28="Disconnected temp sensor",
+										58="Disconnected temp sensor",
+										71="Max defrost time exceeded",
+										91="Accessories circuit board",
+										92="Electric adjustents write Err"
+										]
+									Text item=Nilan_Alarm_List_2_Date label="Alarm 2 - Date [%s]" visibility=[Nilan_Alarm_List_2_ID>=1]
+									Text item=Nilan_Alarm_List_2_Time label="Alarm 2 - Time [%s Uhr]" visibility=[Nilan_Alarm_List_2_ID>=1]
+									Selection item=Nilan_Alarm_List_3_ID label="Alarm 3 - Code" visibility=[Nilan_Alarm_List_3_ID>=1]
+										mappings=[
+										0="None",
+										1="Hardware controller fault",
+										2="Warning alarm went critical",
+										3="Fire",
+										7="Frost 07",
+										8="Frost 08",
+										9="Overtemp",
+										10="Overheat",
+										11="Airflow",
+										15="Room temp low",
+										16="Control Software Err",
+										17="Control Software Watchdog",
+										18="Default settings reset",
+										19="Inspect filters",
+										21="Power failure detected",
+										22="Heatup impossible",
+										27="Shorted temp sensor",
+										57="Shorted temp sensor",
+										28="Disconnected temp sensor",
+										58="Disconnected temp sensor",
+										71="Max defrost time exceeded",
+										91="Accessories circuit board",
+										92="Electric adjustents write Err"
+										]
+									Text item=Nilan_Alarm_List_3_Date label="Alarm 3 - Date [%s]" visibility=[Nilan_Alarm_List_3_ID>=1]
+									Text item=Nilan_Alarm_List_3_Time label="Alarm 3 - Time [%s Uhr]" visibility=[Nilan_Alarm_List_3_ID>=1]
+									Selection item=Nilan_Control_ServiceMode label="Service-Mode" mappings=[0="Off", 1="Defrost", 2="Flaps", 3="Inlet", 4="Exhaust", 5="Compressor", 6="Heating", 7="Hot water", 8="Central heat"]
+								}
+								Text item=Nilan_Output_BypassOpen label="Bypass Status" icon="contact" {
+									Switch item=Nilan_Output_AirFlap label="Air Damper" mappings=[CLOSED=Closed, OPEN=Open]
+									Switch item=Nilan_Output_SmokeFlap label="Fire/Smoke Damper" mappings=[CLOSED=Closed, OPEN=Open]
+									Switch item=Nilan_Output_BypassOpen label="Bypass Open" mappings=[CLOSED=Closed, OPEN=Open]
+									Switch item=Nilan_Output_BypassClose label="Bypass Closed" mappings=[CLOSED=Closed, OPEN=Open]
+									Switch item=Nilan_Output_Defrosting label="Defrosting" mappings=[OFF=Off, ON=On]
+								}
+							}
+							Frame label="Controls" {
+								Text item=Nilan_Input_T7_Inlet label="Temperature Control" icon="temperature"{
+									Selection item=Nilan_Control_State label="Operation Mode" mappings=[0="Off", 1="Shift", 2="Stop", 3="Start", 4="Standby", 5="Ventilation stop", 6="Ventilation", 7="Heating", 8="Cooling", 9="Hot water", 10="Legionella", 11="Cooling + hot water", 12="Central heating", 13="Defrost", 14="Frost secure", 15="Service", 16="Alarm", 17="Heating + hot water"]
+									//Text item=Nilan_Control_SeclnState label="Actual time in state [%d]"
+									//Text item=Nilan_AirTemp_EffPct label="Effektivitet (Varmeveksler)"
+									Text item=Nilan_AirTemp_IsSummer label="Control State (Season)"
+									Setpoint item=Nilan_AirTemp_TempSummer label="Summer/Winter Boundary" minValue=5 maxValue=30 step=1
+									Text item=Nilan_Input_T8_Outdoor label="Intake Air"
+									//Text item=Nilan_Input_T1_Intake label="Intake Air"
+									Text item=Nilan_Input_T3_Exhaust label="Exhaust Air"
+									Text item=Nilan_Input_T4_Outlet label="Outlet Air"
+									//Text item=Nilan_AirTemp_TempinletSet label="Zieltemperatur Raumeinlass (Sollwert)"
+									//Text item=Nilan_AirTemp_TempControl label="Actual Temperature (Actual value/Room exhaust air)"
+									//Text item=Nilan_Input_T2_Inlet label="Inlet Air)"
+									Text item=Nilan_Input_T7_Inlet label="Inlet Air"
+									Text item=Nilan_Input_T15_Room label="Panel / Utility Room"
+									//Text item=Nilan_AirTemp_TempRoom //same as T15
+									Text item=Nilan_Input_T0_Controller label="CTS 602 Board"
+									//Default item=Nilan_AirTemp_CapSet
+									//Default item=Nilan_AirTemp_CapAct
+									Setpoint item=Nilan_AirTemp_TempMinSum label="Temperature Min (Summer)" minValue=5 maxValue=14 step=1
+									Setpoint item=Nilan_AirTemp_TempMaxSum label="Temperature Max (Summer)" minValue=5 maxValue=25 step=1
+									Setpoint item=Nilan_AirTemp_TempMinWin label="Temperature Min (Winter)" minValue=5 maxValue=16 step=1
+									Setpoint item=Nilan_AirTemp_TempMaxWin label="Temperature Max (Winter)" minValue=5 maxValue=35 step=1
+									Selection item=Nilan_AirFlow_AirExchMode label="Air Exchange (Mode)" mappings=[0="Energy", 1="Comfort", 2="ComfortWater"]
+									//Selection item=Nilan_AirFlow_CoolVent label="Cooling Fan for Cooling" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+									Selection item=Nilan_AirTemp_CoolSet label="Temperature Offset for Cooling" mappings=[0="Off (No cooling allowed)", 2="Set + 1 °C", 3="Set + 2 °C", 4="Set + 3 °C", 5="Set + 4 °C", 6="Set + 5 °C", 7="Set + 7 °C", 8="Set + 10 °C"]
+								}
+								Text item=Nilan_Input_RH label="Humidity Control" icon="humidity" {
+									Selection item=nilan_generated_chartperiod label="Running Period" mappings=[0="Time", 1="Day", 2="Week", 3="Month", 4="Year"]
+									Chart item=gHumSensor period=h refresh=3000 visibility=[nilan_generated_chartperiod==0, nilan_generated_chartperiod=="Uninitialized"]
+									Chart item=gHumSensor period=D refresh=3000 visibility=[nilan_generated_chartperiod==1]
+									Chart item=gHumSensor period=W refresh=3000 visibility=[nilan_generated_chartperiod==2]
+									Chart item=gHumSensor period=M refresh=3000 visibility=[nilan_generated_chartperiod==3]
+									Chart item=gHumSensor period=Y refresh=3000 visibility=[nilan_generated_chartperiod==4]
+									Text item=Nilan_Input_RH label="Humidity"
+									Selection item=Nilan_AirQual_RH_VentLo label="Ventilation Level at Low Humidity (Winter)" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+									Selection item=Nilan_AirQual_RH_VentHi label="Ventilation Level at High Humidity" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+									Setpoint item=Nilan_AirQual_RH_LimLo label="Limit for Low Humidity" minValue=0 maxValue=100 step=1
+									Setpoint item=Nilan_AirQual_RH_TimeOut label="Ventilation Time at High [%d min.]" minValue=0 maxValue=65000 step=1
+								}
+								//Text label="CO2-Regler" icon="carbondioxide" {
+									//Text item=Nilan_AirQual_CO2_VentHi
+									//Text item=Nilan_AirQual_CO2_LimLo
+									//Text item=Nilan_AirQual_CO2_LimHi
+									//}
+								}
+								Frame label="User Program" {
+										Selection item=Nilan_Program_Select label="Week Program" mappings=[0="None", 1="Program 1", 2="Program 2", 3="Program 3", 4="Erase"] icon="schedule"
+										Text label="User Function 1" icon="boy_2" {
+											Selection item=Nilan_Program_UserFuncAct label="Status" mappings=[OFF="Inactive", ON="Active"]
+										Selection item=Nilan_Program_UserFuncSet label="Function" mappings=[0="None", 1="Extend", 2="Inlet", 3="Exhaust", 4="External heater offset", 5="Ventilate"]
+										Setpoint item=Nilan_Program_UserTimeSet label="Duration [%d min.]" minValue=0 maxValue=65000 step=1
+										Selection item=Nilan_Program_UserVentSet label="Fan Level" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+										Setpoint item=Nilan_Program_UserTempSet label="Temperature Specification" minValue=0 maxValue=65 step=1
+										Setpoint item=Nilan_Program_UserOffsSet label="Temperature Offset" minValue=0 maxValue=65000 step=1
+									}
+									Text label="User Function 2" icon="boy_2" {
+										Selection item=Nilan_Program_User2FuncAct label="Status" mappings=[OFF="Inactive", ON="Active"]
+										Selection item=Nilan_Program_User2FuncSet label="Function" mappings=[0="None", 1="Extend", 2="Inlet", 3="Exhaust", 4="External heater offset", 5="Ventilate"]
+										Setpoint item=Nilan_Program_User2TimeSet label="Duration [%d min.]" minValue=0 maxValue=65000 step=1
+										Selection item=Nilan_Program_User2VentSet label="Fan Level" mappings=[0="Off", 1="1", 2="2", 3="3", 4="4"]
+										Setpoint item=Nilan_Program_User2TempSet label="Temperature Specification" minValue=0 maxValue=65 step=1
+										Setpoint item=Nilan_Program_User2OffsSet label="Temperature Offset" minValue=0 maxValue=65000 step=1
+									}
+								}
+								Frame label="Details" {
+									Group item=gNilan label="Modbus-Attribute (Input + Holding)"
+								}
+							}
+						}
+						// Hide default navigation
+						// Webview url="/static/overrides.html" height=0
+						// Webview url="/static/HideHeader.html" icon=none
+					}
