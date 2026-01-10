@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 07:45:15
+- Added: rules/net2_sync.rules
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 07:30:16
 - Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
 - Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java

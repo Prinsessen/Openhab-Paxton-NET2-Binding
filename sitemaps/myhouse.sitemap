@@ -11,7 +11,7 @@ sitemap myhouse label="Nanna Agesen"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
 	}
 	Frame label="Home Security" {
-			Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="lock-key" 
+			Switch item=Net2_Door1_Status mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="lock-key" 
 			Switch item=Net2_Door3_ControlTimed label="Garage Port" mappings=[1="Open"] icon="lock-key"
 			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="alarm"
 			Text item=Alarmsystem_Info icon="alarm"
@@ -77,7 +77,8 @@ sitemap myhouse label="Nanna Agesen"
 	}
 Text label="Access Control" icon="lock-key" {
 Frame label="Fordør Kirkegade" {
-		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="lock-key" 
+		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
+		Switch item=Net2_Door1_Status label="Door Physical Status" icon="lock" 
 		Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"] icon="lock-key"
 		Text item=Net2_Door1_Status label="Frontdoor Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door1_LastTime label="Frontdoor Last Time Access" icon="activity-time"	

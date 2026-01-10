@@ -1,0 +1,30 @@
+// Sync Net2 door physical status to action buttons
+// This makes the control buttons reflect the actual door state
+
+rule "Sync Door 1 Status to Action"
+when
+    Item Net2_Door1_Status changed
+then
+    Net2_Door1_Action.postUpdate(Net2_Door1_Status.state)
+end
+
+rule "Sync Door 2 Status to Action"
+when
+    Item Net2_Door2_Status changed
+then
+    Net2_Door2_Action.postUpdate(Net2_Door2_Status.state)
+end
+
+rule "Sync Door 3 Status to Action"
+when
+    Item Net2_Door3_Status changed
+then
+    Net2_Door3_Action.postUpdate(Net2_Door3_Status.state)
+end
+
+rule "Sync Door 4 Status to Action"
+when
+    Item Net2_Door4_Status changed
+then
+    Net2_Door4_Action.postUpdate(Net2_Door4_Status.state)
+end
