@@ -57,6 +57,10 @@ DateTime Net2_Door5_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:do
 // Entry Log Items (JSON format for Grafana)
 // ==============================================
 String Net2_Door1_EntryLog "Entry Log [%s]" { channel="net2:door:server:door1:entryLog" }
+String Net2_Door2_EntryLog "Entry Log [%s]" { channel="net2:door:server:door2:entryLog" }
+String Net2_Door3_EntryLog "Entry Log [%s]" { channel="net2:door:server:door3:entryLog" }
+String Net2_Door4_EntryLog "Entry Log [%s]" { channel="net2:door:server:door4:entryLog" }
+String Net2_Door5_EntryLog "Entry Log [%s]" { channel="net2:door:server:door5:entryLog" }
 
 // ==============================================
 // Add more doors as needed...
