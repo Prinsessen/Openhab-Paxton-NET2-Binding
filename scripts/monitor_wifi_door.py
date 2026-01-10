@@ -39,8 +39,8 @@ USERNAME = config['username']
 PASSWORD = config['password']
 CLIENT_ID = config['client_id']
 
-WIFI_DOOR_ID = 5598430
-WORKSHOP_DOOR_ID = 3962494  # Værksted Dør
+WIFI_DOOR_ID = 5598430  # WiFi-enabled but NOT UI controllable
+WORKSHOP_DOOR_ID = 3962494  # Værksted Dør - UI controllable WiFi door
 
 # Known door IDs from Net2 system
 ALL_DOOR_IDS = [
@@ -48,8 +48,8 @@ ALL_DOOR_IDS = [
     6203980,   # Terndrupvej 81
     7242929,   # Garage Port - Kirkegade
     6626578,   # Udv.Basement - Kirkegade
-    3962494,   # Værksted Dør - Kirkegade (NEW)
-    5598430    # WiFi Door
+    3962494,   # Værksted Dør - UI Controllable WiFi Door
+    5598430    # WiFi Door (not UI controllable)
 ]
 
 # Debug mode - set to True to see all raw SignalR messages
@@ -149,10 +149,10 @@ class Net2SignalRMonitor:
             print(f"  4. RollCallEvents (safe/unsafe events)")
             print(f"\nSubscribed to {len(ALL_DOOR_IDS)} doors:")
             for door_id in ALL_DOOR_IDS:
-                if door_id == WIFI_DOOR_ID:
-                    print(f"  - Door ID: {door_id} 🚪 [WiFi Door - Remote Control Enabled]")
-                elif door_id == WORKSHOP_DOOR_ID:
-                    print(f"  - Door ID: {door_id} 🔧 [Værksted WiFi Door - Remote Control Enabled]")
+                if door_id == WORKSHOP_DOOR_ID:
+                    print(f"  - Door ID: {door_id} 🔧 [Værksted WiFi Door - UI REMOTE CONTROL ENABLED]")
+                elif door_id == WIFI_DOOR_ID:
+                    print(f"  - Door ID: {door_id} 🚪 [WiFi Door]")
                 else:
                     print(f"  - Door ID: {door_id}")
             print(f"\nDEBUG MODE: {'ON' if DEBUG else 'OFF'}")

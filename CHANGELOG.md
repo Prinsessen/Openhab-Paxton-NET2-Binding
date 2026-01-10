@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 15:00:16
+- Modified: scripts/__pycache__/monitor_wifi_door.cpython-313.pyc
+- Added: scripts/monitor_wifi_door.log
+- Modified: scripts/monitor_wifi_door.py
+- Added: scripts/poll_door_lock.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 14:45:06
 - Added: scripts/check_door_status.py
 - Modified: scripts/monitor_wifi_door.py
