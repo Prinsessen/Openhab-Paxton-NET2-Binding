@@ -1,7 +1,7 @@
 
 # Net2 Binding Configuration Examples
 
-This document provides complete working examples for configuring the Net2 binding with items, sitemaps, and synchronization rules.
+This document provides complete working examples for configuring the Net2 binding with items, sitemaps, rules, and user management.
 
 ## Complete Working Example
 
@@ -16,6 +16,12 @@ Switch Net2_Door1_Status "Door 1 Status" { channel="net2:door:server:door1:statu
 Number Net2_Door1_ControlTimed "Door 1 Timed Control" { channel="net2:door:server:door1:controlTimed" }
 String Net2_Door1_LastUser "Door 1 Last User" { channel="net2:door:server:door1:lastAccessUser" }
 DateTime Net2_Door1_LastTime "Door 1 Last Time" { channel="net2:door:server:door1:lastAccessTime" }
+
+// Bridge User Management Channels
+String Net2_CreateUser "Create User" { channel="net2:net2server:server:createUser" }
+String Net2_DeleteUser "Delete User" { channel="net2:net2server:server:deleteUser" }
+String Net2_ListAccessLevels "List Access Levels" { channel="net2:net2server:server:listAccessLevels" }
+String Net2_ListUsers "List Users" { channel="net2:net2server:server:listUsers" }
 ```
 
 ### Sitemap Configuration
@@ -80,6 +86,116 @@ end
 - The `Action` channel is used for sending commands
 - These rules sync the Action button display to match the physical door state
 - Without these rules, the Action button won't reflect remote/card-based door operations
+
+## User Management Examples
+
+### List All Users
+
+Query the Net2 system for all users and log the complete JSON payload:
+
+**From Rules:**
+```openhab
+rule "Query All Users"
+when
+    // Trigger condition (e.g., time-based, button press, etc.)
+then
+    sendCommand(Net2_ListUsers, ON)
+    // Results logged to /var/log/openhab/openhab.log
+    // Look for: "Users JSON payload: [...]"
+end
+```
+
+**From REST API:**
+```bash
+curl -X POST "http://localhost:8080/rest/items/Net2_ListUsers" \
+  -H "Content-Type: text/plain" \
+  -d "REFRESH"
+```
+
+**View Results:**
+```bash
+grep "Users JSON" /var/log/openhab/openhab.log | tail -1
+```
+
+**JSON Output Example:**
+```json
+[
+  {
+    "Id": 1,
+    "FirstName": "John",
+    "LastName": "Doe",
+    "ExpiryDate": "2027-01-10T12:46:20.723523+01:00",
+    "ActivateDate": "2026-01-11T12:46:20.723523+01:00",
+    "PIN": "1234",
+    "Telephone": "01273 100200",
+    "Extension": "200",
+    "AccessLevelId": 3,
+    "AccessLevelName": "Staff",
+    "CustomFields": {...},
+    "IsAlarmUser": false,
+    "HasImage": true
+  },
+  ...
+]
+```
+
+### List Access Levels
+
+Query available access levels in the system:
+
+**From Rules:**
+```openhab
+rule "Query Access Levels"
+when
+    // Trigger condition
+then
+    sendCommand(Net2_ListAccessLevels, ON)
+    // Results logged as: "Access levels: [1:Public] [2:Staff] [3:Admin]"
+end
+```
+
+**View Results:**
+```bash
+grep "Access levels" /var/log/openhab/openhab.log | tail -1
+```
+
+### Create User
+
+Create a new user with specified access level and PIN:
+
+**From Rules:**
+```openhab
+rule "Create New User"
+when
+    // Trigger condition
+then
+    // Format: firstName,lastName,accessLevel,pin
+    sendCommand(Net2_CreateUser, "Michael,Smith,3,5678")
+    logInfo("Net2", "User creation command sent")
+end
+```
+
+**Access Level Options:**
+- Can be numeric ID (e.g., `3`) or name (e.g., `Staff`)
+- Query available levels first using `listAccessLevels`
+
+### Delete User
+
+Remove a user by their ID:
+
+**From Rules:**
+```openhab
+rule "Delete User"
+when
+    // Trigger condition
+then
+    sendCommand(Net2_DeleteUser, "79")  // User ID
+    logInfo("Net2", "User deletion command sent for ID 79")
+end
+```
+
+**Get User IDs:**
+Use `listUsers` channel to see all user IDs, then delete by ID number.
 
 ## Channel Details
 

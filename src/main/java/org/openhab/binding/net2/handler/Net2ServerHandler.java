@@ -77,10 +77,13 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                     handleDeleteUser(command);
                     break;
                 case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
+                case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
                     handleListAccessLevels(command);
                     break;
+                case Net2BindingConstants.CHANNEL_LIST_USERS:
+                    handleListUsers(command);
+                    break;
                 default:
-                    logger.debug("Unsupported channel: {}", channelUID.getId());
             }
         } catch (Exception e) {
             logger.error("Error handling command for channel {}", channelUID.getId(), e);
@@ -388,5 +391,19 @@ public class Net2ServerHandler extends BaseBridgeHandler {
         StringBuilder sb = new StringBuilder("Access levels: ");
         levels.forEach((id, name) -> sb.append("[" + id + ":" + name + "] "));
         logger.info(sb.toString());
+    }
+
+    private void handleListUsers(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+        String usersJson = client.listUsers();
+        if (usersJson == null || usersJson.isEmpty()) {
+            logger.warn("No users returned by API");
+            return;
+        }
+        logger.info("Users JSON payload: {}", usersJson);
     }
 }

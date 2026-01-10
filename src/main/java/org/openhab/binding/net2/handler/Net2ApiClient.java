@@ -426,6 +426,27 @@ public class Net2ApiClient {
     }
 
     /**
+     * List all users in the Net2 system.
+     * Returns the full JSON response as a string.
+     */
+    public String listUsers() throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/users")).GET()
+                .header("Authorization", "Bearer " + accessToken).build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) {
+            logger.debug("Fetched users list");
+            return response.body();
+        } else {
+            logger.error("Failed to list users. Status: {}, Response: {}", response.statusCode(),
+                    response.body());
+            throw new IOException("GET /users failed with status " + response.statusCode());
+        }
+    }
+
+    /**
      * Resolve an access level input (ID or name) to a valid ID present in the system.
      * Returns null if it cannot be resolved.
      */

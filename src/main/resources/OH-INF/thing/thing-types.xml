@@ -14,6 +14,7 @@
 			<channel id="createUser" typeId="createUser"/>
 			<channel id="deleteUser" typeId="deleteUser"/>
 			<channel id="listAccessLevels" typeId="listAccessLevels"/>
+			<channel id="listUsers" typeId="listUsers"/>
 		</channels>
 
 		<config-description>
@@ -126,6 +127,13 @@
 		<item-type>String</item-type>
 		<label>List Access Levels</label>
 		<description>Trigger to list all available access levels; results logged to openhab.log</description>
+		<state readOnly="false"/>
+	</channel-type>
+
+	<channel-type id="listUsers">
+		<item-type>String</item-type>
+		<label>List Users</label>
+		<description>Trigger to list all users in the system; full JSON payload logged to openhab.log</description>
 		<state readOnly="false"/>
 	</channel-type>
 
