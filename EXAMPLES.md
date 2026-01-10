@@ -275,7 +275,7 @@ The handler automatically converts your command (in seconds) to the correct JSON
 ## Author
 
 - Nanna Agesen (@Prinsessen)
-- Email: author@example.com
+- Email: nanna@agesen.dk
 - GitHub: https://github.com/Prinsessen
 
 ### Rule 1: Automatic Door Lock on Schedule

@@ -221,7 +221,7 @@ public ReturnType methodName(Type1 param1, Type2 param2) {
 ## Questions?
 
 - Create an issue on GitHub
-- Contact maintainer: author@example.com
+- Contact maintainer: nanna@agesen.dk
 - Check existing issues for answers
 
 ## Code of Conduct

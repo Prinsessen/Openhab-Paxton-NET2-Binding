@@ -4,7 +4,7 @@
 **Binding ID:** net2  
 **Version:** 5.1.0  
 **Author:** Nanna Agesen (@Prinsessen)  
-**Email:** author@example.com  
+**Email:** nanna@agesen.dk  
 **Repository:** https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding  
 **License:** Eclipse Public License 2.0 (EPL-2.0)  
 
@@ -162,7 +162,7 @@
 |-------|-------|
 | Name | Nanna Agesen |
 | GitHub | @Prinsessen |
-| Email | author@example.com |
+| Email | nanna@agesen.dk |
 | GitHub Profile | https://github.com/Prinsessen |
 | Repository | https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding |
 | Timezone | Europe/Copenhagen |
@@ -170,7 +170,7 @@
 ## Support & Communication
 
 - **Issues:** GitHub Issues on the binding repository
-- **Email:** author@example.com
+- **Email:** nanna@agesen.dk
 - **Community:** openHAB Community Forum
 - **Documentation:** See README.md and CONTRIBUTING.md
 

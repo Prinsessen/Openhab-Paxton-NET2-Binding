@@ -266,7 +266,7 @@ Terndrupvej 81, 9460 Brovst, Denmark
 ## Author
 
 **Nanna Agesen** (@Prinsessen)
-- Email: author@example.com
+- Email: nanna@agesen.dk
 - GitHub: https://github.com/Prinsessen
 - Binding Repository: https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding
 
@@ -275,7 +275,7 @@ Terndrupvej 81, 9460 Brovst, Denmark
 | Field | Value |
 |-------|-------|
 | Author | Nanna Agesen |
-| Email | author@example.com |
+| Email | nanna@agesen.dk |
 | GitHub | @Prinsessen |
 | Repository | https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding |
 | License | EPL-2.0 |
