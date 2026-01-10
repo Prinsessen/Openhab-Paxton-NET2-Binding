@@ -23,6 +23,15 @@ CLIENT_ID = config['client_id']
 
 WIFI_DOOR_ID = 5598430
 
+# Known door IDs from Net2 system
+ALL_DOOR_IDS = [
+    6612642,   # Front Door
+    6203980,   # Terndrupvej 81
+    7242929,   # Garage Port - Kirkegade
+    6626578,   # Udv.Basement - Kirkegade
+    5598430    # WiFi Door
+]
+
 class Net2SignalRMonitor:
     def __init__(self):
         self.base_url = f"https://{NET2_HOST}:{NET2_PORT}"
@@ -139,51 +148,95 @@ class Net2SignalRMonitor:
         await ws.send_json(subscribe_live)
         print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to LiveEvents (all events)")
         
-        # Note: Not subscribing to specific door IDs anymore - LiveEvents should cover all doors
-        # If we still want specific door subscriptions, we'd need to subscribe to each door individually
+        # 2. Subscribe to DoorEvents for each known door
+        msg_id = 2
+        for door_id in ALL_DOOR_IDS:
+            subscribe_door = {
+                "H": "eventHubLocal",
+                "M": "subscribeToDoorEvents",
+                "A": [door_id],
+                "I": msg_id
+            }
+            await ws.send_str(json.dumps(subscribe_door))
+            msg_id += 1
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to DoorEvents for {len(ALL_DOOR_IDS)} doors")
+        
+        # 3. Subscribe to DoorStatusEvents for each known door
+        for door_id in ALL_DOOR_IDS:
+            subscribe_status = {
+                "H": "eventHubLocal",
+                "M": "subscribeToDoorStatusEvents",
+                "A": [door_id],
+                "I": msg_id
+            }
+            await ws.send_str(json.dumps(subscribe_status))
+            msg_id += 1
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to DoorStatusEvents for {len(ALL_DOOR_IDS)} doors")
     
     async def handle_message(self, data):
         """Handle incoming SignalR messages"""
         timestamp = datetime.now().strftime('%H:%M:%S')
         
+        # Debug: Print ALL messages to see what we're getting
+        if data and data != "{}":
+            try:
+                msg = json.loads(data)
+                # Skip keepalives and empty messages
+                if "M" in msg and msg["M"]:
+                    print(f"\n[{timestamp}] === RAW MESSAGE ===")
+                    print(json.dumps(msg, indent=2))
+                    print("=" * 80)
+            except:
+                pass
+        
         try:
             msg = json.loads(data)
+            
+            # Subscription confirmation
+            if "R" in msg:
+                return  # Silent acknowledgment
             
             # Check for door-related events
             if isinstance(msg, dict):
                 # Check M field (Messages array)
                 if "M" in msg:
                     for message in msg["M"]:
-                        target = message.get("M", "")  # Method name
+                        hub = message.get("H", "")      # Hub name
+                        target = message.get("M", "")   # Method name
                         args = message.get("A", [])     # Arguments
                         
-                        if target in ["DoorStatusEvents", "DoorEvents", "LiveEvents", "RollCallEvents"]:
-                            for arg in args:
-                                if isinstance(arg, dict):
-                                    door_id = arg.get("doorId") or arg.get("deviceId")
-                                    
-                                    if door_id == WIFI_DOOR_ID:
-                                        # Highlight WiFi door
-                                        print(f"\n{'🚪'*40}")
-                                        print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} EVENT!")
-                                        print(f"Event Type: {target}")
-                                        print(f"Full payload:")
-                                        print(json.dumps(arg, indent=2))
-                                        print(f"{'🚪'*40}\n")
-                                    elif door_id is not None:
-                                        # Show all other door events with full details
-                                        print(f"\n[{timestamp}] 🚪 Door {door_id} - {target}")
-                                        print(json.dumps(arg, indent=2))
-                                    elif target == "RollCallEvents":
-                                        # Show roll call events
-                                        print(f"\n[{timestamp}] 📋 RollCallEvent:")
-                                        print(json.dumps(arg, indent=2))
-                                    elif target == "LiveEvents":
-                                        # Show live events that aren't door-specific
-                                        event_type = arg.get("eventType", "unknown")
-                                        user = arg.get("userName", "unknown")
-                                        device = arg.get("deviceId", "unknown")
-                                        print(f"[{timestamp}] 📡 LiveEvent: Type={event_type}, User={user}, Device={device}")
+                        # Filter for EventHubLocal messages with capital letters!
+                        if hub == "EventHubLocal" and target in ["DoorStatusEvents", "DoorEvents", "LiveEvents", "RollCallEvents"]:
+                            # Args is an array of arrays - flatten it
+                            for arg_array in args:
+                                if isinstance(arg_array, list):
+                                    # Iterate through the nested array
+                                    for arg in arg_array:
+                                        if isinstance(arg, dict):
+                                            door_id = arg.get("doorId") or arg.get("deviceId")
+                                            
+                                            if door_id == WIFI_DOOR_ID:
+                                                # Highlight WiFi door
+                                                print(f"\n{'🚪'*40}")
+                                                print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} EVENT!")
+                                                print(f"Event Type: {target}")
+                                                print(f"Full payload:")
+                                                print(json.dumps(arg, indent=2))
+                                                print(f"{'🚪'*40}\n")
+                                            elif door_id is not None:
+                                                # Show all other door events with full details
+                                                print(f"\n[{timestamp}] 🚪 Door {door_id} - {target}")
+                                                print(json.dumps(arg, indent=2))
+                                            elif target == "RollCallEvents":
+                                                # Show roll call events
+                                                print(f"\n[{timestamp}] 📋 RollCallEvent:")
+                                                print(json.dumps(arg, indent=2))
+                                            elif target == "LiveEvents":
+                                                # Show live events that aren't door-specific
+                                                event_type = arg.get("eventType", "unknown")
+                                                user = arg.get("userName", "unknown")
+                                                device = arg.get("deviceId", "unknown")
+                                                print(f"[{timestamp}] 📡 LiveEvent: Type={event_type}, User={user}, Device={device}")
         except json.JSONDecodeError:
             pass  # Ignore non-JSON messages (keepalives, etc.)
         except Exception as e:
