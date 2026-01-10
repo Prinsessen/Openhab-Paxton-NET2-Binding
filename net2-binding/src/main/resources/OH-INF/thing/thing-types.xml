@@ -141,7 +141,8 @@
 	<channel-type id="entryLog">
 		<item-type>String</item-type>
 		<label>Entry Log</label>
-		<description>JSON-formatted entry event: {"firstName":"John","lastName":"Doe","doorName":"Front Door","timestamp":"2026-01-10T18:04:01"}</description>
+		<description>JSON-formatted entry event: {"firstName":"John","lastName":"Doe","doorName":"Front
+			Door","timestamp":"2026-01-10T18:04:01"}</description>
 		<state readOnly="true"/>
 	</channel-type>
 

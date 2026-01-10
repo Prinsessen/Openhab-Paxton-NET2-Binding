@@ -7,6 +7,20 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 19:15:16
+- Added: net2-binding/DEPLOYMENT_STATUS.md
+- Added: net2-binding/ENTRY_LOGGING.md
+- Modified: net2-binding/EXAMPLES.md
+- Added: net2-binding/QUICK_REFERENCE.md
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Modified: persistence/influxdb.persist
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 19:00:16
 - Modified: items/net2.items
 - Modified: persistence/influxdb.persist

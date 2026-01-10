@@ -251,17 +251,17 @@ public class Net2DoorHandler extends BaseThingHandler {
             }
 
             // Generate entry log event for LiveEvents with userName
-            if (("LiveEvents".equalsIgnoreCase(target) || "liveEvents".equalsIgnoreCase(target)) 
-                && payload.has("userName") && !payload.get("userName").isJsonNull()) {
-                
+            if (("LiveEvents".equalsIgnoreCase(target) || "liveEvents".equalsIgnoreCase(target))
+                    && payload.has("userName") && !payload.get("userName").isJsonNull()) {
+
                 String fullName = payload.get("userName").getAsString();
                 String[] nameParts = fullName.split(" ", 2);
-                String firstName = nameParts.length > 0 ? nameParts[0] : "";
-                String lastName = nameParts.length > 1 ? nameParts[1] : "";
-                
+                String lastName = nameParts.length > 0 ? nameParts[0] : "";
+                String firstName = nameParts.length > 1 ? nameParts[1] : "";
+
                 String doorName = getThing().getLabel() != null ? getThing().getLabel() : "Door " + doorId;
                 String timestamp = payload.has("eventTime") ? payload.get("eventTime").getAsString() : "";
-                
+
                 // Build JSON entry log
                 JsonObject entryLog = new JsonObject();
                 entryLog.addProperty("firstName", firstName);
@@ -269,7 +269,7 @@ public class Net2DoorHandler extends BaseThingHandler {
                 entryLog.addProperty("doorName", doorName);
                 entryLog.addProperty("timestamp", timestamp);
                 entryLog.addProperty("doorId", doorId);
-                
+
                 updateState(Net2BindingConstants.CHANNEL_ENTRY_LOG, new StringType(entryLog.toString()));
                 logger.info("Entry log: {}", entryLog.toString());
             }

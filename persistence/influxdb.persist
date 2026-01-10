@@ -111,7 +111,11 @@ WestZoom					: strategy = everyChange,restoreOnStartup
 
 PTZ						: strategy = everyChange,restoreOnStartup
 Net2						: strategy = everyChange,restoreOnStartup
-Net2_Door*_EntryLog				: strategy = everyChange
+Net2_Door1_EntryLog				: strategy = everyChange
+Net2_Door2_EntryLog				: strategy = everyChange
+Net2_Door3_EntryLog				: strategy = everyChange
+Net2_Door4_EntryLog				: strategy = everyChange
+Net2_Door5_EntryLog				: strategy = everyChange
 
 Fresh_Water_Day_Alarm				: strategy = everyChange,restoreOnStartup
 

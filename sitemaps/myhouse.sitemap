@@ -83,7 +83,7 @@ Frame label="Fordør Kirkegade" {
 		Text item=Net2_Door1_Status label="Frontdoor Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door1_LastTime label="Frontdoor Last Time Access" icon="activity-time"	
 		Default item=Net2_Door1_LastUser label="Frontdoor Last User Access" icon="color-user"
-		Text item=Net2_Door1_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
+		Text item=Net2_Door1_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="activity"
 	}
 Frame label="Terndrupvej 81" {
 		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
@@ -92,7 +92,7 @@ Frame label="Terndrupvej 81" {
 		Text item=Net2_Door2_Status label="Terndrupvej 81 Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door2_LastTime label="Terndrupvej 81 Last Time Access" icon="activity-time"	
 		Default item=Net2_Door2_LastUser label="Terndrupvej 81 Last User Access" icon="color-user"
-		Text item=Net2_Door2_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
+		Text item=Net2_Door2_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="activity"
 	}
 Frame label="Garage Kirkegade" {
 		Switch item=Net2_Door3_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
@@ -101,7 +101,7 @@ Frame label="Garage Kirkegade" {
 		Text item=Net2_Door3_Status label="Garage Port Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door3_LastTime label="Garage Port Last Time Access" icon="activity-time"
 		Default item=Net2_Door3_LastUser label="Garage Port Last User Access" icon="color-user"
-		Text item=Net2_Door3_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
+		Text item=Net2_Door3_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="activity"
 }
 Frame label="Basement Door Kirkegade" {
 		Switch item=Net2_Door4_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
@@ -110,7 +110,7 @@ Frame label="Basement Door Kirkegade" {
 		Text item=Net2_Door4_Status label="Basement Door Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door4_LastTime label="Basement Door Last Time Access" icon="activity-time"
 		Default item=Net2_Door4_LastUser label="Basement Door Last User Access" icon="color-user"
-		Text item=Net2_Door4_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
+		Text item=Net2_Door4_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="activity"
 }
 Frame label="Værksted Dør Kirkegade" {
 		Switch item=Net2_Door5_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
@@ -119,7 +119,7 @@ Frame label="Værksted Dør Kirkegade" {
 		Text item=Net2_Door5_Status label="Værksted Dør Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door5_LastTime label="Værksted Dør Last Time Access" icon="activity-time"
 		Default item=Net2_Door5_LastUser label="Værksted Dør Last User Access" icon="color-user"
-		Text item=Net2_Door5_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
+		Text item=Net2_Door5_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="activity"
 }
 
 

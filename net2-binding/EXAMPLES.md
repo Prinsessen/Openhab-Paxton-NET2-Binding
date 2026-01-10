@@ -554,3 +554,88 @@ systemctl restart openhab
 # Check binding is loaded
 tail -f /var/log/openhab/openhab.log | grep net2
 ```
+
+## Entry Logging Examples
+
+### Complete Entry Logging Setup
+
+**Items Configuration:**
+
+```openhab
+// Entry Log Items (JSON format for Grafana)
+String Net2_Door1_EntryLog "Entry Log [%s]" { channel="net2:door:server:door1:entryLog" }
+String Net2_Door2_EntryLog "Entry Log [%s]" { channel="net2:door:server:door2:entryLog" }
+String Net2_Door3_EntryLog "Entry Log [%s]" { channel="net2:door:server:door3:entryLog" }
+String Net2_Door4_EntryLog "Entry Log [%s]" { channel="net2:door:server:door4:entryLog" }
+String Net2_Door5_EntryLog "Entry Log [%s]" { channel="net2:door:server:door5:entryLog" }
+```
+
+**Transform for UI Display:**
+
+File: `/etc/openhab/transform/entrylog.js`
+
+```javascript
+(function(data) {
+    if (!data || data === "NULL") {
+        return "No entries yet";
+    }
+    try {
+        var entry = JSON.parse(data);
+        var time = entry.timestamp.substring(11, 19);
+        return entry.firstName + " " + entry.lastName + " entered " + entry.doorName + " at " + time;
+    } catch (e) {
+        return "Error parsing entry log";
+    }
+})(input)
+```
+
+**Sitemap Display:**
+
+```openhab
+Frame label="Fordør Kirkegade" {
+    Text item=Net2_Door1_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
+}
+```
+
+**Persistence Configuration:**
+
+```openhab
+Items {
+    Net2_Door1_EntryLog : strategy = everyChange
+}
+```
+
+### Entry Log Output Format
+
+**JSON Format (stored in item):**
+```json
+{
+  "firstName": "Nanna",
+  "lastName": "Agesen",
+  "doorName": "Front Door",
+  "timestamp": "2026-01-10T18:48:34",
+  "doorId": 6612642
+}
+```
+
+**UI Display (via transform):**
+```
+Last Entry: Nanna Agesen entered Front Door at 18:48:34
+```
+
+### Testing Entry Logging
+
+**Monitor entry logs:**
+```bash
+tail -f /var/log/openhab/openhab.log | grep "Entry log"
+```
+
+**Check item value:**
+```bash
+curl -s http://localhost:8080/rest/items/Net2_Door1_EntryLog | python3 -m json.tool
+```
+
+### Grafana Integration
+
+See [ENTRY_LOGGING.md](ENTRY_LOGGING.md) for complete Grafana setup guide.
+

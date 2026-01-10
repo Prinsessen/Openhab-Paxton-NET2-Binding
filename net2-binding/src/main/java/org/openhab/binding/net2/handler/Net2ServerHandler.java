@@ -77,7 +77,6 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                     handleDeleteUser(command);
                     break;
                 case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
-                case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
                     handleListAccessLevels(command);
                     break;
                 case Net2BindingConstants.CHANNEL_LIST_USERS:
