@@ -177,70 +177,19 @@ class Net2SignalRMonitor:
         """Handle incoming SignalR messages"""
         timestamp = datetime.now().strftime('%H:%M:%S')
         
-        # Debug: Print ALL messages to see what we're getting
+        # Show EVERYTHING - no filtering at all
         if data and data != "{}":
             try:
                 msg = json.loads(data)
-                # Skip keepalives and empty messages
-                if "M" in msg and msg["M"]:
-                    print(f"\n[{timestamp}] === RAW MESSAGE ===")
+                # Skip only keepalives (C and G fields with empty M)
+                if not ("M" in msg and not msg["M"] and "C" in msg):
+                    print(f"\n[{timestamp}] ========================================")
                     print(json.dumps(msg, indent=2))
                     print("=" * 80)
             except:
                 pass
         
-        try:
-            msg = json.loads(data)
-            
-            # Subscription confirmation
-            if "R" in msg:
-                return  # Silent acknowledgment
-            
-            # Check for door-related events
-            if isinstance(msg, dict):
-                # Check M field (Messages array)
-                if "M" in msg:
-                    for message in msg["M"]:
-                        hub = message.get("H", "")      # Hub name
-                        target = message.get("M", "")   # Method name
-                        args = message.get("A", [])     # Arguments
-                        
-                        # Filter for EventHubLocal messages with capital letters!
-                        if hub == "EventHubLocal" and target in ["DoorStatusEvents", "DoorEvents", "LiveEvents", "RollCallEvents"]:
-                            # Args is an array of arrays - flatten it
-                            for arg_array in args:
-                                if isinstance(arg_array, list):
-                                    # Iterate through the nested array
-                                    for arg in arg_array:
-                                        if isinstance(arg, dict):
-                                            door_id = arg.get("doorId") or arg.get("deviceId")
-                                            
-                                            if door_id == WIFI_DOOR_ID:
-                                                # Highlight WiFi door
-                                                print(f"\n{'🚪'*40}")
-                                                print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} EVENT!")
-                                                print(f"Event Type: {target}")
-                                                print(f"Full payload:")
-                                                print(json.dumps(arg, indent=2))
-                                                print(f"{'🚪'*40}\n")
-                                            elif door_id is not None:
-                                                # Show all other door events with full details
-                                                print(f"\n[{timestamp}] 🚪 Door {door_id} - {target}")
-                                                print(json.dumps(arg, indent=2))
-                                            elif target == "RollCallEvents":
-                                                # Show roll call events
-                                                print(f"\n[{timestamp}] 📋 RollCallEvent:")
-                                                print(json.dumps(arg, indent=2))
-                                            elif target == "LiveEvents":
-                                                # Show live events that aren't door-specific
-                                                event_type = arg.get("eventType", "unknown")
-                                                user = arg.get("userName", "unknown")
-                                                device = arg.get("deviceId", "unknown")
-                                                print(f"[{timestamp}] 📡 LiveEvent: Type={event_type}, User={user}, Device={device}")
-        except json.JSONDecodeError:
-            pass  # Ignore non-JSON messages (keepalives, etc.)
-        except Exception as e:
-            print(f"[{timestamp}] Error processing message: {e}")
+        return  # Don't process further, just show raw messages
     
     async def run(self):
         """Main run loop"""

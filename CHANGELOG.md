@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 09:45:16
+- Modified: scripts/monitor_wifi_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 09:30:16
 - Added: scripts/check_wifi_door_api.py
 - Modified: scripts/monitor_wifi_door.py
