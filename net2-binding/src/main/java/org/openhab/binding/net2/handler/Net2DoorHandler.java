@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.net2.Net2BindingConstants;
 import org.openhab.core.library.types.DateTimeType;
+import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.OnOffType;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
@@ -161,11 +162,23 @@ public class Net2DoorHandler extends BaseThingHandler {
             if (cmdStr.trim().startsWith("{")) {
                 payload = cmdStr;
             } else {
-                // Otherwise, use defaults (customize as needed)
+                // Otherwise, interpret command as seconds and convert to milliseconds
+                int openTimeSeconds = 1; // Default to 1 second
+                try {
+                    if (command instanceof DecimalType) {
+                        openTimeSeconds = ((DecimalType) command).intValue();
+                    } else {
+                        openTimeSeconds = Integer.parseInt(cmdStr);
+                    }
+                } catch (NumberFormatException e) {
+                    logger.warn("Invalid timed command value '{}', using default 1 second", cmdStr);
+                }
+                int openTimeMs = openTimeSeconds * 1000; // Convert seconds to milliseconds
+                
                 JsonObject relayFunction = new JsonObject();
                 relayFunction.addProperty("RelayId", "Relay1");
                 relayFunction.addProperty("RelayAction", "TimedOpen");
-                relayFunction.addProperty("RelayOpenTime", 500);
+                relayFunction.addProperty("RelayOpenTime", openTimeMs);
                 JsonObject body = new JsonObject();
                 body.addProperty("DoorId", doorId);
                 body.add("RelayFunction", relayFunction);

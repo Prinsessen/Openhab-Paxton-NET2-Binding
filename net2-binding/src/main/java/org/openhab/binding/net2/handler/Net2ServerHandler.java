@@ -134,8 +134,8 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                     startSignalR(client, config);
                 }
 
-                // Schedule periodic refresh
-                int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 30;
+                // Schedule periodic refresh (now 10 minutes with SignalR providing instant updates)
+                int refreshInterval = config.refreshInterval > 0 ? config.refreshInterval : 600;
                 refreshJob = scheduler.scheduleWithFixedDelay(this::refreshDoorStatus, 0, refreshInterval,
                         TimeUnit.SECONDS);
             } catch (Exception e) {
