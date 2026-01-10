@@ -54,5 +54,10 @@ Number Net2_Door5_ControlTimed "Door 5 Timed Control" { channel="net2:door:serve
 DateTime Net2_Door5_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:door:server:door5:lastAccessTime" }
 
 // ==============================================
+// Entry Log Items (JSON format for Grafana)
+// ==============================================
+String Net2_Door1_EntryLog "Entry Log [%s]" { channel="net2:door:server:door1:entryLog" }
+
+// ==============================================
 // Add more doors as needed...
 // ==============================================   
