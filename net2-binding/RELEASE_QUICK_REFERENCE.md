@@ -166,6 +166,7 @@ e26d4eb - docs: comprehensive release status report - all 45+ requirements verif
 - **action** - Open/close/hold commands
 - **lastAccessUser** - Last person who accessed
 - **lastAccessTime** - Timestamp of last access
+- **entryLog** - JSON entry events for Grafana (physical access only)
 
 ### Authentication
 - OAuth2 JWT tokens (30-minute expiry)

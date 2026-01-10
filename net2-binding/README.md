@@ -61,6 +61,7 @@ Each door exposes the following channels:
 | `controlTimed`  | Number   | RW     | Timed open in seconds (1=1sec, 5=5sec, etc.) - Server-side timing |
 | `lastAccessUser`| String   | RO     | Last user who accessed the door             |
 | `lastAccessTime`| DateTime | RO     | Timestamp of last door access               |
+| `entryLog`      | String   | RO     | JSON entry event: firstName, lastName, doorName, timestamp, doorId (physical access only) |
 
 **Synchronization Behavior:**
 - `status` channel: Shows **physical door relay state** - receives instant updates via SignalR DoorStatusEvents with `doorRelayOpen` field
@@ -104,6 +105,7 @@ Switch Front_Door_Lock "Front Door" <lock> { channel="net2:door:myserver:fordoor
 Switch Front_Door_Status "Front Door Status" <door> { channel="net2:door:myserver:fordoor:status" }
 String Front_Door_LastUser "Last Access: [%s]" { channel="net2:door:myserver:fordoor:lastAccessUser" }
 DateTime Front_Door_LastTime "Last Access Time [%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS]" { channel="net2:door:myserver:fordoor:lastAccessTime" }
+String Front_Door_EntryLog "Entry Log [%s]" { channel="net2:door:myserver:fordoor:entryLog" }
 
 // Bridge channels (user management)
 String Net2_CreateUser        "Create User"        { channel="net2:net2server:myserver:createUser" }

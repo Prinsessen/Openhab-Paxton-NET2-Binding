@@ -39,6 +39,7 @@ Represents a Paxton Net2 access control door.
 | `action` | Switch | Read-write | Control door: send ON to hold open, OFF to close |
 | `lastAccessUser` | String | Read-only | Name of the last user who accessed the door |
 | `lastAccessTime` | DateTime | Read-only | Timestamp of the last door access |
+| `entryLog` | String | Read-only | JSON entry event with firstName, lastName, doorName, timestamp (physical badge access only) |
 
 ## Thing Discovery
 
@@ -74,6 +75,7 @@ Switch Front_Door_Lock "Front Door Lock" <lock> { channel="net2:door:myserver:fr
 Switch Front_Door_Status "Front Door Status" <door> { channel="net2:door:myserver:front_door:status" }
 String Front_Door_LastUser "Last Access [%s]" { channel="net2:door:myserver:front_door:lastAccessUser" }
 DateTime Front_Door_LastTime "Last Time [%1$td.%1$tm.%1$tY %1$tH:%1$tM]" { channel="net2:door:myserver:front_door:lastAccessTime" }
+String Front_Door_EntryLog "Entry Log [%s]" { channel="net2:door:myserver:front_door:entryLog" }
 
 // User management (bridge channels)
 String Net2_CreateUser "Create User" { channel="net2:net2server:myserver:createUser" }

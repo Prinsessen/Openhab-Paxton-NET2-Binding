@@ -80,6 +80,7 @@ Switch Front_Door { channel="net2:door:myserver:fordoor:action" }
 Switch Front_Door_Status { channel="net2:door:myserver:fordoor:status" }
 String Front_Door_LastUser { channel="net2:door:myserver:fordoor:lastAccessUser" }
 DateTime Front_Door_LastTime { channel="net2:door:myserver:fordoor:lastAccessTime" }
+String Front_Door_EntryLog { channel="net2:door:myserver:fordoor:entryLog" }
 
 // Bridge channels (user management)
 String Net2_CreateUser        "Create User"        { channel="net2:net2server:myserver:createUser" }
