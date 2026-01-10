@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 18:15:15
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Modified: net2-binding/src/main/resources/OH-INF/thing/thing-types.xml
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 15:00:16
 - Modified: scripts/__pycache__/monitor_wifi_door.cpython-313.pyc
 - Added: scripts/monitor_wifi_door.log

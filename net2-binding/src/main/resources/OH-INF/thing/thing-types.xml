@@ -64,6 +64,7 @@
 			<channel id="lastAccessUser" typeId="lastAccessUser"/>
 			<channel id="lastAccessTime" typeId="lastAccessTime"/>
 			<channel id="controlTimed" typeId="doorControlTimed"/>
+			<channel id="entryLog" typeId="entryLog"/>
 		</channels>
 
 		<config-description>
@@ -135,6 +136,13 @@
 		<label>List Users</label>
 		<description>Trigger to list all users in the system; full JSON payload logged to openhab.log</description>
 		<state readOnly="false"/>
+	</channel-type>
+
+	<channel-type id="entryLog">
+		<item-type>String</item-type>
+		<label>Entry Log</label>
+		<description>JSON-formatted entry event: {"firstName":"John","lastName":"Doe","doorName":"Front Door","timestamp":"2026-01-10T18:04:01"}</description>
+		<state readOnly="true"/>
 	</channel-type>
 
 </thing:thing-descriptions>
