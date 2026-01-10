@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 09:00:15
+- Added: scripts/monitor_wifi_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 08:45:16
 - Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
 - Modified: things/net2.things
