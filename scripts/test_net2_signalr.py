@@ -20,7 +20,7 @@ with open(CONFIG_FILE, 'r') as f:
 BASE_URL = config['base_url'].replace('/api/v1', '')
 USERNAME = config['username']
 PASSWORD = config['password']
-DOOR_ADDRESS = "17105491"  # Main entrance door
+DOOR_ADDRESS = "6612642"  # Test door
 
 class Net2SignalRTester:
     def __init__(self):
@@ -36,20 +36,23 @@ class Net2SignalRTester:
         connector = aiohttp.TCPConnector(ssl=False)
         self.session = aiohttp.ClientSession(connector=connector)
         
-        auth_url = f"{BASE_URL}/api/authenticate"
+        auth_url = f"{BASE_URL}/api/v1/authorization/tokens"
         payload = {
             "username": USERNAME,
-            "password": PASSWORD
+            "password": PASSWORD,
+            "grant_type": "password",
+            "client_id": config.get('client_id', '00aab996-6439-4f16-89b4-6c0cc851e8f3')
         }
         
-        async with self.session.post(auth_url, json=payload) as response:
+        async with self.session.post(auth_url, data=payload) as response:
             if response.status == 200:
                 data = await response.json()
-                self.token = data.get('token')
+                self.token = data.get('access_token')
                 print(f"[{self.timestamp()}] ✓ Authentication successful")
                 return True
             else:
-                print(f"[{self.timestamp()}] ✗ Authentication failed: {response.status}")
+                text = await response.text()
+                print(f"[{self.timestamp()}] ✗ Authentication failed: {response.status} - {text}")
                 return False
     
     async def negotiate_signalr(self):
@@ -76,24 +79,49 @@ class Net2SignalRTester:
                 print(f"[{self.timestamp()}] ✗ SignalR negotiation failed: {response.status}")
                 return False
     
+    async def classic_start(self, connection_token):
+        """Call start endpoint for classic SignalR"""
+        start_url = f"{BASE_URL}/signalr/start"
+        params = {
+            "transport": "webSockets",
+            "clientProtocol": "1.5",
+            "connectionToken": connection_token,
+            "connectionData": json.dumps([{"name": "eventHubLocal"}])
+        }
+        headers = {
+            "Authorization": f"Bearer {self.token}"
+        }
+        
+        async with self.session.get(start_url, params=params, headers=headers) as response:
+            if response.status == 200:
+                print(f"[{self.timestamp()}] ✓ Classic SignalR start completed")
+                return True
+            else:
+                text = await response.text()
+                print(f"[{self.timestamp()}] ⚠ Classic start warning: {response.status} - {text}")
+                return False
+    
     async def connect_signalr(self):
         """Connect to SignalR WebSocket"""
         print(f"[{self.timestamp()}] Connecting to SignalR WebSocket...")
+        
+        # First call start for classic SignalR
+        await self.classic_start(self.connection_token)
         
         ws_url = f"{BASE_URL.replace('https://', 'wss://')}/signalr/connect"
         params = {
             "transport": "webSockets",
             "clientProtocol": "1.5",
             "connectionToken": self.connection_token,
-            "connectionData": json.dumps([{"name": "eventHubLocal"}]),
-            "tid": "0"
+            "connectionData": json.dumps([{"name": "eventHubLocal"}])
         }
         headers = {
             "Authorization": f"Bearer {self.token}"
         }
         
-        # Build full URL with params
-        param_str = "&".join([f"{k}={v}" for k, v in params.items()])
+        # Build full URL with params  
+        from urllib.parse import urlencode
+        param_str = urlencode(params)
         full_ws_url = f"{ws_url}?{param_str}"
         
         async with self.session.ws_connect(full_ws_url, headers=headers, ssl=False) as ws:
