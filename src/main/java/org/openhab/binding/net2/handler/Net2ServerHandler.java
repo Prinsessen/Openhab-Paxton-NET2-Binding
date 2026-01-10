@@ -176,10 +176,10 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             Net2SignalRClient newClient = new Net2SignalRClient(client.getServerRootUri(), token, verify);
             newClient.setEventConsumer(this::handleSignalREvent);
             newClient.setOnConnectedCallback(this::onSignalRConnected);
-            
+
             // Assign before connecting so callback can access it
             signalRClient = newClient;
-            
+
             newClient.connect();
             newClient.subscribeToEvents();
         } catch (Exception e) {
@@ -188,13 +188,14 @@ public class Net2ServerHandler extends BaseBridgeHandler {
     }
 
     private void handleSignalREvent(String target, JsonObject payload) {
-        if (!payload.has("deviceId")) {
+        // Support both deviceId and doorId (different event types use different field names)
+        if (!payload.has("deviceId") && !payload.has("doorId")) {
             return;
         }
 
-        int deviceId = payload.get("deviceId").getAsInt();
+        int eventDoorId = payload.has("doorId") ? payload.get("doorId").getAsInt() : payload.get("deviceId").getAsInt();
         getThing().getThings().forEach(childThing -> {
-            if (childThing.getHandler() instanceof Net2DoorHandler handler && handler.getDoorId() == deviceId) {
+            if (childThing.getHandler() instanceof Net2DoorHandler handler && handler.getDoorId() == eventDoorId) {
                 handler.applyEvent(payload, target);
             }
         });

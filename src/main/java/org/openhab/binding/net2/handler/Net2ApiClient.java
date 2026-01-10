@@ -266,8 +266,8 @@ public class Net2ApiClient {
         ensureTokenValid();
 
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/commands/door/control"))
-                .POST(HttpRequest.BodyPublishers.ofString(payload))
-                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+                .POST(HttpRequest.BodyPublishers.ofString(payload)).header("Authorization", "Bearer " + accessToken)
+                .header("Content-Type", "application/json").build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         return response.statusCode() == 200 || response.statusCode() == 202;
