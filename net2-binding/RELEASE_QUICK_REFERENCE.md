@@ -12,7 +12,7 @@
 | **JAR Size** | 43 KB |
 | **Build Status** | ✅ SUCCESS |
 | **Author** | Nanna Agesen (@Prinsessen) |
-| **Email** | author@example.com |
+| **Email** | nanna@agesen.dk |
 | **License** | EPL-2.0 |
 | **Repository** | https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding |
 | **Documentation** | 10 comprehensive markdown files |
@@ -162,7 +162,7 @@ e26d4eb - docs: comprehensive release status report - all 45+ requirements verif
 | **What Java versions?** | Java 21+ (LTS) |
 | **What openHAB versions?** | 5.1.0+ |
 | **License?** | EPL-2.0 (Eclipse Public License) |
-| **Author contact?** | author@example.com (@Prinsessen) |
+| **Author contact?** | nanna@agesen.dk (@Prinsessen) |
 | **Bug reports?** | https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding/issues |
 
 ---

@@ -369,10 +369,10 @@ Terndrupvej 81
 
 ## Maintainer
 
-- Nanna Agesen (@Prinsessen) — author@example.com
+- Nanna Agesen (@Prinsessen) — nanna@agesen.dk
 
 ## Author
 
 - Nanna Agesen (@Prinsessen)
-- Email: author@example.com
+- Email: nanna@agesen.dk
 - GitHub: https://github.com/Prinsessen
