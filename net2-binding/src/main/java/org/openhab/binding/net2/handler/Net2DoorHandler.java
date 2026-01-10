@@ -239,30 +239,42 @@ public class Net2DoorHandler extends BaseThingHandler {
                         new StringType(payload.get("userName").getAsString()));
             }
 
-            // Handle doorStatusEvents - These provide real door lock status
-            if ("doorStatusEvents".equalsIgnoreCase(target) || "doorStatusEvent".equalsIgnoreCase(target)) {
-                if (payload.has("status") && !payload.get("status").isJsonNull()) {
-                    String status = payload.get("status").getAsString().toLowerCase();
-                    OnOffType doorStatus;
+            // Handle DoorStatusEvents - These provide real-time door relay status via doorRelayOpen
+            if ("DoorStatusEvents".equalsIgnoreCase(target) || "DoorStatusEvent".equalsIgnoreCase(target)) {
+                if (payload.has("status") && payload.get("status").isJsonObject()) {
+                    JsonObject statusObj = payload.getAsJsonObject("status");
                     
-                    // Map door status to ON/OFF (adjust based on actual API values)
-                    if ("open".equals(status) || "unlocked".equals(status) || "opened".equals(status)) {
-                        doorStatus = OnOffType.ON;
-                    } else if ("closed".equals(status) || "locked".equals(status)) {
-                        doorStatus = OnOffType.OFF;
-                    } else {
-                        logger.debug("Unknown door status: {}", status);
-                        return;
+                    // Check doorRelayOpen field - this indicates door open/closed state
+                    if (statusObj.has("doorRelayOpen")) {
+                        boolean doorRelayOpen = statusObj.get("doorRelayOpen").getAsBoolean();
+                        OnOffType doorStatus = doorRelayOpen ? OnOffType.ON : OnOffType.OFF;
+                        
+                        updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
+                        logger.info("Door {} status updated from doorRelayOpen to: {} (relay={})", 
+                                   doorId, doorStatus, doorRelayOpen);
                     }
                     
-                    updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
-                    logger.info("Door {} status updated to: {}", doorId, doorStatus);
+                    // Also check doorContactClosed if available (physical door sensor)
+                    if (statusObj.has("doorContactClosed")) {
+                        boolean doorContactClosed = statusObj.get("doorContactClosed").getAsBoolean();
+                        logger.debug("Door {} doorContactClosed: {}", doorId, doorContactClosed);
+                        // Note: doorContactClosed might not be available on all doors
+                        // We prioritize doorRelayOpen as it's more reliably reported
+                    }
                 }
             }
             
-            // Handle doorEvents - Door open/closed physical events
-            else if ("doorEvents".equalsIgnoreCase(target) || "doorEvent".equalsIgnoreCase(target)) {
-                if (payload.has("state") && !payload.get("state").isJsonNull()) {
+            // Handle DoorEvents - Door open/closed events (legacy format if still used)
+            else if ("DoorEvents".equalsIgnoreCase(target) || "DoorEvent".equalsIgnoreCase(target)) {
+                // Check for locked field
+                if (payload.has("locked")) {
+                    boolean locked = payload.get("locked").getAsBoolean();
+                    OnOffType doorStatus = locked ? OnOffType.OFF : OnOffType.ON;
+                    updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
+                    logger.info("Door {} status updated from locked field to: {}", doorId, doorStatus);
+                }
+                // Check for state field (legacy)
+                else if (payload.has("state") && !payload.get("state").isJsonNull()) {
                     String state = payload.get("state").getAsString().toLowerCase();
                     OnOffType doorStatus;
                     
@@ -278,6 +290,10 @@ public class Net2DoorHandler extends BaseThingHandler {
                     updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
                     logger.info("Door {} physical state changed to: {}", doorId, doorStatus);
                 }
+            }
+            
+            // Handle liveEvents - Generic access events
+            else if ("liveEvents".equalsIgnoreCase(target) || "liveEvent".equalsIgnoreCase(target)) {
             }
             
             // Handle liveEvents - Access events with eventType-based state tracking
