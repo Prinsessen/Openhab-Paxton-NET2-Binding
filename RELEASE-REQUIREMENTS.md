@@ -41,6 +41,7 @@
 - [x] Automatic door discovery
 - [x] SignalR event support
 - [x] Configurable polling intervals
+- [x] Entry logging for badge access events
 
 ### Documentation ✓
 - [x] Comprehensive README.md

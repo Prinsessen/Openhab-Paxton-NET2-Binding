@@ -8,6 +8,7 @@ This binding provides integration with the Paxton Net2 Access Control system via
 - **Real-time Synchronization**: Hybrid sync with SignalR real-time events + API polling fallback
 - **Status Monitoring**: Live door lock/unlock status synchronized with Net2 server
 - **Access Logging**: Track last user and access time per door
+- **Entry Logging**: JSON-formatted entry events for Grafana analytics (physical badge access only)
 - **Multi-Door Support**: Control multiple doors from a single Net2 server
 - **Token Management**: Automatic JWT token refresh (30-min tokens)
 - **User Management**: Create/delete users and assign access levels from the bridge

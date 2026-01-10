@@ -34,6 +34,7 @@ Frame label="Door 1 Controls" {
     Text item=Net2_Door1_Status label="Fordør Status" icon="door"
     Switch item=Net2_Door1_Action label="Fordør Action" icon="lock-key"
     Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"] icon="lock-key"
+    Text item=Net2_Door1_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
 }
 ```
 
@@ -385,6 +386,7 @@ sitemap net2_doors label="Net2 Door Control" {
         Text item=Front_Door_Status label="Status [%s]" icon="door"
         Text item=Front_Door_LastUser label="Last Access: [%s]"
         Text item=Front_Door_LastTime label="Last Time: [%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS]"
+        Text item=Front_Door_EntryLog label="Entry [JS(entrylog.js):%s]" icon="log"
     }
 
     Frame label="Back Door" {

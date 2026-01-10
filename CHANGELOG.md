@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.2.0] - 2026-01-10
 
 ### Added
+- **Entry Logging Channel** (`entryLog`)
+  - New door channel for tracking physical badge access events
+  - Returns JSON-formatted entry data: firstName, lastName, doorName, timestamp, doorId
+  - Only logs physical badge access (not remote UI commands)
+  - Integrates with InfluxDB/Grafana for access analytics
+  - Includes JavaScript transform for user-friendly UI display
+  - Format example: `{"firstName":"Nanna","lastName":"Agesen","doorName":"Front Door","timestamp":"2026-01-10T18:48:34","doorId":6612642}`
 - **User Query Channel** (`listUsers`)
   - New bridge channel to query all users in the Net2 system
   - Returns full JSON payload via `GET /api/v1/users`
