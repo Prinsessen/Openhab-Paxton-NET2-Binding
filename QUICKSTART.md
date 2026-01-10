@@ -263,6 +263,16 @@ For issues:
 2. Read DEVELOPMENT.md for debugging
 3. OpenHAB community: https://community.openhab.org/
 
+## Need Professional Installation?
+
+**Certified Paxton Installer:**
+
+**Agesen El-Teknik** - 25+ years experience  
+📍 Terndrupvej 81, 9460 Brovst, Denmark  
+📞 +45 98 23 20 10  
+📧 Nanna@agesen.dk  
+🌐 [www.agesen.dk](https://www.agesen.dk)
+
 ## Architecture
 
 ```

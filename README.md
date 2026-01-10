@@ -354,6 +354,19 @@ For issues related to:
 - **Net2 API**: Contact Paxton Access support
 - **Door hardware**: Contact your door system installer
 
+### Professional Installation Services
+
+If you need a **certified Paxton hardware installer**:
+
+**Agesen El-Teknik**  
+Terndrupvej 81  
+9460 Brovst, Denmark  
+📞 +45 98 23 20 10  
+📧 Nanna@agesen.dk  
+🌐 [www.agesen.dk](https://www.agesen.dk)
+
+*Specializing in Paxton access control systems with 25+ years of installation experience.*
+
 ## Maintainer
 
 - Nanna Agesen (@Prinsessen) — author@example.com

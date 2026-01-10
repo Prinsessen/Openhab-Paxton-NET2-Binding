@@ -253,6 +253,16 @@ Contributions are welcome! Please:
 
 This binding is part of the openHAB project and is licensed under the [Eclipse Public License 2.0](https://www.eclipse.org/legal/epl-2.0/).
 
+## Professional Installation Services
+
+Need a **certified Paxton hardware installer**?
+
+**Agesen El-Teknik**  
+Terndrupvej 81, 9460 Brovst, Denmark  
+📞 +45 98 23 20 10 | 📧 Nanna@agesen.dk | 🌐 [www.agesen.dk](https://www.agesen.dk)
+
+*25+ years of experience with Paxton access control systems.*
+
 ## Author
 
 **Nanna Agesen** (@Prinsessen)
