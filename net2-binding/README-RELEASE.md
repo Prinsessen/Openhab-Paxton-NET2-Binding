@@ -242,7 +242,7 @@ This binding is part of the openHAB project and is licensed under the [Eclipse P
 ## Author
 
 **Nanna Agesen** (@Prinsessen)
-- Email: Nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
 - Binding Repository: https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding
 
@@ -251,7 +251,7 @@ This binding is part of the openHAB project and is licensed under the [Eclipse P
 | Field | Value |
 |-------|-------|
 | Author | Nanna Agesen |
-| Email | Nanna@agesen.dk |
+| Email | author@example.com |
 | GitHub | @Prinsessen |
 | Repository | https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding |
 | License | EPL-2.0 |

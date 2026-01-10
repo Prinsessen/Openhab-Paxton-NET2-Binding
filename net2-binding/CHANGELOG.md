@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.2.0] - 2026-01-10
 
 ### Added
+- **Entry Logging Channel** (`entryLog`)
+  - New door channel for tracking physical badge access events
+  - Returns JSON-formatted entry data: firstName, lastName, doorName, timestamp, doorId
+  - Only logs physical badge access (not remote UI commands)
+  - Integrates with InfluxDB/Grafana for access analytics
+  - Includes JavaScript transform for user-friendly UI display
+  - Format example: `{"firstName":"Nanna","lastName":"Agesen","doorName":"Front Door","timestamp":"2026-01-10T18:48:34","doorId":6612642}`
 - **User Query Channel** (`listUsers`)
   - New bridge channel to query all users in the Net2 system
   - Returns full JSON payload via `GET /api/v1/users`
@@ -99,7 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Author
 
 **Nanna Agesen** (@Prinsessen)
-- Email: nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
 
 ### Fixed
@@ -150,7 +157,7 @@ This binding follows semantic versioning:
 ## Contributors
 
 - **Nanna Agesen** (@Prinsessen) - Lead Developer, Maintainer
-  - Email: Nanna@agesen.dk
+  - Email: author@example.com
   - GitHub: https://github.com/Prinsessen
 
 ## License
@@ -193,5 +200,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
 ## Contact & Support
 
 - **Issues**: https://github.com/Prinsessen/Openhab-Paxton-NET2-Binding/issues
-- **Email**: Nanna@agesen.dk
+- **Email**: author@example.com
 - **Community**: https://community.openhab.org/

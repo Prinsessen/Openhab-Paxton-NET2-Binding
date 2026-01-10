@@ -111,7 +111,7 @@ tail -f /var/log/openhab/openhab.log | grep -E "refreshDoorStatus|updateFromApiR
 
 ## Support
 
-- Email: nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
 - Check logs first: Most issues show up in DEBUG logging
 

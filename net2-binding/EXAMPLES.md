@@ -16,6 +16,7 @@ Switch Net2_Door1_Status "Door 1 Status" { channel="net2:door:server:door1:statu
 Number Net2_Door1_ControlTimed "Door 1 Timed Control" { channel="net2:door:server:door1:controlTimed" }
 String Net2_Door1_LastUser "Door 1 Last User" { channel="net2:door:server:door1:lastAccessUser" }
 DateTime Net2_Door1_LastTime "Door 1 Last Time" { channel="net2:door:server:door1:lastAccessTime" }
+String Net2_Door1_EntryLog "Door 1 Entry Log" { channel="net2:door:server:door1:entryLog" }
 
 // Bridge User Management Channels
 String Net2_CreateUser "Create User" { channel="net2:net2server:server:createUser" }
@@ -33,6 +34,7 @@ Frame label="Door 1 Controls" {
     Text item=Net2_Door1_Status label="Fordør Status" icon="door"
     Switch item=Net2_Door1_Action label="Fordør Action" icon="lock-key"
     Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"] icon="lock-key"
+    Text item=Net2_Door1_EntryLog label="Last Entry [JS(entrylog.js):%s]" icon="log"
 }
 ```
 
@@ -273,7 +275,7 @@ The handler automatically converts your command (in seconds) to the correct JSON
 ## Author
 
 - Nanna Agesen (@Prinsessen)
-- Email: nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
 
 ### Rule 1: Automatic Door Lock on Schedule
@@ -384,6 +386,7 @@ sitemap net2_doors label="Net2 Door Control" {
         Text item=Front_Door_Status label="Status [%s]" icon="door"
         Text item=Front_Door_LastUser label="Last Access: [%s]"
         Text item=Front_Door_LastTime label="Last Time: [%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1$tS]"
+        Text item=Front_Door_EntryLog label="Entry [JS(entrylog.js):%s]" icon="log"
     }
 
     Frame label="Back Door" {
@@ -512,7 +515,7 @@ Example queries for Grafana using RRD4j persistence:
 import requests
 
 # Control door via OpenHAB
-OPENHAB_API = "https://openhab5.agesen.dk/rest/items"
+OPENHAB_API = "https://openhab.example.com/rest/items"
 
 def unlock_door(door_name):
     """Unlock a door via OpenHAB binding"""

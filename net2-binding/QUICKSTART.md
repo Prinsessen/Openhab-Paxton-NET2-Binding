@@ -113,6 +113,7 @@ end
 ✅ **Real-time Updates**
 - Automatic polling (configurable, default 30 sec)
 - SignalR event infrastructure (WebSocket ready)
+- Entry logging channel for physical badge access events
 - Status change notifications
 
 ✅ **Discovery Service**

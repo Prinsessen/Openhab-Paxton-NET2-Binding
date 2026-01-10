@@ -389,7 +389,7 @@ grep "Subscribed to door events" /var/log/openhab/openhab.log
 ## Author
 
 **Nanna Agesen** (@Prinsessen)
-- Email: nanna@agesen.dk
+- Email: author@example.com
 - GitHub: https://github.com/Prinsessen
 
 ## Version
