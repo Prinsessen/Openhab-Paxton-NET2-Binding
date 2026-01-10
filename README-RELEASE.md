@@ -39,6 +39,7 @@ Represents a Paxton Net2 access control door.
 | `action` | Switch | Read-write | Control door: send ON to hold open, OFF to close |
 | `lastAccessUser` | String | Read-only | Name of the last user who accessed the door |
 | `lastAccessTime` | DateTime | Read-only | Timestamp of the last door access |
+| `entryLog` | String | Read-only | JSON entry event with firstName, lastName, doorName, timestamp (physical badge access only) |
 
 ## Thing Discovery
 

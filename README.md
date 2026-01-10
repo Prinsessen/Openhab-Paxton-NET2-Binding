@@ -61,6 +61,7 @@ Each door exposes the following channels:
 | `controlTimed`  | Number   | RW     | Timed open in seconds (1=1sec, 5=5sec, etc.) - Server-side timing |
 | `lastAccessUser`| String   | RO     | Last user who accessed the door             |
 | `lastAccessTime`| DateTime | RO     | Timestamp of last door access               |
+| `entryLog`      | String   | RO     | JSON entry event: firstName, lastName, doorName, timestamp, doorId (physical access only) |
 
 **Synchronization Behavior:**
 - `status` channel: Shows **physical door relay state** - receives instant updates via SignalR DoorStatusEvents with `doorRelayOpen` field
