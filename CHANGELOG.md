@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 12:00:16
+- Modified: rules/Traccar.rules
+- Added: rules/Traccar.rules.backup
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 11:45:16
 - Modified: net2-binding/README.md
 

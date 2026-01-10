@@ -28,8 +28,8 @@ rule "Traccar Open Port"
             
             logInfo("Traccar Open Port", "Conditions met. Opening garage door and turning on light.")
             
-            // Use Net2 binding ControlTimed channel - 1 second pulse for "one shot" door operation
-            Net2_Door3_ControlTimed.sendCommand(1)
+            net2_Args.sendCommand("--did 7242929 --rid Relay1 --rea TimedOpen --ret 500 --fla 3")
+            net2_Run.sendCommand(ON)
             // Assuming Light_GA_Bil_Loft is a Dimmer or Number item that accepts 100
             Light_GA_Bil_Loft.sendCommand(100)
         }
@@ -66,8 +66,8 @@ rule "Traccar Close Port"
 
             logInfo("Traccar Close Port", "Conditions met. Closing garage door and turning off light.")
 
-            // Use Net2 binding ControlTimed channel - 1 second pulse for "one shot" door operation
-            Net2_Door3_ControlTimed.sendCommand(1)
+            net2_Args.sendCommand("--did 7242929 --rid Relay1 --rea TimedOpen --ret 500 --fla 3")
+            net2_Run.sendCommand(ON)
             // Assuming Light_GA_Bil_Loft is a Dimmer or Number item that accepts 0
             Light_GA_Bil_Loft.sendCommand(0)
         }
