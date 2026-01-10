@@ -41,6 +41,7 @@ public class Net2BindingConstants {
     public static final String CHANNEL_CREATE_USER = "createUser";
     public static final String CHANNEL_DELETE_USER = "deleteUser";
     public static final String CHANNEL_LIST_ACCESS_LEVELS = "listAccessLevels";
+    public static final String CHANNEL_LIST_USERS = "listUsers";
 
     public static final String CHANNEL_DOOR_CONTROL_TIMED = "controlTimed";
     // SignalR hub

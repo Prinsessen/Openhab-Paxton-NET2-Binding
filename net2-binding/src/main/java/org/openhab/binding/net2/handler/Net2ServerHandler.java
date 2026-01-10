@@ -389,4 +389,18 @@ public class Net2ServerHandler extends BaseBridgeHandler {
         levels.forEach((id, name) -> sb.append("[" + id + ":" + name + "] "));
         logger.info(sb.toString());
     }
+
+    private void handleListUsers(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+        String usersJson = client.listUsers();
+        if (usersJson == null || usersJson.isEmpty()) {
+            logger.warn("No users returned by API");
+            return;
+        }
+        logger.info("Users JSON payload: {}", usersJson);
+    }
 }
