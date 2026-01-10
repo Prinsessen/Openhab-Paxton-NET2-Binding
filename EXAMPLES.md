@@ -16,6 +16,7 @@ Switch Net2_Door1_Status "Door 1 Status" { channel="net2:door:server:door1:statu
 Number Net2_Door1_ControlTimed "Door 1 Timed Control" { channel="net2:door:server:door1:controlTimed" }
 String Net2_Door1_LastUser "Door 1 Last User" { channel="net2:door:server:door1:lastAccessUser" }
 DateTime Net2_Door1_LastTime "Door 1 Last Time" { channel="net2:door:server:door1:lastAccessTime" }
+String Net2_Door1_EntryLog "Door 1 Entry Log" { channel="net2:door:server:door1:entryLog" }
 
 // Bridge User Management Channels
 String Net2_CreateUser "Create User" { channel="net2:net2server:server:createUser" }
