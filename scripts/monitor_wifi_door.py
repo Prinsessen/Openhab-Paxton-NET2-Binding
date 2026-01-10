@@ -13,8 +13,10 @@ from datetime import datetime
 with open('net2_config.json') as f:
     config = json.load(f)
 
-NET2_HOST = config['host']
-NET2_PORT = config['port']
+# Extract host from base_url (remove https:// and /api/v1)
+base_url = config['base_url']
+NET2_HOST = base_url.replace('https://', '').replace('/api/v1', '').split(':')[0]
+NET2_PORT = base_url.replace('https://', '').replace('/api/v1', '').split(':')[1] if ':' in base_url.replace('https://', '') else '8443'
 USERNAME = config['username']
 PASSWORD = config['password']
 CLIENT_ID = config['client_id']
@@ -39,13 +41,14 @@ class Net2SignalRMonitor:
         payload = {
             "username": USERNAME,
             "password": PASSWORD,
-            "clientId": CLIENT_ID
+            "grant_type": "password",
+            "client_id": CLIENT_ID
         }
         
-        async with self.session.post(auth_url, json=payload) as response:
+        async with self.session.post(auth_url, data=payload) as response:
             if response.status == 200:
                 data = await response.json()
-                self.token = data.get("token")
+                self.token = data.get("access_token")
                 print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ Authenticated")
                 return True
             else:
@@ -57,10 +60,15 @@ class Net2SignalRMonitor:
         print(f"\n[{datetime.now().strftime('%H:%M:%S')}] Connecting to SignalR...")
         
         # Negotiate connection
-        negotiate_url = f"{self.base_url}/signalr/negotiate?clientProtocol=1.5"
+        negotiate_url = f"{self.base_url}/signalr/negotiate"
+        params = {
+            "clientProtocol": "1.5",
+            "connectionData": json.dumps([{"name": "eventHubLocal"}]),
+            "_": str(int(datetime.now().timestamp() * 1000))
+        }
         headers = {"Authorization": f"Bearer {self.token}"}
         
-        async with self.session.get(negotiate_url, headers=headers) as response:
+        async with self.session.get(negotiate_url, params=params, headers=headers) as response:
             if response.status == 200:
                 data = await response.json()
                 self.connection_token = data.get("ConnectionToken")
@@ -69,12 +77,31 @@ class Net2SignalRMonitor:
                 print(f"[{datetime.now().strftime('%H:%M:%S')}] ❌ Negotiate failed: {response.status}")
                 return
         
+        # Call start endpoint for classic SignalR
+        start_url = f"{self.base_url}/signalr/start"
+        start_params = {
+            "transport": "webSockets",
+            "clientProtocol": "1.5",
+            "connectionToken": self.connection_token,
+            "connectionData": json.dumps([{"name": "eventHubLocal"}])
+        }
+        async with self.session.get(start_url, params=start_params, headers=headers) as response:
+            if response.status == 200:
+                print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ Classic start completed")
+        
         # Connect to WebSocket
-        ws_url = f"wss://{NET2_HOST}:{NET2_PORT}/signalr/connect?transport=webSockets&clientProtocol=1.5&connectionToken={self.connection_token}"
-        headers = {"Authorization": f"Bearer {self.token}"}
+        from urllib.parse import urlencode
+        ws_url = f"{self.base_url.replace('https://', 'wss://')}/signalr/connect"
+        ws_params = {
+            "transport": "webSockets",
+            "clientProtocol": "1.5",
+            "connectionToken": self.connection_token,
+            "connectionData": json.dumps([{"name": "eventHubLocal"}])
+        }
+        full_ws_url = f"{ws_url}?{urlencode(ws_params)}"
         
         print(f"[{datetime.now().strftime('%H:%M:%S')}] Opening WebSocket...")
-        async with self.session.ws_connect(ws_url, headers=headers, ssl=False) as ws:
+        async with self.session.ws_connect(full_ws_url, headers=headers, ssl=False) as ws:
             print(f"[{datetime.now().strftime('%H:%M:%S')}] ✅ WebSocket connected")
             
             # Subscribe to events
@@ -82,8 +109,12 @@ class Net2SignalRMonitor:
             
             # Listen for messages
             print(f"\n{'='*80}")
-            print(f"MONITORING WiFi DOOR ID: {WIFI_DOOR_ID}")
-            print(f"Watching for: DoorStatusEvents, DoorEvents, LiveEvents")
+            print(f"MONITORING ALL DOORS (WiFi door {WIFI_DOOR_ID} highlighted)")
+            print(f"Watching ALL 4 event types:")
+            print(f"  1. LiveEvents (all monitorable events)")
+            print(f"  2. DoorEvents (open/closed for all doors)")
+            print(f"  3. DoorStatusEvents (status updates for all doors)")
+            print(f"  4. RollCallEvents (safe/unsafe events)")
             print(f"Press Ctrl+C to stop")
             print(f"{'='*80}\n")
             
@@ -95,28 +126,21 @@ class Net2SignalRMonitor:
                     break
     
     async def subscribe_to_events(self, ws):
-        """Subscribe to SignalR hubs"""
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] Subscribing to events...")
+        """Subscribe to all 4 SignalR event types"""
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] Subscribing to all event types...")
         
-        # Subscribe to DoorStatusEvents (for doorRelayOpen)
-        subscribe_msg = {
+        # 1. Subscribe to LiveEvents (all monitorable events)
+        subscribe_live = {
             "H": "eventHubLocal",
-            "M": "SubscribeToDoorStatusEvents",
-            "A": [WIFI_DOOR_ID],
+            "M": "SubscribeToLiveEvents",
+            "A": [],
             "I": 1
         }
-        await ws.send_json(subscribe_msg)
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to DoorStatusEvents for door {WIFI_DOOR_ID}")
+        await ws.send_json(subscribe_live)
+        print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to LiveEvents (all events)")
         
-        # Also subscribe to general door events
-        subscribe_msg2 = {
-            "H": "eventHubLocal",
-            "M": "SubscribeToDoorEvents",
-            "A": [WIFI_DOOR_ID],
-            "I": 2
-        }
-        await ws.send_json(subscribe_msg2)
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to DoorEvents for door {WIFI_DOOR_ID}")
+        # Note: Not subscribing to specific door IDs anymore - LiveEvents should cover all doors
+        # If we still want specific door subscriptions, we'd need to subscribe to each door individually
     
     async def handle_message(self, data):
         """Handle incoming SignalR messages"""
@@ -133,21 +157,33 @@ class Net2SignalRMonitor:
                         target = message.get("M", "")  # Method name
                         args = message.get("A", [])     # Arguments
                         
-                        if target in ["DoorStatusEvents", "DoorEvents", "LiveEvents"]:
+                        if target in ["DoorStatusEvents", "DoorEvents", "LiveEvents", "RollCallEvents"]:
                             for arg in args:
                                 if isinstance(arg, dict):
                                     door_id = arg.get("doorId") or arg.get("deviceId")
                                     
                                     if door_id == WIFI_DOOR_ID:
+                                        # Highlight WiFi door
                                         print(f"\n{'🚪'*40}")
-                                        print(f"[{timestamp}] ⭐ WiFi DOOR EVENT DETECTED!")
+                                        print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} EVENT!")
                                         print(f"Event Type: {target}")
                                         print(f"Full payload:")
                                         print(json.dumps(arg, indent=2))
                                         print(f"{'🚪'*40}\n")
-                                    else:
-                                        # Show other door events in gray for context
-                                        print(f"[{timestamp}] Other door: {door_id} - {target}")
+                                    elif door_id is not None:
+                                        # Show all other door events with full details
+                                        print(f"\n[{timestamp}] 🚪 Door {door_id} - {target}")
+                                        print(json.dumps(arg, indent=2))
+                                    elif target == "RollCallEvents":
+                                        # Show roll call events
+                                        print(f"\n[{timestamp}] 📋 RollCallEvent:")
+                                        print(json.dumps(arg, indent=2))
+                                    elif target == "LiveEvents":
+                                        # Show live events that aren't door-specific
+                                        event_type = arg.get("eventType", "unknown")
+                                        user = arg.get("userName", "unknown")
+                                        device = arg.get("deviceId", "unknown")
+                                        print(f"[{timestamp}] 📡 LiveEvent: Type={event_type}, User={user}, Device={device}")
         except json.JSONDecodeError:
             pass  # Ignore non-JSON messages (keepalives, etc.)
         except Exception as e:
