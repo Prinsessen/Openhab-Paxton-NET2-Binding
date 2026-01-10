@@ -250,6 +250,30 @@ public class Net2DoorHandler extends BaseThingHandler {
                         new StringType(payload.get("userName").getAsString()));
             }
 
+            // Generate entry log event for LiveEvents with userName
+            if (("LiveEvents".equalsIgnoreCase(target) || "liveEvents".equalsIgnoreCase(target))
+                    && payload.has("userName") && !payload.get("userName").isJsonNull()) {
+
+                String fullName = payload.get("userName").getAsString();
+                String[] nameParts = fullName.split(" ", 2);
+                String lastName = nameParts.length > 0 ? nameParts[0] : "";
+                String firstName = nameParts.length > 1 ? nameParts[1] : "";
+
+                String doorName = getThing().getLabel() != null ? getThing().getLabel() : "Door " + doorId;
+                String timestamp = payload.has("eventTime") ? payload.get("eventTime").getAsString() : "";
+
+                // Build JSON entry log
+                JsonObject entryLog = new JsonObject();
+                entryLog.addProperty("firstName", firstName);
+                entryLog.addProperty("lastName", lastName);
+                entryLog.addProperty("doorName", doorName);
+                entryLog.addProperty("timestamp", timestamp);
+                entryLog.addProperty("doorId", doorId);
+
+                updateState(Net2BindingConstants.CHANNEL_ENTRY_LOG, new StringType(entryLog.toString()));
+                logger.info("Entry log: {}", entryLog.toString());
+            }
+
             // Handle DoorStatusEvents - These provide real-time door relay status via doorRelayOpen
             if ("DoorStatusEvents".equalsIgnoreCase(target) || "DoorStatusEvent".equalsIgnoreCase(target)) {
                 if (payload.has("status") && payload.get("status").isJsonObject()) {

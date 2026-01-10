@@ -440,8 +440,7 @@ public class Net2ApiClient {
             logger.debug("Fetched users list");
             return response.body();
         } else {
-            logger.error("Failed to list users. Status: {}, Response: {}", response.statusCode(),
-                    response.body());
+            logger.error("Failed to list users. Status: {}, Response: {}", response.statusCode(), response.body());
             throw new IOException("GET /users failed with status " + response.statusCode());
         }
     }
