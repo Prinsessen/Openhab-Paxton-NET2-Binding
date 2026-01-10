@@ -207,23 +207,25 @@ The binding uses a hybrid synchronization approach for reliable door state track
 - Default: every 10 minutes (configurable via `refreshInterval`)
 - Provides backup synchronization if SignalR connection drops
 - Parses `doorRelayOpen` field from status object
-- Default interval: 30 seconds (configurable via `refreshInterval`)
+- Default interval: 600 seconds / 10 minutes (configurable via `refreshInterval`)
 - Reads actual door relay status (`doorRelayOpen` field)
 - Updates both `action` and `status` channels with current state
-- Ensures synchronization even if SignalR events are missed
+- Provides fallback synchronization if SignalR disconnects
 
 **Why Hybrid Approach?**
-- SignalR `doorEvents` and `doorStatusEvents` documented but not implemented by Net2 API
-- Only `LiveEvents` hub available, providing eventType-based notifications
-- EventType 47 (door closed) is inconsistently sent by the server
-- API polling guarantees state accuracy within the refresh interval
-- Combination provides both immediate response and guaranteed correctness
+- SignalR provides instant updates via `DoorStatusEvents` with `doorRelayOpen` field
+  - `doorRelayOpen: true` = Door OPEN (instant notification)
+  - `doorRelayOpen: false` = Door CLOSED (instant notification)
+  - Both open and close events delivered in <500ms
+- `LiveEvents` hub provides additional user access tracking (eventType 20/28/46)
+- API polling (every 10 minutes) acts as reliability backup
+- Combination provides both immediate real-time response and guaranteed correctness
 
-**Event Types:**
+**Event Types (LiveEvents):**
 - `20` - Access granted (door opened via card reader)
 - `28` - Door relay opened (timed control)
 - `46` - Door forced/held open
-- `47` - Door closed/secured (unreliable, hence API polling backup)
+- `47` - Door closed/secured (not used - DoorStatusEvents provides reliable close detection)
 
 ### REST API Endpoints
 - **Authentication**: `POST /api/v1/authorization/tokens`
