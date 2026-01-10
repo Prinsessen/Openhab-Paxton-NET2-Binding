@@ -6,7 +6,7 @@ Bridge net2:net2server:server "Net2 Server" [
     password="Jekboapj110",
     clientId="00aab996-6439-4f16-89b4-6c0cc851e8f3",
     tlsVerification=true,
-    refreshInterval=30
+    refreshInterval=600
 ] {
     Thing door door1 "Front Door" [
         doorId=6612642,
