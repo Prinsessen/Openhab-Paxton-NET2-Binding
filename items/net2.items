@@ -47,6 +47,12 @@ String Net2_Door4_LastUser "Last Access User [%s]" { channel="net2:door:server:d
 Number Net2_Door4_ControlTimed "Door 4 Timed Control" { channel="net2:door:server:door4:controlTimed" }
 DateTime Net2_Door4_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:door:server:door4:lastAccessTime" }   
 
+Switch Net2_Door5_Action "Door Action" { channel="net2:door:server:door5:action" }
+Switch Net2_Door5_Status "Door Status" { channel="net2:door:server:door5:status" }
+String Net2_Door5_LastUser "Last Access User [%s]" { channel="net2:door:server:door5:lastAccessUser" }
+Number Net2_Door5_ControlTimed "Door 5 Timed Control" { channel="net2:door:server:door5:controlTimed" }
+DateTime Net2_Door5_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:door:server:door5:lastAccessTime" }
+
 // ==============================================
 // Add more doors as needed...
 // ==============================================   

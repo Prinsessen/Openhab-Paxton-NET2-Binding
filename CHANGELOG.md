@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 14:00:06
+- Modified: items/net2.items
+- Modified: rules/net2_sync.rules
+- Modified: sitemaps/myhouse.sitemap
+- Modified: things/net2.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 13:15:16
 - Modified: net2-binding/CHANGELOG.md
 - Modified: net2-binding/EXAMPLES.md
