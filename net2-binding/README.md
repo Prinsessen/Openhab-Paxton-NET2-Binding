@@ -76,11 +76,6 @@ Each door exposes the following channels:
 See [EXAMPLES.md](EXAMPLES.md) for advanced timed control usage and custom payloads.
 
 ### Bridge Channels
-## Author
-
-- Nanna Agesen (@Prinsessen)
-- Email: nanna@agesen.dk
-- GitHub: https://github.com/Prinsessen
 
 The Net2 Server bridge exposes the following user-management channels:
 
@@ -89,6 +84,7 @@ The Net2 Server bridge exposes the following user-management channels:
 | `createUser` | String | WO | Create a user: `firstName,lastName,accessLevel,pin` (e.g., `Michael,Agesen,3,7654`). Access level may be ID or name; it is assigned after creation. |
 | `deleteUser` | String | WO | Delete a user by ID (e.g., `79`). |
 | `listAccessLevels` | String | WO | Query available access levels. Send any command (e.g., `REFRESH` or `ON`) to trigger. Results logged to `/var/log/openhab/openhab.log` as: `Access levels: [1:Public] [2:Staff] ...` |
+| `listUsers` | String | WO | Query all users in the system. Send any command (e.g., `REFRESH` or `ON`) to trigger. Full JSON payload logged to `/var/log/openhab/openhab.log` with all user details (id, firstName, lastName, PIN, telephone, accessLevel, etc.) |
 
 ## Example Configuration
 
@@ -113,6 +109,7 @@ DateTime Front_Door_LastTime "Last Access Time [%1$td.%1$tm.%1$tY %1$tH:%1$tM:%1
 String Net2_CreateUser        "Create User"        { channel="net2:net2server:myserver:createUser" }
 String Net2_DeleteUser        "Delete User"        { channel="net2:net2server:myserver:deleteUser" }
 String Net2_ListAccessLevels  "List Access Levels" { channel="net2:net2server:myserver:listAccessLevels" }
+String Net2_ListUsers         "List Users"         { channel="net2:net2server:myserver:listUsers" }
 ```
 
 ### Usage Examples
@@ -122,6 +119,48 @@ Create a user and assign access level 3 with PIN 7654:
 ```
 sendCommand(Net2_CreateUser, "Michael,Agesen,3,7654")
 ```
+
+List all users in the system (query Net2 and log full JSON payload):
+
+**From Rules:**
+```java
+sendCommand(Net2_ListUsers, ON)
+// or
+sendCommand(Net2_ListUsers, "REFRESH")
+```
+
+**From OpenHAB UI:**
+- Navigate to the item `Net2_ListUsers`
+- Click and send any command (ON, OFF, REFRESH, etc.)
+
+**From REST API:**
+```bash
+curl -X POST "http://localhost:8080/rest/items/Net2_ListUsers" \
+  -H "Content-Type: text/plain" \
+  -d "ON"
+```
+
+**From Karaf Console:**
+```bash
+openhab-cli console -p habopen
+openhab> openhab:send Net2_ListUsers ON
+```
+
+View the results in log:
+```bash
+grep "Users JSON" /var/log/openhab/openhab.log | tail -1
+# Output example: Users JSON payload: [{"Id":1,"FirstName":"John","LastName":"Doe","PIN":"1234","Telephone":"555-1234",...}, ...]
+```
+
+The JSON payload includes complete user details:
+- `Id` - User ID
+- `FirstName`, `LastName` - User name
+- `ExpiryDate`, `ActivateDate` - Account validity dates
+- `PIN` - User PIN code
+- `Telephone`, `Extension` - Contact information
+- `CustomFields` - Additional custom data
+- `AccessLevelId`, `AccessLevelName` - User's access level
+- `IsAlarmUser`, `HasImage` - User flags
 
 List access levels (query Net2 system and log results):
 
@@ -232,6 +271,8 @@ The binding uses a hybrid synchronization approach for reliable door state track
 - **Door Control**: `POST /api/v1/commands/door/holdopen`, `POST /api/v1/commands/door/close`
 - **Door Status**: `GET /api/v1/doors/status` (used for polling)
 - **List Doors**: `GET /api/v1/doors`
+- **User Management**: `GET /api/v1/users`, `POST /api/v1/users`, `DELETE /api/v1/users/{id}`
+- **Access Levels**: `GET /api/v1/accesslevels`
 - **SignalR Hub**: `wss://host:port/signalr` (LiveEvents hub)
 
 ## Security Considerations
@@ -285,3 +326,9 @@ For issues related to:
 ## Maintainer
 
 - Nanna Agesen (@Prinsessen) — Nanna@agesen.dk
+
+## Author
+
+- Nanna Agesen (@Prinsessen)
+- Email: nanna@agesen.dk
+- GitHub: https://github.com/Prinsessen

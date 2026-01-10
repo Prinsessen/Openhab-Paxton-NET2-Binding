@@ -5,7 +5,18 @@ All notable changes to the Paxton Net2 Binding are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.2.0] - 2026-01-09
+## [5.2.0] - 2026-01-10
+
+### Added
+- **User Query Channel** (`listUsers`)
+  - New bridge channel to query all users in the Net2 system
+  - Returns full JSON payload via `GET /api/v1/users`
+  - Logs complete user details to openhab.log
+  - Usage: Send any command (ON/REFRESH) to trigger
+  - Output includes: Id, FirstName, LastName, PIN, Telephone, AccessLevel, ExpiryDate, etc.
+  - Useful for auditing, reporting, and user management automation
+
+### Previous Release - 2026-01-09
 
 ### Added
 - **Hybrid Synchronization System**

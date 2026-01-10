@@ -77,10 +77,13 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                     handleDeleteUser(command);
                     break;
                 case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
+                case Net2BindingConstants.CHANNEL_LIST_ACCESS_LEVELS:
                     handleListAccessLevels(command);
                     break;
+                case Net2BindingConstants.CHANNEL_LIST_USERS:
+                    handleListUsers(command);
+                    break;
                 default:
-                    logger.debug("Unsupported channel: {}", channelUID.getId());
             }
         } catch (Exception e) {
             logger.error("Error handling command for channel {}", channelUID.getId(), e);
