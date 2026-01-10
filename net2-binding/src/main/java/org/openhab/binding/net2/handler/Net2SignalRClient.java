@@ -153,7 +153,7 @@ public class Net2SignalRClient implements Listener {
             sendInvocationClassic("eventHubLocal", "subscribeToLiveEvents");
         }
         logger.info("Event subscription sent");
-        
+
         // Notify server handler that connection is ready for door-specific subscriptions
         if (onConnectedCallback != null) {
             onConnectedCallback.run();

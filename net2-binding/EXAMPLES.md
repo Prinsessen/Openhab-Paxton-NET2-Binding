@@ -1,5 +1,87 @@
 
-# Net2 Timed Door Control Channel Examples
+# Net2 Binding Configuration Examples
+
+This document provides complete working examples for configuring the Net2 binding with items, sitemaps, and synchronization rules.
+
+## Complete Working Example
+
+### Items Configuration
+
+**File: items/net2.items**
+
+```openhab
+// Door 1 - Front Door (Fordør)
+Switch Net2_Door1_Action "Door 1 Action" { channel="net2:door:server:door1:action" }
+Switch Net2_Door1_Status "Door 1 Status" { channel="net2:door:server:door1:status" }
+Number Net2_Door1_ControlTimed "Door 1 Timed Control" { channel="net2:door:server:door1:controlTimed" }
+String Net2_Door1_LastUser "Door 1 Last User" { channel="net2:door:server:door1:lastAccessUser" }
+DateTime Net2_Door1_LastTime "Door 1 Last Time" { channel="net2:door:server:door1:lastAccessTime" }
+```
+
+### Sitemap Configuration
+
+**File: sitemaps/myhouse.sitemap**
+
+```openhab
+Frame label="Door 1 Controls" {
+    Text item=Net2_Door1_Status label="Fordør Status" icon="door"
+    Switch item=Net2_Door1_Action label="Fordør Action" icon="lock-key"
+    Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"] icon="lock-key"
+}
+```
+
+**Key Points:**
+- `Status` item shows **physical door relay state** (read-only, updates via SignalR instantly)
+- `Action` item is for **manual control** (ON=Hold Open, OFF=Close)
+- `ControlTimed` with mapping `[1="Open"]` sends value `1` = 1 second open time
+
+### Synchronization Rules
+
+**File: rules/net2_sync.rules**
+
+These rules keep the Action buttons synchronized with the physical door status:
+
+```openhab
+rule "Net2 Door 1 Status to Action Sync"
+when
+    Item Net2_Door1_Status changed
+then
+    logInfo("Net2Sync", "Door 1 Status changed to: " + Net2_Door1_Status.state)
+    Net2_Door1_Action.postUpdate(Net2_Door1_Status.state)
+end
+
+rule "Net2 Door 2 Status to Action Sync"
+when
+    Item Net2_Door2_Status changed
+then
+    logInfo("Net2Sync", "Door 2 Status changed to: " + Net2_Door2_Status.state)
+    Net2_Door2_Action.postUpdate(Net2_Door2_Status.state)
+end
+
+rule "Net2 Door 3 Status to Action Sync"
+when
+    Item Net2_Door3_Status changed
+then
+    logInfo("Net2Sync", "Door 3 Status changed to: " + Net2_Door3_Status.state)
+    Net2_Door3_Action.postUpdate(Net2_Door3_Status.state)
+end
+
+rule "Net2 Door 4 Status to Action Sync"
+when
+    Item Net2_Door4_Status changed
+then
+    logInfo("Net2Sync", "Door 4 Status changed to: " + Net2_Door4_Status.state)
+    Net2_Door4_Action.postUpdate(Net2_Door4_Status.state)
+end
+```
+
+**Why These Rules Are Needed:**
+- The `Status` channel receives instant updates from SignalR (doorRelayOpen field)
+- The `Action` channel is used for sending commands
+- These rules sync the Action button display to match the physical door state
+- Without these rules, the Action button won't reflect remote/card-based door operations
+
+## Channel Details
 
 ## Default Door Control (Hold Open/Close)
 
@@ -29,10 +111,11 @@ Number Net2_Door1_ControlTimed "Door 1 Timed Open" { channel="net2:door:server:d
 
 **Sitemap:**
 ```openhab
-Switch item=Net2_Door1_ControlTimed label="Door 1 Timed Open (5s)" mappings=[1="Open 5s"]
+Switch item=Net2_Door1_ControlTimed label="Door 1 Timed Open (1s)" mappings=[1="Open"]
 ```
 
-- Sending `1` will trigger a timed open (default 5 seconds, as set in the handler or thing config).
+- Sending `1` will trigger a timed open for **1 second** (1000ms).
+- Sending `5` will open for 5 seconds, `10` for 10 seconds, etc.
 - You can use rules to send custom values for different open times:
 
 ```openhab
@@ -46,22 +129,23 @@ end
 
 ### Custom Payload (Advanced)
 
-If you want to send a custom payload (e.g., different LED flash count), you can extend the handler or use a rule to send a specific value. The handler will map the number to the correct JSON payload for the API:
+The handler automatically converts your command (in seconds) to the correct JSON payload for the API:
 
 ```json
 {
-  "DoorId": "6612642",
+  "DoorId": 6612642,
   "RelayFunction": {
     "RelayId": "Relay1",
     "RelayAction": "TimedOpen",
-    "RelayOpenTime": 1000 // milliseconds
+    "RelayOpenTime": 1000 // milliseconds (command value × 1000)
   },
   "LedFlash": 3
 }
 ```
 
-- The value you send (e.g., `10`) is interpreted as seconds and converted to milliseconds in the payload.
-- LED flash and other advanced options can be set in the handler or by extending the rule logic.
+- The value you send (e.g., `1`) is interpreted as **seconds** and automatically converted to milliseconds in the payload.
+- Default: 1 second if no value specified or invalid value provided.
+- LED flash count is fixed at 3 (can be customized in handler code if needed).
 
 ## Summary Table
 

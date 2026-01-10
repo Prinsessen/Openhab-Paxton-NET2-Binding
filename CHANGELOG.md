@@ -7,6 +7,16 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 08:15:15
+- Modified: net2-binding/EXAMPLES.md
+- Modified: net2-binding/README.md
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 08:00:02
 - Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
 - Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java

@@ -12,8 +12,6 @@
  */
 package org.openhab.binding.net2.handler;
 
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.net2.Net2BindingConstants;
@@ -104,12 +102,12 @@ public class Net2DoorHandler extends BaseThingHandler {
             logger.warn("Bridge is null, cannot subscribe for door {}", doorId);
             return;
         }
-        
+
         Net2SignalRClient signalRClient = bridge.getSignalRClient();
-        logger.info("SignalR client for door {}: {}, connected: {}", doorId, 
-            (signalRClient != null ? "exists" : "null"),
-            (signalRClient != null ? signalRClient.isConnected() : "N/A"));
-        
+        logger.info("SignalR client for door {}: {}, connected: {}", doorId,
+                (signalRClient != null ? "exists" : "null"),
+                (signalRClient != null ? signalRClient.isConnected() : "N/A"));
+
         if (signalRClient != null && signalRClient.isConnected()) {
             logger.info("Subscribing to door events for door ID: {}", doorId);
             signalRClient.subscribeToDoorEvents(doorId);
@@ -174,7 +172,7 @@ public class Net2DoorHandler extends BaseThingHandler {
                     logger.warn("Invalid timed command value '{}', using default 1 second", cmdStr);
                 }
                 int openTimeMs = openTimeSeconds * 1000; // Convert seconds to milliseconds
-                
+
                 JsonObject relayFunction = new JsonObject();
                 relayFunction.addProperty("RelayId", "Relay1");
                 relayFunction.addProperty("RelayAction", "TimedOpen");
@@ -245,7 +243,7 @@ public class Net2DoorHandler extends BaseThingHandler {
                 updateState(Net2BindingConstants.CHANNEL_LAST_ACCESS_TIME,
                         new DateTimeType(payload.get("eventTime").getAsString()));
             }
-            
+
             // Update last access user
             if (payload.has("userName") && !payload.get("userName").isJsonNull()) {
                 updateState(Net2BindingConstants.CHANNEL_LAST_ACCESS_USER,
@@ -256,17 +254,17 @@ public class Net2DoorHandler extends BaseThingHandler {
             if ("DoorStatusEvents".equalsIgnoreCase(target) || "DoorStatusEvent".equalsIgnoreCase(target)) {
                 if (payload.has("status") && payload.get("status").isJsonObject()) {
                     JsonObject statusObj = payload.getAsJsonObject("status");
-                    
+
                     // Check doorRelayOpen field - this indicates door open/closed state
                     if (statusObj.has("doorRelayOpen")) {
                         boolean doorRelayOpen = statusObj.get("doorRelayOpen").getAsBoolean();
                         OnOffType doorStatus = doorRelayOpen ? OnOffType.ON : OnOffType.OFF;
-                        
+
                         updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
-                        logger.info("Door {} status updated from doorRelayOpen to: {} (relay={})", 
-                                   doorId, doorStatus, doorRelayOpen);
+                        logger.info("Door {} status updated from doorRelayOpen to: {} (relay={})", doorId, doorStatus,
+                                doorRelayOpen);
                     }
-                    
+
                     // Also check doorContactClosed if available (physical door sensor)
                     if (statusObj.has("doorContactClosed")) {
                         boolean doorContactClosed = statusObj.get("doorContactClosed").getAsBoolean();
@@ -276,7 +274,7 @@ public class Net2DoorHandler extends BaseThingHandler {
                     }
                 }
             }
-            
+
             // Handle DoorEvents - Door open/closed events (legacy format if still used)
             else if ("DoorEvents".equalsIgnoreCase(target) || "DoorEvent".equalsIgnoreCase(target)) {
                 // Check for locked field
@@ -290,7 +288,7 @@ public class Net2DoorHandler extends BaseThingHandler {
                 else if (payload.has("state") && !payload.get("state").isJsonNull()) {
                     String state = payload.get("state").getAsString().toLowerCase();
                     OnOffType doorStatus;
-                    
+
                     if ("open".equals(state) || "opened".equals(state)) {
                         doorStatus = OnOffType.ON;
                     } else if ("closed".equals(state)) {
@@ -299,26 +297,26 @@ public class Net2DoorHandler extends BaseThingHandler {
                         logger.debug("Unknown door event state: {}", state);
                         return;
                     }
-                    
+
                     updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, doorStatus);
                     logger.info("Door {} physical state changed to: {}", doorId, doorStatus);
                 }
             }
-            
+
             // Handle liveEvents - Generic access events
             else if ("liveEvents".equalsIgnoreCase(target) || "liveEvent".equalsIgnoreCase(target)) {
             }
-            
+
             // Handle liveEvents - Access events with eventType-based state tracking
             else if ("LiveEvents".equalsIgnoreCase(target) || "liveEvents".equalsIgnoreCase(target)) {
                 if (payload.has("eventType") && !payload.get("eventType").isJsonNull()) {
                     int eventType = payload.get("eventType").getAsInt();
-                    
+
                     // eventType 28 = Door relay opened (timed)
                     // eventType 46 = Door forced/held open
                     // eventType 47 = Door closed/secured
                     // eventType 20 = Access granted
-                    
+
                     if (eventType == 47) {
                         // Door closed - update both channels to OFF
                         updateState(Net2BindingConstants.CHANNEL_DOOR_ACTION, OnOffType.OFF);
@@ -329,15 +327,15 @@ public class Net2DoorHandler extends BaseThingHandler {
                         // Update both channels to ON
                         updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, OnOffType.ON);
                         updateState(Net2BindingConstants.CHANNEL_DOOR_ACTION, OnOffType.ON);
-                        
+
                         // No timer - API polling will detect door close and set to OFF
                         // SignalR provides instant open detection, API polling handles close detection
-                        
+
                         logger.info("Door {} opened (eventType {})", doorId, eventType);
                     }
                 }
             }
-            
+
         } catch (Exception e) {
             logger.debug("Failed to apply SignalR event", e);
         }
@@ -355,13 +353,15 @@ public class Net2DoorHandler extends BaseThingHandler {
                     // Update door status from API poll
                     if (doorStatus.has("status") && doorStatus.get("status").isJsonObject()) {
                         JsonObject statusObj = doorStatus.get("status").getAsJsonObject();
-                        
+
                         // Check doorRelayOpen field - true means door is open
-                        boolean doorRelayOpen = statusObj.has("doorRelayOpen") && statusObj.get("doorRelayOpen").getAsBoolean();
+                        boolean doorRelayOpen = statusObj.has("doorRelayOpen")
+                                && statusObj.get("doorRelayOpen").getAsBoolean();
                         OnOffType status = doorRelayOpen ? OnOffType.ON : OnOffType.OFF;
-                        
-                        logger.info("updateFromApiResponse: Door {} doorRelayOpen={} -> {}", doorId, doorRelayOpen, status);
-                        
+
+                        logger.info("updateFromApiResponse: Door {} doorRelayOpen={} -> {}", doorId, doorRelayOpen,
+                                status);
+
                         // Update both door-action and door-status channels to sync with actual state
                         updateState(Net2BindingConstants.CHANNEL_DOOR_ACTION, status);
                         updateState(Net2BindingConstants.CHANNEL_DOOR_STATUS, status);
@@ -395,5 +395,4 @@ public class Net2DoorHandler extends BaseThingHandler {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_OFFLINE);
         }
     }
-
 }

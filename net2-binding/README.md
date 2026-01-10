@@ -38,7 +38,7 @@ Create a bridge thing to represent your Net2 server:
 - `password` - Net2 operator password
 - `clientId` - Net2 API license Client ID
 - `tlsVerification` - Enable/disable SSL certificate verification (default: true)
-- `refreshInterval` - Door status polling interval in seconds (default: 30)
+- `refreshInterval` - Door status polling interval in seconds (default: 600 = 10 minutes, now that SignalR provides instant updates)
 
 ### Thing: Net2 Door
 
@@ -56,19 +56,22 @@ Each door exposes the following channels:
 
 | Channel         | Type     | Access | Description                                 |
 |-----------------|----------|--------|---------------------------------------------|
-| `status`        | Switch   | RO     | Door lock/unlock status (ON=Open, OFF=Closed) - Synchronized in real-time |
-| `action`        | Switch   | RW     | Control door (ON=Hold Open, OFF=Close) - Synchronized with server state |
-| `controlTimed`  | Number   | RW     | Timed open with server-side timing (seconds) |
+| `status`        | Switch   | RO     | Door relay physical status (ON=Open, OFF=Closed) - Real-time via SignalR doorRelayOpen |
+| `action`        | Switch   | RW     | Control door (ON=Hold Open, OFF=Close) - For manual control |
+| `controlTimed`  | Number   | RW     | Timed open in seconds (1=1sec, 5=5sec, etc.) - Server-side timing |
 | `lastAccessUser`| String   | RO     | Last user who accessed the door             |
 | `lastAccessTime`| DateTime | RO     | Timestamp of last door access               |
 
 **Synchronization Behavior:**
-- `action` channel: Persistent state that stays ON until door is closed (manually, via Net2 UI, or by timeout)
-- `status` channel: Momentary state showing current door relay status
-- Both channels automatically sync with Net2 server state via:
-  - **SignalR real-time events** - Instant updates when doors open (eventType 20, 28, 46)
-  - **API polling** - Fallback synchronization every 30 seconds (configurable via `refreshInterval`)
-- Door state synchronized regardless of control method (OpenHAB, Net2 UI, physical card reader, etc.)
+- `status` channel: Shows **physical door relay state** - receives instant updates via SignalR DoorStatusEvents with `doorRelayOpen` field
+  - Updates in real-time when door opens (doorRelayOpen: true → ON)
+  - Updates in real-time when door closes (doorRelayOpen: false → OFF)
+  - Works for ALL door operations: OpenHAB commands, Net2 UI, physical cards, timed opens
+- `action` channel: Used for **manual control** - can be synced to status via rules
+- Both channels backed by:
+  - **SignalR DoorStatusEvents** - Instant updates with doorRelayOpen field
+  - **API polling** - Fallback synchronization every 10 minutes (configurable via `refreshInterval`)
+- SignalR provides <500ms latency; API polling serves as backup for network issues
 
 See [EXAMPLES.md](EXAMPLES.md) for advanced timed control usage and custom payloads.
 
@@ -191,13 +194,19 @@ The binding uses a hybrid synchronization approach for reliable door state track
 
 **SignalR Real-time Events:**
 - WebSocket connection to Net2 server using SignalR 2 Classic protocol
-- Subscribes to LiveEvents hub for all doors on the server
-- Door-specific subscriptions for each configured door
-- Instant notifications for door access events (eventType 20, 28, 46)
-- Event-driven state updates without polling delays
+- Subscribes to **DoorStatusEvents** with `doorRelayOpen` field:
+  - `doorRelayOpen: true` → Door relay is OPEN (status channel = ON)
+  - `doorRelayOpen: false` → Door relay is CLOSED (status channel = OFF)
+- Also subscribes to LiveEvents for access logging (eventType 20, 28, 46)
+- **Sub-500ms latency** for door state changes
+- Tracks physical door relay state regardless of trigger method (OpenHAB, Net2 UI, card readers, timed opens)
+- Event format: `{"target": "DoorStatusEvents", "payload": {"deviceId": 6612642, "status": {"doorRelayOpen": true}}}`
 
 **API Polling Fallback:**
 - Periodic status checks via REST API (`GET /api/v1/doors/status`)
+- Default: every 10 minutes (configurable via `refreshInterval`)
+- Provides backup synchronization if SignalR connection drops
+- Parses `doorRelayOpen` field from status object
 - Default interval: 30 seconds (configurable via `refreshInterval`)
 - Reads actual door relay status (`doorRelayOpen` field)
 - Updates both `action` and `status` channels with current state
