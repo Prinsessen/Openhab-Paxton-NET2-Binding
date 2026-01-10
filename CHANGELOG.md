@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 07:00:15
+- Added: scripts/test_net2_signalr.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-09 23:45:06
 - Modified: net2-binding/README.md
 
