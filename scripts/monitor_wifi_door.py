@@ -1,7 +1,25 @@
 #!/usr/bin/env python3
 """
-Monitor SignalR events for WiFi door (ID: 5598430)
-Tests if WiFi doors send status updates even if not controllable via Net2 UI
+Net2 SignalR Event Monitor
+
+Monitors all door events from Paxton Net2 system via SignalR including:
+- LiveEvents: All access control events (badge swipes, access granted/denied)
+- DoorEvents: Door open/closed status changes
+- DoorStatusEvents: Door relay and sensor status updates
+- RollCallEvents: Emergency roll call events
+
+Usage:
+    cd /etc/openhab/scripts
+    source /etc/openhab/.venv/bin/activate
+    python3 monitor_wifi_door.py
+
+Configuration:
+    Scripts location: /etc/openhab/scripts/
+    Edit /etc/openhab/scripts/net2_config.json to set Net2 server credentials
+    Edit ALL_DOOR_IDS list in this script to monitor specific doors
+
+Output:
+    Displays real-time events with timestamps and full JSON payloads
 """
 
 import asyncio
@@ -118,7 +136,7 @@ class Net2SignalRMonitor:
             
             # Listen for messages
             print(f"\n{'='*80}")
-            print(f"MONITORING ALL DOORS (WiFi door {WIFI_DOOR_ID} highlighted)")
+            print(f"MONITORING ALL DOORS")
             print(f"Watching ALL 4 event types:")
             print(f"  1. LiveEvents (all monitorable events)")
             print(f"  2. DoorEvents (open/closed for all doors)")
@@ -177,19 +195,58 @@ class Net2SignalRMonitor:
         """Handle incoming SignalR messages"""
         timestamp = datetime.now().strftime('%H:%M:%S')
         
-        # Show EVERYTHING - no filtering at all
-        if data and data != "{}":
-            try:
-                msg = json.loads(data)
-                # Skip only keepalives (C and G fields with empty M)
-                if not ("M" in msg and not msg["M"] and "C" in msg):
-                    print(f"\n[{timestamp}] ========================================")
-                    print(json.dumps(msg, indent=2))
-                    print("=" * 80)
-            except:
-                pass
-        
-        return  # Don't process further, just show raw messages
+        try:
+            msg = json.loads(data)
+            
+            # Skip subscription confirmations
+            if "R" in msg or "I" in msg:
+                return
+            
+            # Process event messages
+            if isinstance(msg, dict) and "M" in msg:
+                for message in msg["M"]:
+                    hub = message.get("H", "")
+                    target = message.get("M", "")
+                    args = message.get("A", [])
+                    
+                    if hub == "EventHubLocal" and target in ["DoorStatusEvents", "DoorEvents", "LiveEvents", "RollCallEvents"]:
+                        for arg_array in args:
+                            if isinstance(arg_array, list):
+                                for arg in arg_array:
+                                    if isinstance(arg, dict):
+                                        door_id = arg.get("doorId") or arg.get("deviceId")
+                                        
+                                        if target == "LiveEvents":
+                                            event_type = arg.get("eventType", "?")
+                                            event_subtype = arg.get("eventSubType", "?")
+                                            user = arg.get("userName", "?")
+                                            device = arg.get("deviceId", "?")
+                                            area = arg.get("areaName", "?")
+                                            
+                                            if device == WIFI_DOOR_ID:
+                                                print(f"\n{'🚪'*40}")
+                                                print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} LIVE EVENT!")
+                                                print(json.dumps(arg, indent=2))
+                                                print(f"{'🚪'*40}\n")
+                                            else:
+                                                print(f"\n[{timestamp}] 📡 LiveEvent - Device:{device}, Type:{event_type}/{event_subtype}, User:{user}")
+                                                print(f"  Area: {area}")
+                                        
+                                        elif door_id == WIFI_DOOR_ID:
+                                            print(f"\n{'🚪'*40}")
+                                            print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} {target}!")
+                                            print(json.dumps(arg, indent=2))
+                                            print(f"{'🚪'*40}\n")
+                                        elif door_id is not None:
+                                            print(f"\n[{timestamp}] 🚪 Door {door_id} - {target}")
+                                            print(json.dumps(arg, indent=2))
+                                        elif target == "RollCallEvents":
+                                            print(f"\n[{timestamp}] 📋 RollCallEvent:")
+                                            print(json.dumps(arg, indent=2))
+        except json.JSONDecodeError:
+            pass
+        except Exception as e:
+            print(f"[{timestamp}] Error: {e}")
     
     async def run(self):
         """Main run loop"""
