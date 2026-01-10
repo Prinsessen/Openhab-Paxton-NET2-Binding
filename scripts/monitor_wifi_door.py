@@ -40,6 +40,7 @@ PASSWORD = config['password']
 CLIENT_ID = config['client_id']
 
 WIFI_DOOR_ID = 5598430
+WORKSHOP_DOOR_ID = 3962494  # Værksted Dør
 
 # Known door IDs from Net2 system
 ALL_DOOR_IDS = [
@@ -47,8 +48,12 @@ ALL_DOOR_IDS = [
     6203980,   # Terndrupvej 81
     7242929,   # Garage Port - Kirkegade
     6626578,   # Udv.Basement - Kirkegade
+    3962494,   # Værksted Dør - Kirkegade (NEW)
     5598430    # WiFi Door
 ]
+
+# Debug mode - set to True to see all raw SignalR messages
+DEBUG = True
 
 class Net2SignalRMonitor:
     def __init__(self):
@@ -142,6 +147,15 @@ class Net2SignalRMonitor:
             print(f"  2. DoorEvents (open/closed for all doors)")
             print(f"  3. DoorStatusEvents (status updates for all doors)")
             print(f"  4. RollCallEvents (safe/unsafe events)")
+            print(f"\nSubscribed to {len(ALL_DOOR_IDS)} doors:")
+            for door_id in ALL_DOOR_IDS:
+                if door_id == WIFI_DOOR_ID:
+                    print(f"  - Door ID: {door_id} 🚪 [WiFi Door - Remote Control Enabled]")
+                elif door_id == WORKSHOP_DOOR_ID:
+                    print(f"  - Door ID: {door_id} 🔧 [Værksted WiFi Door - Remote Control Enabled]")
+                else:
+                    print(f"  - Door ID: {door_id}")
+            print(f"\nDEBUG MODE: {'ON' if DEBUG else 'OFF'}")
             print(f"Press Ctrl+C to stop")
             print(f"{'='*80}\n")
             
@@ -165,6 +179,8 @@ class Net2SignalRMonitor:
         }
         await ws.send_json(subscribe_live)
         print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to LiveEvents (all events)")
+        if DEBUG:
+            print(f"    DEBUG: Sent: {json.dumps(subscribe_live)}")
         
         # 2. Subscribe to DoorEvents for each known door
         msg_id = 2
@@ -176,6 +192,8 @@ class Net2SignalRMonitor:
                 "I": msg_id
             }
             await ws.send_str(json.dumps(subscribe_door))
+            if DEBUG:
+                print(f"    DEBUG: DoorEvents subscription for door {door_id}")
             msg_id += 1
         print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to DoorEvents for {len(ALL_DOOR_IDS)} doors")
         
@@ -188,6 +206,8 @@ class Net2SignalRMonitor:
                 "I": msg_id
             }
             await ws.send_str(json.dumps(subscribe_status))
+            if DEBUG:
+                print(f"    DEBUG: DoorStatusEvents subscription for door {door_id}")
             msg_id += 1
         print(f"[{datetime.now().strftime('%H:%M:%S')}] → Subscribed to DoorStatusEvents for {len(ALL_DOOR_IDS)} doors")
     
@@ -195,11 +215,17 @@ class Net2SignalRMonitor:
         """Handle incoming SignalR messages"""
         timestamp = datetime.now().strftime('%H:%M:%S')
         
+        if DEBUG:
+            print(f"\n[{timestamp}] 🔍 DEBUG: Raw SignalR message:")
+            print(f"  {data[:500]}..." if len(data) > 500 else f"  {data}")
+        
         try:
             msg = json.loads(data)
             
             # Skip subscription confirmations
             if "R" in msg or "I" in msg:
+                if DEBUG:
+                    print(f"  → Subscription confirmation or response (skipped)")
                 return
             
             # Process event messages
@@ -228,6 +254,11 @@ class Net2SignalRMonitor:
                                                 print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} LIVE EVENT!")
                                                 print(json.dumps(arg, indent=2))
                                                 print(f"{'🚪'*40}\n")
+                                            elif device == WORKSHOP_DOOR_ID:
+                                                print(f"\n{'🔧'*40}")
+                                                print(f"[{timestamp}] ⭐ VÆRKSTED DØR {WORKSHOP_DOOR_ID} LIVE EVENT!")
+                                                print(json.dumps(arg, indent=2))
+                                                print(f"{'🔧'*40}\n")
                                             else:
                                                 print(f"\n[{timestamp}] 📡 LiveEvent - Device:{device}, Type:{event_type}/{event_subtype}, User:{user}")
                                                 print(f"  Area: {area}")
@@ -237,6 +268,11 @@ class Net2SignalRMonitor:
                                             print(f"[{timestamp}] ⭐ WiFi DOOR {WIFI_DOOR_ID} {target}!")
                                             print(json.dumps(arg, indent=2))
                                             print(f"{'🚪'*40}\n")
+                                        elif door_id == WORKSHOP_DOOR_ID:
+                                            print(f"\n{'🔧'*40}")
+                                            print(f"[{timestamp}] ⭐ VÆRKSTED DØR {WORKSHOP_DOOR_ID} {target}!")
+                                            print(json.dumps(arg, indent=2))
+                                            print(f"{'🔧'*40}\n")
                                         elif door_id is not None:
                                             print(f"\n[{timestamp}] 🚪 Door {door_id} - {target}")
                                             print(json.dumps(arg, indent=2))

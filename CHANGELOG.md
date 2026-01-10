@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 14:45:06
+- Added: scripts/check_door_status.py
+- Modified: scripts/monitor_wifi_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 14:00:06
 - Modified: items/net2.items
 - Modified: rules/net2_sync.rules
