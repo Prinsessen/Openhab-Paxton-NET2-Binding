@@ -27,6 +27,19 @@ This is **isolated source code** - it won't affect your system until you explici
 └── target/                    # Build output (created after build)
 ```
 
+## Hardware Requirements
+
+### ✅ Compatible Controllers
+- **Paxton Net2 Plus ACU** ([Manual](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-20006.pdf))
+- **Paxton Net2 Classic ACU** (Discontinued)
+
+### ❌ Not Compatible
+- **Net2 Nano** ([Info](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-30075.pdf))
+- **Paxlock** ([Info](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-20000.pdf))
+- **Paxlock Pro** ([Info](https://www.paxton-access.com/wp-content/uploads/2022/05/ins-30229.pdf))
+
+**Note:** Requires Net2 Local API (Plus/Classic only).
+
 ## Quick Start
 
 ### Step 1: Build the Binding

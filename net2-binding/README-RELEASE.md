@@ -2,6 +2,20 @@
 
 This binding provides integration with the Paxton Net2 Access Control system, enabling remote door control and real-time status monitoring through openHAB. It communicates with the Net2 Local API over secure HTTPS connections and receives live door events via SignalR 2.
 
+## Hardware Compatibility
+
+### ✅ Compatible Controllers
+
+- **Paxton Net2 Plus ACU** ([Manual](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-20006.pdf))
+- **Paxton Net2 Classic ACU** (Discontinued - legacy support)
+
+### ❌ Not Compatible
+
+The following controllers lack Net2 Local API support:
+- **Net2 Nano 1 Door Controller** ([Info](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-30075.pdf))
+- **Paxton Paxlock** ([Info](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-20000.pdf))
+- **Paxton Paxlock Pro** ([Info](https://www.paxton-access.com/wp-content/uploads/2022/05/ins-30229.pdf))
+
 ## Supported Things
 
 ### Bridge: `net2server`

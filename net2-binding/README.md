@@ -20,6 +20,34 @@ This binding provides integration with the Paxton Net2 Access Control system via
 - Net2 Local API enabled and licensed
 - Valid API client credentials
 
+## Hardware Compatibility
+
+### ✅ Supported Controllers
+
+This binding has been tested and works with:
+
+1. **Paxton Net2 Plus ACU**
+   - Full support for all features
+   - [Installation Manual](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-20006.pdf)
+
+2. **Paxton Net2 Classic ACU** (Discontinued)
+   - Legacy support maintained
+
+### ❌ Not Compatible
+
+The following controllers do **NOT** support the Net2 Local API and will not work with this binding:
+
+1. **Net2 Nano 1 Door Controller**
+   - [Product Information](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-30075.pdf)
+
+2. **Paxton Paxlock**
+   - [Product Information](https://www.paxton-access.com/wp-content/uploads/2019/03/ins-20000.pdf)
+
+3. **Paxton Paxlock Pro**
+   - [Product Information](https://www.paxton-access.com/wp-content/uploads/2022/05/ins-30229.pdf)
+
+**Note:** This binding requires the Net2 Local API, which is only available on Net2 Plus and Net2 Classic controllers.
+
 ## Installation
 
 1. Copy the binding JAR to `addons/`

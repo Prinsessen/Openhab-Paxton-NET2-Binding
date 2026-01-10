@@ -20,6 +20,19 @@
 
 ---
 
+## Hardware Compatibility
+
+### ✅ Supported
+- **Net2 Plus ACU** - Full support
+- **Net2 Classic ACU** - Legacy support (discontinued)
+
+### ❌ Not Supported
+- Net2 Nano, Paxlock, Paxlock Pro (no Local API)
+
+**Requirement:** Net2 Local API (Plus/Classic only)
+
+---
+
 ## What's Included
 
 ✅ **Full User Management System**

@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-10 20:00:16
+- Modified: net2-binding/QUICKSTART.md
+- Modified: net2-binding/README-RELEASE.md
+- Modified: net2-binding/README.md
+- Modified: net2-binding/RELEASE_QUICK_REFERENCE.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-10 19:45:16
 - Modified: net2-binding/CHANGELOG.md
 - Modified: net2-binding/CONTRIBUTING.md
