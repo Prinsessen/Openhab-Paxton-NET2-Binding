@@ -13,23 +13,8 @@ then
     }
     count = count + 1
     
-    // Parse JSON and extract ALL fields
-    val String json = Net2_Door1_EntryLog.state.toString
-    val firstName = transform("JSONPATH", "$.firstName", json)
-    val lastName = transform("JSONPATH", "$.lastName", json)
-    val doorName = transform("JSONPATH", "$.doorName", json)
-    val fullName = firstName + " " + lastName
-    
-    logInfo("Net2Entry", "Door1: json=" + json)
-    logInfo("Net2Entry", "Door1: firstName=" + firstName + ", lastName=" + lastName + ", doorName=" + doorName)
-    
-    // Update separate items - each persisted individually
-    // Prepend counter to force state changes for persistence
+    // Update counter only - provides unique ID for each entry
     Net2_Door1_EntryCount.postUpdate(count)
-    Net2_Door1_EntryFullName.postUpdate(count + "|" + fullName)
-    Net2_Door1_EntryDoorName.postUpdate(count + "|" + doorName)
-    Net2_Door1_EntryFirstName.postUpdate(firstName)
-    Net2_Door1_EntryLastName.postUpdate(lastName)
 end
 
 rule "Net2 Door2 Entry Counter"
@@ -42,17 +27,8 @@ then
     }
     count = count + 1
     
-    val String json = Net2_Door2_EntryLog.state.toString
-    val firstName = transform("JSONPATH", "$.firstName", json)
-    val lastName = transform("JSONPATH", "$.lastName", json)
-    val doorName = transform("JSONPATH", "$.doorName", json)
-    val fullName = firstName + " " + lastName
-    
+    // Update counter only - provides unique ID for each entry
     Net2_Door2_EntryCount.postUpdate(count)
-    Net2_Door2_EntryFullName.postUpdate(fullName)
-    Net2_Door2_EntryDoorName.postUpdate(doorName)
-    Net2_Door2_EntryFirstName.postUpdate(firstName)
-    Net2_Door2_EntryLastName.postUpdate(lastName)
 end
 
 rule "Net2 Door3 Entry Counter"
@@ -65,17 +41,8 @@ then
     }
     count = count + 1
     
-    val String json = Net2_Door3_EntryLog.state.toString
-    val firstName = transform("JSONPATH", "$.firstName", json)
-    val lastName = transform("JSONPATH", "$.lastName", json)
-    val doorName = transform("JSONPATH", "$.doorName", json)
-    val fullName = firstName + " " + lastName
-    
+    // Update counter only - provides unique ID for each entry
     Net2_Door3_EntryCount.postUpdate(count)
-    Net2_Door3_EntryFullName.postUpdate(fullName)
-    Net2_Door3_EntryDoorName.postUpdate(doorName)
-    Net2_Door3_EntryFirstName.postUpdate(firstName)
-    Net2_Door3_EntryLastName.postUpdate(lastName)
 end
 
 rule "Net2 Door4 Entry Counter"
@@ -88,17 +55,8 @@ then
     }
     count = count + 1
     
-    val String json = Net2_Door4_EntryLog.state.toString
-    val firstName = transform("JSONPATH", "$.firstName", json)
-    val lastName = transform("JSONPATH", "$.lastName", json)
-    val doorName = transform("JSONPATH", "$.doorName", json)
-    val fullName = firstName + " " + lastName
-    
+    // Update counter only - provides unique ID for each entry
     Net2_Door4_EntryCount.postUpdate(count)
-    Net2_Door4_EntryFullName.postUpdate(fullName)
-    Net2_Door4_EntryDoorName.postUpdate(doorName)
-    Net2_Door4_EntryFirstName.postUpdate(firstName)
-    Net2_Door4_EntryLastName.postUpdate(lastName)
 end
 
 rule "Net2 Door5 Entry Counter"
@@ -111,15 +69,6 @@ then
     }
     count = count + 1
     
-    val String json = Net2_Door5_EntryLog.state.toString
-    val firstName = transform("JSONPATH", "$.firstName", json)
-    val lastName = transform("JSONPATH", "$.lastName", json)
-    val doorName = transform("JSONPATH", "$.doorName", json)
-    val fullName = firstName + " " + lastName
-    
+    // Update counter only - provides unique ID for each entry
     Net2_Door5_EntryCount.postUpdate(count)
-    Net2_Door5_EntryFullName.postUpdate(fullName)
-    Net2_Door5_EntryDoorName.postUpdate(doorName)
-    Net2_Door5_EntryFirstName.postUpdate(firstName)
-    Net2_Door5_EntryLastName.postUpdate(lastName)
 end
