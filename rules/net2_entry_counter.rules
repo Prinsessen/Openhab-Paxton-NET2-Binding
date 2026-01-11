@@ -20,6 +20,9 @@ then
     val doorName = transform("JSONPATH", "$.doorName", json)
     val fullName = firstName + " " + lastName
     
+    logInfo("Net2Entry", "Door1: json=" + json)
+    logInfo("Net2Entry", "Door1: firstName=" + firstName + ", lastName=" + lastName + ", doorName=" + doorName)
+    
     // Update separate items - each persisted individually
     Net2_Door1_EntryCount.postUpdate(count)
     Net2_Door1_EntryFullName.postUpdate(fullName)
