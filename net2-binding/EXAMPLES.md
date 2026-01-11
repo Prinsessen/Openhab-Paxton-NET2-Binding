@@ -640,5 +640,395 @@ curl -s http://localhost:8080/rest/items/Net2_Door1_EntryLog | python3 -m json.t
 
 ### Grafana Integration
 
-See [ENTRY_LOGGING.md](ENTRY_LOGGING.md) for complete Grafana setup guide.
+See complete Grafana setup guide below in the **Entry Log Dashboard** section.
+
+---
+
+## Entry Log Dashboard with InfluxDB and Grafana
+
+This example shows how to create a comprehensive entry log dashboard displaying door access events from all doors in a clean, sorted table.
+
+### Overview
+
+The Net2 binding provides real-time entry logs via the `entryLog` channel. Each entry contains JSON data with:
+- `firstName` - User's first name
+- `lastName` - User's last name  
+- `doorName` - Name of the door accessed
+- `timestamp` - Time of entry (ISO 8601 format)
+- `doorId` - Unique door identifier
+
+This guide shows how to persist these logs to InfluxDB and visualize them in Grafana.
+
+### Step 1: Items Configuration
+
+**File: items/net2.items**
+
+```openhab
+// Door 1 - Entry logging items
+String Net2_Door1_EntryLog "Entry Log [%s]" { channel="net2:door:server:door1:entryLog" }
+Number Net2_Door1_EntryCount "Entry Count [%d]"
+
+// Door 2 - Entry logging items
+String Net2_Door2_EntryLog "Entry Log [%s]" { channel="net2:door:server:door2:entryLog" }
+Number Net2_Door2_EntryCount "Entry Count [%d]"
+
+// Door 3 - Entry logging items
+String Net2_Door3_EntryLog "Entry Log [%s]" { channel="net2:door:server:door3:entryLog" }
+Number Net2_Door3_EntryCount "Entry Count [%d]"
+
+// Door 4 - Entry logging items
+String Net2_Door4_EntryLog "Entry Log [%s]" { channel="net2:door:server:door4:entryLog" }
+Number Net2_Door4_EntryCount "Entry Count [%d]"
+
+// Door 5 - Entry logging items
+String Net2_Door5_EntryLog "Entry Log [%s]" { channel="net2:door:server:door5:entryLog" }
+Number Net2_Door5_EntryCount "Entry Count [%d]"
+```
+
+**What these items do:**
+- `EntryLog` - Receives JSON entry data from the binding (persisted to InfluxDB)
+- `EntryCount` - Auto-incrementing counter providing unique ID for each entry (optional but useful)
+
+### Step 2: Rules Configuration
+
+**File: rules/net2_entry_counter.rules**
+
+```openhab
+// ==============================================
+// Net2 Entry Log Counter
+// Provides unique ID for each entry
+// ==============================================
+
+rule "Net2 Door1 Entry Counter"
+when
+    Item Net2_Door1_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door1_EntryCount.state instanceof Number) {
+        count = (Net2_Door1_EntryCount.state as Number).intValue()
+    }
+    count = count + 1
+    
+    // Update counter only - provides unique ID for each entry
+    Net2_Door1_EntryCount.postUpdate(count)
+end
+
+rule "Net2 Door2 Entry Counter"
+when
+    Item Net2_Door2_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door2_EntryCount.state instanceof Number) {
+        count = (Net2_Door2_EntryCount.state as Number).intValue()
+    }
+    count = count + 1
+    
+    // Update counter only - provides unique ID for each entry
+    Net2_Door2_EntryCount.postUpdate(count)
+end
+
+rule "Net2 Door3 Entry Counter"
+when
+    Item Net2_Door3_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door3_EntryCount.state instanceof Number) {
+        count = (Net2_Door3_EntryCount.state as Number).intValue()
+    }
+    count = count + 1
+    
+    // Update counter only - provides unique ID for each entry
+    Net2_Door3_EntryCount.postUpdate(count)
+end
+
+rule "Net2 Door4 Entry Counter"
+when
+    Item Net2_Door4_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door4_EntryCount.state instanceof Number) {
+        count = (Net2_Door4_EntryCount.state as Number).intValue()
+    }
+    count = count + 1
+    
+    // Update counter only - provides unique ID for each entry
+    Net2_Door4_EntryCount.postUpdate(count)
+end
+
+rule "Net2 Door5 Entry Counter"
+when
+    Item Net2_Door5_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door5_EntryCount.state instanceof Number) {
+        count = (Net2_Door5_EntryCount.state as Number).intValue()
+    }
+    count = count + 1
+    
+    // Update counter only - provides unique ID for each entry
+    Net2_Door5_EntryCount.postUpdate(count)
+end
+```
+
+**What these rules do:**
+- Automatically increment a counter each time a door entry occurs
+- Provides unique ID for each entry (useful for tracking and debugging)
+- Counter persists to InfluxDB alongside the JSON data
+
+### Step 3: Persistence Configuration
+
+**File: persistence/influxdb.persist**
+
+```openhab
+Strategies {
+    everyChange : "everyChange"
+}
+
+Items {
+    // Entry log JSON - contains all entry data
+    Net2_Door1_EntryLog : strategy = everyChange
+    Net2_Door2_EntryLog : strategy = everyChange
+    Net2_Door3_EntryLog : strategy = everyChange
+    Net2_Door4_EntryLog : strategy = everyChange
+    Net2_Door5_EntryLog : strategy = everyChange
+    
+    // Entry counters - unique ID for each entry
+    Net2_Door1_EntryCount : strategy = everyChange, restoreOnStartup
+    Net2_Door2_EntryCount : strategy = everyChange, restoreOnStartup
+    Net2_Door3_EntryCount : strategy = everyChange, restoreOnStartup
+    Net2_Door4_EntryCount : strategy = everyChange, restoreOnStartup
+    Net2_Door5_EntryCount : strategy = everyChange, restoreOnStartup
+}
+```
+
+**Configuration notes:**
+- `everyChange` strategy persists data whenever the item changes
+- `restoreOnStartup` restores counter values after OpenHAB restart
+- Only the `EntryLog` JSON items are needed for Grafana - counters are optional
+
+**InfluxDB Configuration:**
+- Configure InfluxDB persistence in OpenHAB Main UI
+- Settings → Persistence → InfluxDB
+- Ensure connection is working (check openhab.log for "InfluxDB persistence service started")
+
+### Step 4: Grafana Dashboard Setup
+
+#### 4.1 Create New Panel
+
+1. Open Grafana
+2. Create new dashboard or open existing one
+3. Click "Add panel" → "Add a new panel"
+4. Select **Table** visualization type (top right dropdown)
+
+#### 4.2 Configure Query
+
+In the **Query** tab, enter this Flux query:
+
+```flux
+union(tables: [
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door1_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door2_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door3_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door4_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door5_EntryLog")
+])
+|> sort(columns: ["_time"], desc: true)
+```
+
+**Query explanation:**
+- `union()` combines all 5 doors into a single data stream
+- `range(start: -24h)` shows last 24 hours (adjust as needed: `-7d`, `-1h`, etc.)
+- `filter()` selects the EntryLog measurements for each door
+- `sort()` orders by time (newest first)
+
+**For single door dashboard:**
+```flux
+from(bucket: "openhab_db/autogen")
+  |> range(start: -24h)
+  |> filter(fn: (r) => r._measurement == "Net2_Door1_EntryLog")
+  |> sort(columns: ["_time"], desc: true)
+```
+
+#### 4.3 Configure Transformations
+
+Click the **Transform** tab and add these transformations **in order**:
+
+**Transformation 1: Extract fields**
+- Click "Add transformation"
+- Select "Extract fields"
+- Source: `_value`
+- Format: `JSON`
+
+This extracts firstName, lastName, doorName, timestamp, doorId from the JSON.
+
+**Transformation 2: Merge**
+- Click "Add transformation"
+- Select "Merge"
+
+This combines all door data frames into a single table.
+
+**Transformation 3: Sort by**
+- Click "Add transformation"
+- Select "Sort by"
+- Field: `timestamp`
+- Enable "Reverse" toggle (for descending order - newest first)
+
+This ensures entries are sorted by actual door entry time.
+
+**Transformation 4: Organize fields**
+- Click "Add transformation"
+- Select "Organize fields"
+- **Hide these columns** (click eye icon):
+  - `_value` (raw JSON)
+  - `_measurement` (duplicate measurement name)
+  - `doorId` (if you don't need it)
+- **Keep visible:**
+  - `_time` (or `Time`)
+  - `firstName`
+  - `lastName`
+  - `doorName`
+  - `timestamp`
+- **Rename columns** (click column name to edit):
+  - `firstName` → `First Name`
+  - `lastName` → `Last Name`
+  - `doorName` → `Door Name`
+  - `timestamp` → `Entry Time`
+  - `_time` → `Logged At`
+
+#### 4.4 Panel Options
+
+In the right sidebar:
+
+**Panel options:**
+- Title: "Door Entry Logs" (or your preferred name)
+- Description: "Real-time door access events from all doors"
+
+**Table options:**
+- Show table header: **ON**
+- Cell display mode: **Auto** (or **Color text**)
+
+**Standard options:**
+- Unit: Leave as default for string fields
+- Decimals: Not applicable for text data
+
+#### 4.5 Save Dashboard
+
+1. Click "Apply" (top right)
+2. Click "Save dashboard" (top right)
+3. Name it: "Door Entry Logs"
+4. Click "Save"
+
+### Result
+
+Your dashboard will display a clean table like this:
+
+| Time | First Name | Last Name | Door Name | Entry Time |
+|------|------------|-----------|-----------|------------|
+| 2026-01-11 10:17:35 | Nanna | Agesen | Front Door | 2026-01-11T10:17:35 |
+| 2026-01-11 08:25:02 | Nanna | Agesen | Front Door | 2026-01-11T08:25:01 |
+| 2026-01-10 21:27:24 | Nanna | Agesen | Front Door | 2026-01-10T21:27:23 |
+| 2026-01-10 19:36:41 | Nanna | Agesen | Garage Port | 2026-01-10T19:36:40 |
+
+### Troubleshooting
+
+**No data showing in Grafana:**
+1. Check InfluxDB persistence is running:
+   ```bash
+   grep -i "influx.*started" /var/log/openhab/openhab.log
+   ```
+2. Verify items are persisting:
+   ```bash
+   grep "Net2.*EntryLog" /var/log/openhab/events.log | tail -5
+   ```
+3. Test InfluxDB query in Data Explorer (Grafana)
+
+**"Data is missing a number field" error:**
+- Ensure panel type is **Table**, not "Time series" or "Graph"
+- String data only works in Table visualizations
+
+**"Organize fields only works with a single frame" error:**
+- Add **Merge** transformation before **Organize fields**
+- Ensure **Extract fields** runs first
+
+**Entries not sorted by time:**
+- Add **Sort by** transformation with `timestamp` field
+- Enable "Reverse" for descending order (newest first)
+
+**String items not persisting to InfluxDB:**
+- This is a known limitation of OpenHAB's InfluxDB binding
+- Use the JSON `EntryLog` items directly (works perfectly)
+- Avoid creating separate String items for firstName, lastName, etc.
+
+### Advanced: Time Range Variables
+
+Add a time range variable to your dashboard for flexible date filtering:
+
+1. Dashboard settings → Variables → Add variable
+2. Type: **Custom**
+3. Name: `timeRange`
+4. Values: `-1h,-6h,-12h,-24h,-7d,-30d`
+5. Display name: `Time Range`
+
+Update query to use variable:
+```flux
+union(tables: [
+  from(bucket: "openhab_db/autogen")
+    |> range(start: $timeRange)
+    |> filter(fn: (r) => r._measurement == "Net2_Door1_EntryLog"),
+  // ... other doors
+])
+```
+
+### Advanced: Door Filter Variable
+
+Add a door filter dropdown:
+
+1. Dashboard settings → Variables → Add variable
+2. Type: **Custom**
+3. Name: `door`
+4. Values: `All,Door1,Door2,Door3,Door4,Door5`
+5. Multi-value: **ON**
+6. Include All: **ON**
+
+Update filter in query:
+```flux
+|> filter(fn: (r) => 
+  r._measurement =~ /Net2_${door}_EntryLog/
+)
+```
+
+### Performance Considerations
+
+**For high-traffic installations:**
+- Limit query range to recent data: `range(start: -7d)` instead of `-30d`
+- Use Grafana's auto-refresh sparingly (30s or 1m minimum)
+- Consider archiving old data (InfluxDB retention policies)
+
+**InfluxDB retention policy example:**
+```sql
+CREATE RETENTION POLICY "90_days" ON "openhab_db" DURATION 90d REPLICATION 1 DEFAULT
+```
+
+This automatically removes entry logs older than 90 days.
+
+### Integration with Alerts
+
+**Grafana Alert example - Unauthorized door access:**
+
+1. Create separate query for unauthorized users
+2. Use transformation to filter by specific names
+3. Set alert condition: "when count above 0"
+4. Configure notification channel (email, Slack, etc.)
+
+This setup provides complete visibility into door access patterns with minimal OpenHAB configuration.
 

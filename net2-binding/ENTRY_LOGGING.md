@@ -168,66 +168,92 @@ Items {
 
 ## Grafana Integration
 
-### Data Source
-- **Type**: InfluxDB
-- **Database**: OpenHAB persistence database
-- **Query Target**: `Net2_Door*_EntryLog` items
+### Complete Dashboard Setup Guide
 
-### Query Example
-```sql
-SELECT "value" 
-FROM "Net2_Door1_EntryLog" 
-WHERE $timeFilter
-```
+For a **step-by-step guide to creating an entry log dashboard** with InfluxDB persistence and Grafana visualizations, see:
 
-### JSON Parsing in Grafana
+**[EXAMPLES.md - Entry Log Dashboard Section](EXAMPLES.md#entry-log-dashboard-with-influxdb-and-grafana)**
 
-#### Option 1: JSONPath Transform
-Use Grafana's built-in JSON parsing:
-```
-Field: firstName -> Extracts $.firstName
-Field: lastName -> Extracts $.lastName
-Field: doorName -> Extracts $.doorName
-Field: timestamp -> Extracts $.timestamp
-```
+This comprehensive guide includes:
+- Complete items, rules, and persistence configuration
+- Working Flux queries for single and combined door dashboards
+- All transformation steps with exact settings
+- Troubleshooting common issues
+- Advanced features (time range variables, filters, alerts)
 
-#### Option 2: Flux Query (InfluxDB 2.x)
+### Quick Reference
+
+**Data Source:**
+- **Type**: InfluxDB 2.x
+- **Database**: `openhab_db/autogen`
+- **Query Target**: `Net2_Door*_EntryLog` measurements
+
+**Basic Flux Query (All Doors):**
 ```flux
-from(bucket: "openhab")
-  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
-  |> filter(fn: (r) => r["_measurement"] == "Net2_Door1_EntryLog")
-  |> map(fn: (r) => ({
-      firstName: json.parse(data: r._value).firstName,
-      lastName: json.parse(data: r._value).lastName,
-      doorName: json.parse(data: r._value).doorName,
-      timestamp: json.parse(data: r._value).timestamp,
-      doorId: json.parse(data: r._value).doorId
-  }))
+union(tables: [
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door1_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door2_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door3_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door4_EntryLog"),
+  from(bucket: "openhab_db/autogen")
+    |> range(start: -24h)
+    |> filter(fn: (r) => r._measurement == "Net2_Door5_EntryLog")
+])
+|> sort(columns: ["_time"], desc: true)
 ```
 
-#### Option 3: Transformation Plugin
-Install "Grafana JSON API" plugin and parse fields in transformation step.
+**Grafana Transformations (in order):**
+1. **Extract fields** - Source: `_value`, Format: `JSON`
+2. **Merge** - Combines all door frames
+3. **Sort by** - Field: `timestamp`, Reverse: ON
+4. **Organize fields** - Hide raw JSON, rename columns
+
+**Result:**
+Clean table showing First Name, Last Name, Door Name, Entry Time from all doors, sorted by time.
+
+### JSON Format Reference
+
+The `entryLog` channel provides JSON data:
+```json
+{
+  "firstName": "Nanna",
+  "lastName": "Agesen",
+  "doorName": "Front Door",
+  "timestamp": "2026-01-10T18:48:34",
+  "doorId": 6612642
+}
+```
 
 ### Visualization Examples
 
-#### Table Panel
-Display all entry events in a table:
-- **Columns**: First Name, Last Name, Door Name, Timestamp
+#### Table Panel (Recommended)
+Display all entry events in a sortable table:
+- **Columns**: First Name, Last Name, Door Name, Entry Time
 - **Sort**: Timestamp descending (newest first)
 - **Filter**: By door, by user, by time range
+- **See**: Complete setup in [EXAMPLES.md](EXAMPLES.md#entry-log-dashboard-with-influxdb-and-grafana)
 
 #### Stat Panel
 Show latest entry:
 - **Query**: Last value of EntryLog
-- **Display**: Formatted via transform: "${firstName} ${lastName} @ ${doorName}"
+- **Display**: Use Extract fields transformation, show firstName + lastName + doorName
 
-#### Graph Panel
-Entry frequency over time:
-- **Query**: Count of entries per hour/day
-- **Group By**: doorName or firstName
-- **Visualization**: Bar chart or time series
+#### Bar Chart
+Entry frequency by door:
+- **Query**: Count of entries grouped by measurement
+- **Time range**: Last 7 days
+- **Visualization**: Bar chart showing which doors are most used
 
-#### Heatmap
+#### Time Series
+
 Access patterns:
 - **X-axis**: Time of day (0-23 hours)
 - **Y-axis**: Day of week
