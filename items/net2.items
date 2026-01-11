@@ -77,27 +77,27 @@ Number Net2_Door5_EntryCount "Entry Count [%d]" <log>
 String Net2_Door1_EntryFirstName "First Name [%s]"
 String Net2_Door1_EntryLastName "Last Name [%s]"
 String Net2_Door1_EntryFullName "Full Name [%s]"
-String Net2_Door1_EntryRecord "Entry Record [%s]"
+String Net2_Door1_EntryDoorName "Door Name [%s]"
 
 String Net2_Door2_EntryFirstName "First Name [%s]"
 String Net2_Door2_EntryLastName "Last Name [%s]"
 String Net2_Door2_EntryFullName "Full Name [%s]"
-String Net2_Door2_EntryRecord "Entry Record [%s]"
+String Net2_Door2_EntryDoorName "Door Name [%s]"
 
 String Net2_Door3_EntryFirstName "First Name [%s]"
 String Net2_Door3_EntryLastName "Last Name [%s]"
 String Net2_Door3_EntryFullName "Full Name [%s]"
-String Net2_Door3_EntryRecord "Entry Record [%s]"
+String Net2_Door3_EntryDoorName "Door Name [%s]"
 
 String Net2_Door4_EntryFirstName "First Name [%s]"
 String Net2_Door4_EntryLastName "Last Name [%s]"
 String Net2_Door4_EntryFullName "Full Name [%s]"
-String Net2_Door4_EntryRecord "Entry Record [%s]"
+String Net2_Door4_EntryDoorName "Door Name [%s]"
 
 String Net2_Door5_EntryFirstName "First Name [%s]"
 String Net2_Door5_EntryLastName "Last Name [%s]"
 String Net2_Door5_EntryFullName "Full Name [%s]"
-String Net2_Door5_EntryRecord "Entry Record [%s]"
+String Net2_Door5_EntryDoorName "Door Name [%s]"
 
 // ==============================================
 // Add more doors as needed...
