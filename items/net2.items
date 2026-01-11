@@ -54,13 +54,22 @@ Number Net2_Door5_ControlTimed "Door 5 Timed Control" { channel="net2:door:serve
 DateTime Net2_Door5_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:door:server:door5:lastAccessTime" }
 
 // ==============================================
-// Entry Log Items (JSON format for Grafana)
+// Entry Log Items (JSON format for UI display)
 // ==============================================
 String Net2_Door1_EntryLog "Entry Log [%s]" { channel="net2:door:server:door1:entryLog" }
 String Net2_Door2_EntryLog "Entry Log [%s]" { channel="net2:door:server:door2:entryLog" }
 String Net2_Door3_EntryLog "Entry Log [%s]" { channel="net2:door:server:door3:entryLog" }
 String Net2_Door4_EntryLog "Entry Log [%s]" { channel="net2:door:server:door4:entryLog" }
 String Net2_Door5_EntryLog "Entry Log [%s]" { channel="net2:door:server:door5:entryLog" }
+
+// ==============================================
+// Entry Log Counter (for InfluxDB - increments on each entry)
+// ==============================================
+Number Net2_Door1_EntryCount "Entry Count [%d]" <log>
+Number Net2_Door2_EntryCount "Entry Count [%d]" <log>
+Number Net2_Door3_EntryCount "Entry Count [%d]" <log>
+Number Net2_Door4_EntryCount "Entry Count [%d]" <log>
+Number Net2_Door5_EntryCount "Entry Count [%d]" <log>
 
 // ==============================================
 // Add more doors as needed...

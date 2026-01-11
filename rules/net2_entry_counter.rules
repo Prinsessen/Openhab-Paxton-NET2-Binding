@@ -1,0 +1,60 @@
+// ==============================================
+// Net2 Entry Log Counter
+// Increments a counter for each physical entry
+// This creates unique InfluxDB points for tracking
+// ==============================================
+
+rule "Net2 Door1 Entry Counter"
+when
+    Item Net2_Door1_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door1_EntryCount.state instanceof Number) {
+        count = (Net2_Door1_EntryCount.state as Number).intValue()
+    }
+    Net2_Door1_EntryCount.postUpdate(count + 1)
+end
+
+rule "Net2 Door2 Entry Counter"
+when
+    Item Net2_Door2_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door2_EntryCount.state instanceof Number) {
+        count = (Net2_Door2_EntryCount.state as Number).intValue()
+    }
+    Net2_Door2_EntryCount.postUpdate(count + 1)
+end
+
+rule "Net2 Door3 Entry Counter"
+when
+    Item Net2_Door3_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door3_EntryCount.state instanceof Number) {
+        count = (Net2_Door3_EntryCount.state as Number).intValue()
+    }
+    Net2_Door3_EntryCount.postUpdate(count + 1)
+end
+
+rule "Net2 Door4 Entry Counter"
+when
+    Item Net2_Door4_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door4_EntryCount.state instanceof Number) {
+        count = (Net2_Door4_EntryCount.state as Number).intValue()
+    }
+    Net2_Door4_EntryCount.postUpdate(count + 1)
+end
+
+rule "Net2 Door5 Entry Counter"
+when
+    Item Net2_Door5_EntryLog changed
+then
+    var count = 0
+    if (Net2_Door5_EntryCount.state instanceof Number) {
+        count = (Net2_Door5_EntryCount.state as Number).intValue()
+    }
+    Net2_Door5_EntryCount.postUpdate(count + 1)
+end
