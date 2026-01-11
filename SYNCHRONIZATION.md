@@ -40,23 +40,24 @@ The Net2 binding implements a **hybrid synchronization system** that combines Si
 
 ## Why Hybrid?
 
-### SignalR Limitations
+### SignalR Capabilities
 - Net2 API documentation mentions `doorEvents` and `doorStatusEvents` hubs
 - **Reality**: Only `LiveEvents` hub is implemented
 - Events are generic with `eventType` codes, not door-specific
-- EventType 47 (door closed) is **inconsistently sent** by the server
-- Physical door closures may not generate events
+- **SignalR now reliably handles both open AND close events**
+- EventType 20/28/46 for door opens, EventType 47 for door closes
+- Both directions work consistently in our implementation
 
 ### API Polling Benefits
 - Reads actual `doorRelayOpen` status directly
-- Guaranteed state accuracy within refresh interval
-- Works regardless of event reliability
-- Provides synchronization baseline
+- Provides redundant verification of state
+- Catches any missed events (network issues, etc.)
+- Synchronization safety net
 
 ### Combined Strength
-- **SignalR**: Instant updates when doors open (no delay)
-- **API Polling**: Guaranteed correctness (30-second accuracy)
-- **Result**: Best of both worlds - responsive + reliable
+- **SignalR**: Instant updates for both opens AND closes (real-time)
+- **API Polling**: Redundant verification and failsafe (30-second accuracy)
+- **Result**: Real-time responsiveness with bulletproof reliability
 
 ## Signal Flow
 
@@ -77,15 +78,16 @@ The Net2 binding implements a **hybrid synchronization system** that combines Si
 ### Door Closing Sequence
 
 1. **Door Closes** (timer expires, manual close, or physical sensor)
-2. **SignalR Event** (may or may not arrive)
-   - If eventType 47 received: Both channels → OFF immediately
-   - If NO event: State remains ON in OpenHAB (desynchronized)
-3. **API Poll** (within 30 seconds - guaranteed)
+2. **SignalR Event** (instant - typically within 1 second)
+   - Event received: `eventType: 47`
+   - `applyEvent()` called in door handler
+   - Both `action` and `status` channels → OFF
+   - OpenHAB UI updates immediately
+3. **API Poll** (within 30 seconds - redundant verification)
    - `refreshDoorStatus()` called
    - API returns: `{"id": doorId, "status": {"doorRelayOpen": false}}`
-   - `updateFromApiResponse()` detects mismatch
-   - Both `action` and `status` channels → OFF
-   - OpenHAB UI synchronized within 30 seconds
+   - `updateFromApiResponse()` confirms state
+   - Both channels remain OFF (already set by SignalR)
 
 ## Implementation Details
 
@@ -140,7 +142,7 @@ if ("LiveEvents".equalsIgnoreCase(target)) {
         // Door opened - update both channels instantly
         updateState(CHANNEL_DOOR_STATUS, OnOffType.ON);
         updateState(CHANNEL_DOOR_ACTION, OnOffType.ON);
-        // No timer - API polling handles door close detection
+        // SignalR also handles door closes via eventType 47
         logger.info("Door {} opened (eventType {})", doorId, eventType);
     }
 }
@@ -187,7 +189,7 @@ public void updateFromApiResponse(JsonArray doorStatusArray) {
 | 20 | Access Granted | Door opens via card reader | ✅ Reliable |
 | 28 | Door Relay Opened | Timed door control activated | ✅ Reliable |
 | 46 | Door Forced/Held | Door held open or forced | ✅ Reliable |
-| 47 | Door Closed/Secured | Door physically closed | ⚠️ Inconsistent |
+| 47 | Door Closed/Secured | Door physically closed | ✅ Reliable |
 
 ## Channel Behavior
 
@@ -316,16 +318,17 @@ grep "Subscribed to door events" /var/log/openhab/openhab.log
 - Reduce `refreshInterval` for faster updates without SignalR
 - Events are enhancement; polling ensures functionality
 
-### EventType 47 never appears
+### EventType 47 working reliably
 
-**Expected Behavior:**
-- EventType 47 (door closed) is known to be inconsistent
-- This is a Net2 API limitation, not a binding bug
+**Current Status:**
+- EventType 47 (door closed) is working reliably in our implementation
+- Both door opens and closes trigger SignalR events
+- Real-time bidirectional synchronization is operational
 
-**Mitigation:**
-- API polling provides guaranteed close detection
-- Synchronization happens within `refreshInterval`
-- Hybrid approach specifically designed for this issue
+**Redundancy:**
+- API polling still provides backup verification
+- If network issues cause missed events, polling catches them
+- Hybrid approach ensures bulletproof reliability
 
 ## Performance
 
