@@ -23,6 +23,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Output includes: Id, FirstName, LastName, PIN, Telephone, AccessLevel, ExpiryDate, etc.
   - Useful for auditing, reporting, and user management automation
 
+### Documentation
+- **Entry Log Dashboard Guide** (2026-01-11)
+  - Added comprehensive step-by-step guide in EXAMPLES.md
+  - Complete InfluxDB persistence configuration
+  - Working Flux queries for single and combined door dashboards
+  - All Grafana transformation steps with exact settings
+  - Troubleshooting section for common issues
+  - Advanced features: time range variables, door filters, performance tips
+- **Updated ENTRY_LOGGING.md**
+  - Added reference to comprehensive dashboard guide
+  - Simplified Grafana section with working examples
+  - Removed outdated JSON parsing approaches
+- **Updated README.md**
+  - Added "Additional Documentation" section
+  - Cross-references to all documentation files
+  - Direct link to Entry Log Dashboard guide
+
 ### Previous Release - 2026-01-09
 
 ### Added

@@ -347,6 +347,27 @@ cd net2-binding
 mvn clean install
 ```
 
+## Additional Documentation
+
+### Entry Log Dashboard with Grafana
+For a complete step-by-step guide to creating an entry log dashboard with InfluxDB persistence and Grafana visualizations, see:
+
+**[EXAMPLES.md - Entry Log Dashboard](EXAMPLES.md#entry-log-dashboard-with-influxdb-and-grafana)**
+
+This guide includes:
+- Complete items, rules, and persistence configuration
+- Working Flux queries for single and combined door dashboards
+- All Grafana transformation steps with exact settings
+- Troubleshooting common issues
+- Advanced features (time range variables, door filters, alerts)
+
+### Other Documentation Files
+- **[EXAMPLES.md](EXAMPLES.md)** - Complete configuration examples and use cases
+- **[ENTRY_LOGGING.md](ENTRY_LOGGING.md)** - Technical details of the entry logging feature
+- **[SYNCHRONIZATION.md](SYNCHRONIZATION.md)** - Details about hybrid SignalR + API sync
+- **[QUICKSTART.md](QUICKSTART.md)** - Quick setup guide
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
+
 ## Support
 
 For issues related to:

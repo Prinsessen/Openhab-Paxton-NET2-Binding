@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-11 11:45:16
+- Modified: net2-binding/CHANGELOG.md
+- Modified: net2-binding/README.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-11 11:30:16
 - Modified: net2-binding/ENTRY_LOGGING.md
 - Modified: net2-binding/EXAMPLES.md
