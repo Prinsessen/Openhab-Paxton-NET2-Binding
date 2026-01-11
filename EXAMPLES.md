@@ -905,7 +905,22 @@ This ensures entries are sorted by actual door entry time.
   - `timestamp` → `Entry Time`
   - `_time` → `Logged At`
 
-#### 4.4 Panel Options
+#### 4.4 Optional: Format Timestamp
+
+To display timestamp in readable format instead of ISO format:
+
+1. Scroll to **"Overrides"** section in right sidebar
+2. Click **"Add field override"**
+3. Select: **"Fields with name"** → `timestamp`
+4. Click **"Add override property"** → **"Standard options"** → **"Unit"**
+5. Select a date format:
+   - `YYYY-MM-DD HH:mm:ss` → displays as `2026-01-11 11:22:50`
+   - `MM/DD/YYYY h:mm:ss a` → displays as `01/11/2026 11:22:50 AM`
+   - Or choose your preferred format from the list
+
+**Result:** Timestamp displays as `2026-01-11 11:22:50` instead of `2026-01-11T11:22:50`
+
+#### 4.5 Panel Options
 
 In the right sidebar:
 
@@ -921,7 +936,7 @@ In the right sidebar:
 - Unit: Leave as default for string fields
 - Decimals: Not applicable for text data
 
-#### 4.5 Save Dashboard
+#### 4.6 Save Dashboard
 
 1. Click "Apply" (top right)
 2. Click "Save dashboard" (top right)
@@ -934,10 +949,10 @@ Your dashboard will display a clean table like this:
 
 | Time | First Name | Last Name | Door Name | Entry Time |
 |------|------------|-----------|-----------|------------|
-| 2026-01-11 10:17:35 | Nanna | Agesen | Front Door | 2026-01-11T10:17:35 |
-| 2026-01-11 08:25:02 | Nanna | Agesen | Front Door | 2026-01-11T08:25:01 |
-| 2026-01-10 21:27:24 | Nanna | Agesen | Front Door | 2026-01-10T21:27:23 |
-| 2026-01-10 19:36:41 | Nanna | Agesen | Garage Port | 2026-01-10T19:36:40 |
+| 2026-01-11 10:17:35 | Nanna | Agesen | Front Door | 2026-01-11 10:17:35 |
+| 2026-01-11 08:25:02 | Nanna | Agesen | Front Door | 2026-01-11 08:25:01 |
+| 2026-01-10 21:27:24 | Nanna | Agesen | Front Door | 2026-01-10 21:27:23 |
+| 2026-01-10 19:36:41 | Nanna | Agesen | Garage Port | 2026-01-10 19:36:40 |
 
 ### Troubleshooting
 
