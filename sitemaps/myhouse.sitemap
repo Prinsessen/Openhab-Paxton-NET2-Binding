@@ -120,7 +120,8 @@ Frame label="Værksted Dør Kirkegade" {
  		Default item=Net2_Door5_LastTime label="Værksted Dør Last Time Access" icon="activity-time"
 		Default item=Net2_Door5_LastUser label="Værksted Dør Last User Access" icon="color-user"
 		Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
-		
+		Webview url="/static/net2_user_activity.html" height=12 icon=none
+
 	}
 }
 	Frame label="Romeo Robot" {
