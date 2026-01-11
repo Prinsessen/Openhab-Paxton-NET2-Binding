@@ -1,0 +1,6 @@
+rule "Test EntryLog Trigger"
+when
+    Item Net2_Door1_EntryLog changed
+then
+    logWarn("TEST", "EntryLog changed! Value: " + Net2_Door1_EntryLog.state)
+end

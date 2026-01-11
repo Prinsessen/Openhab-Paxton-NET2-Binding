@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-11 09:45:16
+- Modified: rules/net2_entry_counter.rules
+- Added: rules/test_entrylog.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-11 09:30:15
 - Modified: persistence/influxdb.persist
 - Modified: rules/net2_entry_counter.rules

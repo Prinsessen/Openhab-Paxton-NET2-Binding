@@ -24,9 +24,10 @@ then
     logInfo("Net2Entry", "Door1: firstName=" + firstName + ", lastName=" + lastName + ", doorName=" + doorName)
     
     // Update separate items - each persisted individually
+    // Prepend counter to force state changes for persistence
     Net2_Door1_EntryCount.postUpdate(count)
-    Net2_Door1_EntryFullName.postUpdate(fullName)
-    Net2_Door1_EntryDoorName.postUpdate(doorName)
+    Net2_Door1_EntryFullName.sendCommand(count + "|" + fullName)
+    Net2_Door1_EntryDoorName.sendCommand(count + "|" + doorName)
     Net2_Door1_EntryFirstName.postUpdate(firstName)
     Net2_Door1_EntryLastName.postUpdate(lastName)
 end
