@@ -23,17 +23,17 @@ Door Closes → API Poll (≤30s) → OpenHAB UI syncs within refresh interval
 ```
 
 **Why Both?**
-- Net2 API's eventType 47 (door closed) is unreliable
-- SignalR provides instant open detection
-- API polling provides authoritative close detection
-- No timer needed - real state from API
+- SignalR provides real-time bidirectional synchronization (opens and closes)
+- EventType 47 works reliably for instant close detection
+- API polling provides redundant verification and network failsafe
+- No timer needed - real state from SignalR + API
 
 ## Key Changes
 
 ### Updated Channels
 - `action` (Switch): Persistent state reflecting actual door position
 - `status` (Switch): Mirrors actual relay state from Net2 server
-- Both channels synchronized via SignalR (opens) + API polling (closes)
+- Both channels synchronized via SignalR (opens and closes) + API polling (redundant verification)
 - **No auto-off timer** - state changes only when door physically changes
 
 ### New Configuration
@@ -84,18 +84,18 @@ See the following files for details:
 - **Memory**: Single WebSocket connection per bridge
 - **Result**: Production-ready with no performance concerns
 
-## Known Limitations
+## System Behavior
 
-1. **Close Events**: May take up to `refreshInterval` seconds to sync
-   - This is by design due to Net2 API limitations
-   - SignalR eventType 47 is inconsistent
-   - API polling provides authoritative state
-   - **No timer used** - waits for actual API confirmation
+1. **Real-Time Synchronization**: SignalR handles both opens and closes instantly
+   - EventType 20/28/46 for door opens
+   - EventType 47 for door closes (reliable)
+   - API polling provides redundant verification every `refreshInterval` seconds
+   - **No timer used** - SignalR events drive state changes
 
 2. **Refresh Interval**: Minimum 5 seconds recommended
    - Lower values increase API load
    - 30 seconds provides good balance
-   - Determines max delay for close detection
+   - Provides redundant verification, not primary close detection
 
 ## Debug Logging
 

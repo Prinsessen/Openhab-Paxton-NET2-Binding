@@ -27,4 +27,7 @@ bin/
 *~
 *.swp
 *.bak
+
+# Private documentation (not for public GitHub)
 PROJECT_CONTEXT.md
+SESSION_*.md
