@@ -120,58 +120,7 @@ Frame label="Værksted Dør Kirkegade" {
  		Default item=Net2_Door5_LastTime label="Værksted Dør Last Time Access" icon="activity-time"
 		Default item=Net2_Door5_LastUser label="Værksted Dør Last User Access" icon="color-user"
 		Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
-}
-
-
-
-	Frame label="Door Events" {
 		
-		Text label="All Door Events" icon="door" {
-			Frame label="NET2 Activity" {
-				Webview url="/static/net2_activity.html" height=80 icon=none
-			}
-		}
-		Text label="Kirkegade 50 - Frontdoor Face" icon="door" {
-			Frame label="FaceID Events" {
-				Webview url="/static/doors/kirkegade50_hikvision_faceid_acu_6612642.html" height=80 icon=none
-			}
-		}
-		Text label="Kirkegade 50 - Marine Reader" icon="door" {
-			Frame label="Marine Reader Events" {
-				   Webview url="/static/doors/kirkegade50_fordr_marine_reader_acu_6612642.html" height=80 icon=none
-			}
-		}
-		Text label="Kirkegade 50 - Garage Port" icon="door" {
-			Frame label="Garage Port Events" {
-				Webview url="/static/doors/kirkegade50_garage_port_acu_7242929_ind.html" height=80 icon=none
-			}
-		}
-		Text label="Kirkegade 50 - Basement" icon="door" {
-			Frame label="Basement Events" {
-				   Webview url="/static/doors/kirkegade50_andreas_udv_klder_acu_01038236_ind.html" height=80 icon=none
-			}
-		}
-		Text label="Kirkegade 50 - Værksted" icon="door" {
-			Frame label="Værksted Events" {
-				   Webview url="/static/doors/kirkegade50_vrksted_dr_central_03962494_ind.html" height=80 icon=none
-			}
-		}
-		Text label="Terndrupvej 81 - Frontdoor" icon="door" {
-			Frame label="Fordør Events" {
-			    Webview url="/static/doors/terndrupvej_81_fordr_terndrupvej_acu_6203980_ind.html" height=80 icon=none
-
-			}
-		}
-		Text label="Porsevej 19 - Frontdoor" icon="door" {
-			Frame label="Fordør Events" {
-				   Webview url="/static/doors/porsevej19_fordr_porsevej_acu_967438_ind.html" height=80 icon=none
-			}
-		//}
-		//Text label="Kirkegade 50 - Door 8" icon="door" {
-		//	Frame label="Door 8 Events" {
-		//		Webview url="/static/doors/door8_events.html" height=80 icon=none
-		//	}
-		}
 	}
 }
 	Frame label="Romeo Robot" {
