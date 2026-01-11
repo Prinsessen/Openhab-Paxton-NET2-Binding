@@ -72,5 +72,33 @@ Number Net2_Door4_EntryCount "Entry Count [%d]" <log>
 Number Net2_Door5_EntryCount "Entry Count [%d]" <log>
 
 // ==============================================
+// Entry Log Parsed Fields (for InfluxDB tables with names)
+// ==============================================
+String Net2_Door1_EntryFirstName "First Name [%s]"
+String Net2_Door1_EntryLastName "Last Name [%s]"
+String Net2_Door1_EntryFullName "Full Name [%s]"
+String Net2_Door1_EntryRecord "Entry Record [%s]"
+
+String Net2_Door2_EntryFirstName "First Name [%s]"
+String Net2_Door2_EntryLastName "Last Name [%s]"
+String Net2_Door2_EntryFullName "Full Name [%s]"
+String Net2_Door2_EntryRecord "Entry Record [%s]"
+
+String Net2_Door3_EntryFirstName "First Name [%s]"
+String Net2_Door3_EntryLastName "Last Name [%s]"
+String Net2_Door3_EntryFullName "Full Name [%s]"
+String Net2_Door3_EntryRecord "Entry Record [%s]"
+
+String Net2_Door4_EntryFirstName "First Name [%s]"
+String Net2_Door4_EntryLastName "Last Name [%s]"
+String Net2_Door4_EntryFullName "Full Name [%s]"
+String Net2_Door4_EntryRecord "Entry Record [%s]"
+
+String Net2_Door5_EntryFirstName "First Name [%s]"
+String Net2_Door5_EntryLastName "Last Name [%s]"
+String Net2_Door5_EntryFullName "Full Name [%s]"
+String Net2_Door5_EntryRecord "Entry Record [%s]"
+
+// ==============================================
 // Add more doors as needed...
 // ==============================================   

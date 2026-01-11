@@ -1,7 +1,7 @@
 // ==============================================
-// Net2 Entry Log Counter
+// Net2 Entry Log Counter and Field Parser
 // Increments a counter for each physical entry
-// This creates unique InfluxDB points for tracking
+// AND extracts JSON fields for InfluxDB storage
 // ==============================================
 
 rule "Net2 Door1 Entry Counter"
@@ -12,7 +12,20 @@ then
     if (Net2_Door1_EntryCount.state instanceof Number) {
         count = (Net2_Door1_EntryCount.state as Number).intValue()
     }
-    Net2_Door1_EntryCount.postUpdate(count + 1)
+    count = count + 1
+    Net2_Door1_EntryCount.postUpdate(count)
+    
+    // Parse JSON and extract fields
+    val String json = Net2_Door1_EntryLog.state.toString
+    val firstName = transform("JSONPATH", "$.firstName", json)
+    val lastName = transform("JSONPATH", "$.lastName", json)
+    val fullName = firstName + " " + lastName
+    
+    Net2_Door1_EntryFirstName.postUpdate(firstName)
+    Net2_Door1_EntryLastName.postUpdate(lastName)
+    Net2_Door1_EntryFullName.postUpdate(fullName)
+    // Counter prefix makes each entry unique - strip in Grafana for display
+    Net2_Door1_EntryRecord.postUpdate(count + "|" + fullName)
 end
 
 rule "Net2 Door2 Entry Counter"
@@ -23,7 +36,18 @@ then
     if (Net2_Door2_EntryCount.state instanceof Number) {
         count = (Net2_Door2_EntryCount.state as Number).intValue()
     }
-    Net2_Door2_EntryCount.postUpdate(count + 1)
+    count = count + 1
+    Net2_Door2_EntryCount.postUpdate(count)
+    
+    val String json = Net2_Door2_EntryLog.state.toString
+    val firstName = transform("JSONPATH", "$.firstName", json)
+    val lastName = transform("JSONPATH", "$.lastName", json)
+    val fullName = firstName + " " + lastName
+    
+    Net2_Door2_EntryFirstName.postUpdate(firstName)
+    Net2_Door2_EntryLastName.postUpdate(lastName)
+    Net2_Door2_EntryFullName.postUpdate(fullName)
+    Net2_Door2_EntryRecord.postUpdate(count + "|" + fullName)
 end
 
 rule "Net2 Door3 Entry Counter"
@@ -34,7 +58,18 @@ then
     if (Net2_Door3_EntryCount.state instanceof Number) {
         count = (Net2_Door3_EntryCount.state as Number).intValue()
     }
-    Net2_Door3_EntryCount.postUpdate(count + 1)
+    count = count + 1
+    Net2_Door3_EntryCount.postUpdate(count)
+    
+    val String json = Net2_Door3_EntryLog.state.toString
+    val firstName = transform("JSONPATH", "$.firstName", json)
+    val lastName = transform("JSONPATH", "$.lastName", json)
+    val fullName = firstName + " " + lastName
+    
+    Net2_Door3_EntryFirstName.postUpdate(firstName)
+    Net2_Door3_EntryLastName.postUpdate(lastName)
+    Net2_Door3_EntryFullName.postUpdate(fullName)
+    Net2_Door3_EntryRecord.postUpdate(count + "|" + fullName)
 end
 
 rule "Net2 Door4 Entry Counter"
@@ -45,7 +80,18 @@ then
     if (Net2_Door4_EntryCount.state instanceof Number) {
         count = (Net2_Door4_EntryCount.state as Number).intValue()
     }
-    Net2_Door4_EntryCount.postUpdate(count + 1)
+    count = count + 1
+    Net2_Door4_EntryCount.postUpdate(count)
+    
+    val String json = Net2_Door4_EntryLog.state.toString
+    val firstName = transform("JSONPATH", "$.firstName", json)
+    val lastName = transform("JSONPATH", "$.lastName", json)
+    val fullName = firstName + " " + lastName
+    
+    Net2_Door4_EntryFirstName.postUpdate(firstName)
+    Net2_Door4_EntryLastName.postUpdate(lastName)
+    Net2_Door4_EntryFullName.postUpdate(fullName)
+    Net2_Door4_EntryRecord.postUpdate(count + "|" + fullName)
 end
 
 rule "Net2 Door5 Entry Counter"
@@ -56,5 +102,16 @@ then
     if (Net2_Door5_EntryCount.state instanceof Number) {
         count = (Net2_Door5_EntryCount.state as Number).intValue()
     }
-    Net2_Door5_EntryCount.postUpdate(count + 1)
+    count = count + 1
+    Net2_Door5_EntryCount.postUpdate(count)
+    
+    val String json = Net2_Door5_EntryLog.state.toString
+    val firstName = transform("JSONPATH", "$.firstName", json)
+    val lastName = transform("JSONPATH", "$.lastName", json)
+    val fullName = firstName + " " + lastName
+    
+    Net2_Door5_EntryFirstName.postUpdate(firstName)
+    Net2_Door5_EntryLastName.postUpdate(lastName)
+    Net2_Door5_EntryFullName.postUpdate(fullName)
+    Net2_Door5_EntryRecord.postUpdate(count + "|" + fullName)
 end
