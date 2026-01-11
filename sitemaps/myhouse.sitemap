@@ -11,8 +11,6 @@ sitemap myhouse label="Nanna Agesen"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
 	}
 	Frame label="Home Security" {
-			Switch item=Net2_Door1_Status mappings=[ON="Open", OFF="Closed"] label="Frontdoor Kirkegade" icon="lock-key" 
-			Switch item=Net2_Door3_ControlTimed label="Garage Port" mappings=[1="Open"] icon="lock-key"
 			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="alarm"
 			Text item=Alarmsystem_Info icon="alarm"
 	}
@@ -69,7 +67,7 @@ sitemap myhouse label="Nanna Agesen"
 		Default item=DrivewayTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
 		Setpoint item=DrivewayZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
 			Selection item=PTZ label="Main Entrance PTZ Camera" mappings=[1="Entrance", 2="House", 3="Parking east", 4="Garage port", 5="Front door"] icon="speed-camera"
-			Selection item=Net2 label="Access Control" mappings=[1="Port", 2="Front Door", 3="Workshop", 4="Company", 5="Bohrsvej", 6="Basement Door"] icon="lock-key"
+		//	Selection item=Net2 label="Access Control" mappings=[1="Port", 2="Front Door", 3="Workshop", 4="Company", 5="Bohrsvej", 6="Basement Door"] icon="lock-key"
 			Video url="http://openhab5.agesen.dk:8080/ipcamera/West/ipcamera.mjpeg" encoding="mjpeg"
 			Default item=WestPan label="Camera Pan (Left/Right)" icon="speed-camera"
 			Default item=WestTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
