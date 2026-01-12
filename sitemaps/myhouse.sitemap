@@ -74,7 +74,7 @@ sitemap myhouse label="Nanna Agesen"
 			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
 	}
 Text label="Access Control" icon="lock-key" {
-Frame label="Fordør Kirkegade" {
+Frame label="Front Door - Kirkegade" {
 		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
 		Switch item=Net2_Door1_Status label="Door Physical Status" icon="activity" 
 		Switch item=Net2_Door1_ControlTimed label="Fordør Timed Door" mappings=[1="Open"] icon="lock-key"
@@ -83,7 +83,7 @@ Frame label="Fordør Kirkegade" {
 		Default item=Net2_Door1_LastUser label="Frontdoor Last User Access" icon="color-user"
 		Text item=Net2_Door1_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
 	}
-Frame label="Terndrupvej 81" {
+Frame label="Front Door - Terndrupvej " {
 		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
 		Switch item=Net2_Door2_Status label="Door Physical Status" icon="activity" 
 		Switch item=Net2_Door2_ControlTimed label="Terndrupvej 81 Timed Door" mappings=[1="Open"] icon="lock-key"
@@ -92,7 +92,7 @@ Frame label="Terndrupvej 81" {
 		Default item=Net2_Door2_LastUser label="Terndrupvej 81 Last User Access" icon="color-user"
 		Text item=Net2_Door2_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
 	}
-Frame label="Garage Kirkegade" {
+Frame label="Garage - Kirkegade" {
 		Switch item=Net2_Door3_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
 		Switch item=Net2_Door3_Status label="Door Physical Status" icon="activity" 
 		Switch item=Net2_Door3_ControlTimed label="Garage Port Timed Door" mappings=[1="Open"] icon="lock-key"
@@ -101,7 +101,7 @@ Frame label="Garage Kirkegade" {
 		Default item=Net2_Door3_LastUser label="Garage Port Last User Access" icon="color-user"
 		Text item=Net2_Door3_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
 }
-Frame label="Basement Door Kirkegade" {
+Frame label="Basement Door - Kirkegade" {
 		Switch item=Net2_Door4_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
 		Switch item=Net2_Door4_Status label="Door Physical Status" icon="activity" 
 		Switch item=Net2_Door4_ControlTimed label="Basement Door Timed Door" mappings=[1="Open"] icon="lock-key"

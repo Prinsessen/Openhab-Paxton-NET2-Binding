@@ -8,21 +8,21 @@ Bridge net2:net2server:server "Net2 Server" [
     tlsVerification=true,
     refreshInterval=600
 ] {
-    Thing door door1 "Front Door" [
+    Thing door door1 "Front Door - Kirkegade" [
         doorId=6612642,
-        name="Front Door"
+        name="Front Door - Kirkegade"
     ]
-    Thing door door2 "Terndrupvej 81" [
+    Thing door door2 "Front Door - Terndrupvej " [
         doorId=6203980,
-        name="Terndrupvej 81"
+        name="Front Door - Terndrupvej"
     ]
     Thing door door3 "Garage Port - Kirkegade" [
         doorId=7242929,
         name="Garage Port - Kirkegade"
     ]
-    Thing door door4 "Udv.Basement - Kirkegade" [
+    Thing door door4 "Basement - Kirkegade" [
         doorId=6626578,
-        name="Udv.Basement - Kirkegade"
+        name="Basement - Kirkegade"
     ]
     Thing door door5 "Fordør - Porsevej " [
         doorId=7319051,
