@@ -110,13 +110,13 @@ Frame label="Basement Door Kirkegade" {
 		Default item=Net2_Door4_LastUser label="Basement Door Last User Access" icon="color-user"
 		Text item=Net2_Door4_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
 }
-Frame label="Værksted Dør Kirkegade" {
+Frame label="Fordør - Porsevej 19" {
 		Switch item=Net2_Door5_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
 		Switch item=Net2_Door5_Status label="Door Physical Status" icon="activity" 
-		Switch item=Net2_Door5_ControlTimed label="Værksted Dør Timed Door" mappings=[1="Open"] icon="lock-key"
-		Text item=Net2_Door5_Status label="Værksted Dør Activity [MAP(net2doorstatus.map):%s]" icon="activity"
- 		Default item=Net2_Door5_LastTime label="Værksted Dør Last Time Access" icon="activity-time"
-		Default item=Net2_Door5_LastUser label="Værksted Dør Last User Access" icon="color-user"
+		Switch item=Net2_Door5_ControlTimed label="Fordør Timed Door" mappings=[1="Open"] icon="lock-key"
+		Text item=Net2_Door5_Status label="Fordør Activity [MAP(net2doorstatus.map):%s]" icon="activity"
+ 		Default item=Net2_Door5_LastTime label="Fordør Last Time Access" icon="activity-time"
+		Default item=Net2_Door5_LastUser label="Fordør Last User Access" icon="color-user"
 		Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
 		Webview url="/static/net2_user_activity.html" height=100 icon=none
 
