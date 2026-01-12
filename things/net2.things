@@ -25,7 +25,7 @@ Bridge net2:net2server:server "Net2 Server" [
         name="Udv.Basement - Kirkegade"
     ]
     Thing door door5 "Fordør - Porsevej " [
-        doorId=967438,
+        doorId=7319051,
         name="Porsevej 19"
     ]
 }
