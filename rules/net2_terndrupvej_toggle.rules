@@ -1,0 +1,18 @@
+// net2_Terndrupvej_Toggel.rules
+
+rule "Toggle Terndrupvej Door Action"
+when
+    Item Net2_Toggle_Terndrupvej received command // Trigger when command is received (ON/OFF)
+then
+    // Log the event (optional, but helpful for debugging)
+    logInfo("Net2_Rules", "Toggle Terndrupvej command: " + receivedCommand)
+
+    // Check the command and set the door action accordingly
+    if (receivedCommand == ON) {
+        Net2_Door2_Action.sendCommand(ON) // Turn door action ON
+        logInfo("Net2_Rules", "Net2_Door2_Action set to ON")
+    } else if (receivedCommand == OFF) {
+        Net2_Door2_Action.sendCommand(OFF) // Turn door action OFF
+        logInfo("Net2_Rules", "Net2_Door2_Action set to OFF")
+    }
+end

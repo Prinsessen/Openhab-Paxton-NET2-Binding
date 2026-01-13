@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-13 10:45:16
+- Added: rules/net2_terndrupvej_toggle.rules
+- Added: things/openhab.code-workspace
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-13 10:30:16
 - Modified: items/Terndrupvej.items
 - Modified: things/Terndrupvej.things
