@@ -16,3 +16,4 @@ then
         logWarn("Net2_Rules", "Toggle switch is in an invalid state: " + Net2_Toggle_Terndrupvej.state)
     }
 end
+
