@@ -1,24 +1,18 @@
-rule "Net2 Terndrupvej Toggle Logic"
+rule "Net2 Terndrupvej Toggle Controls Door"
 when
-    // Trigger when the toggle item changes from any state to another
     Item Net2_Toggle_Terndrupvej changed
 then
-    // Log the event for debugging (visible in openhab.log)
     logInfo("Net2_Rules", "Toggle 'Net2_Toggle_Terndrupvej' changed to: " + Net2_Toggle_Terndrupvej.state.toString)
 
-    // Main Logic Block
     if (Net2_Toggle_Terndrupvej.state == ON) {
-        // When toggle goes ON, ensure the door action is ON
         Net2_Door2_Action.sendCommand(ON)
-        logInfo("Net2_Rules", "Action: Net2_Door2_Action commanded to ON")
+        logInfo("Net2_Rules", "Toggle ON - Door2 Action commanded to ON")
     } 
     else if (Net2_Toggle_Terndrupvej.state == OFF) {
-        // When toggle goes OFF, ensure the door action is OFF
         Net2_Door2_Action.sendCommand(OFF)
-        logInfo("Net2_Rules", "Action: Net2_Door2_Action commanded to OFF")
+        logInfo("Net2_Rules", "Toggle OFF - Door2 Action commanded to OFF")
     }
     else {
-        // Catch-all for NULL or UNDEF states (useful for troubleshooting)
         logWarn("Net2_Rules", "Toggle switch is in an invalid state: " + Net2_Toggle_Terndrupvej.state)
     }
 end
