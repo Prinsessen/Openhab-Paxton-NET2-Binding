@@ -1,19 +1,17 @@
 rule "Net2 Terndrupvej Toggle Controls Door"
 when
-    Item Net2_Toggle_Terndrupvej changed
+    Item Net2_Toggle_Terndrupvej received command
 then
-    logInfo("Net2_Rules", "Toggle 'Net2_Toggle_Terndrupvej' changed to: " + Net2_Toggle_Terndrupvej.state.toString)
+    logInfo("Net2_Rules", "Toggle 'Net2_Toggle_Terndrupvej' received command - toggling Door2")
 
-    if (Net2_Toggle_Terndrupvej.state == ON) {
-        Net2_Door2_Action.sendCommand(ON)
-        logInfo("Net2_Rules", "Toggle ON - Door2 Action commanded to ON")
-    } 
-    else if (Net2_Toggle_Terndrupvej.state == OFF) {
+    // Toggle Door2 state
+    if (Net2_Door2_Action.state == ON) {
         Net2_Door2_Action.sendCommand(OFF)
-        logInfo("Net2_Rules", "Toggle OFF - Door2 Action commanded to OFF")
-    }
+        logInfo("Net2_Rules", "Door2 was ON - commanding OFF")
+    } 
     else {
-        logWarn("Net2_Rules", "Toggle switch is in an invalid state: " + Net2_Toggle_Terndrupvej.state)
+        Net2_Door2_Action.sendCommand(ON)
+        logInfo("Net2_Rules", "Door2 was OFF - commanding ON")
     }
 end
 
