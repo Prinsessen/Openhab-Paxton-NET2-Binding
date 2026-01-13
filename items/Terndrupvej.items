@@ -63,3 +63,6 @@ Number      EM300_Energi_340_V_L2_N            "Spænding L2-N [%.1f V]"        
 Number      EM300_Energi_340_V_L3_L1           "Spænding L3-L1 [%.1f V]"                                 <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L3_L1:number"}
 Number      EM300_Energi_340_V_L3_N            "Spænding L3-N [%.1f V]"                                  <electricity>     (Energi_340)    {channel="modbus:data:endpointTerndrupvej:EM300_Energy:EM300_Energi_300_V_L3_N:number"}
 DateTime    Light_Office_Stamp                 "Light Office last [%1$tA, %1$td.%1$tm.%1$tY - %1$tT]"    <iclock>
+
+/* Paxton Net2 Door Toggle ON/OFF */
+Switch      Net2_Toggle_Terndrupvej            "Door Toggle Terndrupvej"                            <door>                            {channel="modbus:data:endpointTerndrupvej:Net2_Toggle_Terndrupvej:Net2_Toggle_Terndrupvej:switch"}

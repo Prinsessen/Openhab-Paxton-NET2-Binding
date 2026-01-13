@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-13 10:30:16
+- Modified: items/Terndrupvej.items
+- Modified: things/Terndrupvej.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-12 16:15:16
 - Added: net2-binding-backup-20260112-160256
 

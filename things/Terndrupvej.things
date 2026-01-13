@@ -196,6 +196,15 @@ Bridge poller Light_Workshop [ start=1388, length=2, refresh=10000, type="holdin
 
 		 Thing data EM300_Energi_300_V_L3_N [readStart="1365",readValueType="uint32_swap",readTransform="JS(divide10.js)" ]
 		 }
+
+		 // #Paxton Net2 Door Toggle ON/OFF
+			    
+	Bridge poller Net2_Toggle_Terndrupvej [ start=2706, length=2, refresh=10000, type="holding" ] {
+	    
+	         
+
+		Thing data Net2_Toggle_Terndrupvej [ readStart="2706", readValueType="uint16", writeStart="2706", writeValueType="int16", writeType="holding" ]
+}   
 	
 }
 
