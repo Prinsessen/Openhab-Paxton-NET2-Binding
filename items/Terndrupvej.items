@@ -66,3 +66,4 @@ DateTime    Light_Office_Stamp                 "Light Office last [%1$tA, %1$td.
 
 /* Paxton Net2 Door Toggle ON/OFF */
 Switch      Net2_Toggle_Terndrupvej            "Door Toggle Terndrupvej"                            <door>                            {channel="modbus:data:endpointTerndrupvej:Net2_Toggle_Terndrupvej:Net2_Toggle_Terndrupvej:switch"}
+Switch      Net2_Toggle_Button_Terndrupvej     "Toggle Door Terndrupvej"                            <switch>

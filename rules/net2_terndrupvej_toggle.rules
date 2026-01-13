@@ -1,8 +1,9 @@
 rule "Net2 Terndrupvej Toggle Controls Door"
 when
-    Item Net2_Toggle_Terndrupvej received command
+    Item Net2_Toggle_Button_Terndrupvej received command or
+    Item Net2_Toggle_Terndrupvej changed to ON
 then
-    logInfo("Net2_Rules", "Toggle 'Net2_Toggle_Terndrupvej' received command - toggling Door2")
+    logInfo("Net2_Rules", "Toggle received - toggling Door2")
 
     // Toggle Door2 state
     if (Net2_Door2_Action.state == ON) {
