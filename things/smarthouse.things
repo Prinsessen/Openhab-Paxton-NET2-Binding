@@ -62,85 +62,85 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Temperateur Read	
 
-	Bridge poller Temperature_GF_Toilet [ start=1132, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Toilet [ start=1132, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Toilet [ readStart="1132", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 	
 
-	Bridge poller Temperature_GF_Sove [ start=1222, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Sove [ start=1222, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Sove [ readStart="1222", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GF_Stue [ start=848, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Stue [ start=848, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Stue [ readStart="848", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GF_Udestue [ start=990, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Udestue [ start=990, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Udestue [ readStart="990", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GF_Alrum [ start=604, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Alrum [ start=604, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Alrum [ readStart="604", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GF_Kokken [ start=2318, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Kokken [ start=2318, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Kokken [ readStart="2318", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GF_Lauge [ start=732, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Lauge [ start=732, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Lauge [ readStart="732", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GF_Guestroom [ start=668, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Guestroom [ start=668, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Guestroom [ readStart="668", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GF_Wineroom [ start=540, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GF_Wineroom [ start=540, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GF_Wineroom [ readStart="540", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GC_Anna [ start=1494, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GC_Anna [ start=1494, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GC_Anna [ readStart="1494", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_GC_Kontor [ start=1662, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_GC_Kontor [ start=1662, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GC_Kontor [ readStart="1662", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
-        Bridge poller Temperature_GC_Bryggers [ start=1726, length=2, refresh=5000, type="input" ] {
+        Bridge poller Temperature_GC_Bryggers [ start=1726, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_GC_Bryggers [ readStart="1726", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 	
-	Bridge poller Temperature_Have [ start=1860, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_Have [ start=1860, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_Have [ readStart="1860", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
 
-	Bridge poller Temperature_Teknik [ start=3844, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_Teknik [ start=3844, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_Teknik [ readStart="3844", readValueType="uint32_swap", readTransform="JS(divide10.js)" ]
 		 }
-	Bridge poller CO2_Sove [ start=3632, length=2, refresh=5000, type="input" ] {
+	Bridge poller CO2_Sove [ start=3632, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data CO2_Sove [ readStart="3632", readValueType="int32_swap" ]
 		 }
 
-	Bridge poller Humid_Sove [ start=3636, length=2, refresh=5000, type="input" ] {
+	Bridge poller Humid_Sove [ start=3636, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Humid_Sove [ readStart="3636", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
-	Bridge poller Temperature_Panasonic [ start=7977, length=2, refresh=5000, type="input" ] {
+	Bridge poller Temperature_Panasonic [ start=7977, length=2, refresh=1000, type="input" ] {
 	    
 	         Thing data Temperature_Panasonic [ readStart="7977", readValueType="int32_swap", readTransform="JS(divide10.js)" ]
 		 }
@@ -452,7 +452,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Stue
 
-	Bridge poller Setpoint_Stue [ start=845, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Stue [ start=845, length=4, refresh=1000, type="holding" ] {
 	    
 	         Thing data Setpoint_Stue [ readStart="845", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="845", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -461,7 +461,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Alrum
 
-	Bridge poller Setpoint_Alrum [ start=601, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Alrum [ start=601, length=4, refresh=1000, type="holding" ] {
 	    
 	         Thing data Setpoint_Alrum [ readStart="601", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="601", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -470,7 +470,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Bathroom
 
-	Bridge poller Setpoint_Bad [ start=1129, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Bad [ start=1129, length=4, refresh=1000, type="holding" ] {
 	    
 	         Thing data Setpoint_Bad [ readStart="1129", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1129", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -479,7 +479,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Soveværelse
 
-	Bridge poller Setpoint_Sove [ start=1219, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Sove [ start=1219, length=4, refresh=1000, type="holding" ] {
 	    
 	         Thing data Setpoint_Sove [ readStart="1219", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1219", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -488,7 +488,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Kokken
 
-	Bridge poller Setpoint_Kokken [ start=2347, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Kokken [ start=2347, length=4, refresh=1000, type="holding" ] {
 	    
 	         Thing data Setpoint_Kokken [ readStart="2347", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="2347", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -498,7 +498,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Udestue
 
-	Bridge poller Setpoint_Udestue [ start=987, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Udestue [ start=987, length=4, refresh=1000, type="holding" ] {
 	    
 	        Thing data Setpoint_Udestue [ readStart="987", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="987", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -507,7 +507,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Guestroom
 
-	Bridge poller Setpoint_Guestroom [ start=537, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Guestroom [ start=537, length=4, refresh=1000, type="holding" ] {
 	    
 	        Thing data Setpoint_Guestroom [ readStart="537", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="537", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -516,7 +516,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Anna
 
-	Bridge poller Setpoint_Anna [ start=1491, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Anna [ start=1491, length=4, refresh=1000, type="holding" ] {
 	    
 	        Thing data Setpoint_Anna [ readStart="1491", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1491", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -525,7 +525,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Wineroom
 
-	Bridge poller Setpoint_Wineroom [ start=665, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Wineroom [ start=665, length=4, refresh=1000, type="holding" ] {
 	    
 	        Thing data Setpoint_Wineroom [ readStart="665", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="665", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -534,7 +534,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Lauge
 
-	Bridge poller Setpoint_Lauge [ start=729, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Lauge [ start=729, length=4, refresh=1000, type="holding" ] {
 	    
 	        Thing data Setpoint_Lauge [ readStart="729", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="729", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -543,7 +543,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Kontor
 
-	Bridge poller Setpoint_Kontor [ start=1659, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Kontor [ start=1659, length=4, refresh=1000, type="holding" ] {
 	    
 	        Thing data Setpoint_Kontor [ readStart="1659", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1659", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -552,7 +552,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Varmesetpunkt Bryggers
 
-	Bridge poller Setpoint_Bryggers [ start=1723, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Bryggers [ start=1723, length=4, refresh=1000, type="holding" ] {
 	    
 	        Thing data Setpoint_Bryggers [ readStart="1723", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="1723", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 	
@@ -561,7 +561,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Panasonic HAVAC Setpoint
 
-	Bridge poller Setpoint_Panasonic [ start=4037, length=2, refresh=5000, type="holding" ] {
+	Bridge poller Setpoint_Panasonic [ start=4037, length=2, refresh=1000, type="holding" ] {
 	    
 	         Thing data Setpoint_Panasonic [ readStart="4037", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4037", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)" ]
 
@@ -569,7 +569,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Panasonic HAVAC Heat Mode / Heat/Cool
 
-	Bridge poller Mode_Panasonic [ start=4036, length=1, refresh=5000, type="holding" ] {
+	Bridge poller Mode_Panasonic [ start=4036, length=1, refresh=1000, type="holding" ] {
 	    
 	         Thing data Mode_Panasonic [ readStart="4036", readValueType="uint16", writeStart="4036", writeValueType="int16", writeType="holding" ]
 
@@ -577,7 +577,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Panasonic HAVAC Fan Speed 
 
-	Bridge poller Fan_Panasonic [ start=3802, length=4, refresh=5000, type="holding" ] {
+	Bridge poller Fan_Panasonic [ start=3802, length=4, refresh=1000, type="holding" ] {
 	    
 		Thing data Fan_Panasonic [ readStart="3802", readValueType="uint64_swap", writeStart="3802", writeValueType="int64_swap", writeType="holding" ]
 
@@ -585,7 +585,7 @@ writeValueType="int16", writeType="holding" ]
 
 // #Smarthouse Panasonic HAVAC Heating/cooling Setpoints  
 
-	Bridge poller Setpoints_Mitsubishi [ start=4037, length=12, refresh=5000, type="holding" ] {
+	Bridge poller Setpoints_Mitsubishi [ start=4037, length=12, refresh=1000, type="holding" ] {
 	    
 		Thing data Heat_SP1_Mitsubishi [ readStart="4037", readValueType="uint32_swap", readTransform="JS(divide10.js)", writeStart="4037", writeValueType="int32_swap", writeType="holding", writeTransform="JS(multiply10.js)"]
 
