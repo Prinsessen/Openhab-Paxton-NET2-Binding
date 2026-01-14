@@ -1,3 +1,11 @@
+/**
+ * NET2 TERNDRUPVEJ TOGGLE CONTROL
+ * 
+ * This rule handles toggle button commands for the Terndrupvej location door control.
+ * When the toggle button is pressed or the toggle item is activated, it automatically
+ * toggles Door2 between ON (open/unlock) and OFF (close/lock) states.
+ */
+
 rule "Net2 Terndrupvej Toggle Controls Door"
 when
     Item Net2_Toggle_Button_Terndrupvej received command or

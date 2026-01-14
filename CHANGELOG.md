@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-14 06:00:16
+- Modified: rules/net2_terndrupvej_toggle.rules
+- Modified: things/Terndrupvej.things
+- Modified: things/smarthouse.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-14 05:45:16
 - Modified: things/Terndrupvej.things
 - Modified: things/smarthouse.things

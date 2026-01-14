@@ -198,6 +198,7 @@ Bridge poller Light_Workshop [ start=1388, length=2, refresh=10000, type="holdin
 		 }
 
 		 // #Paxton Net2 Door Toggle ON/OFF
+		 // #Refresh set to 500ms to ensure fast response time on physical button press
 			    
 	Bridge poller Net2_Toggle_Terndrupvej [ start=2706, length=2, refresh=500, type="holding" ] {
 	    

@@ -1008,7 +1008,7 @@ Thing data Vent_Server_SP1 [ readStart="4123", readValueType="uint32_swap", read
 		 
 
 // # VP Kugle push button for the HUE bulb to follow the VP status
-
+// # Refresh set to 500ms to ensure fast response time on physical button press
 	Bridge poller Smartlight_VP_HUE_Bulp [ start=13212, length=42, refresh=500, type="input" ] {
 	    
 	         Thing data Smartlight_VP_HUE_Bulp [ readStart="13214", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="13212", writeValueType="int16", writeType="holding" ]
