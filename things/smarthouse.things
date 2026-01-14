@@ -3,7 +3,7 @@ Bridge modbus:tcp:endpointSmarthouse [ host="192.168.100.86", port=502, id=1, co
 
 // # Smarthouse Light/Outlets	
 
-	Bridge poller Smarthouse_Light [ start=4000, length=37, refresh=5000, type="holding" ] {
+	Bridge poller Smarthouse_Light [ start=4000, length=37, refresh=1000, type="holding" ] {
 	    
 	         Thing data Light_GF_Alrum_Pendel [ readStart="4000", readValueType="uint16", readTransform="JS(divide1.js)", writeStart="4000", writeValueType="int16", writeType="holding", writeTransform="JS(multiply1.js)" ]
 	    
