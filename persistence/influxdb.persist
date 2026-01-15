@@ -164,4 +164,5 @@ SMA_Active_Power				: strategy = everyChange,everyMinute,restoreOnStartup
 SMA_Power_A					: strategy = everyChange,everyMinute,restoreOnStartup
 SMA_Power_B                                     : strategy = everyChange,everyMinute,restoreOnStartup        
 
+SpotPrice                                        : strategy = everyChange,everyMinute,restoreOnStartup
 }

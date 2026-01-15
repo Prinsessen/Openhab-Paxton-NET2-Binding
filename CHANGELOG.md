@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 14:45:06
+- Modified: persistence/influxdb.persist
+- Modified: persistence/rrd4j.persist
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 11:45:06
 - Modified: things/smarthouse.things
 
