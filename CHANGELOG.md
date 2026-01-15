@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 11:00:16
+- Added: items/entso.items
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 10:00:16
 - Added: things-backup-20260115-095205/Airquality.things
 - Added: things-backup-20260115-095205/Backup/hue_api2.test

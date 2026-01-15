@@ -4,6 +4,7 @@ sitemap myhouse label="Nanna Agesen"
 
 	Frame label="Kirkegade 50" {
 		Text item=CurrentDate label="System Date" icon="time"
+		Text item=SpotPrice label="Spot Price [%.2f]" icon="price"
 		Switch item=Energy_Crisis icon="alarm"
 	}
 	Frame label="Events" {
