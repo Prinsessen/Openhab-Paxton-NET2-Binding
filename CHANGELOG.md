@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 11:45:06
+- Modified: things/smarthouse.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 11:15:16
 - Modified: items/entso.items
 - Modified: sitemaps/myhouse.sitemap
