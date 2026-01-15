@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 15:45:06
+- Added: persistence/inmemory.persist
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 15:30:16
 - Modified: items/entso.items
 - Added: rules/entsoe.rules
