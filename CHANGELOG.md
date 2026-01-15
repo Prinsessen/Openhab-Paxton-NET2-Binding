@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 15:30:16
+- Modified: items/entso.items
+- Added: rules/entsoe.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 15:15:16
 - Modified: items/entso.items
 

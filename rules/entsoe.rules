@@ -1,0 +1,15 @@
+/**
+ * ENTSO-E SPOT PRICE RULES
+ * 
+ * This rule is triggered when new spot prices are received from ENTSO-E.
+ * The prices-received channel is a trigger channel that fires when the binding
+ * successfully fetches and updates the price data.
+ */
+
+rule "Spot prices received from ENTSO-E"
+when
+    Channel "entsoe:day-ahead:Entso:prices-received" triggered
+then
+    logInfo("ENTSO-E", "New spot prices received and available")
+    logInfo("ENTSO-E", "Current spot price: " + SpotPrice.state)
+end
