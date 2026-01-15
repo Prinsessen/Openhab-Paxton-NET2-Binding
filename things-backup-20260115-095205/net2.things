@@ -1,0 +1,31 @@
+// Alternative Net2 host example: use "prinsessen.agesen.dk" if applicable
+Bridge net2:net2server:server "Net2 Server" [
+    hostname="milestone.agesen.dk",
+    port=8443,
+    username="Nanna Agesen",
+    password="Jekboapj110",
+    clientId="00aab996-6439-4f16-89b4-6c0cc851e8f3",
+    tlsVerification=true,
+    refreshInterval=600
+] {
+    Thing door door1 "Front Door - Kirkegade" [
+        doorId=6612642,
+        name="Front Door - Kirkegade"
+    ]
+    Thing door door2 "Front Door - Terndrupvej " [
+        doorId=6203980,
+        name="Front Door - Terndrupvej"
+    ]
+    Thing door door3 "Garage Port - Kirkegade" [
+        doorId=7242929,
+        name="Garage Port - Kirkegade"
+    ]
+    Thing door door4 "Basement - Kirkegade" [
+        doorId=6626578,
+        name="Basement - Kirkegade"
+    ]
+    Thing door door5 "Fordør - Porsevej " [
+        doorId=7319051,
+        name="Porsevej 19"
+    ]
+}

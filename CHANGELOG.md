@@ -7,6 +7,33 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 10:00:16
+- Added: things-backup-20260115-095205/Airquality.things
+- Added: things-backup-20260115-095205/Backup/hue_api2.test
+- Added: things-backup-20260115-095205/Homeconnect.things
+- Added: things-backup-20260115-095205/Mitsubishi_living.things
+- Added: things-backup-20260115-095205/Mqtt.things
+- Added: things-backup-20260115-095205/Remote_Openhab.things
+- Added: things-backup-20260115-095205/Telegram.things
+- Added: things-backup-20260115-095205/Terndrupvej.things
+- Added: things-backup-20260115-095205/carbondioxide.things
+- Added: things-backup-20260115-095205/hue.things
+- Added: things-backup-20260115-095205/icalendar.things
+- Added: things-backup-20260115-095205/kamstrup.things
+- Added: things-backup-20260115-095205/mail.things
+- Added: things-backup-20260115-095205/metz.things
+- Added: things-backup-20260115-095205/myhouse.things
+- Added: things-backup-20260115-095205/net2.things
+- Added: things-backup-20260115-095205/nilan.things
+- Added: things-backup-20260115-095205/openhab.code-workspace
+- Added: things-backup-20260115-095205/paxton.things
+- Added: things-backup-20260115-095205/sma.things
+- Added: things-backup-20260115-095205/smarthouse.things
+- Added: things-backup-20260115-095205/weather.things
+- Modified: things/smarthouse.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 09:30:16
 - Added: sitemaps/henrik.sitemap
 - Deleted: sitemaps/net2.sitemap

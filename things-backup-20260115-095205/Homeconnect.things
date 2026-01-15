@@ -1,0 +1,9 @@
+Bridge homeconnect:api_bridge:simulator_api_bridge "Home Connect API (Simulator)" [ clientId="751B0D94E174195E5C33E877FF3AD790FF484F06DCD6BDC68BC2055D027ED613", clientSecret="227444AAAE6FCAF678C2C846E54860D214F2E0566216E7D8B33043EFEB43B0DB", simulator=false] {
+   // Thing configurations
+      Thing dishwasher dishwasher1 "Dishwasher"  [ haId="SIEMENS-SN478S36TS-68A40E0E82BB" ]
+   // Thing washer washer1 "Washer"  [ haId="SIEMENS-HCS03WCH1-1F35EC2BE34A0F" ]
+   // Thing fridgefreezer fridge1 "Fridge Freezer  [ haId="SIEMENS-HCS05FRF1-7B3FA5EB3D885B" ]
+   // Thing oven oven1 "Oven"  [ haId="BOSCH-HCS01OVN1-2132B6FA25BA21" ]
+   // Thing dryer dryer1 "Dryer"  [ haId="BOSCH-HCS04DYR1-3921C766AD5BAF" ]
+   // Thing coffeemaker coffee1 "Coffee machine"  [ haId="BOSCH-HCS06COM1-2140A8821AE7AB" ]
+}

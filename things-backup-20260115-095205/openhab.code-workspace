@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../nginx"
+		}
+	],
+	"settings": {
+		"openhab.useRestApi": false
+	}
+}
