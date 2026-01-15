@@ -1,3 +1,4 @@
 // Entsoe Day-Ahead Spot Price
 
 Number SpotPrice "Spot Price [%.2f]" {channel="entsoe:day-ahead:Entso:spot-price"}
+DateTime PricesReceived "Prices Received [%1$tY-%1$tm-%1$td %1$tH:%1$tM]" {channel="entsoe:day-ahead:Entso:prices-received"}
