@@ -1,12 +1,14 @@
 // InMemory Persistence Configuration
 // Used for storing time series data in memory for ENTSO-E spot prices
-
 Strategies {
     everyMinute : "0 * * * * ?"
-    // default = everyChange
+    everyHour   : "0 0 * * * ?"
+   // default = everyChange
 }
 
 Items {
-    // ENTSO-E spot price - stores time series data in memory
-    SpotPrice : strategy = everyChange, everyMinute, restoreOnStartup
+    // Persist all members of the Temperature Group on every change
+    SpotPrice : strategy = everyChange
+    // Persist all items (not recommended for InMemory due to RAM usage)
+    // * : strategy = everyChange
 }
