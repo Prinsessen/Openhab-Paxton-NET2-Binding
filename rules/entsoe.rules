@@ -4,6 +4,9 @@
  * This rule is triggered when new spot prices are received from ENTSO-E.
  * The prices-received channel is a trigger channel that fires when the binding
  * successfully fetches and updates the price data.
+ * 
+ * Since TimeSeries items don't have a traditional state, we query the current
+ * value using persistence and update a proxy item for display.
  */
 
 rule "Spot prices received from ENTSO-E"
@@ -11,5 +14,25 @@ when
     Channel "entsoe:day-ahead:Entso:prices-received" triggered
 then
     logInfo("ENTSO-E", "New spot prices received and available")
-    logInfo("ENTSO-E", "Current spot price: " + SpotPrice.state)
+    
+    // Query current spot price from TimeSeries using inmemory persistence
+    var currentPrice = SpotPrice.historicState(now, "inmemory")
+    if (currentPrice !== null) {
+        SpotPrice_Current.postUpdate(currentPrice.state)
+        logInfo("ENTSO-E", "Current spot price: " + currentPrice.state)
+    } else {
+        logWarn("ENTSO-E", "Could not retrieve current spot price from TimeSeries")
+    }
+end
+
+rule "Update current spot price every 15 minutes"
+when
+    Time cron "0 0,15,30,45 * * * ?"
+then
+    // Update the current price display every 15 minutes to match the resolution
+    var currentPrice = SpotPrice.historicState(now, "inmemory")
+    if (currentPrice !== null) {
+        SpotPrice_Current.postUpdate(currentPrice.state)
+        logDebug("ENTSO-E", "Updated current spot price: " + currentPrice.state)
+    }
 end

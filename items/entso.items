@@ -4,3 +4,6 @@
 // prices-received is a trigger channel - use in rules, not as an item
 
 Number:EnergyPrice SpotPrice "Spot Price [%.2f %unit%]" <energy> (gEnergi) {channel="entsoe:day-ahead:Entso:spot-price"}
+
+// Proxy item to display current spot price from TimeSeries
+Number:EnergyPrice SpotPrice_Current "Current Spot Price [%.2f %unit%]" <price> (gEnergi)

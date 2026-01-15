@@ -7,6 +7,15 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 16:45:16
+- Modified: items/entso.items
+- Modified: persistence/influxdb.persist
+- Modified: persistence/rrd4j.persist
+- Modified: rules/entsoe.rules
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 16:00:01
 - Modified: sitemaps/myhouse.sitemap
 
