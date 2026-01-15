@@ -1,6 +1,0 @@
-// Example sitemap for triggering timed door control as a Switch
-sitemap net2_timed_example label="Net2 Timed Door Example" {
-    Frame label="Front Door" {
-        Switch item=Net2_Door1_ControlTimed label="Timed Door" mappings=[1="Open"]
-    }
-}

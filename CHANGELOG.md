@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 09:30:16
+- Added: sitemaps/henrik.sitemap
+- Deleted: sitemaps/net2.sitemap
+- Deleted: sitemaps/net2_timed_example.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 09:15:16
 - Added: sitemaps-backup-20260115-091344/myhouse.sitemap
 - Added: sitemaps-backup-20260115-091344/myhouse.sitemap.backup

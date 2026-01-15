@@ -1,0 +1,77 @@
+sitemap henrik label="Henrik Brander" {
+
+    Frame label="Front Door - Terndrupvej 81" {
+        Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
+        Switch item=Net2_Door2_Status label="Door Physical Status" icon="activity" 
+        Switch item=Net2_Door2_ControlTimed label="Timed Door" mappings=[1="Open"] icon="lock-key"
+        Text item=Net2_Door2_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity"
+        Default item=Net2_Door2_LastTime label="Last Time Access" icon="activity-time"    
+        Default item=Net2_Door2_LastUser label="Last User Access" icon="color-user"
+        Text item=Net2_Door2_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+    }
+
+    Frame label="Terndrupvej 81 - Camera" {
+        Video url="http://openhab5.agesen.dk:8080/ipcamera/Company/ipcamera.mjpeg" encoding="mjpeg"
+        Default item=CompanyPan label="Camera Pan (Left/Right)" icon="speed-camera"
+        Default item=CompanyTilt label="Camera Tilt (Up/Down)" icon="speed-camera"
+        Setpoint item=CompanyZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="speed-camera"
+    }
+
+    Text label="Company Light" icon="turned_off" {
+        Frame label="Grovlager" {
+            Slider item=Light_Grovlager label="Grovlager Light [%d %%]"
+            Text label="SG Amature - Details" icon="info1" {
+                Setpoint item=Light_Grovlager label="Dimmer Setpoint" minValue=0 maxValue=100 step=1 icon="turned_off"
+                Setpoint item=Light_Grovlager_Constant label="Constant setpoint" minValue=101 maxValue=400 step=1 icon="turned_off"
+                Text item=Smartlight_Lux_Grovlager label="LUX Niveau [%d Lux]" icon="brightness"
+                Text item=Smartlight_Grovlager_Timer label="Energy Timer [%d s]" icon="timer_count"
+                Text item=Smartlight_Grovlager_Virtualoff
+                Text item=Smartlight_Grovlager_Dimmermode
+                Text item=Smartlight_Grovlager_Presence icon="woman_1"
+            }
+        }
+        Frame label="Finlager" {
+            Slider item=Light_Finlager label="Finlager Light [%d %%]"
+            Text label="SG Amature - Details" icon="info1" {
+                Setpoint item=Light_Finlager label="Dimmer Setpoint" minValue=0 maxValue=100 step=1 icon="turned_off"
+                Text item=Smartlight_Finlager_Timer label="Energy Timer [%d s]" icon="timer_count"
+                Text item=Smartlight_Finlager_Virtualoff
+                Text item=Smartlight_Finlager_Dimmermode
+                Text item=Smartlight_Finlager_Presence icon="woman_1"
+            }
+        }
+        Frame label="Office" {
+            Switch item=Light_Office label="Office Light" mappings=[ON=On, OFF=Off]
+        }
+        Frame label="Workshop" {
+            Switch item=Light_Workshop label="Workshop Light" mappings=[ON=On, OFF=Off]
+        }
+        Frame label="Kitchen" {
+            Switch item=Light_Kitchen label="Kitchen Light" mappings=[ON=On, OFF=Off]
+        }
+        Frame label="Bathroom" {
+            Switch item=Light_Bathroom label="Bathroom Light" mappings=[ON=On, OFF=Off]
+        }
+        Frame label="Ceiling" {
+            Switch item=Light_Ceiling label="Ceiling Light" mappings=[ON=On, OFF=Off]
+        }
+        Frame label="Outdoor" {
+            Slider item=Light_Udvendig label="Outdoor Light Ceiling [%d %%]"
+            Slider item=Light_Udvendig_Extension label="Outdoor Light Extension [%d %%]"
+            Text label="SG Amature - Details" icon="info1" {
+                Setpoint item=Light_Udvendig label="Dimmer setpoint Ceiling" minValue=0 maxValue=100 step=1 icon="turned_off"
+                Setpoint item=Light_Udvendig_Extension label="Dimmer setpoint Extension" minValue=0 maxValue=100 step=1 icon="turned_off"
+            }
+        }
+    }
+
+    Frame label="Fordør - Porsevej 19" {
+        Switch item=Net2_Door5_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key"
+        Switch item=Net2_Door5_Status label="Door Physical Status" icon="activity" 
+        Switch item=Net2_Door5_ControlTimed label="Timed Door" mappings=[1="Open"] icon="lock-key"
+        Text item=Net2_Door5_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity"
+        Default item=Net2_Door5_LastTime label="Last Time Access" icon="activity-time"
+        Default item=Net2_Door5_LastUser label="Last User Access" icon="color-user"
+        Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+    }
+}
