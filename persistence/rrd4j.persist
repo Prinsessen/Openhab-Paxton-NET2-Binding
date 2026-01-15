@@ -39,5 +39,5 @@ Items {
     Tex_Alarm_Status		: strategy = everyMinute,restoreOnStartup
     WindSpeedMax		: strategy = everyMinute,restoreOnStartup
     WindGustMax			: strategy = everyMinute,restoreOnStartup
-    //SpotPrice           : strategy = everyChange,everyMinute,restoreOnStartup
+    SpotPrice           : strategy = everyChange,everyMinute,restoreOnStartup
 }

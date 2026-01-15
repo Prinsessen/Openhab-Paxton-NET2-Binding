@@ -3,5 +3,5 @@
 // Updates automatically based on current time as TimeSeries data
 // prices-received is a trigger channel - use in rules, not as an item
 
-Number:EnergyPrice SpotPrice "Spot Price [%.2f %unit%]" <energy> (gEnergi) {channel="entsoe:day-ahead:Entso:spot-price"}
+Number:EnergyPrice SpotPrice "Spot Price" <energy> (gEnergi) {channel="entsoe:day-ahead:Entso:spot-price"}
 
