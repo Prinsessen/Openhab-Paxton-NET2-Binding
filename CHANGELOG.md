@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-15 15:00:16
+- Modified: items/entso.items
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-15 14:45:06
 - Modified: persistence/influxdb.persist
 - Modified: persistence/rrd4j.persist
