@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-16 18:30:06
+- Modified: sitemaps/myhouse.sitemap
+- Modified: transform/accessdenied.js
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-16 18:15:16
 - Modified: net2-binding/.gitignore
 - Modified: sitemaps/henrik.sitemap

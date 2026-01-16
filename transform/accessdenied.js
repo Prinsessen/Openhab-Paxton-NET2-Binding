@@ -12,19 +12,24 @@
         var doorName = data.doorName || "Unknown Door";
         var timestamp = data.timestamp || "";
         
-        // Format timestamp to just show time (HH:mm:ss)
-        var timeStr = "Unknown time";
+        // Format timestamp in same format as entrylogdate.js: DD-MM-YYYY at HH:mm:ss
+        var dateTimeStr = "Unknown time";
         if (timestamp) {
             try {
-                // Extract time portion (ISO format: 2026-01-16T17:26:50)
-                timeStr = timestamp.substring(11, 19);
+                // Extract date and time from ISO format: 2026-01-16T17:26:50
+                var year = timestamp.substring(0, 4);   // Extracts 2026
+                var month = timestamp.substring(5, 7);  // Extracts 01
+                var day = timestamp.substring(8, 10);   // Extracts 16
+                var time = timestamp.substring(11, 19); // Extracts 17:26:50
+                var date = day + "-" + month + "-" + year;  // Format as 16-01-2026
+                dateTimeStr = date + " at " + time;
             } catch (e) {
-                timeStr = timestamp;
+                dateTimeStr = timestamp;
             }
         }
         
-        // Return formatted string
-        return "⚠️ Token " + tokenNumber + " at " + timeStr;
+        // Return formatted string: Token 1234567 denied at 16-01-2026 at 17:26:50
+        return "⚠️ Token " + tokenNumber + " denied at " + dateTimeStr;
         
     } catch (e) {
         return "Error parsing data: " + e.message;

@@ -92,7 +92,7 @@ Frame label="Front Door - Terndrupvej " {
 		Text item=Net2_Door2_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door2_LastTime label="Last Time Access" icon="activity-time"	
 		Default item=Net2_Door2_LastUser label="Last User Access" icon="color-user"
-		Text item=Net2_Door2_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+		Text item=Net2_Door2_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity"
 		Text item=Net2_Door2_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error" visibility=[Net2_Door2_AccessDenied!="NULL"]
 	}
 Frame label="Garage - Kirkegade" {
@@ -102,7 +102,7 @@ Frame label="Garage - Kirkegade" {
 		Text item=Net2_Door3_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door3_LastTime label="Last Time Access" icon="activity-time"
 		Default item=Net2_Door3_LastUser label="Last User Access" icon="color-user"
-		Text item=Net2_Door3_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+		Text item=Net2_Door3_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity"
 		Text item=Net2_Door3_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error" visibility=[Net2_Door3_AccessDenied!="NULL"]
 }
 Frame label="Basement Door - Kirkegade" {
@@ -112,7 +112,7 @@ Frame label="Basement Door - Kirkegade" {
 		Text item=Net2_Door4_Status label="Door Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door4_LastTime label="Last Time Access" icon="activity-time"
 		Default item=Net2_Door4_LastUser label="Last User Access" icon="color-user"
-		Text item=Net2_Door4_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+		Text item=Net2_Door4_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity"
 		Text item=Net2_Door4_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error" visibility=[Net2_Door4_AccessDenied!="NULL"]
 }
 Frame label="Fordør - Porsevej 19" {
@@ -122,7 +122,7 @@ Frame label="Fordør - Porsevej 19" {
 		Text item=Net2_Door5_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door5_LastTime label="Last Time Access" icon="activity-time"
 		Default item=Net2_Door5_LastUser label="Last User Access" icon="color-user"
-		Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+		Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity"
 		Text item=Net2_Door5_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error" visibility=[Net2_Door5_AccessDenied!="NULL"]
 		Webview url="/static/net2_user_activity.html" height=100 icon=none
 
