@@ -380,7 +380,15 @@ For issues related to:
 
 ### Professional Installation Services
 
-If you need a **certified Paxton hardware installer**, contact your local Paxton distributor or certified installer.
+If you need a **certified Paxton hardware installer**:
+
+**Agesen El-Teknik**  
+Terndrupvej 81  
+9460 Brovst, Denmark  
+📞 +45 98 23 20 10  
+📧 Nanna@agesen.dk  
+
+*Specializing in Paxton access control systems with 25+ years of experience.*
 
 ## Maintainer
 
