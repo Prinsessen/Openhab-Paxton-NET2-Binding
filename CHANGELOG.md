@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-16 16:15:17
+- Deleted: rules/net2.old
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-16 13:00:16
 - Modified: rules/net2_autoclose.rules
 
