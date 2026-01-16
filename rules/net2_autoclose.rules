@@ -6,7 +6,7 @@
 
 rule "Auto-close Net2 Doors at 17:00"
 when
-    Time cron "0 45 12 * * ?" // Every day at 17:00 (5 PM)
+    Time cron "0 00 17 * * ?" // Every day at 17:00 (5 PM)
 then
     logInfo("net2_autoclose", "Running daily door auto-close check at 17:00")
     
