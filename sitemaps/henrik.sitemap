@@ -8,6 +8,7 @@ sitemap henrik label="Henrik Brander" {
         Default item=Net2_Door2_LastTime label="Last Time Access" icon="activity-time"    
         Default item=Net2_Door2_LastUser label="Last User Access" icon="color-user"
         Text item=Net2_Door2_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+        Text item=Net2_Door2_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error" visibility=[Net2_Door2_AccessDenied!="NULL"]
     }
 
     Frame label="Terndrupvej 81 - Camera" {
@@ -73,5 +74,6 @@ sitemap henrik label="Henrik Brander" {
         Default item=Net2_Door5_LastTime label="Last Time Access" icon="activity-time"
         Default item=Net2_Door5_LastUser label="Last User Access" icon="color-user"
         Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+        Text item=Net2_Door5_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error" visibility=[Net2_Door5_AccessDenied!="NULL"]
     }
 }

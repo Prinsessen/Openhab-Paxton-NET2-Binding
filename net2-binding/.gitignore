@@ -31,3 +31,5 @@ bin/
 # Private documentation (not for public GitHub)
 PROJECT_CONTEXT.md
 SESSION_*.md
+BUILD_STATUS.md
+DEPLOYMENT_STATUS.md
