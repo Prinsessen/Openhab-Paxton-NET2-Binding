@@ -1,0 +1,65 @@
+// ==============================================
+// Net2 Door Auto-Close Rule
+// ==============================================
+// Automatically closes all open Net2 doors at 17:00 every day
+// Checks door status and sends close command to doors that are open
+
+rule "Auto-close Net2 Doors at 17:00"
+when
+    Time cron "0 45 12 * * ?" // Every day at 17:00 (5 PM)
+then
+    logInfo("net2_autoclose", "Running daily door auto-close check at 17:00")
+    
+    var doorsClosed = 0
+    var doorsAlreadyClosed = 0
+    
+    // Check Door 1 - Front Door Kirkegade
+    if (Net2_Door1_Status.state == ON) {
+        logInfo("net2_autoclose", "Door 1 (Front Door - Kirkegade) is open, sending close command")
+        Net2_Door1_Action.sendCommand(OFF)
+        doorsClosed = doorsClosed + 1
+    } else {
+        doorsAlreadyClosed = doorsAlreadyClosed + 1
+    }
+    
+    // Check Door 2 - Front Door Terndrupvej
+    if (Net2_Door2_Status.state == ON) {
+        logInfo("net2_autoclose", "Door 2 (Front Door - Terndrupvej) is open, sending close command")
+        Net2_Door2_Action.sendCommand(OFF)
+        doorsClosed = doorsClosed + 1
+    } else {
+        doorsAlreadyClosed = doorsAlreadyClosed + 1
+    }
+    
+    // Check Door 3 - Garage Port Kirkegade (Special handling)
+    // Garage port is OPEN when TopStop is OPEN and Bundstop is CLOSED
+    // Garage port is CLOSED when TopStop is CLOSED and Bundstop is OPEN
+    if (Garageport_TopStop.state == OPEN && Garageport_Bundstop.state == CLOSED) {
+        logInfo("net2_autoclose", "Door 3 (Garage Port - Kirkegade) is open (TopStop OPEN, Bundstop CLOSED), sending timed close command")
+        Net2_Door3_ControlTimed.sendCommand(5)  // Send timed close command (5 seconds)
+        doorsClosed = doorsClosed + 1
+    } else {
+        doorsAlreadyClosed = doorsAlreadyClosed + 1
+    }
+    
+    // Check Door 4 - Basement Kirkegade
+    if (Net2_Door4_Status.state == ON) {
+        logInfo("net2_autoclose", "Door 4 (Basement - Kirkegade) is open, sending close command")
+        Net2_Door4_Action.sendCommand(OFF)
+        doorsClosed = doorsClosed + 1
+    } else {
+        doorsAlreadyClosed = doorsAlreadyClosed + 1
+    }
+    
+    // Check Door 5 - Porsevej
+    if (Net2_Door5_Status.state == ON) {
+        logInfo("net2_autoclose", "Door 5 (Porsevej 19) is open, sending close command")
+        Net2_Door5_Action.sendCommand(OFF)
+        doorsClosed = doorsClosed + 1
+    } else {
+        doorsAlreadyClosed = doorsAlreadyClosed + 1
+    }
+    
+    // Log summary
+    logInfo("net2_autoclose", "Auto-close completed: " + doorsClosed + " door(s) closed, " + doorsAlreadyClosed + " door(s) already closed")
+end
