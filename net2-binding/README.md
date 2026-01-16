@@ -366,6 +366,7 @@ This guide includes:
 ### Other Documentation Files
 - **[EXAMPLES.md](EXAMPLES.md)** - Complete configuration examples and use cases
 - **[ENTRY_LOGGING.md](ENTRY_LOGGING.md)** - Technical details of the entry logging feature
+- **[ACCESS_DENIED_DETECTION.md](ACCESS_DENIED_DETECTION.md)** - Security alerts for unauthorized access attempts
 - **[SYNCHRONIZATION.md](SYNCHRONIZATION.md)** - Details about hybrid SignalR + API sync
 - **[QUICKSTART.md](QUICKSTART.md)** - Quick setup guide
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
@@ -379,23 +380,14 @@ For issues related to:
 
 ### Professional Installation Services
 
-If you need a **certified Paxton hardware installer**:
-
-**Agesen El-Teknik**  
-Terndrupvej 81  
-9460 Brovst, Denmark  
-📞 +45 98 23 20 10  
-📧 Nanna@agesen.dk  
-🌐 [www.agesen.dk](https://www.agesen.dk)
-
-*Specializing in Paxton access control systems with 25+ years of installation experience.*
+If you need a **certified Paxton hardware installer**, contact your local Paxton distributor or certified installer.
 
 ## Maintainer
 
-- Nanna Agesen (@Prinsessen) — nanna@agesen.dk
+- GitHub: @username
+- Email: maintainer@example.com
 
-## Author
+## Contributors
 
-- Nanna Agesen (@Prinsessen)
-- Email: nanna@agesen.dk
+Multiple contributors have enhanced this binding. See [CHANGELOG.md](CHANGELOG.md) for detailed contribution history.
 - GitHub: https://github.com/Prinsessen

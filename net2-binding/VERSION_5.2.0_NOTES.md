@@ -1,13 +1,33 @@
 # Net2 Binding Version 5.2.0 - Release Notes
 
-**Release Date:** January 9, 2026  
-**Author:** Nanna Agesen (@Prinsessen)
+**Release Date:** January 16, 2026  
+**Author:** Various Contributors
 
-## Major Feature: Hybrid Door State Synchronization
+## Major Features
+
+### 1. Hybrid Door State Synchronization (January 9, 2026)
 
 Version 5.2.0 introduces a comprehensive synchronization system that ensures OpenHAB door states always match the Net2 server, regardless of control method.
 
+### 2. Entry Logging System (January 10-11, 2026)
+
+JSON-formatted entry events for physical badge access tracking and Grafana analytics integration.
+
+### 3. Access Denied Detection (January 16, 2026)
+
+Real-time security monitoring for unauthorized access attempts with automated alerting capabilities.
+
 ## What's New
+
+### Access Denied Detection (Latest)
+- **Security Monitoring**: Real-time detection of invalid card/token presentations
+- **eventType 23 Capture**: Monitors Net2 SignalR LiveEvents for access denied events
+- **JSON Payload**: Structured data with tokenNumber, doorName, timestamp, doorId
+- **Alert Integration**: Email/SMS notifications via Mail binding
+- **Multi-door Support**: Timestamp comparison logic for accurate door identification
+- **Production Ready**: Complete rule examples with error handling
+
+See [ACCESS_DENIED_DETECTION.md](ACCESS_DENIED_DETECTION.md) for comprehensive documentation.
 
 ### Real-time Synchronization
 - **SignalR WebSocket** integration for instant door open notifications
