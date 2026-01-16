@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-16 12:15:16
+- Added: sitemaps/openhab.code-workspace
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-16 05:15:16
 - Modified: persistence/inmemory.persist
 
