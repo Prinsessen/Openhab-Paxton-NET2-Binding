@@ -10,13 +10,20 @@ This document provides complete working examples for configuring the Net2 bindin
 **File: items/net2.items**
 
 ```openhab
-// Door 1 - Front Door (Fordør)
+// Door 1 - Front Door
 Switch Net2_Door1_Action "Door 1 Action" { channel="net2:door:server:door1:action" }
 Switch Net2_Door1_Status "Door 1 Status" { channel="net2:door:server:door1:status" }
 Number Net2_Door1_ControlTimed "Door 1 Timed Control" { channel="net2:door:server:door1:controlTimed" }
 String Net2_Door1_LastUser "Door 1 Last User" { channel="net2:door:server:door1:lastAccessUser" }
 DateTime Net2_Door1_LastTime "Door 1 Last Time" { channel="net2:door:server:door1:lastAccessTime" }
 String Net2_Door1_EntryLog "Door 1 Entry Log" { channel="net2:door:server:door1:entryLog" }
+String Net2_Door1_AccessDenied "Door 1 Access Denied" { channel="net2:door:server:door1:accessDenied" }
+
+// Door 2 - Side Door
+String Net2_Door2_AccessDenied "Door 2 Access Denied" { channel="net2:door:server:door2:accessDenied" }
+
+// Door 3 - Garage Door
+String Net2_Door3_AccessDenied "Door 3 Access Denied" { channel="net2:door:server:door3:accessDenied" }
 
 // Bridge User Management Channels
 String Net2_CreateUser "Create User" { channel="net2:net2server:server:createUser" }
@@ -198,6 +205,214 @@ end
 
 **Get User IDs:**
 Use `listUsers` channel to see all user IDs, then delete by ID number.
+
+## Access Denied Detection (Security Alerts)
+
+The `accessDenied` channel detects unauthorized access attempts when invalid cards or tokens are presented to Net2 readers. This enables real-time security alerting via email, SMS, or other notification systems.
+
+### How It Works
+
+- The binding monitors Net2 SignalR LiveEvents for eventType 23 (Access Denied)
+- When an invalid card/token is presented, the channel receives JSON data
+- Rules can parse this data and trigger appropriate alerts
+- Works for all doors with Net2 readers attached
+
+### JSON Format
+
+When an access denied event occurs, the channel receives:
+
+```json
+{
+  "tokenNumber": "1234567",
+  "doorName": "Front Door",
+  "timestamp": "2026-01-16T17:26:50",
+  "doorId": 6612642
+}
+```
+
+### Items Configuration
+
+**File: items/net2.items**
+
+```openhab
+// Access Denied channels for all doors
+String Net2_Door1_AccessDenied "Door 1 Access Denied" { channel="net2:door:server:door1:accessDenied" }
+String Net2_Door2_AccessDenied "Door 2 Access Denied" { channel="net2:door:server:door2:accessDenied" }
+String Net2_Door3_AccessDenied "Door 3 Access Denied" { channel="net2:door:server:door3:accessDenied" }
+String Net2_Door4_AccessDenied "Door 4 Access Denied" { channel="net2:door:server:door4:accessDenied" }
+String Net2_Door5_AccessDenied "Door 5 Access Denied" { channel="net2:door:server:door5:accessDenied" }
+```
+
+### Rule Example - Email/SMS Alerts
+
+**File: rules/net2_access_denied.rules**
+
+This rule sends email and SMS notifications when unauthorized access is attempted at any door:
+
+```openhab
+rule "Alert on Access Denied - All Doors"
+when
+    Item Net2_Door1_AccessDenied received update or
+    Item Net2_Door2_AccessDenied received update or
+    Item Net2_Door3_AccessDenied received update or
+    Item Net2_Door4_AccessDenied received update or
+    Item Net2_Door5_AccessDenied received update
+then
+    // Find the door with the most recent access denied event by comparing timestamps
+    var String jsonData = ""
+    var String latestTimestamp = ""
+    
+    // Check Door 1
+    var state1 = Net2_Door1_AccessDenied.state.toString()
+    if (state1 != "NULL" && state1.contains("tokenNumber")) {
+        try {
+            var ts1 = transform("JSONPATH", "$.timestamp", state1)
+            if (latestTimestamp == "" || ts1 > latestTimestamp) {
+                latestTimestamp = ts1
+                jsonData = state1
+            }
+        } catch (Exception e) {}
+    }
+    
+    // Check Door 2
+    var state2 = Net2_Door2_AccessDenied.state.toString()
+    if (state2 != "NULL" && state2.contains("tokenNumber")) {
+        try {
+            var ts2 = transform("JSONPATH", "$.timestamp", state2)
+            if (latestTimestamp == "" || ts2 > latestTimestamp) {
+                latestTimestamp = ts2
+                jsonData = state2
+            }
+        } catch (Exception e) {}
+    }
+    
+    // Repeat for remaining doors (Door 3, 4, 5)...
+    
+    if (jsonData == "") {
+        logWarn("net2_access_denied", "No valid access denied data found")
+        return
+    }
+    
+    // Parse JSON to extract details
+    try {
+        val doorName = transform("JSONPATH", "$.doorName", jsonData)
+        val tokenNumber = transform("JSONPATH", "$.tokenNumber", jsonData)
+        val timestamp = transform("JSONPATH", "$.timestamp", jsonData)
+        val doorId = transform("JSONPATH", "$.doorId", jsonData)
+        
+        // Extract time from timestamp (HH:mm:ss)
+        val timeStr = timestamp.substring(11, 19)
+        
+        val alertMessage = "⚠️ UNAUTHORIZED ACCESS ATTEMPT at " + doorName + 
+                          "\\nToken/Card: " + tokenNumber + 
+                          "\\nTime: " + timeStr + 
+                          "\\nDoor ID: " + doorId
+        
+        logWarn("net2_access_denied", alertMessage)
+        
+        // Send email notifications (requires mail binding)
+        val mailActions = getActions("mail", "mail:smtp:samplesmtp")
+        
+        // Email to security team
+        val success1 = mailActions.sendMail(
+            "security@example.com",
+            "⚠️ Net2 Unauthorized Access Alert",
+            "SECURITY ALERT: Unauthorized Access Attempt\\n\\n" +
+            "Door: " + doorName + "\\n" +
+            "Token/Card Number: " + tokenNumber + "\\n" +
+            "Time: " + timeStr + "\\n" +
+            "Door ID: " + doorId + "\\n\\n" +
+            "An invalid card or token was presented to the reader.\\n" +
+            "Please review security footage and door logs."
+        )
+        logInfo("net2_access_denied", "Email sent to security@example.com - Status: " + success1)
+        
+        // SMS via email-to-SMS gateway (example using uni-tel.dk format)
+        val success2 = mailActions.sendMail(
+            "1234567890@sms.gateway.example.com",
+            "Net2 Alert",
+            "SECURITY: Unauthorized access at " + doorName + " - Token " + tokenNumber + " at " + timeStr
+        )
+        logInfo("net2_access_denied", "SMS sent - Status: " + success2)
+        
+    } catch (Exception e) {
+        logError("net2_access_denied", "Error processing access denied event: " + e.getMessage())
+    }
+end
+```
+
+### Simplified Single-Door Example
+
+If you only want to monitor one specific door:
+
+```openhab
+rule "Alert on Front Door Access Denied"
+when
+    Item Net2_Door1_AccessDenied received update
+then
+    val jsonData = Net2_Door1_AccessDenied.state.toString()
+    
+    if (jsonData == "NULL" || !jsonData.contains("tokenNumber")) {
+        return
+    }
+    
+    val doorName = transform("JSONPATH", "$.doorName", jsonData)
+    val tokenNumber = transform("JSONPATH", "$.tokenNumber", jsonData)
+    val timestamp = transform("JSONPATH", "$.timestamp", jsonData)
+    
+    logWarn("net2_security", "Access DENIED at " + doorName + ": Token " + tokenNumber)
+    
+    // Send notification
+    val mailActions = getActions("mail", "mail:smtp:samplesmtp")
+    mailActions.sendMail(
+        "security@example.com",
+        "Security Alert - " + doorName,
+        "Invalid token " + tokenNumber + " presented at " + timestamp
+    )
+end
+```
+
+### Mail Binding Configuration
+
+To use email/SMS notifications, configure the Mail binding:
+
+**File: services/mail.cfg** (or via UI)
+
+```properties
+smtp.server=smtp.gmail.com
+smtp.port=587
+smtp.username=your-email@gmail.com
+smtp.password=your-app-password
+smtp.from=openhab@example.com
+smtp.tls=true
+smtp.auth=true
+```
+
+For SMS via email-to-SMS gateway, use the provider's email format (e.g., `phonenumber@sms.provider.com`)
+
+### Testing
+
+To test the system:
+1. Present an invalid/expired card to any Net2 reader
+2. Check OpenHAB logs: `grep "Access DENIED" /var/log/openhab/openhab.log`
+3. Verify email/SMS delivery
+4. Check that the correct door name is reported
+
+### Important Notes
+
+**Timestamp Comparison:**
+- The rule compares timestamps from all door items to identify the triggering door
+- This is necessary because all items trigger the rule via "received update"
+- Without timestamp comparison, the wrong door might be reported in multi-door setups
+
+**JSON State Persistence:**
+- Access denied JSON remains in the item state after the event
+- The rule uses timestamp comparison to find the most recent event
+- This ensures accurate door identification even when multiple doors have denied access history
+
+**Rule Trigger:**
+- Use "received update" (not "changed") to ensure every denied access triggers the rule
+- Each denied access has a different timestamp in the JSON, making every event unique
 
 ## Channel Details
 

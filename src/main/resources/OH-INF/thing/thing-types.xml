@@ -65,6 +65,7 @@
 			<channel id="lastAccessTime" typeId="lastAccessTime"/>
 			<channel id="controlTimed" typeId="doorControlTimed"/>
 			<channel id="entryLog" typeId="entryLog"/>
+			<channel id="accessDenied" typeId="accessDenied"/>
 		</channels>
 
 		<config-description>
@@ -143,6 +144,14 @@
 		<label>Entry Log</label>
 		<description>JSON-formatted entry event: {"firstName":"John","lastName":"Doe","doorName":"Front
 			Door","timestamp":"2026-01-10T18:04:01"}</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="accessDenied">
+		<item-type>String</item-type>
+		<label>Access Denied</label>
+		<description>JSON-formatted denied access event: {"tokenNumber":"4038310","doorName":"Front
+			Door","timestamp":"2026-01-16T17:09:14","doorId":6612642}</description>
 		<state readOnly="true"/>
 	</channel-type>
 

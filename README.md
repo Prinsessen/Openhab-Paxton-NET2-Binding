@@ -9,6 +9,7 @@ This binding provides integration with the Paxton Net2 Access Control system via
 - **Status Monitoring**: Live door lock/unlock status synchronized with Net2 server
 - **Access Logging**: Track last user and access time per door
 - **Entry Logging**: JSON-formatted entry events for Grafana analytics (physical badge access only)
+- **Access Denied Detection**: Real-time alerts for unauthorized access attempts (invalid cards/tokens)
 - **Multi-Door Support**: Control multiple doors from a single Net2 server
 - **Token Management**: Automatic JWT token refresh (30-min tokens)
 - **User Management**: Create/delete users and assign access levels from the bridge
@@ -91,6 +92,7 @@ Each door exposes the following channels:
 | `lastAccessUser`| String   | RO     | Last user who accessed the door             |
 | `lastAccessTime`| DateTime | RO     | Timestamp of last door access               |
 | `entryLog`      | String   | RO     | JSON entry event: firstName, lastName, doorName, timestamp, doorId (physical access only) |
+| `accessDenied`  | String   | RO     | JSON access denied event: tokenNumber, doorName, timestamp, doorId (invalid card/token) |
 
 **Synchronization Behavior:**
 - `status` channel: Shows **physical door relay state** - receives instant updates via SignalR DoorStatusEvents with `doorRelayOpen` field
@@ -364,6 +366,7 @@ This guide includes:
 ### Other Documentation Files
 - **[EXAMPLES.md](EXAMPLES.md)** - Complete configuration examples and use cases
 - **[ENTRY_LOGGING.md](ENTRY_LOGGING.md)** - Technical details of the entry logging feature
+- **[ACCESS_DENIED_DETECTION.md](ACCESS_DENIED_DETECTION.md)** - Security alerts for unauthorized access attempts
 - **[SYNCHRONIZATION.md](SYNCHRONIZATION.md)** - Details about hybrid SignalR + API sync
 - **[QUICKSTART.md](QUICKSTART.md)** - Quick setup guide
 - **[CHANGELOG.md](CHANGELOG.md)** - Version history and changes
@@ -377,23 +380,14 @@ For issues related to:
 
 ### Professional Installation Services
 
-If you need a **certified Paxton hardware installer**:
-
-**Agesen El-Teknik**  
-Terndrupvej 81  
-9460 Brovst, Denmark  
-📞 +45 98 23 20 10  
-📧 Nanna@agesen.dk  
-🌐 [www.agesen.dk](https://www.agesen.dk)
-
-*Specializing in Paxton access control systems with 25+ years of installation experience.*
+If you need a **certified Paxton hardware installer**, contact your local Paxton distributor or certified installer.
 
 ## Maintainer
 
-- Nanna Agesen (@Prinsessen) — nanna@agesen.dk
+- GitHub: @username
+- Email: maintainer@example.com
 
-## Author
+## Contributors
 
-- Nanna Agesen (@Prinsessen)
-- Email: nanna@agesen.dk
+Multiple contributors have enhanced this binding. See [CHANGELOG.md](CHANGELOG.md) for detailed contribution history.
 - GitHub: https://github.com/Prinsessen

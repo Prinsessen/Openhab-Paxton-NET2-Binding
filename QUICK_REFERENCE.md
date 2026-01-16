@@ -1,14 +1,17 @@
-# Entry Logging Quick Reference
+# Net2 Binding Quick Reference
 
 ## 🎯 Quick Access After Reconnection
 
 ### Check Current Status
 ```bash
-# View latest entry
+# View latest entry log
 curl -s http://localhost:8080/rest/items/Net2_Door1_EntryLog | python3 -c "import sys, json; data=json.load(sys.stdin); print(json.dumps(json.loads(data['state']), indent=2))"
 
+# View access denied events
+curl -s http://localhost:8080/rest/items/Net2_Door1_AccessDenied | python3 -c "import sys, json; data=json.load(sys.stdin); print(json.dumps(json.loads(data['state']), indent=2))"
+
 # Monitor live entries
-tail -f /var/log/openhab/openhab.log | grep "Entry log"
+tail -f /var/log/openhab/openhab.log | grep -E "Entry log|Access DENIED"
 
 # Check bundle status
 echo "habopen" | ssh -p 8101 openhab@localhost "bundle:list | grep net2"
@@ -46,35 +49,62 @@ tail -5 /var/log/openhab/openhab.log | grep "Entry log"
 ```
 
 ### JSON Format Reference
+
+**Entry Log:**
 ```json
 {
-  "firstName": "Nanna",
-  "lastName": "Agesen",
+  "firstName": "John",
+  "lastName": "Doe",
   "doorName": "Front Door",
   "timestamp": "2026-01-10T18:48:34",
   "doorId": 6612642
 }
 ```
 
-### UI Transform Output
+**Access Denied:**
+```json
+{
+  "tokenNumber": "1234567",
+  "doorName": "Front Door",
+  "timestamp": "2026-01-16T17:26:50",
+  "doorId": 6612642
+}
 ```
-Nanna Agesen entered Front Door at 18:48:34
+
+### UI Transform Output
+
+**Entry Log:**
+```
+John Doe entered Front Door at 18:48:34
+```
+
+**Access Denied:**
+```
+Token 1234567 denied at Front Door at 17:26:50
 ```
 
 ## 📚 Documentation Files
 
 | File | Purpose |
 |------|---------|
-| **ENTRY_LOGGING.md** | Complete feature guide (12KB) |
-| **PROJECT_CONTEXT.md** | Full project state (27KB) |
+| **ENTRY_LOGGING.md** | Entry logging feature guide |
+| **ACCESS_DENIED_DETECTION.md** | Security alerts for unauthorized access |
+| **PROJECT_CONTEXT.md** | Full project state |
 | **DEPLOYMENT_STATUS.md** | Deployment checklist |
-| **EXAMPLES.md** | Configuration examples (17KB) |
+| **EXAMPLES.md** | Configuration examples |
 
 ## ⚠️ Important Behaviors
 
+### Entry Logging
 - ✅ **Triggers**: Physical badge/card access (userName present)
 - ❌ **Does NOT trigger**: Remote UI openings (userName is null)
 - **Name Format**: Net2 "Last First" → Binding "First Last"
+
+### Access Denied Detection
+- ✅ **Triggers**: Invalid/expired card presentations (eventType 23)
+- ✅ **All control methods**: Physical readers, Net2 UI
+- **Real-time**: Instant detection via SignalR LiveEvents
+- **Multi-door**: Timestamp comparison identifies correct door
 
 ## 🔧 Troubleshooting
 

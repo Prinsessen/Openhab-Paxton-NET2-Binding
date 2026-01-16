@@ -5,6 +5,19 @@ All notable changes to the Paxton Net2 Binding are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2026-01-16
+
+### Added
+- **Access Denied Detection** (`accessDenied` channel)
+  - New door channel for detecting unauthorized access attempts
+  - Captures eventType 23 (Access Denied) from Net2 SignalR LiveEvents
+  - Returns JSON-formatted denied access data: tokenNumber, doorName, timestamp, doorId
+  - Enables security alerts via rules (email/SMS notifications)
+  - Real-time detection of invalid cards/tokens presented to readers
+  - Format example: `{"tokenNumber":"1234567","doorName":"Front Door","timestamp":"2026-01-16T17:26:50","doorId":6612642}`
+  - Integration examples provided for email/SMS alerting
+  - Timestamp comparison logic for multi-door deployments
+
 ## [5.2.0] - 2026-01-10
 
 ### Added
