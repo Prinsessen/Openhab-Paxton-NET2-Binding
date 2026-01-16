@@ -1,0 +1,72 @@
+// ==============================================
+// Net2 Unauthorized Access Detection Rule
+// ==============================================
+// Monitors door openings and alerts when a door opens without valid user credentials
+// Sends email notifications for potential security breaches
+
+rule "Detect Unauthorized Door Access"
+when
+    Item Net2_Door1_Status changed to ON or
+    Item Net2_Door2_Status changed to ON or
+    Item Net2_Door3_Status changed to ON or
+    Item Net2_Door4_Status changed to ON or
+    Item Net2_Door5_Status changed to ON
+then
+    var String doorName = ""
+    var String doorLocation = ""
+    var String lastUserName = ""
+    
+    // Identify which door triggered the rule and get last user
+    if (triggeringItem.name.contains("Door1")) {
+        doorName = "Front Door - Kirkegade"
+        doorLocation = "Kirkegade 50"
+        lastUserName = Net2_Door1_LastUser.state.toString()
+    } else if (triggeringItem.name.contains("Door2")) {
+        doorName = "Front Door - Terndrupvej"
+        doorLocation = "Terndrupvej"
+        lastUserName = Net2_Door2_LastUser.state.toString()
+    } else if (triggeringItem.name.contains("Door3")) {
+        doorName = "Garage Port - Kirkegade"
+        doorLocation = "Kirkegade 50 Garage"
+        lastUserName = Net2_Door3_LastUser.state.toString()
+    } else if (triggeringItem.name.contains("Door4")) {
+        doorName = "Basement - Kirkegade"
+        doorLocation = "Kirkegade 50 Basement"
+        lastUserName = Net2_Door4_LastUser.state.toString()
+    } else if (triggeringItem.name.contains("Door5")) {
+        doorName = "Porsevej 19"
+        doorLocation = "Porsevej 19"
+        lastUserName = Net2_Door5_LastUser.state.toString()
+    }
+    
+    // Check if LastUser is empty or NULL - possible unauthorized access
+    if (lastUserName == "NULL" || lastUserName == "UNDEF" || lastUserName.isEmpty()) {
+        val timestamp = now.toString()
+        val alertMessage = "⚠️ SECURITY ALERT: " + doorName + " at " + doorLocation + " opened WITHOUT valid user credentials at " + timestamp
+        
+        logWarn("net2_security", alertMessage)
+        
+        // Send email notifications using mail binding
+        val mailActions = getActions("mail", "mail:smtp:samplesmtp")
+        
+        // Email 1: Main notification to Nanna
+        val success1 = mailActions.sendMail(
+            "Nanna@agesen.dk", 
+            "⚠️ Net2 Unauthorized Access Alert", 
+            alertMessage + "\n\nDoor: " + doorName + "\nLocation: " + doorLocation + "\nTime: " + timestamp + "\nUser: NONE (Unauthorized)\n\nPlease check security cameras and verify access."
+        )
+        logInfo("net2_security", "Email notification sent to Nanna@agesen.dk - Status: " + success1)
+        
+        // Email 2: SMS notification
+        val success2 = mailActions.sendMail(
+            "20960210@sms.uni-tel.dk", 
+            "Net2 Security Alert", 
+            "Unauthorized access: " + doorName + " at " + timestamp
+        )
+        logInfo("net2_security", "SMS notification sent - Status: " + success2)
+        
+    } else {
+        // Authorized access - log for reference
+        logInfo("net2_security", doorName + " opened by authorized user: " + lastUserName)
+    }
+end
