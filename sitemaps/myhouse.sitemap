@@ -82,7 +82,7 @@ Frame label="Front Door - Kirkegade" {
 		Text item=Net2_Door1_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity"
  		Default item=Net2_Door1_LastTime label="Last Time Access" icon="activity-time"	
 		Default item=Net2_Door1_LastUser label="Last User Access" icon="color-user"
-		Text item=Net2_Door1_EntryLog label="Last Physical Entry [JS(entrylog.js):%s]" icon="activity"
+		Text item=Net2_Door1_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity"
 	}
 Frame label="Front Door - Terndrupvej " {
 		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="lock-key" 
