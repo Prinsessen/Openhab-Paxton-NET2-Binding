@@ -386,7 +386,9 @@ If you need a **certified Paxton hardware installer**:
 Terndrupvej 81  
 9460 Brovst, Denmark  
 📞 +45 98 23 20 10  
-📧 Nanna@agesen.dk
+📧 Nanna@agesen.dk  
+
+*Specializing in Paxton access control systems with 25+ years of experience.*
 
 ## Maintainer
 
