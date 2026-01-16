@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-16 17:30:16
+- Modified: items/net2.items
+- Added: rules/net2_access_denied.rules
+- Deleted: rules/net2_unauthorized_access.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-16 17:00:16
 - Added: Backup of current and old NET2_jar/org.openhab.binding.net2-5.2.0-SNAPSHOT.jar.bak-20260116165601
 - Added: net2-binding-backup-20260116-165241

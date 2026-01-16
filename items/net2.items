@@ -63,6 +63,15 @@ String Net2_Door4_EntryLog "Entry Log [%s]" { channel="net2:door:server:door4:en
 String Net2_Door5_EntryLog "Entry Log [%s]" { channel="net2:door:server:door5:entryLog" }
 
 // ==============================================
+// Access Denied Items (JSON format for security alerts)
+// ==============================================
+String Net2_Door1_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door1:accessDenied" }
+String Net2_Door2_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door2:accessDenied" }
+String Net2_Door3_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door3:accessDenied" }
+String Net2_Door4_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door4:accessDenied" }
+String Net2_Door5_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door5:accessDenied" }
+
+// ==============================================
 // Entry Log Counter (for InfluxDB - increments on each entry)
 // ==============================================
 Number Net2_Door1_EntryCount "Entry Count [%d]" <log>

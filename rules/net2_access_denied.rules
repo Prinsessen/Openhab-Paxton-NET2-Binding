@@ -1,0 +1,80 @@
+// ==============================================
+// Net2 Access Denied Detection and Alert Rule
+// ==============================================
+// Monitors all Net2 doors for unauthorized access attempts (invalid cards/tokens)
+// Sends email notifications when access is denied
+
+rule "Alert on Access Denied - All Doors"
+when
+    Item Net2_Door1_AccessDenied received update or
+    Item Net2_Door2_AccessDenied received update or
+    Item Net2_Door3_AccessDenied received update or
+    Item Net2_Door4_AccessDenied received update or
+    Item Net2_Door5_AccessDenied received update
+then
+    // Determine which door triggered and get its state
+    var String jsonData = ""
+    
+    if (Net2_Door1_AccessDenied.state.toString() != "NULL" && Net2_Door1_AccessDenied.state.toString().contains("tokenNumber")) {
+        jsonData = Net2_Door1_AccessDenied.state.toString()
+    } else if (Net2_Door2_AccessDenied.state.toString() != "NULL" && Net2_Door2_AccessDenied.state.toString().contains("tokenNumber")) {
+        jsonData = Net2_Door2_AccessDenied.state.toString()
+    } else if (Net2_Door3_AccessDenied.state.toString() != "NULL" && Net2_Door3_AccessDenied.state.toString().contains("tokenNumber")) {
+        jsonData = Net2_Door3_AccessDenied.state.toString()
+    } else if (Net2_Door4_AccessDenied.state.toString() != "NULL" && Net2_Door4_AccessDenied.state.toString().contains("tokenNumber")) {
+        jsonData = Net2_Door4_AccessDenied.state.toString()
+    } else if (Net2_Door5_AccessDenied.state.toString() != "NULL" && Net2_Door5_AccessDenied.state.toString().contains("tokenNumber")) {
+        jsonData = Net2_Door5_AccessDenied.state.toString()
+    }
+    
+    if (jsonData == "") {
+        logWarn("net2_access_denied", "No valid access denied data found")
+        return
+    }
+    
+    // Parse JSON to extract details
+    try {
+        val doorName = transform("JSONPATH", "$.doorName", jsonData)
+        val tokenNumber = transform("JSONPATH", "$.tokenNumber", jsonData)
+        val timestamp = transform("JSONPATH", "$.timestamp", jsonData)
+        val doorId = transform("JSONPATH", "$.doorId", jsonData)
+        
+        // Extract time from timestamp (HH:mm:ss)
+        val timeStr = timestamp.substring(11, 19)
+        
+        val alertMessage = "⚠️ UNAUTHORIZED ACCESS ATTEMPT at " + doorName + 
+                          "\nToken/Card: " + tokenNumber + 
+                          "\nTime: " + timeStr + 
+                          "\nDoor ID: " + doorId
+        
+        logWarn("net2_access_denied", alertMessage)
+        
+        // Send email notifications
+        val mailActions = getActions("mail", "mail:smtp:samplesmtp")
+        
+        // Email 1: Detailed notification to Nanna
+        val success1 = mailActions.sendMail(
+            "Nanna@agesen.dk",
+            "⚠️ Net2 Unauthorized Access Alert",
+            "SECURITY ALERT: Unauthorized Access Attempt\n\n" +
+            "Door: " + doorName + "\n" +
+            "Token/Card Number: " + tokenNumber + "\n" +
+            "Timestamp: " + timestamp + "\n" +
+            "Door ID: " + doorId + "\n\n" +
+            "An invalid or unauthorized card was presented to the reader.\n" +
+            "Please verify this access attempt and check security cameras if available."
+        )
+        logInfo("net2_access_denied", "Email sent to Nanna@agesen.dk - Status: " + success1)
+        
+        // Email 2: SMS notification
+        val success2 = mailActions.sendMail(
+            "20960210@sms.uni-tel.dk",
+            "Net2 Alert",
+            "Unauthorized card " + tokenNumber + " at " + doorName + " (" + timeStr + ")"
+        )
+        logInfo("net2_access_denied", "SMS sent - Status: " + success2)
+        
+    } catch (Exception e) {
+        logError("net2_access_denied", "Failed to parse access denied event: " + e.getMessage())
+    }
+end
