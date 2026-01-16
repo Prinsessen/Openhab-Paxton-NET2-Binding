@@ -8,7 +8,7 @@ Strategies {
 
 Items {
     // Persist all members of the Temperature Group on every change
-    SpotPrice : strategy = everyChange
+    SpotPrice : strategy = forecast
     // Persist all items (not recommended for InMemory due to RAM usage)
     // * : strategy = everyChange
 }
