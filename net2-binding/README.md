@@ -9,6 +9,7 @@ This binding provides integration with the Paxton Net2 Access Control system via
 - **Status Monitoring**: Live door lock/unlock status synchronized with Net2 server
 - **Access Logging**: Track last user and access time per door
 - **Entry Logging**: JSON-formatted entry events for Grafana analytics (physical badge access only)
+- **Access Denied Detection**: Real-time alerts for unauthorized access attempts (invalid cards/tokens)
 - **Multi-Door Support**: Control multiple doors from a single Net2 server
 - **Token Management**: Automatic JWT token refresh (30-min tokens)
 - **User Management**: Create/delete users and assign access levels from the bridge
@@ -91,6 +92,7 @@ Each door exposes the following channels:
 | `lastAccessUser`| String   | RO     | Last user who accessed the door             |
 | `lastAccessTime`| DateTime | RO     | Timestamp of last door access               |
 | `entryLog`      | String   | RO     | JSON entry event: firstName, lastName, doorName, timestamp, doorId (physical access only) |
+| `accessDenied`  | String   | RO     | JSON access denied event: tokenNumber, doorName, timestamp, doorId (invalid card/token) |
 
 **Synchronization Behavior:**
 - `status` channel: Shows **physical door relay state** - receives instant updates via SignalR DoorStatusEvents with `doorRelayOpen` field

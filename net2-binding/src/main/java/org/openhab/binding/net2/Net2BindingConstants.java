@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2025 Contributors to the openHAB project
+ * Copyright (c) 2010-2026 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -37,6 +37,7 @@ public class Net2BindingConstants {
     public static final String CHANNEL_LAST_ACCESS_USER = "lastAccessUser";
     public static final String CHANNEL_LAST_ACCESS_TIME = "lastAccessTime";
     public static final String CHANNEL_ENTRY_LOG = "entryLog";
+    public static final String CHANNEL_ACCESS_DENIED = "accessDenied";
 
     // User management channels
     public static final String CHANNEL_CREATE_USER = "createUser";

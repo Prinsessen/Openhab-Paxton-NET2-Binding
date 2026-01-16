@@ -7,6 +7,24 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-16 17:45:16
+- Modified: net2-binding/CHANGELOG.md
+- Modified: net2-binding/EXAMPLES.md
+- Modified: net2-binding/README.md
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorConfiguration.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2DoorHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2HandlerFactory.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerConfiguration.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2SignalRClient.java
+- Modified: net2-binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Modified: rules/net2_access_denied.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-16 17:30:16
 - Modified: items/net2.items
 - Added: rules/net2_access_denied.rules

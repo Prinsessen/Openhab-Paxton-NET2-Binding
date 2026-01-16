@@ -10,13 +10,20 @@ This document provides complete working examples for configuring the Net2 bindin
 **File: items/net2.items**
 
 ```openhab
-// Door 1 - Front Door (Fordør)
+// Door 1 - Front Door
 Switch Net2_Door1_Action "Door 1 Action" { channel="net2:door:server:door1:action" }
 Switch Net2_Door1_Status "Door 1 Status" { channel="net2:door:server:door1:status" }
 Number Net2_Door1_ControlTimed "Door 1 Timed Control" { channel="net2:door:server:door1:controlTimed" }
 String Net2_Door1_LastUser "Door 1 Last User" { channel="net2:door:server:door1:lastAccessUser" }
 DateTime Net2_Door1_LastTime "Door 1 Last Time" { channel="net2:door:server:door1:lastAccessTime" }
 String Net2_Door1_EntryLog "Door 1 Entry Log" { channel="net2:door:server:door1:entryLog" }
+String Net2_Door1_AccessDenied "Door 1 Access Denied" { channel="net2:door:server:door1:accessDenied" }
+
+// Door 2 - Side Door
+String Net2_Door2_AccessDenied "Door 2 Access Denied" { channel="net2:door:server:door2:accessDenied" }
+
+// Door 3 - Garage Door
+String Net2_Door3_AccessDenied "Door 3 Access Denied" { channel="net2:door:server:door3:accessDenied" }
 
 // Bridge User Management Channels
 String Net2_CreateUser "Create User" { channel="net2:net2server:server:createUser" }

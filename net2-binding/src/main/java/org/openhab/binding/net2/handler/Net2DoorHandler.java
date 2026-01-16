@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2025 Contributors to the openHAB project
+ * Copyright (c) 2010-2026 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -274,6 +274,32 @@ public class Net2DoorHandler extends BaseThingHandler {
                 logger.info("Entry log: {}", entryLog.toString());
             }
 
+            // Generate access denied event for eventType 23 (Access Denied)
+            if (("LiveEvents".equalsIgnoreCase(target) || "liveEvents".equalsIgnoreCase(target))
+                    && payload.has("eventType") && !payload.get("eventType").isJsonNull()) {
+
+                int eventType = payload.get("eventType").getAsInt();
+
+                // eventType 23 = Access denied (unauthorized card/token)
+                if (eventType == 23) {
+                    String doorName = getThing().getLabel() != null ? getThing().getLabel() : "Door " + doorId;
+                    String timestamp = payload.has("eventTime") ? payload.get("eventTime").getAsString() : "";
+                    String tokenNumber = payload.has("tokenNumber")
+                            ? String.valueOf(payload.get("tokenNumber").getAsLong())
+                            : "unknown";
+
+                    // Build JSON access denied log
+                    JsonObject accessDenied = new JsonObject();
+                    accessDenied.addProperty("tokenNumber", tokenNumber);
+                    accessDenied.addProperty("doorName", doorName);
+                    accessDenied.addProperty("timestamp", timestamp);
+                    accessDenied.addProperty("doorId", doorId);
+
+                    updateState(Net2BindingConstants.CHANNEL_ACCESS_DENIED, new StringType(accessDenied.toString()));
+                    logger.warn("Access DENIED at door {}: Token {} at {}", doorName, tokenNumber, timestamp);
+                }
+            }
+
             // Handle DoorStatusEvents - These provide real-time door relay status via doorRelayOpen
             if ("DoorStatusEvents".equalsIgnoreCase(target) || "DoorStatusEvent".equalsIgnoreCase(target)) {
                 if (payload.has("status") && payload.get("status").isJsonObject()) {
@@ -336,10 +362,14 @@ public class Net2DoorHandler extends BaseThingHandler {
                 if (payload.has("eventType") && !payload.get("eventType").isJsonNull()) {
                     int eventType = payload.get("eventType").getAsInt();
 
+                    // Log ALL eventTypes for debugging and identifying access denied codes
+                    logger.warn("Door {} received eventType: {} - Full payload: {}", doorId, eventType, payload);
+
                     // eventType 28 = Door relay opened (timed)
                     // eventType 46 = Door forced/held open
                     // eventType 47 = Door closed/secured
                     // eventType 20 = Access granted
+                    // eventType 21 = Access denied (to be confirmed by testing)
 
                     if (eventType == 47) {
                         // Door closed - update both channels to OFF
