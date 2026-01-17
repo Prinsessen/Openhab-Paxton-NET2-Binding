@@ -5,24 +5,32 @@ sitemap myhouse label="Nanna Agesen"
 	Frame label="Kirkegade 50" {
 		Text item=CurrentDate label="System Date" icon="time"
 		Text item=SpotPrice label="Spot Price" icon="price"
-		Text item=Vehicle1_Position label="Vehicle 1 Position [%s]" icon="movecontrol"
-		Text item=Vehicle1_Speed label="Vehicle 1 Speed [%.1f km/h]" icon="zoom"
-		Text item=Vehicle1_Course label="Vehicle 1 Course [%.0f°]" icon="wind"
-		Text item=Vehicle1_Accuracy label="Vehicle 1 Accuracy [%.1f m]" icon="zoom"
-		Text item=Vehicle1_BatteryLevel label="Vehicle 1 Battery [%.0f %%]" icon="battery"
-		Text item=Vehicle1_Odometer label="Vehicle 1 Odometer [%.1f km]" icon="line"
-		Switch item=Vehicle1_Motion label="Vehicle 1 Motion" icon="motion"
-		Text item=Vehicle1_Address label="Vehicle 1 Address [%s]" icon="location"
-		Text item=Vehicle1_Status label="Vehicle 1 Status [%s]" icon="status"
-		Text item=Vehicle1_LastUpdate label="Vehicle 1 Last Update [%1$tH:%1$tM:%1$tS]" icon="time"
-		Text item=Vehicle1_GeofenceEvent label="Vehicle 1 Geofence [%s]" icon="motion"
-		Text item=Vehicle1_GeofenceName label="Vehicle 1 Location [%s]" icon="location"
-		Webview url="/static/vehicle_tracker.html" height=15 icon="map"
 		Switch item=Energy_Crisis icon="alarm"
 	}
 	Frame label="Events" {
 		Text item=next_event_name label="Next Event [%s]" icon="time"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
+	}
+	Frame label="GPS Fleet" {
+		Text label="GPS Fleet" icon="car" {
+			Frame label="Vehicle 1 Tracking" {
+				Text item=Vehicle1_Position label="Position [%s]" icon="movecontrol"
+				Text item=Vehicle1_Speed label="Speed [%.1f km/h]" icon="zoom"
+				Text item=Vehicle1_Course label="Course [%.0f°]" icon="wind"
+				Text item=Vehicle1_Accuracy label="Accuracy [%.1f m]" icon="zoom"
+				Text item=Vehicle1_BatteryLevel label="Battery [%.0f %%]" icon="battery"
+				Text item=Vehicle1_Odometer label="Odometer [%.1f km]" icon="line"
+				Switch item=Vehicle1_Motion label="Motion" icon="motion"
+				Text item=Vehicle1_Address label="Address [%s]" icon="location"
+				Text item=Vehicle1_Status label="Status [%s]" icon="status"
+				Text item=Vehicle1_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="time"
+				Text item=Vehicle1_GeofenceEvent label="Geofence [%s]" icon="motion"
+				Text item=Vehicle1_GeofenceName label="Location [%s]" icon="location"
+			}
+			Frame label="Live Map" {
+				Webview url="/static/vehicle_tracker.html" height=15
+			}
+		}
 	}
 	Frame label="Home Security" {
 			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="alarm"
