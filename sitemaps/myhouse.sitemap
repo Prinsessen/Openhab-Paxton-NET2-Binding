@@ -29,6 +29,8 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_Accuracy label="Accuracy [%.1f m]" icon="zoom"
 				Text item=Vehicle1_Course label="Course [%.0f°]" icon="wind"
 				Text item=Vehicle1_BatteryLevel label="Battery [%.0f %%]" icon="battery"
+				Text item=Vehicle1_GpsSatellites label="GPS Satellites [%d]" icon="network"
+				Text item=Vehicle1_GsmSignal label="GSM Signal [%.0f %%]" icon="qualityofservice"
 				Text item=Vehicle1_Address label="Address [%s]" icon="location"
 			}
 			Frame label="Springfield (Tracker)" {
@@ -42,6 +44,8 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Odometer label="Odometer [%.1f %unit%]" icon="line"
 				Text item=Vehicle10_Accuracy label="Accuracy [%.1f %unit%]" icon="zoom"
 				Text item=Vehicle10_Course label="Course [%.0f°]" icon="wind"
+				Text item=Vehicle10_GpsSatellites label="GPS Satellites [%d]" icon="network"
+				Text item=Vehicle10_GsmSignal label="GSM Signal [%.0f %%]" icon="qualityofservice"
 				Text item=Vehicle10_Address label="Address [%s]" icon="location"
 			}
 		}

@@ -74,6 +74,8 @@
 			<channel id="odometer" typeId="odometer"/>
 			<channel id="motion" typeId="motion"/>
 			<channel id="address" typeId="address"/>
+			<channel id="gpsSatellites" typeId="gps-satellites"/>
+			<channel id="gsmSignal" typeId="gsm-signal"/>
 		</channels>
 
 		<properties>
@@ -186,5 +188,19 @@
 		<label>Address</label>
 		<description>Reverse geocoded address (if available)</description>
 		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="gps-satellites">
+		<item-type>Number</item-type>
+		<label>GPS Satellites</label>
+		<description>Number of GPS satellites used for positioning</description>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="gsm-signal">
+		<item-type>Number:Dimensionless</item-type>
+		<label>GSM Signal Strength</label>
+		<description>GSM/Cellular signal strength (RSSI)</description>
+		<state readOnly="true" pattern="%.0f %%"/>
 	</channel-type>
 </thing:thing-descriptions>

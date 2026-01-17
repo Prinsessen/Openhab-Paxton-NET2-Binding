@@ -48,4 +48,6 @@ public class TraccarBindingConstants {
     public static final String CHANNEL_ODOMETER = "odometer";
     public static final String CHANNEL_MOTION = "motion";
     public static final String CHANNEL_ADDRESS = "address";
+    public static final String CHANNEL_GPS_SAT = "gpsSatellites";
+    public static final String CHANNEL_GSM_SIGNAL = "gsmSignal";
 }

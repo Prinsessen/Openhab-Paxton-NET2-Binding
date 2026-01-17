@@ -226,6 +226,30 @@ public class TraccarDeviceHandler extends BaseThingHandler {
             if (motionObj instanceof Boolean motion) {
                 updateState(CHANNEL_MOTION, OnOffType.from(motion));
             }
+
+            // GPS Satellites
+            Object satObj = attributes.get("sat");
+            if (satObj instanceof Number) {
+                int satellites = ((Number) satObj).intValue();
+                updateState(CHANNEL_GPS_SAT, new DecimalType(satellites));
+            }
+
+            // GSM Signal Strength (RSSI)
+            Object rssiObj = attributes.get("rssi");
+            if (rssiObj instanceof Number) {
+                double rssi = ((Number) rssiObj).doubleValue();
+                // Convert RSSI to percentage (typical range: -113 to -51 dBm)
+                // Using formula: percentage = 2 * (rssi + 113)
+                double signalPercent = Math.max(0, Math.min(100, 2 * (rssi + 113)));
+                updateState(CHANNEL_GSM_SIGNAL, new QuantityType<>(signalPercent, Units.PERCENT));
+            } else {
+                // Try alternative attribute name "gsm"
+                Object gsmObj = attributes.get("gsm");
+                if (gsmObj instanceof Number) {
+                    double gsm = ((Number) gsmObj).doubleValue();
+                    updateState(CHANNEL_GSM_SIGNAL, new QuantityType<>(gsm, Units.PERCENT));
+                }
+            }
         }
 
         // Update last update time
