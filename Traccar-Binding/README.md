@@ -88,6 +88,8 @@ The binding automatically discovers devices configured in your Traccar server:
 | `geofenceEvent` | String | geofenceEnter/geofenceExit/deviceOnline/etc |
 | `geofenceId` | Number | Numeric ID of triggered geofence |
 | `geofenceName` | String | Name of triggered geofence |
+| `gpsSatellites` | Number | Number of GPS satellites used for positioning |
+| `gsmSignal` | Number:Dimensionless | GSM/cellular signal strength (0-100%) |
 
 ## Full Example
 
@@ -138,6 +140,12 @@ Number FamilyCar_GeofenceId "Geofence ID" (gFamilyCar)
 
 String FamilyCar_GeofenceName "Geofence [%s]" (gFamilyCar) 
     {channel="traccar:device:myserver:car1:geofenceName"}
+
+Number FamilyCar_GpsSatellites "GPS Satellites [%d]" (gFamilyCar) 
+    {channel="traccar:device:myserver:car1:gpsSatellites"}
+
+Number:Dimensionless FamilyCar_GsmSignal "GSM Signal [%.0f %%]" (gFamilyCar) 
+    {channel="traccar:device:myserver:car1:gsmSignal"}
 ```
 
 ### traccar.sitemap
@@ -152,6 +160,8 @@ sitemap tracking label="Vehicle Tracking" {
         Text item=FamilyCar_Battery
         Text item=FamilyCar_Status
         Text item=FamilyCar_GeofenceName
+        Text item=FamilyCar_GpsSatellites
+        Text item=FamilyCar_GsmSignal
     }
 }
 ```
@@ -189,6 +199,38 @@ Traccar reports speed in **knots**. The binding converts to:
 - **kmh**: × 1.852
 - **mph**: × 1.15078
 - **knots**: no conversion
+
+## Protocol-Specific Channel Availability
+
+Not all channels are supported by every device protocol. Availability depends on what data your GPS tracker sends to Traccar:
+
+### Common Protocol Limitations
+
+| Protocol | GPS Satellites | GSM Signal | Battery | Odometer | Notes |
+|----------|----------------|------------|---------|----------|-------|
+| **Teltonika** | ✅ Yes | ❌ No | ❌ No | ✅ Yes | Industrial trackers, excellent GPS data |
+| **OSMand** | ❌ No | ❌ No | ✅ Yes | ✅ Yes | Phone apps (Traccar Client, GPSLogger) |
+| **H02** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | Chinese trackers, full feature set |
+| **GT06** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes | Common low-cost trackers |
+| **OsmAnd** | ❌ No | ❌ No | ✅ Yes | ✅ Yes | Mobile apps (limited data) |
+
+### Checking Available Attributes
+
+To see what data your device sends, check the Traccar API:
+
+```bash
+curl -u "user:password" "https://your-traccar-server/api/positions?deviceId=1"
+```
+
+Look in the `attributes` object for available data:
+- `sat` - GPS satellites count
+- `rssi` - GSM signal strength (dBm, converted to %)
+- `gsm` - GSM signal (already as percentage)
+- `batteryLevel` - Battery percentage
+- `motion` - Motion detection
+- `odometer` - Distance traveled
+
+**Note**: Channels will show `NULL` if your device doesn't provide that data. This is normal and protocol-dependent.
 
 ## Troubleshooting
 

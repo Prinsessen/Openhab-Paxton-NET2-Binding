@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-17 18:30:16
+- Modified: Traccar-Binding/CHANGELOG.md
+- Modified: Traccar-Binding/EXAMPLES.md
+- Modified: Traccar-Binding/README.md
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-17 18:15:16
 - Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarBindingConstants.java
 - Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java

@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `batteryLevel` - Battery percentage
   - `motion` - Movement detection
   - `odometer` - Total distance traveled
+- Signal strength and connectivity monitoring:
+  - `gpsSatellites` - Number of GPS satellites used for positioning
+  - `gsmSignal` - GSM/cellular signal strength (percentage)
 - Geofencing support with webhooks:
   - `geofenceEvent` - Entry/exit events
   - `geofenceId` - Numeric geofence identifier

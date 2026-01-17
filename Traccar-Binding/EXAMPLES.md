@@ -16,6 +16,7 @@ Complete working examples for the Traccar binding.
 5. [Battery Alerts](#battery-alerts)
 6. [Distance Tracking](#distance-tracking)
 7. [Multi-Vehicle Tracking](#multi-vehicle-tracking)
+8. [GPS Signal and Connectivity Monitoring](#gps-signal-and-connectivity-monitoring)
 
 ---
 
@@ -523,6 +524,138 @@ sitemap fleet label="Fleet Management" {
         Text item=Fleet_VehiclesMoving
     }
 }
+```
+
+---
+
+## GPS Signal and Connectivity Monitoring
+
+### Poor GPS Signal Alert
+
+Monitor GPS satellite count and alert when signal is weak.
+
+**traccar.items:**
+```openhab
+Number Vehicle_GpsSatellites "GPS Satellites [%d]" <network>
+    {channel="traccar:device:server:car:gpsSatellites"}
+
+Number:Dimensionless Vehicle_GsmSignal "GSM Signal [%.0f %%]" <qualityofservice>
+    {channel="traccar:device:server:car:gsmSignal"}
+
+Switch Vehicle_Motion "Motion" 
+    {channel="traccar:device:server:car:motion"}
+
+String GPS_SignalQuality "GPS Quality [%s]"
+String Vehicle_Alert "Alert [%s]"
+```
+
+**signal_monitor.rules:**
+```openhab
+rule "Monitor GPS Signal Quality"
+when
+    Item Vehicle_GpsSatellites changed
+then
+    val satellites = (Vehicle_GpsSatellites.state as Number)?.intValue() ?: 0
+    
+    if (satellites >= 8) {
+        GPS_SignalQuality.postUpdate("EXCELLENT")
+    } else if (satellites >= 5) {
+        GPS_SignalQuality.postUpdate("GOOD")
+    } else if (satellites >= 3) {
+        GPS_SignalQuality.postUpdate("POOR")
+    } else if (satellites > 0) {
+        GPS_SignalQuality.postUpdate("WEAK")
+    } else {
+        GPS_SignalQuality.postUpdate("NO_SIGNAL")
+    }
+end
+
+rule "Alert on Poor GPS While Moving"
+when
+    Item GPS_SignalQuality changed to "POOR" or
+    Item GPS_SignalQuality changed to "WEAK"
+then
+    if (Vehicle_Motion.state == ON) {
+        logWarn("GPSMonitor", "Poor GPS signal while vehicle is moving!")
+        Vehicle_Alert.postUpdate("WEAK_GPS_SIGNAL")
+        
+        // Send notification (requires notification binding)
+        // sendNotification("user@example.com", "Vehicle has weak GPS signal")
+    }
+end
+
+rule "Alert on Low GSM Signal"
+when
+    Item Vehicle_GsmSignal changed
+then
+    val signal = (Vehicle_GsmSignal.state as QuantityType<?>)?.doubleValue() ?: 0.0
+    
+    if (signal < 25.0 && signal > 0.0) {
+        logWarn("GSMMonitor", "Low GSM signal: " + signal + "%")
+        Vehicle_Alert.postUpdate("WEAK_GSM_SIGNAL")
+    }
+end
+```
+
+### Device Health Dashboard
+
+**traccar.items:**
+```openhab
+// Vehicle 1
+Number Vehicle1_GpsSatellites "GPS Sats [%d]" 
+    {channel="traccar:device:server:vehicle1:gpsSatellites"}
+Number:Dimensionless Vehicle1_GsmSignal "GSM [%.0f %%]" 
+    {channel="traccar:device:server:vehicle1:gsmSignal"}
+Number:Dimensionless Vehicle1_BatteryLevel "Battery [%.0f %%]" 
+    {channel="traccar:device:server:vehicle1:batteryLevel"}
+Number:Length Vehicle1_Accuracy "Accuracy [%.1f m]" 
+    {channel="traccar:device:server:vehicle1:accuracy"}
+
+// Vehicle 2
+Number Vehicle2_GpsSatellites "GPS Sats [%d]" 
+    {channel="traccar:device:server:vehicle2:gpsSatellites"}
+Number:Dimensionless Vehicle2_GsmSignal "GSM [%.0f %%]" 
+    {channel="traccar:device:server:vehicle2:gsmSignal"}
+Number:Dimensionless Vehicle2_BatteryLevel "Battery [%.0f %%]" 
+    {channel="traccar:device:server:vehicle2:batteryLevel"}
+```
+
+**health.sitemap:**
+```openhab
+sitemap health label="Device Health" {
+    Frame label="Vehicle 1 Health" {
+        Text item=Vehicle1_GpsSatellites 
+            valuecolor=[<3="red", <5="orange", >=5="green"]
+        Text item=Vehicle1_GsmSignal 
+            valuecolor=[<25="red", <50="orange", >=50="green"]
+        Text item=Vehicle1_BatteryLevel 
+            valuecolor=[<20="red", <50="orange", >=50="green"]
+        Text item=Vehicle1_Accuracy
+            valuecolor=[>50="red", >20="orange", <=20="green"]
+    }
+    Frame label="Vehicle 2 Health" {
+        Text item=Vehicle2_GpsSatellites 
+            valuecolor=[<3="red", <5="orange", >=5="green"]
+        Text item=Vehicle2_GsmSignal 
+            valuecolor=[<25="red", <50="orange", >=50="green"]
+        Text item=Vehicle2_BatteryLevel 
+            valuecolor=[<20="red", <50="orange", >=50="green"]
+    }
+}
+```
+
+### Protocol-Specific Considerations
+
+**Note**: GPS satellites and GSM signal availability depends on your device protocol:
+
+- **Teltonika trackers**: Report GPS satellites (`sat`) but typically not GSM signal
+- **OSMand/phone apps**: Usually don't report satellites or signal strength
+- **H02/GT06 trackers**: Often report both satellites and signal strength
+- **Check your data**: Use Traccar API to see what attributes your device sends
+
+```bash
+# Check available attributes for your device
+curl -u "user:password" "https://your-traccar/api/positions?deviceId=YOUR_DEVICE_ID" | jq '.[0].attributes'
 ```
 
 ---
