@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="traccar"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<!-- Traccar Server Bridge -->
+	<bridge-type id="server">
+		<label>Traccar Server</label>
+		<description>Traccar GPS tracking server</description>
+
+		<config-description>
+			<parameter name="url" type="text" required="true">
+				<context>url</context>
+				<label>Server URL</label>
+				<description>URL of the Traccar server (e.g., https://gps.agesen.dk)</description>
+				<default>https://gps.agesen.dk</default>
+			</parameter>
+			<parameter name="username" type="text" required="true">
+				<label>Username</label>
+				<description>Traccar account username</description>
+			</parameter>
+			<parameter name="password" type="text" required="true">
+				<context>password</context>
+				<label>Password</label>
+				<description>Traccar account password</description>
+			</parameter>
+			<parameter name="refreshInterval" type="integer" unit="s" min="10">
+				<label>Refresh Interval</label>
+				<description>Interval for polling device positions</description>
+				<default>60</default>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="webhookPort" type="integer" min="1024" max="65535">
+				<label>Webhook Port</label>
+				<description>Port for receiving Traccar webhooks (geofence events)</description>
+				<default>8090</default>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="speedUnit" type="text">
+				<label>Speed Unit</label>
+				<description>Unit for displaying speed (Traccar reports in knots)</description>
+				<default>kmh</default>
+				<options>
+					<option value="kmh">Kilometers per Hour (km/h)</option>
+					<option value="mph">Miles per Hour (mph)</option>
+					<option value="knots">Knots</option>
+				</options>
+				<advanced>true</advanced>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+	<!-- Traccar Device (Vehicle) -->
+	<thing-type id="device">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="server"/>
+		</supported-bridge-type-refs>
+
+		<label>Traccar Device</label>
+		<description>GPS tracked device/vehicle</description>
+
+		<channels>
+			<channel id="geofenceEvent" typeId="geofence-event"/>
+			<channel id="geofenceId" typeId="geofence-id"/>
+			<channel id="geofenceName" typeId="geofence-name"/>
+			<channel id="position" typeId="position"/>
+			<channel id="lastUpdate" typeId="last-update"/>
+			<channel id="status" typeId="status"/>
+			<channel id="speed" typeId="speed"/>
+			<channel id="course" typeId="course"/>
+			<channel id="accuracy" typeId="accuracy"/>
+			<channel id="batteryLevel" typeId="battery-level"/>
+			<channel id="odometer" typeId="odometer"/>
+			<channel id="motion" typeId="motion"/>
+			<channel id="address" typeId="address"/>
+		</channels>
+
+		<properties>
+			<property name="deviceId">Device ID</property>
+			<property name="uniqueId">Unique ID</property>
+			<property name="name">Device Name</property>
+		</properties>
+
+		<config-description>
+			<parameter name="deviceId" type="integer" required="true">
+				<label>Device ID</label>
+				<description>Traccar device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<!-- Channel Types -->
+	<channel-type id="geofence-event">
+		<item-type>String</item-type>
+		<label>Geofence Event</label>
+		<description>Geofence entry/exit event (deviceEntered, deviceExited)</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="geofence-id">
+		<item-type>Number</item-type>
+		<label>Geofence ID</label>
+		<description>ID of the geofence that triggered the event</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="geofence-name">
+		<item-type>String</item-type>
+		<label>Geofence Name</label>
+		<description>Name of the geofence that triggered the event</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="position">
+		<item-type>Location</item-type>
+		<label>Position</label>
+		<description>Current GPS position (latitude, longitude, altitude)</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="last-update">
+		<item-type>DateTime</item-type>
+		<label>Last Update</label>
+		<description>Timestamp of last position update</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="status">
+		<item-type>String</item-type>
+		<label>Status</label>
+		<description>Device online/offline status</description>
+		<state readOnly="true">
+			<options>
+				<option value="online">Online</option>
+				<option value="offline">Offline</option>
+				<option value="unknown">Unknown</option>
+			</options>
+		</state>
+	</channel-type>
+
+	<channel-type id="speed">
+		<item-type>Number:Speed</item-type>
+		<label>Speed</label>
+		<description>Current speed</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="course">
+		<item-type>Number:Angle</item-type>
+		<label>Course</label>
+		<description>Direction of travel in degrees (0-360)</description>
+		<state readOnly="true" pattern="%.0f %unit%"/>
+	</channel-type>
+
+	<channel-type id="accuracy">
+		<item-type>Number:Length</item-type>
+		<label>Accuracy</label>
+		<description>GPS position accuracy</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="battery-level">
+		<item-type>Number:Dimensionless</item-type>
+		<label>Battery Level</label>
+		<description>Device battery level</description>
+		<state readOnly="true" pattern="%.0f %%"/>
+	</channel-type>
+
+	<channel-type id="odometer">
+		<item-type>Number:Length</item-type>
+		<label>Odometer</label>
+		<description>Total distance traveled</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="motion">
+		<item-type>Switch</item-type>
+		<label>Motion</label>
+		<description>Motion detection status</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="address">
+		<item-type>String</item-type>
+		<label>Address</label>
+		<description>Reverse geocoded address (if available)</description>
+		<state readOnly="true"/>
+	</channel-type>
+</thing:thing-descriptions>

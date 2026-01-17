@@ -1,0 +1,16 @@
+org/openhab/binding/traccar/internal/TraccarBindingConstants.class
+org/openhab/binding/traccar/internal/TraccarDeviceHandler.class
+org/openhab/binding/traccar/internal/TraccarApiClient$1.class
+org/openhab/binding/traccar/internal/TraccarDiscoveryService.class
+org/openhab/binding/traccar/internal/TraccarWebhookServer$WebhookHandler.class
+org/openhab/binding/traccar/internal/TraccarApiClient$4.class
+org/openhab/binding/traccar/internal/TraccarWebhookServer.class
+org/openhab/binding/traccar/internal/TraccarHandlerFactory.class
+org/openhab/binding/traccar/internal/TraccarWebhookServer$WebhookHandler$1.class
+org/openhab/binding/traccar/internal/TraccarApiClient$3.class
+org/openhab/binding/traccar/internal/TraccarDeviceConfiguration.class
+org/openhab/binding/traccar/internal/TraccarApiClient.class
+org/openhab/binding/traccar/internal/TraccarApiClient$2.class
+org/openhab/binding/traccar/internal/TraccarServerConfiguration.class
+org/openhab/binding/traccar/internal/TraccarServerHandler.class
+org/openhab/binding/traccar/internal/TraccarWebhookServer$WebhookHandler$2.class

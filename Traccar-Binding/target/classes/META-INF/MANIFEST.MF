@@ -1,0 +1,51 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.openhab.binding.traccar
+Bnd-LastModified: 1768660976032
+Bundle-Description: This project contains the official add-ons of open
+ HAB
+Bundle-Developers: openhab;email="info@openhab.org";name=openHAB;organ
+ ization=openHAB;organizationUrl="https://www.openHAB.org"
+Bundle-DocURL: https://github.com/openhab/infrastructure/org.openhab.a
+ ddons.reactor/org.openhab.addons.reactor.bundles/org.openhab.binding.
+ traccar
+Bundle-License: "Eclipse Public License 2.0";link="https://www.eclipse
+ .org/legal/epl-2.0/"
+Bundle-ManifestVersion: 2
+Bundle-Name: openHAB Add-ons :: Bundles :: Traccar Binding
+Bundle-SCM: url="https://github.com/openhab/openhab-addons/org.openhab
+ .addons.reactor.bundles/org.openhab.binding.traccar",connection="scm:
+ git:https://github.com/openhab/openhab-addons.git/org.openhab.addons.
+ reactor.bundles/org.openhab.binding.traccar",developer-connection="sc
+ m:git:https://github.com/openhab/openhab-addons.git/org.openhab.addon
+ s.reactor.bundles/org.openhab.binding.traccar",tag=HEAD
+Bundle-SymbolicName: org.openhab.binding.traccar
+Bundle-Vendor: openHAB.org
+Bundle-Version: 5.2.0.202601171442
+Created-By: 21.0.9 (Debian)
+Import-Package: org.openhab.core.config.discovery,org.openhab.core.io.
+ net.http,org.openhab.core.library.types,org.openhab.core.library.unit
+ ,org.openhab.core.thing,org.openhab.core.thing.binding,org.openhab.co
+ re.types,com.google.gson;version="[2.13,3)",com.google.gson.reflect;v
+ ersion="[2.13,3)",javax.measure;version="[2.2,3)",javax.servlet,javax
+ .servlet.http,org.eclipse.jetty.client;version="[9.4,10)",org.eclipse
+ .jetty.client.api;version="[9.4,10)",org.eclipse.jetty.http;version="
+ [9.4,10)",org.eclipse.jetty.server;version="[9.4,10)",org.eclipse.jet
+ ty.server.handler;version="[9.4,10)",org.slf4j;version="[2.0,3)"
+Private-Package: OH-INF.addon,OH-INF.i18n,OH-INF.thing,org.openhab.bin
+ ding.traccar.internal
+Provide-Capability: osgi.service;objectClass:List<String>="org.openhab
+ .binding.traccar.internal.TraccarDiscoveryService";uses:="org.openhab
+ .binding.traccar.internal",osgi.service;objectClass:List<String>="org
+ .openhab.core.thing.binding.ThingHandlerFactory";uses:="org.openhab.c
+ ore.thing.binding"
+Require-Capability: osgi.service;filter:="(objectClass=org.openhab.cor
+ e.io.net.http.HttpClientFactory)";effective:=active,osgi.extender;fil
+ ter:="(&(osgi.extender=osgi.component)(version>=1.5.0)(!(version>=2.0
+ .0)))",osgi.contract;osgi.contract=JavaServlet;filter:="(&(osgi.contr
+ act=JavaServlet)(version=4.0.0))",osgi.ee;filter:="(&(osgi.ee=JavaSE)
+ (version=21))"
+Service-Component: OSGI-INF/org.openhab.binding.traccar.internal.Tracc
+ arDiscoveryService.xml,OSGI-INF/org.openhab.binding.traccar.internal.
+ TraccarHandlerFactory.xml
+Tool: Bnd-7.1.0.202411251545
+
