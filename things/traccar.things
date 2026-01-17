@@ -15,3 +15,6 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
 // Manual device configuration examples (if not using auto-discovery):
 // Thing traccar:device:gpsserver:springfield "Springfield Motorcycle" (traccar:server:gpsserver) [ deviceId=155 ]
 // Thing traccar:device:gpsserver:familycar "Family Car" (traccar:server:gpsserver) [ deviceId=123 ]
+
+// Active devices:
+Thing traccar:device:gpsserver:866088075183606 (traccar:server:gpsserver) [deviceId=10]
