@@ -35,6 +35,12 @@ Group gVehicle1 "Vehicle 694049" <car>
 
 Location Vehicle1_Position "Position" (gVehicle1) {channel="traccar:device:gpsserver:694049:position"}
 Number:Speed Vehicle1_Speed "Speed [%.1f %unit%]" <speed> (gVehicle1) {channel="traccar:device:gpsserver:694049:speed"}
+Number:Angle Vehicle1_Course "Course [%.0f %unit%]" <direction> (gVehicle1) {channel="traccar:device:gpsserver:694049:course"}
+Number:Length Vehicle1_Accuracy "Accuracy [%.1f %unit%]" <zoom> (gVehicle1) {channel="traccar:device:gpsserver:694049:accuracy"}
+Number:Dimensionless Vehicle1_BatteryLevel "Battery [%.0f %%]" <battery> (gVehicle1) {channel="traccar:device:gpsserver:694049:batteryLevel"}
+Number:Length Vehicle1_Odometer "Odometer [%.1f %unit%]" <line> (gVehicle1) {channel="traccar:device:gpsserver:694049:odometer"}
+Switch Vehicle1_Motion "Motion" <motion> (gVehicle1) {channel="traccar:device:gpsserver:694049:motion"}
+String Vehicle1_Address "Address [%s]" <location> (gVehicle1) {channel="traccar:device:gpsserver:694049:address"}
 String Vehicle1_Status "Status [%s]" <status> (gVehicle1) {channel="traccar:device:gpsserver:694049:status"}
 DateTime Vehicle1_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gVehicle1) {channel="traccar:device:gpsserver:694049:lastUpdate"}
 String Vehicle1_GeofenceEvent "Geofence Event [%s]" <fence> (gVehicle1) {channel="traccar:device:gpsserver:694049:geofenceEvent"}
