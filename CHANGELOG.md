@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-17 17:15:16
+- Modified: items/traccar.items
+- Modified: sitemaps/myhouse.sitemap
+- Modified: things/traccar.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-17 17:00:16
 - Modified: sitemaps/myhouse.sitemap
 

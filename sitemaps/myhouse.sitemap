@@ -13,7 +13,7 @@ sitemap myhouse label="Nanna Agesen"
 	}
 	Frame label="GPS Fleet" {
 		Text label="GPS Fleet" icon="car" {
-			Frame label="Vehicle 1 Tracking" {
+			Frame label="Dream Catcher (Phone)" {
 				Text item=Vehicle1_Position label="Position [%s]" icon="movecontrol"
 				Text item=Vehicle1_Speed label="Speed [%.1f km/h]" icon="zoom"
 				Text item=Vehicle1_Course label="Course [%.0f°]" icon="wind"
@@ -26,6 +26,14 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="time"
 				Text item=Vehicle1_GeofenceEvent label="Geofence [%s]" icon="motion"
 				Text item=Vehicle1_GeofenceName label="Location [%s]" icon="location"
+			}
+			Frame label="Springfield (Tracker)" {
+				Text item=Vehicle10_Position label="Position [%s]" icon="movecontrol"
+				Text item=Vehicle10_Speed label="Speed [%.1f %unit%]" icon="zoom"
+				Text item=Vehicle10_Status label="Status [%s]" icon="status"
+				Text item=Vehicle10_LastUpdate label="Last Update [%1$tF %1$tR]" icon="time"
+				Text item=Vehicle10_GeofenceEvent label="Geofence [%s]" icon="motion"
+				Text item=Vehicle10_GeofenceName label="Location [%s]" icon="location"
 			}
 			Frame label="Live Map" {
 				Webview url="/static/vehicle_tracker.html" height=15
