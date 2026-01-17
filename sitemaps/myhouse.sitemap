@@ -12,6 +12,7 @@ sitemap myhouse label="Nanna Agesen"
 		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="time"
 	}
 	Frame label="GPS Fleet" {
+		Webview url="/static/vehicle_tracker.html" height=15
 		Text label="GPS Fleet" icon="car" {
 			Frame label="Live Map" {
 				Webview url="/static/vehicle_tracker.html" height=15
@@ -41,7 +42,6 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Odometer label="Odometer [%.1f %unit%]" icon="line"
 				Text item=Vehicle10_Accuracy label="Accuracy [%.1f %unit%]" icon="zoom"
 				Text item=Vehicle10_Course label="Course [%.0f°]" icon="wind"
-				Text item=Vehicle10_BatteryLevel label="Battery [%.0f %%]" icon="battery"
 				Text item=Vehicle10_Address label="Address [%s]" icon="location"
 			}
 		}
