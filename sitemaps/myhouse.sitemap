@@ -5,6 +5,12 @@ sitemap myhouse label="Nanna Agesen"
 	Frame label="Kirkegade 50" {
 		Text item=CurrentDate label="System Date" icon="time"
 		Text item=SpotPrice label="Spot Price" icon="price"
+		Text item=Vehicle1_Position label="Vehicle 1 Position [%s]" icon="movecontrol"
+		Text item=Vehicle1_Speed label="Vehicle 1 Speed [%.1f km/h]" icon="zoom"
+		Text item=Vehicle1_Status label="Vehicle 1 Status [%s]" icon="status"
+		Text item=Vehicle1_LastUpdate label="Vehicle 1 Last Update [%1$tH:%1$tM:%1$tS]" icon="time"
+		Text item=Vehicle1_GeofenceEvent label="Vehicle 1 Geofence [%s]" icon="motion"
+		Text item=Vehicle1_GeofenceName label="Vehicle 1 Location [%s]" icon="location"
 		Switch item=Energy_Crisis icon="alarm"
 	}
 	Frame label="Events" {

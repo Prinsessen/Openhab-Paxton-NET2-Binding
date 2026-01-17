@@ -4,7 +4,7 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
     url="https://gps.agesen.dk",
     username="nanna@agesen.dk",
     password="chukka8JOKE7housing",
-    refreshInterval=60,
+    refreshInterval=10,
     webhookPort=8090
 ] {
     // Devices are auto-discovered, but you can also manually define them:
