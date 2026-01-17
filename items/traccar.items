@@ -14,3 +14,26 @@ Number    throttle                    "Throttle Position [%.2f Percent]"        
 Number    enginerpm                   "Engine RPM [%.2f RPM]"                   {channel="mqtt:topic:broker:flepsi:enginerpm"}
 Number    can_speed                   "CAN Speed [%.2f kmt]"                    {channel="mqtt:topic:broker:flepsi:can_speed"}
 Number    engineload                  "Engine Load [%.2f Percent]"              {channel="mqtt:topic:broker:flepsi:engineload"}
+// ============================================================================
+// Traccar Binding Items - Modern GPS Tracking
+// ============================================================================
+
+// Springfield Motorcycle (Device ID: 155) - Replace with your actual device ID from auto-discovery
+Group gSpringfield "Springfield Motorcycle" <motorcycle>
+
+Location Springfield_Position "Position" (gSpringfield) {channel="traccar:device:gpsserver:springfield:position"}
+Number:Speed Springfield_Speed "Speed [%.1f %unit%]" <speed> (gSpringfield) {channel="traccar:device:gpsserver:springfield:speed"}
+String Springfield_Status "Status [%s]" <status> (gSpringfield) {channel="traccar:device:gpsserver:springfield:status"}
+DateTime Springfield_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gSpringfield) {channel="traccar:device:gpsserver:springfield:lastUpdate"}
+String Springfield_GeofenceEvent "Geofence Event [%s]" <fence> (gSpringfield) {channel="traccar:device:gpsserver:springfield:geofenceEvent"}
+String Springfield_GeofenceName "Current Geofence [%s]" <fence> (gSpringfield) {channel="traccar:device:gpsserver:springfield:geofenceName"}
+
+// Family Car Example (uncomment and configure after auto-discovery)
+// Group gFamilyCar "Family Car" <car>
+// Location FamilyCar_Position "Position" (gFamilyCar) {channel="traccar:device:gpsserver:familycar:position"}
+// Number:Speed FamilyCar_Speed "Speed [%.1f %unit%]" <speed> (gFamilyCar) {channel="traccar:device:gpsserver:familycar:speed"}
+// String FamilyCar_Status "Status [%s]" <status> (gFamilyCar) {channel="traccar:device:gpsserver:familycar:status"}
+// DateTime FamilyCar_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gFamilyCar) {channel="traccar:device:gpsserver:familycar:lastUpdate"}
+// String FamilyCar_GeofenceEvent "Geofence Event [%s]" <fence> (gFamilyCar) {channel="traccar:device:gpsserver:familycar:geofenceEvent"}
+// String FamilyCar_GeofenceName "Current Geofence [%s]" <fence> (gFamilyCar) {channel="traccar:device:gpsserver:familycar:geofenceName"}
+

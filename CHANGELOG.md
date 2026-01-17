@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-17 06:45:16
+- Modified: items/traccar.items
+- Added: things/traccar.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-17 06:00:16
 - Added: scripts/traccar_exporter.py
 
