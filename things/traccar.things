@@ -5,7 +5,8 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
     username="nanna@agesen.dk",
     password="chukka8JOKE7housing",
     refreshInterval=10,
-    webhookPort=8090
+    webhookPort=8090,
+    speedUnit="kmh"  // Options: "kmh", "mph", "knots" (Traccar reports in knots, binding converts)
 ] {
     // Devices are auto-discovered, but you can also manually define them:
     // Example: Thing device motorcycle "Springfield Motorcycle" [ deviceId=1 ]
