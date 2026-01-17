@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-17 15:45:16
+- Modified: items/traccar.items
+- Added: rules/Garageport.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-17 15:15:16
 - Modified: things/traccar.things
 

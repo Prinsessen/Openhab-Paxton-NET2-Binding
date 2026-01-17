@@ -44,6 +44,7 @@ String Vehicle1_Address "Address [%s]" <location> (gVehicle1) {channel="traccar:
 String Vehicle1_Status "Status [%s]" <status> (gVehicle1) {channel="traccar:device:gpsserver:694049:status"}
 DateTime Vehicle1_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gVehicle1) {channel="traccar:device:gpsserver:694049:lastUpdate"}
 String Vehicle1_GeofenceEvent "Geofence Event [%s]" <fence> (gVehicle1) {channel="traccar:device:gpsserver:694049:geofenceEvent"}
+Number Vehicle1_GeofenceId "Geofence ID [%d]" <fence> (gVehicle1) {channel="traccar:device:gpsserver:694049:geofenceId"}
 String Vehicle1_GeofenceName "Current Geofence [%s]" <fence> (gVehicle1) {channel="traccar:device:gpsserver:694049:geofenceName"}
 
 // Family Car Example (uncomment and configure after auto-discovery)

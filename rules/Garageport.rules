@@ -1,0 +1,80 @@
+// Garageport Automation Rules for Vehicle1 (Dream Catcher - Phone)
+// Automatically opens garage port when entering geofence
+// Automatically closes garage port when exiting geofence
+
+// Open garage port when Vehicle1 enters "Garage Opener - Kirkegade 50" geofence
+rule "Vehicle1 Open Garageport on Geofence Enter"
+    when
+        Item Vehicle1_GeofenceEvent changed to "geofenceEnter"
+    then
+        // Check that all required items have valid states
+        if (Vehicle1_GeofenceId.state == NULL || Vehicle1_GeofenceId.state == UNDEF ||
+            Vehicle1_GeofenceName.state == NULL || Vehicle1_GeofenceName.state == UNDEF ||
+            Garageport_Bundstop.state == NULL || Garageport_Bundstop.state == UNDEF ||
+            Garageport_TopStop.state == NULL || Garageport_TopStop.state == UNDEF) {
+            
+            logWarn("Vehicle1 Garageport", "One or more required item states are NULL or UNDEF. Open rule execution skipped.")
+            return
+        }
+
+        // Get the geofence ID and name
+        val Number geofenceId = Vehicle1_GeofenceId.state as Number
+        val String geofenceName = Vehicle1_GeofenceName.state.toString()
+        
+        // Check if it's the garage geofence (ID=1) and garage port is currently closed
+        // Port is CLOSED when: Bundstop is OPEN and TopStop is CLOSED
+        if (geofenceId.intValue() == 1 &&
+            Garageport_Bundstop.state == OPEN &&
+            Garageport_TopStop.state == CLOSED) {
+            
+            logInfo("Vehicle1 Garageport", "Vehicle1 entering geofence '{}' (ID: {}). Opening garage port.", geofenceName, geofenceId)
+            
+            // Send 1 second pulse to trigger garage port motor
+            Net2_Door3_ControlTimed.sendCommand(1)
+            
+            // Turn on garage light
+            Light_GA_Bil_Loft.sendCommand(100)
+        } else {
+            logDebug("Vehicle1 Garageport", "Enter conditions not met. Geofence ID: {}, Name: {}, Bundstop: {}, TopStop: {}", 
+                geofenceId, geofenceName, Garageport_Bundstop.state, Garageport_TopStop.state)
+        }
+    end
+
+
+// Close garage port when Vehicle1 exits "Garage Opener - Kirkegade 50" geofence
+rule "Vehicle1 Close Garageport on Geofence Exit"
+    when
+        Item Vehicle1_GeofenceEvent changed to "geofenceExit"
+    then
+        // Check that all required items have valid states
+        if (Vehicle1_GeofenceId.state == NULL || Vehicle1_GeofenceId.state == UNDEF ||
+            Vehicle1_GeofenceName.state == NULL || Vehicle1_GeofenceName.state == UNDEF ||
+            Garageport_Bundstop.state == NULL || Garageport_Bundstop.state == UNDEF ||
+            Garageport_TopStop.state == NULL || Garageport_TopStop.state == UNDEF) {
+            
+            logWarn("Vehicle1 Garageport", "One or more required item states are NULL or UNDEF. Close rule execution skipped.")
+            return
+        }
+
+        // Get the geofence ID and name
+        val Number geofenceId = Vehicle1_GeofenceId.state as Number
+        val String geofenceName = Vehicle1_GeofenceName.state.toString()
+        
+        // Check if it's the garage geofence (ID=1) and garage port is currently open
+        // Port is OPEN when: Bundstop is CLOSED and TopStop is OPEN
+        if (geofenceId.intValue() == 1 &&
+            Garageport_Bundstop.state == CLOSED &&
+            Garageport_TopStop.state == OPEN) {
+            
+            logInfo("Vehicle1 Garageport", "Vehicle1 exiting geofence '{}' (ID: {}). Closing garage port.", geofenceName, geofenceId)
+            
+            // Send 1 second pulse to trigger garage port motor
+            Net2_Door3_ControlTimed.sendCommand(1)
+            
+            // Turn off garage light
+            Light_GA_Bil_Loft.sendCommand(0)
+        } else {
+            logDebug("Vehicle1 Garageport", "Exit conditions not met. Geofence ID: {}, Name: {}, Bundstop: {}, TopStop: {}", 
+                geofenceId, geofenceName, Garageport_Bundstop.state, Garageport_TopStop.state)
+        }
+    end
