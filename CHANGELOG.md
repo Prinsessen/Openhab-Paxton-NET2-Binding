@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-17 06:00:16
+- Added: scripts/traccar_exporter.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-16 19:15:16
 - Modified: net2-binding/README.md
 
