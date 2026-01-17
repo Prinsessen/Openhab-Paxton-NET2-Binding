@@ -18,3 +18,4 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
 
 // Active devices:
 Thing traccar:device:gpsserver:866088075183606 (traccar:server:gpsserver) [deviceId=10]
+Thing traccar:device:gpsserver:694049 (traccar:server:gpsserver) [deviceId=1]

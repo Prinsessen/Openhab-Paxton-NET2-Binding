@@ -18,15 +18,27 @@ Number    engineload                  "Engine Load [%.2f Percent]"              
 // Traccar Binding Items - Modern GPS Tracking
 // ============================================================================
 
-// Springfield Motorcycle (Device ID: 155) - Replace with your actual device ID from auto-discovery
-Group gSpringfield "Springfield Motorcycle" <motorcycle>
 
-Location Springfield_Position "Position" (gSpringfield) {channel="traccar:device:gpsserver:springfield:position"}
-Number:Speed Springfield_Speed "Speed [%.1f %unit%]" <speed> (gSpringfield) {channel="traccar:device:gpsserver:springfield:speed"}
-String Springfield_Status "Status [%s]" <status> (gSpringfield) {channel="traccar:device:gpsserver:springfield:status"}
-DateTime Springfield_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gSpringfield) {channel="traccar:device:gpsserver:springfield:lastUpdate"}
-String Springfield_GeofenceEvent "Geofence Event [%s]" <fence> (gSpringfield) {channel="traccar:device:gpsserver:springfield:geofenceEvent"}
-String Springfield_GeofenceName "Current Geofence [%s]" <fence> (gSpringfield) {channel="traccar:device:gpsserver:springfield:geofenceName"}
+
+// Vehicle 866088075183606 (Device ID: 10)
+Group gVehicle10 "Vehicle 866088075183606" <car>
+
+Location Vehicle10_Position "Position" (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:position"}
+Number:Speed Vehicle10_Speed "Speed [%.1f %unit%]" <speed> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:speed"}
+String Vehicle10_Status "Status [%s]" <status> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:status"}
+DateTime Vehicle10_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:lastUpdate"}
+String Vehicle10_GeofenceEvent "Geofence Event [%s]" <fence> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:geofenceEvent"}
+String Vehicle10_GeofenceName "Current Geofence [%s]" <fence> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:geofenceName"}
+
+// Vehicle 694049 (Device ID: 1)
+Group gVehicle1 "Vehicle 694049" <car>
+
+Location Vehicle1_Position "Position" (gVehicle1) {channel="traccar:device:gpsserver:694049:position"}
+Number:Speed Vehicle1_Speed "Speed [%.1f %unit%]" <speed> (gVehicle1) {channel="traccar:device:gpsserver:694049:speed"}
+String Vehicle1_Status "Status [%s]" <status> (gVehicle1) {channel="traccar:device:gpsserver:694049:status"}
+DateTime Vehicle1_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gVehicle1) {channel="traccar:device:gpsserver:694049:lastUpdate"}
+String Vehicle1_GeofenceEvent "Geofence Event [%s]" <fence> (gVehicle1) {channel="traccar:device:gpsserver:694049:geofenceEvent"}
+String Vehicle1_GeofenceName "Current Geofence [%s]" <fence> (gVehicle1) {channel="traccar:device:gpsserver:694049:geofenceName"}
 
 // Family Car Example (uncomment and configure after auto-discovery)
 // Group gFamilyCar "Family Car" <car>
