@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 07:15:16
+- Added: scripts/webhook_monitor.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-17 18:45:16
 - Modified: sitemaps/myhouse.sitemap
 
