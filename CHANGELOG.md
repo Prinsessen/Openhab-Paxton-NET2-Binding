@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 12:30:16
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 12:15:16
 - Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java
 - Modified: Traccar-Binding/target/classes/META-INF/MANIFEST.MF
