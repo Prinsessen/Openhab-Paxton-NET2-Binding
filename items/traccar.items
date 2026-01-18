@@ -38,6 +38,8 @@ String Vehicle10_Address "Address [%s]" <location> (gVehicle10) {channel="tracca
 Number Vehicle10_GeofenceId "Geofence ID [%d]" <fence> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:geofenceId"}
 Number Vehicle10_GpsSatellites "GPS Satellites [%d]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:gpsSatellites"}
 Number:Dimensionless Vehicle10_GsmSignal "GSM Signal [%.0f %%]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:gsmSignal"}
+Number:Time Vehicle10_Hours "Engine Hours [%.1f h]" <time> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:hours", unit="h"}
+Number Vehicle10_Event "Event Code [%d]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:event"}
 
 // Vehicle 694049 (Device ID: 1)
 Group gVehicle1 "Vehicle 694049" <car>

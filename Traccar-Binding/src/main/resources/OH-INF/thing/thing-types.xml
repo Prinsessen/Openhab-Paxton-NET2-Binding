@@ -77,6 +77,12 @@
 			<channel id="gpsSatellites" typeId="gps-satellites"/>
 			<channel id="gsmSignal" typeId="gsm-signal"/>
 			<channel id="hours" typeId="hours"/>
+			<channel id="event" typeId="event"/>
+			<channel id="altitude" typeId="altitude"/>
+			<channel id="valid" typeId="valid"/>
+			<channel id="distance" typeId="distance"/>
+			<channel id="activity" typeId="activity"/>
+			<channel id="protocol" typeId="protocol"/>
 		</channels>
 
 		<properties>
@@ -210,5 +216,47 @@
 		<label>Engine Hours</label>
 		<description>Total engine running hours</description>
 		<state readOnly="true" pattern="%.1f h"/>
+	</channel-type>
+
+	<channel-type id="event">
+		<item-type>Number</item-type>
+		<label>Event Code</label>
+		<description>Device-specific event code</description>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="altitude">
+		<item-type>Number:Length</item-type>
+		<label>Altitude</label>
+		<description>Altitude/elevation above sea level</description>
+		<state readOnly="true" pattern="%.1f m"/>
+	</channel-type>
+
+	<channel-type id="valid">
+		<item-type>Switch</item-type>
+		<label>GPS Valid</label>
+		<description>GPS fix validity - ON when GPS has valid fix</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="distance">
+		<item-type>Number:Length</item-type>
+		<label>Distance</label>
+		<description>Incremental distance since last position update</description>
+		<state readOnly="true" pattern="%.1f m"/>
+	</channel-type>
+
+	<channel-type id="activity">
+		<item-type>String</item-type>
+		<label>Activity</label>
+		<description>Detected activity type (walking, in_vehicle, still, etc.)</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="protocol">
+		<item-type>String</item-type>
+		<label>Protocol</label>
+		<description>Device protocol/connection type</description>
+		<state readOnly="true"/>
 	</channel-type>
 </thing:thing-descriptions>

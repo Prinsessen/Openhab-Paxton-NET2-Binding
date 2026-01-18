@@ -51,4 +51,10 @@ public class TraccarBindingConstants {
     public static final String CHANNEL_GPS_SAT = "gpsSatellites";
     public static final String CHANNEL_GSM_SIGNAL = "gsmSignal";
     public static final String CHANNEL_HOURS = "hours";
+    public static final String CHANNEL_EVENT = "event";
+    public static final String CHANNEL_ALTITUDE = "altitude";
+    public static final String CHANNEL_VALID = "valid";
+    public static final String CHANNEL_DISTANCE = "distance";
+    public static final String CHANNEL_ACTIVITY = "activity";
+    public static final String CHANNEL_PROTOCOL = "protocol";
 }
