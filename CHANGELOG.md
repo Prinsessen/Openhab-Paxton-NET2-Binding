@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 11:15:16
+- Modified: rules/Springfield_Ignition.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 11:00:16
 - Modified: Traccar-Binding/AGENTS.md
 - Modified: Traccar-Binding/README.md

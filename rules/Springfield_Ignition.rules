@@ -10,6 +10,9 @@ when
     Item Vehicle10_Ignition changed from OFF to ON
 then
     try {
+        // Wait for all webhook data to be processed
+        Thread::sleep(2000)
+        
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
@@ -42,13 +45,14 @@ then
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
         // Send detailed HTML email notification
-        val emailBody = "<html><body style='font-family: Arial, sans-serif;'>" +
-            "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px;'>" +
-            "<h2 style='margin: 0;'>🏍️ SPRINGFIELD STARTED</h2>" +
-            "<p style='margin: 5px 0; opacity: 0.9;'>" + timestamp + "</p>" +
+        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'><table width='100%' cellpadding='0' cellspacing='0' border='0' style='margin: 0; padding: 0;'><tr><td style='margin: 0; padding: 0;'>" +
+            "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px;'>" +
+            "<h2 style='margin: 0; margin-bottom: 5px;'>SPRINGFIELD STARTED</h2>" +
+            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px; opacity: 0.95;'>DreamCatcher - Indian Springfield 1811ccm</p>" +
+            "<p style='margin: 0; opacity: 0.9; font-size: 14px;'>" + timestamp + "</p>" +
             "</div>" +
-            "<div style='background: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 8px;'>" +
-            "<h3 style='color: #667eea; margin-top: 0;'>📍 Location</h3>" +
+            "<div style='background: #f8f9fa; padding: 15px;'>" +
+            "<h3 style='color: #667eea; margin-top: 0; margin-bottom: 10px;'>📍 Location</h3>" +
             "<p style='margin: 5px 0;'>" + address + "</p>" +
             "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
             "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #667eea; text-decoration: none;'>📍 Google Maps</a> | " +
@@ -63,7 +67,7 @@ then
             "<tr><td style='padding: 10px; background: #e0f2f1; border-radius: 5px;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
             "</table>" +
             "<p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>Springfield FMM920 (ID: 10)</p>" +
-            "</body></html>"
+            "</td></tr></table></body></html>"
         
         val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition ON", emailBody)
         logInfo("springfield_ignition", "Ignition ON email status: " + success1)
@@ -81,6 +85,9 @@ when
     Item Vehicle10_Ignition changed from ON to OFF
 then
     try {
+        // Wait for all webhook data to be processed
+        Thread::sleep(2000)
+        
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
@@ -111,13 +118,14 @@ then
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
         // Send detailed HTML email notification
-        val emailBody = "<html><body style='font-family: Arial, sans-serif;'>" +
-            "<div style='background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px;'>" +
-            "<h2 style='margin: 0;'>🏍️ SPRINGFIELD PARKED</h2>" +
-            "<p style='margin: 5px 0; opacity: 0.9;'>" + timestamp + "</p>" +
+        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'><table width='100%' cellpadding='0' cellspacing='0' border='0' style='margin: 0; padding: 0;'><tr><td style='margin: 0; padding: 0;'>" +
+            "<div style='background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px;'>" +
+            "<h2 style='margin: 0; margin-bottom: 5px;'>SPRINGFIELD PARKED</h2>" +
+            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px; opacity: 0.95;'>DreamCatcher - Indian Springfield 1811ccm</p>" +
+            "<p style='margin: 0; opacity: 0.9; font-size: 14px;'>" + timestamp + "</p>" +
             "</div>" +
-            "<div style='background: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 8px;'>" +
-            "<h3 style='color: #f5576c; margin-top: 0;'>📍 Parked Location</h3>" +
+            "<div style='background: #f8f9fa; padding: 15px;'>" +
+            "<h3 style='color: #f5576c; margin-top: 0; margin-bottom: 10px;'>📍 Parked Location</h3>" +
             "<p style='margin: 5px 0;'>" + address + "</p>" +
             "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
             "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #f5576c; text-decoration: none;'>📍 Google Maps</a> | " +
@@ -131,7 +139,7 @@ then
             "<tr><td style='padding: 10px; background: #e0f2f1; border-radius: 5px;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
             "</table>" +
             "<p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>Springfield FMM920 (ID: 10)</p>" +
-            "</body></html>"
+            "</td></tr></table></body></html>"
         
         val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition OFF - Parked", emailBody)
         logInfo("springfield_ignition", "Ignition OFF email status: " + success1)
