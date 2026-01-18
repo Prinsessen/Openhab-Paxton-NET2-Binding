@@ -7,6 +7,17 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 13:00:16
+- Added: icons/classic/accurate.svg
+- Added: icons/classic/altitude-1.svg
+- Added: icons/classic/location-1.svg
+- Added: icons/classic/motion-1.svg
+- Added: icons/classic/odometer.svg
+- Added: icons/classic/satellite-1.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 12:45:17
 - Added: icons/classic/geofence.svg
 - Added: icons/classic/last-updates.svg
