@@ -5,11 +5,22 @@
 // turns on or off, including location, map link, and vehicle telemetry
 // =============================================================================
 
+var Long lastIgnitionOnTime = 0L
+var Long lastIgnitionOffTime = 0L
+
 rule "Springfield Ignition ON Notification"
 when
     Item Vehicle10_Ignition changed from OFF to ON
 then
     try {
+        // Debounce: Prevent duplicate notifications within 30 seconds
+        val currentTime = new java.util.Date().time
+        if ((currentTime - lastIgnitionOnTime) < 30000) {
+            logInfo("springfield_ignition", "Ignition ON triggered too soon after last notification - skipping")
+            return
+        }
+        lastIgnitionOnTime = currentTime
+        
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
@@ -87,6 +98,14 @@ when
     Item Vehicle10_Ignition changed from ON to OFF
 then
     try {
+        // Debounce: Prevent duplicate notifications within 30 seconds
+        val currentTime = new java.util.Date().time
+        if ((currentTime - lastIgnitionOffTime) < 30000) {
+            logInfo("springfield_ignition", "Ignition OFF triggered too soon after last notification - skipping")
+            return
+        }
+        lastIgnitionOffTime = currentTime
+        
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
