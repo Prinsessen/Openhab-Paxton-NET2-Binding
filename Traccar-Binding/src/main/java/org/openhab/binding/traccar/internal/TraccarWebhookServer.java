@@ -115,7 +115,14 @@ public class TraccarWebhookServer {
                 }
 
                 if (eventData != null) {
-                    logger.info("Processing webhook event type: {}", eventData.get("type"));
+                    Object eventObj = eventData.get("event");
+                    if (eventObj instanceof Map<?, ?>) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> event = (Map<String, Object>) eventObj;
+                        logger.info("Processing webhook event type: {}", event.get("type"));
+                    } else {
+                        logger.info("Processing webhook position update");
+                    }
                     serverHandler.handleWebhookEvent(eventData);
                 }
 

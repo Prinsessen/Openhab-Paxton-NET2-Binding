@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 08:00:16
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarWebhookServer.java
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 07:15:16
 - Added: scripts/webhook_monitor.py
 
