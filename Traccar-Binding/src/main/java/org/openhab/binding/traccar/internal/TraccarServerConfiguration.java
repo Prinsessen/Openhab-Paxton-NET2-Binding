@@ -25,4 +25,10 @@ public class TraccarServerConfiguration {
     public int refreshInterval = 60;
     public int webhookPort = 8090;
     public String speedUnit = "kmh";
+
+    // Nominatim reverse geocoding settings
+    public boolean useNominatim = false;
+    public String nominatimUrl = "https://nominatim.openstreetmap.org";
+    public String nominatimLanguage = "en";
+    public int geocodingCacheDistance = 50;
 }

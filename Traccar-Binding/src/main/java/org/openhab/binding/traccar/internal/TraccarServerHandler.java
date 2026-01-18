@@ -244,4 +244,11 @@ public class TraccarServerHandler extends BaseBridgeHandler {
         TraccarServerConfiguration cfg = config;
         return cfg != null ? cfg.speedUnit : "kmh";
     }
+
+    /**
+     * Get the server configuration (for accessing geocoding settings)
+     */
+    public @Nullable TraccarServerConfiguration getConfiguration() {
+        return config;
+    }
 }

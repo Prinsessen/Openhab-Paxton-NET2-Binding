@@ -26,9 +26,18 @@ This binding supports the following thing types:
 - Direction/course (compass bearing)
 - Location accuracy
 - GPS fix validity indicator
-- Street address (reverse geocoding)
+- Street address with optional Nominatim reverse geocoding
 - Last update timestamp
 - Device protocol identification
+
+### Advanced Reverse Geocoding (Nominatim)
+- **Formatted addresses**: "Street number, Postcode City, Province, Country"
+- **Worldwide transliteration**: Converts Greek, Cyrillic, Arabic, Chinese, Japanese, Thai, Korean, Hebrew to Latin alphabet
+- **Language support**: English, Danish, German, French, Spanish
+- **Intelligent caching**: Reduces API calls by reusing addresses within configurable radius (10-1000m)
+- **Rate limiting**: Respects OpenStreetMap's 1 request/second usage policy
+- **Automatic fallback**: Uses Traccar's address if Nominatim unavailable
+- **Bridge-level configuration**: Single setting applies to all devices
 
 ### Distance Tracking
 - **Odometer**: Total distance traveled with automatic km conversion
@@ -77,6 +86,12 @@ The binding automatically discovers devices configured in your Traccar server:
 | `refreshInterval` | integer | No | 60 | Position polling interval in seconds (minimum: 10) |
 | `webhookPort` | integer | No | 8090 | Port for receiving webhooks (1024-65535) |
 | `speedUnit` | text | No | kmh | Speed unit: `kmh`, `mph`, or `knots` |
+| `useNominatim` | boolean | No | false | Enable Nominatim reverse geocoding for all devices |
+| `nominatimUrl` | text | No | https://nominatim.openstreetmap.org | Nominatim server URL |
+| `nominatimLanguage` | text | No | en | Address language (en, da, de, fr, es) |
+| `geocodingCacheDistance` | integer | No | 50 | Cache radius in meters (10-1000) |
+
+**Advanced - Reverse Geocoding**: The binding can use [Nominatim](https://nominatim.org/) (OpenStreetMap) for reverse geocoding instead of Traccar's built-in address lookup. This provides formatted addresses in English (or other languages) with proper structure: "Street number, Postcode City, Province, Country". Nominatim transliterates special characters (Greek, Cyrillic, Arabic, Chinese, etc.) to Latin alphabet. Caching minimizes API calls - addresses are reused when moving within the configured radius. Respects OSM's 1 request/second usage policy.
 
 ### Device
 
@@ -150,7 +165,10 @@ Bridge traccar:server:myserver "Traccar Server" [
     password="password123",
     refreshInterval=30,
     webhookPort=8090,
-    speedUnit="kmh"
+    speedUnit="kmh",
+    useNominatim=true,
+    nominatimLanguage="en",
+    geocodingCacheDistance=50
 ] {
     Thing device car1 "Family Car" [ deviceId=1 ]
     Thing device phone1 "My Phone" [ deviceId=2 ]

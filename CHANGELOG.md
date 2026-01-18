@@ -7,6 +7,18 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 20:00:16
+- Modified: Traccar-Binding/EXAMPLES.md
+- Modified: Traccar-Binding/README.md
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceConfiguration.java
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarServerConfiguration.java
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarServerHandler.java
+- Modified: Traccar-Binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Modified: things/traccar.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 19:30:17
 - Added: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/NominatimGeocoder.java
 - Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceConfiguration.java

@@ -20,25 +20,4 @@ package org.openhab.binding.traccar.internal;
 public class TraccarDeviceConfiguration {
 
     public int deviceId;
-
-    /**
-     * Enable reverse geocoding using Nominatim instead of Traccar's address
-     */
-    public boolean useNominatim = false;
-
-    /**
-     * Nominatim server URL (default: OpenStreetMap's public server)
-     */
-    public String nominatimUrl = "https://nominatim.openstreetmap.org";
-
-    /**
-     * Language preference for address results (e.g., "en", "da", "de")
-     */
-    public String nominatimLanguage = "en";
-
-    /**
-     * Minimum distance (in meters) to trigger new geocoding request
-     * Caches results for locations within this radius
-     */
-    public int geocodingCacheDistance = 50;
 }

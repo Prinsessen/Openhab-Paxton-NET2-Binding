@@ -660,6 +660,99 @@ curl -u "user:password" "https://your-traccar/api/positions?deviceId=YOUR_DEVICE
 
 ---
 
+## Nominatim Reverse Geocoding
+
+### International Travel with English Addresses
+
+Get clean, transliterated addresses worldwide without special characters:
+
+**traccar.things:**
+```openhab
+Bridge traccar:server:global "Traccar Global" [
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="password",
+    useNominatim=true,
+    nominatimLanguage="en",
+    geocodingCacheDistance=50
+] {
+    Thing device motorcycle "Springfield" [ deviceId=10 ]
+    Thing device phone "Dream Catcher" [ deviceId=1 ]
+}
+```
+
+**Example address output:**
+- **Denmark**: `Kirkegade 50, 9460 Brovst, North Denmark Region, Denmark`
+- **Greece**: `Leof. Vasilissis Sofias 2, 106 74 Athens, Attica, Greece` (not Λεωφ. Βασιλίσσης Σοφίας)
+- **Russia**: `Krasnaya ploshchad 1, 109012 Moscow, Moscow, Russia` (not Красная площадь)
+- **China**: `Dong Chang'an Jie, 100006 Beijing, Beijing, China` (not 东长安街)
+
+**Benefits:**
+- Consistent format: `Street number, Postcode City, Province, Country`
+- No Greek, Cyrillic, Arabic, Chinese, Japanese characters
+- Postal codes included
+- Province/region names for better location context
+
+### Custom Nominatim Server
+
+Use your own Nominatim instance for higher request limits:
+
+**traccar.things:**
+```openhab
+Bridge traccar:server:private "Traccar Private" [
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="password",
+    useNominatim=true,
+    nominatimUrl="https://nominatim.example.com",
+    nominatimLanguage="en",
+    geocodingCacheDistance=100
+] {
+    Thing device fleet1 "Fleet Vehicle 1" [ deviceId=1 ]
+}
+```
+
+### Language-Specific Addresses
+
+Get addresses in local language:
+
+**traccar.things (Danish addresses):**
+```openhab
+Bridge traccar:server:denmark "Traccar Denmark" [
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="password",
+    useNominatim=true,
+    nominatimLanguage="da",
+    geocodingCacheDistance=50
+] {
+    Thing device car "Family Car" [ deviceId=1 ]
+}
+```
+
+**Address output**: `Kirkegade 50, 9460 Brovst, Region Nordjylland, Danmark`
+
+**Supported languages**: `en` (English), `da` (Danish), `de` (German), `fr` (French), `es` (Spanish)
+
+### Caching Configuration
+
+**Aggressive caching (reduce API calls):**
+```openhab
+geocodingCacheDistance=200  // Reuse address within 200m radius
+```
+
+**Precise updates (frequent geocoding):**
+```openhab
+geocodingCacheDistance=10  // Request new address every 10m
+```
+
+**Typical scenarios:**
+- **Highway driving**: 100-200m cache (addresses change slowly)
+- **City driving**: 30-50m cache (frequent street changes)
+- **Walking/cycling**: 10-20m cache (detailed location tracking)
+
+---
+
 ## Contact
 
 Questions about these examples? Contact:

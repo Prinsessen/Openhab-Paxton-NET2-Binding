@@ -71,14 +71,6 @@ public class TraccarDeviceHandler extends BaseThingHandler {
     public void initialize() {
         config = getConfigAs(TraccarDeviceConfiguration.class);
 
-        // Initialize Nominatim geocoder if enabled
-        if (config.useNominatim) {
-            geocoder = new NominatimGeocoder(config.nominatimUrl, config.nominatimLanguage,
-                    config.geocodingCacheDistance);
-            logger.info("Nominatim geocoding enabled for device {} (server: {}, language: {})", config.deviceId,
-                    config.nominatimUrl, config.nominatimLanguage);
-        }
-
         Bridge bridge = getBridge();
         if (bridge == null) {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "No bridge configured");
@@ -98,6 +90,17 @@ public class TraccarDeviceHandler extends BaseThingHandler {
     private void connect() {
         Bridge bridge = getBridge();
         if (bridge != null && bridge.getStatus() == ThingStatus.ONLINE) {
+            // Initialize Nominatim geocoder from server configuration
+            TraccarServerHandler serverHandler = (TraccarServerHandler) bridge.getHandler();
+            if (serverHandler != null) {
+                TraccarServerConfiguration serverConfig = serverHandler.getConfiguration();
+                if (serverConfig.useNominatim) {
+                    geocoder = new NominatimGeocoder(serverConfig.nominatimUrl, serverConfig.nominatimLanguage,
+                            serverConfig.geocodingCacheDistance);
+                    logger.info("Nominatim geocoding enabled for device {} (server: {}, language: {})", config.deviceId,
+                            serverConfig.nominatimUrl, serverConfig.nominatimLanguage);
+                }
+            }
             updateStatus(ThingStatus.ONLINE);
             updatePosition();
         } else {

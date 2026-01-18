@@ -6,7 +6,11 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
     password="chukka8JOKE7housing",
     refreshInterval=10,
     webhookPort=8090,
-    speedUnit="kmh"  // Options: "kmh", "mph", "knots" (Traccar reports in knots, binding converts)
+    speedUnit="kmh",
+    useNominatim=true,
+    nominatimUrl="https://nominatim.openstreetmap.org",
+    nominatimLanguage="en",
+    geocodingCacheDistance=50
 ] {
     // Devices are auto-discovered, but you can also manually define them:
     // Example: Thing device motorcycle "Springfield Motorcycle" [ deviceId=1 ]
@@ -19,17 +23,9 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
 
 // Active devices:
 Thing traccar:device:gpsserver:866088075183606 "Springfield" (traccar:server:gpsserver) [
-    deviceId=10,
-    useNominatim=true,
-    nominatimUrl="https://nominatim.openstreetmap.org",
-    nominatimLanguage="en",
-    geocodingCacheDistance=50
+    deviceId=10
 ]
 
 Thing traccar:device:gpsserver:694049 "Dream Catcher" (traccar:server:gpsserver) [
-    deviceId=1,
-    useNominatim=true,
-    nominatimUrl="https://nominatim.openstreetmap.org",
-    nominatimLanguage="en",
-    geocodingCacheDistance=50
+    deviceId=1
 ]
