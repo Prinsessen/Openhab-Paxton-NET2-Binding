@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 10:45:06
+- Added: rules/Springfield_Ignition.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 10:30:17
 - Modified: items/traccar.items
 - Modified: sitemaps/myhouse.sitemap

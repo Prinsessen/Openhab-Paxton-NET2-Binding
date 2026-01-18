@@ -1,0 +1,128 @@
+// =============================================================================
+// Springfield Ignition Notification Rules
+// =============================================================================
+// Sends email notifications when Springfield (FMM920 tracker) ignition
+// turns on or off, including location, map link, and vehicle telemetry
+// =============================================================================
+
+rule "Springfield Ignition ON Notification"
+when
+    Item Vehicle10_Ignition changed from OFF to ON
+then
+    try {
+        // Get current vehicle data
+        val position = Vehicle10_Position.state.toString
+        val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
+        val speed = if (Vehicle10_Speed.state != NULL) Vehicle10_Speed.state.toString else "0 km/h"
+        val odometer = if (Vehicle10_Odometer.state != NULL) Vehicle10_Odometer.state.toString else "Unknown"
+        val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
+        val hours = if (Vehicle10_Hours.state != NULL) Vehicle10_Hours.state.toString else "Unknown"
+        val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
+        val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
+        val timestamp = now.toString("yyyy-MM-dd HH:mm:ss")
+        
+        // Extract latitude and longitude from position
+        val coords = position.split(",")
+        val latitude = coords.get(0)
+        val longitude = coords.get(1)
+        
+        // Create map links
+        val googleMapsLink = "https://www.google.com/maps?q=" + latitude + "," + longitude
+        val openStreetMapLink = "https://www.openstreetmap.org/?mlat=" + latitude + "&mlon=" + longitude + "&zoom=16"
+        
+        logInfo("springfield_ignition", "🔥 Ignition ON detected - Sending notification email")
+        
+        // Get mail actions using method call style
+        val mailActions = getActions("mail","mail:smtp:samplesmtp")
+        
+        // Send detailed email notification
+        val emailBody = "SPRINGFIELD IGNITION STARTED\n\n" +
+            "Time: " + timestamp + "\n\n" +
+            "LOCATION:\n" +
+            address + "\n" +
+            latitude + ", " + longitude + "\n\n" +
+            "MAP LINKS:\n" +
+            "Google Maps: " + googleMapsLink + "\n" +
+            "OpenStreetMap: " + openStreetMapLink + "\n\n" +
+            "VEHICLE STATUS:\n" +
+            "Ignition: ON\n" +
+            "Speed: " + speed + "\n" +
+            "Odometer: " + odometer + "\n" +
+            "Engine Hours: " + hours + "\n" +
+            "Battery: " + battery + "\n\n" +
+            "SIGNAL:\n" +
+            "GPS Satellites: " + satellites + "\n" +
+            "GSM Signal: " + gsmSignal + "\n\n" +
+            "---\n" +
+            "Springfield FMM920 GPS Tracker (Device ID: 10)"
+        
+        val success1 = mailActions.sendMail("nanna@agesen.dk", "🏍️ Springfield Ignition ON", emailBody)
+        logInfo("springfield_ignition", "Ignition ON email status: " + success1)
+        
+        val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Ignition ON", "Springfield ignition started at " + timestamp + ". Location: " + address)
+        logInfo("springfield_ignition", "Ignition ON SMS status: " + success2)
+        
+    } catch (Exception e) {
+        logError("springfield_ignition", "Error sending ignition ON notification: " + e.getMessage())
+    }
+end
+
+rule "Springfield Ignition OFF Notification"
+when
+    Item Vehicle10_Ignition changed from ON to OFF
+then
+    try {
+        // Get current vehicle data
+        val position = Vehicle10_Position.state.toString
+        val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
+        val odometer = if (Vehicle10_Odometer.state != NULL) Vehicle10_Odometer.state.toString else "Unknown"
+        val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
+        val hours = if (Vehicle10_Hours.state != NULL) Vehicle10_Hours.state.toString else "Unknown"
+        val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
+        val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
+        val timestamp = now.toString("yyyy-MM-dd HH:mm:ss")
+        
+        // Extract latitude and longitude from position
+        val coords = position.split(",")
+        val latitude = coords.get(0)
+        val longitude = coords.get(1)
+        
+        // Create map links
+        val googleMapsLink = "https://www.google.com/maps?q=" + latitude + "," + longitude
+        val openStreetMapLink = "https://www.openstreetmap.org/?mlat=" + latitude + "&mlon=" + longitude + "&zoom=16"
+        
+        logInfo("springfield_ignition", "🔌 Ignition OFF detected - Sending notification email")
+        
+        // Get mail actions using method call style
+        val mailActions = getActions("mail","mail:smtp:samplesmtp")
+        
+        // Send detailed email notification
+        val emailBody = "SPRINGFIELD PARKED - IGNITION OFF\n\n" +
+            "Time: " + timestamp + "\n\n" +
+            "PARKED LOCATION:\n" +
+            address + "\n" +
+            latitude + ", " + longitude + "\n\n" +
+            "MAP LINKS:\n" +
+            "Google Maps: " + googleMapsLink + "\n" +
+            "OpenStreetMap: " + openStreetMapLink + "\n\n" +
+            "VEHICLE STATUS:\n" +
+            "Ignition: OFF\n" +
+            "Odometer: " + odometer + "\n" +
+            "Engine Hours: " + hours + "\n" +
+            "Battery: " + battery + "\n\n" +
+            "SIGNAL:\n" +
+            "GPS Satellites: " + satellites + "\n" +
+            "GSM Signal: " + gsmSignal + "\n\n" +
+            "---\n" +
+            "Springfield FMM920 GPS Tracker (Device ID: 10)"
+        
+        val success1 = mailActions.sendMail("nanna@agesen.dk", "🏍️ Springfield Ignition OFF - Parked", emailBody)
+        logInfo("springfield_ignition", "Ignition OFF email status: " + success1)
+        
+        val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Parked", "Springfield parked at " + timestamp + ". Location: " + address)
+        logInfo("springfield_ignition", "Ignition OFF SMS status: " + success2)
+        
+    } catch (Exception e) {
+        logError("springfield_ignition", "Error sending ignition OFF notification: " + e.getMessage())
+    }
+end
