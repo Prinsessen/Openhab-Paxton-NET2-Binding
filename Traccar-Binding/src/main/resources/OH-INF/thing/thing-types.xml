@@ -173,7 +173,7 @@
 		<item-type>Number:Length</item-type>
 		<label>Odometer</label>
 		<description>Total distance traveled</description>
-		<state readOnly="true" pattern="%.1f %unit%"/>
+		<state readOnly="true" pattern="%.1f km"/>
 	</channel-type>
 
 	<channel-type id="motion">

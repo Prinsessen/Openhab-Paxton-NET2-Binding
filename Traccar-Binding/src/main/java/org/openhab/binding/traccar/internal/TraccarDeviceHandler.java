@@ -18,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 
 import javax.measure.Unit;
+import javax.measure.MetricPrefix;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -214,11 +215,15 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                 updateState(CHANNEL_BATTERY_LEVEL, new QuantityType<>(battery, Units.PERCENT));
             }
 
-            // Odometer
+            // Odometer - support both OSMand (odometer) and Teltonika (totalDistance)
             Object odometerObj = attributes.get("odometer");
+            if (odometerObj == null) {
+                odometerObj = attributes.get("totalDistance");
+            }
             if (odometerObj instanceof Number) {
-                double odometer = ((Number) odometerObj).doubleValue();
-                updateState(CHANNEL_ODOMETER, new QuantityType<>(odometer, SIUnits.METRE));
+                double odometerMeters = ((Number) odometerObj).doubleValue();
+                double odometerKm = odometerMeters / 1000.0; // Convert to kilometers
+                updateState(CHANNEL_ODOMETER, new QuantityType<>(odometerKm, MetricPrefix.KILO(SIUnits.METRE)));
             }
 
             // Motion detection
