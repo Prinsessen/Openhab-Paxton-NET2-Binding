@@ -18,5 +18,18 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
 // Thing traccar:device:gpsserver:familycar "Family Car" (traccar:server:gpsserver) [ deviceId=123 ]
 
 // Active devices:
-Thing traccar:device:gpsserver:866088075183606 "Springfield" (traccar:server:gpsserver) [deviceId=10]
-Thing traccar:device:gpsserver:694049 "Dream Catcher" (traccar:server:gpsserver) [deviceId=1]
+Thing traccar:device:gpsserver:866088075183606 "Springfield" (traccar:server:gpsserver) [
+    deviceId=10,
+    useNominatim=true,
+    nominatimUrl="https://nominatim.openstreetmap.org",
+    nominatimLanguage="en",
+    geocodingCacheDistance=50
+]
+
+Thing traccar:device:gpsserver:694049 "Dream Catcher" (traccar:server:gpsserver) [
+    deviceId=1,
+    useNominatim=true,
+    nominatimUrl="https://nominatim.openstreetmap.org",
+    nominatimLanguage="en",
+    geocodingCacheDistance=50
+]
