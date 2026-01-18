@@ -11,18 +11,18 @@ when
 then
     try {
         // Wait for all webhook data to be processed
-        Thread::sleep(2000)
+        Thread::sleep(3000)
         
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
         val speedState = Vehicle10_Speed.state
-        val speed = if (speedState != NULL && speedState instanceof Number) String.format("%.1f km/h", (speedState as Number).doubleValue) else "0 km/h"
+        val speed = if (speedState != NULL) String.format("%.1f km/h", (speedState as Number).doubleValue) else "0 km/h"
         val odometerState = Vehicle10_Odometer.state
-        val odometer = if (odometerState != NULL && odometerState instanceof Number) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
+        val odometer = if (odometerState != NULL) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
         val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
         val hoursState = Vehicle10_Hours.state
-        val hours = if (hoursState != NULL && hoursState instanceof Number) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
+        val hours = if (hoursState != NULL) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
         val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
         val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
         
@@ -90,16 +90,16 @@ when
 then
     try {
         // Wait for all webhook data to be processed
-        Thread::sleep(2000)
+        Thread::sleep(3000)
         
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
         val odometerState = Vehicle10_Odometer.state
-        val odometer = if (odometerState != NULL && odometerState instanceof Number) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
+        val odometer = if (odometerState != NULL) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
         val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
         val hoursState = Vehicle10_Hours.state
-        val hours = if (hoursState != NULL && hoursState instanceof Number) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
+        val hours = if (hoursState != NULL) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
         val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
         val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
         
