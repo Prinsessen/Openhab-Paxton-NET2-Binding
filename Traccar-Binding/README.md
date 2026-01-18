@@ -66,6 +66,13 @@ This binding supports the following thing types:
 - Efficient hybrid approach minimizes API calls while maintaining responsiveness
 - Webhook support for position forwarding (every 1-2 seconds during movement)
 
+### GPS Noise Filtering
+- **Configurable speed threshold**: Filter small movements and GPS signal drift
+- **Default 2 km/h**: Eliminates false motion from stationary devices
+- **Adjustable 0-10 km/h**: Customize for walking (2 km/h), cycling (5 km/h), or vehicles (10 km/h)
+- **Zero display**: Speeds below threshold shown as 0 for clean UI
+- **Bridge-level setting**: Applies to all devices consistently
+
 ## Discovery
 
 The binding automatically discovers devices configured in your Traccar server:
@@ -86,6 +93,7 @@ The binding automatically discovers devices configured in your Traccar server:
 | `refreshInterval` | integer | No | 60 | Position polling interval in seconds (minimum: 10) |
 | `webhookPort` | integer | No | 8090 | Port for receiving webhooks (1024-65535) |
 | `speedUnit` | text | No | kmh | Speed unit: `kmh`, `mph`, or `knots` |
+| `speedThreshold` | decimal | No | 2.0 | Minimum speed (km/h) to display. Filters GPS noise and small movements (0-10) |
 | `useNominatim` | boolean | No | false | Enable Nominatim reverse geocoding for all devices |
 | `nominatimUrl` | text | No | https://nominatim.openstreetmap.org | Nominatim server URL |
 | `nominatimLanguage` | text | No | en | Address language (en, da, de, fr, es) |
@@ -166,6 +174,7 @@ Bridge traccar:server:myserver "Traccar Server" [
     refreshInterval=30,
     webhookPort=8090,
     speedUnit="kmh",
+    speedThreshold=2.0,
     useNominatim=true,
     nominatimLanguage="en",
     geocodingCacheDistance=50

@@ -190,6 +190,15 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                     break;
             }
 
+            // Filter GPS noise: speeds below threshold are considered stationary
+            // This prevents false motion detection from GPS signal drift and small movements
+            TraccarServerConfiguration serverConfig = bridge != null ? bridge.getConfiguration() : null;
+            double thresholdKmh = serverConfig != null ? serverConfig.speedThreshold : 2.0;
+            double thresholdKnots = thresholdKmh / 1.852; // Convert km/h threshold to knots
+            if (speedKnots < thresholdKnots) {
+                convertedSpeed = 0;
+            }
+
             updateState(CHANNEL_SPEED, new QuantityType<>(convertedSpeed, speedUnit));
         }
 

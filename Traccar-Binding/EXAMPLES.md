@@ -753,6 +753,58 @@ geocodingCacheDistance=10  // Request new address every 10m
 
 ---
 
+## Speed Threshold (GPS Noise Filtering)
+
+### Eliminate False Motion
+
+Filter GPS signal drift and small movements (walking around house with phone):
+
+**traccar.things:**
+```openhab
+Bridge traccar:server:home "Traccar Home" [
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="password",
+    speedThreshold=2.0  // Default: filters walking/small movements
+] {
+    Thing device phone "Phone Tracker" [ deviceId=1 ]
+    Thing device car "Family Car" [ deviceId=2 ]
+}
+```
+
+**Result**: Speeds below 2 km/h display as 0 km/h
+
+### Activity-Based Thresholds
+
+**Walking/Indoor movement** (2 km/h):
+```openhab
+speedThreshold=2.0  // Show 0 when walking around house
+```
+
+**Cycling/Scooter** (5 km/h):
+```openhab
+speedThreshold=5.0  // Only show actual cycling movement
+```
+
+**Vehicle only** (10 km/h):
+```openhab
+speedThreshold=10.0  // Ignore parking lot creeping
+```
+
+**No filtering** (0 km/h):
+```openhab
+speedThreshold=0.0  // Show all speeds, including GPS drift
+```
+
+### Use Cases
+
+- **Phone trackers**: 2 km/h (filter indoor walking)
+- **Bicycle GPS**: 5 km/h (ignore pushing bike)
+- **Vehicle trackers**: 2-5 km/h (standard)
+- **High-precision apps**: 0 km/h (no filtering)
+
+---
+
 ## Contact
 
 Questions about these examples? Contact:

@@ -25,6 +25,7 @@ public class TraccarServerConfiguration {
     public int refreshInterval = 60;
     public int webhookPort = 8090;
     public String speedUnit = "kmh";
+    public double speedThreshold = 2.0; // km/h - speeds below this are shown as 0
 
     // Nominatim reverse geocoding settings
     public boolean useNominatim = false;
