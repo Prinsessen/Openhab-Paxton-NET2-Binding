@@ -120,6 +120,7 @@ The binding automatically discovers devices configured in your Traccar server:
 
 | Channel | Type | Description | Example State |
 |---------|------|-------------|---------------|
+| `ignition` | Switch | Ignition status (ON=ignition on, OFF=off) | ON |
 | `hours` | Number:Time | Total engine running hours | 239.2 h |
 | `event` | Number | Device-specific event code | 10831 |
 
@@ -210,10 +211,13 @@ String FamilyCar_Protocol "Protocol [%s]" (gFamilyCar)
     {channel="traccar:device:myserver:car1:protocol"}
 
 // Vehicle Information
+Switch FamilyCar_Ignition "Ignition [MAP(ignition.map):%s]" (gFamilyCar) 
+    {channel="traccar:device:myserver:car1:ignition"}
+
 Number:Time FamilyCar_Hours "Engine Hours [%.1f h]" (gFamilyCar) 
     {channel="traccar:device:myserver:car1:hours", unit="h"}
 
-Number FamilyCar_Event "Event Code [%d]" (gFamilyCar) 
+Number FamilyCar_Event "Event [MAP(teltonika_event.map):%s]" (gFamilyCar) 
     {channel="traccar:device:myserver:car1:event"}
 
 // Connectivity
@@ -607,6 +611,102 @@ The binding **automatically handles both**:
 3. Logs which attribute was used (visible in DEBUG mode)
 
 ## Advanced Features
+
+### Ignition Monitoring & Notifications
+
+The `ignition` channel provides real-time ignition status from compatible vehicle trackers (e.g., Teltonika FMM920). Use this for automatic notifications when your vehicle starts or is parked:
+
+```openhab
+// Items
+Switch Vehicle_Ignition "Ignition [MAP(ignition.map):%s]" <fire>
+    {channel="traccar:device:myserver:car1:ignition"}
+
+// MAP transformation: transform/ignition.map
+ON=On
+OFF=Off
+NULL=Unknown
+-=Unknown
+
+// Rule
+rule "Vehicle Ignition ON Notification"
+when
+    Item Vehicle_Ignition changed from OFF to ON
+then
+    val position = Vehicle_Position.state.toString
+    val address = Vehicle_Address.state.toString
+    val speed = Vehicle_Speed.state
+    val odometer = Vehicle_Odometer.state
+    
+    // Extract coordinates
+    val coords = position.split(",")
+    val latitude = coords.get(0)
+    val longitude = coords.get(1)
+    val mapLink = "https://www.google.com/maps?q=" + latitude + "," + longitude
+    
+    // Format timestamp
+    val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm")
+    val timestamp = dateFormat.format(new java.util.Date())
+    
+    // Send HTML email
+    val mailActions = getActions("mail","mail:smtp:samplesmtp")
+    
+    val emailBody = "<html><body style='font-family: Arial, sans-serif;'>" +
+        "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); " +
+        "color: white; padding: 20px; border-radius: 10px;'>" +
+        "<h2 style='margin: 0;'>🏍️ VEHICLE STARTED</h2>" +
+        "<p style='margin: 5px 0; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</div>" +
+        "<div style='background: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 8px;'>" +
+        "<h3 style='color: #667eea; margin-top: 0;'>📍 Location</h3>" +
+        "<p style='margin: 5px 0;'>" + address + "</p>" +
+        "<p style='margin-top: 10px;'><a href='" + mapLink + "' " +
+        "style='color: #667eea; text-decoration: none;'>📍 View on Map</a></p>" +
+        "</div>" +
+        "<table style='width: 100%; margin-top: 10px;'>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9; border-radius: 5px;'>" +
+        "<strong>🔥 Ignition:</strong> ON</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd; border-radius: 5px;'>" +
+        "<strong>📏 Odometer:</strong> " + odometer + "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
+    mailActions.sendHtmlMail("user@example.com", "🏍️ Vehicle Started", emailBody)
+    logInfo("vehicle", "Ignition ON notification sent")
+end
+
+rule "Vehicle Ignition OFF Notification"
+when
+    Item Vehicle_Ignition changed from ON to OFF
+then
+    val position = Vehicle_Position.state.toString
+    val address = Vehicle_Address.state.toString
+    val odometer = Vehicle_Odometer.state
+    val coords = position.split(",")
+    val mapLink = "https://www.google.com/maps?q=" + coords.get(0) + "," + coords.get(1)
+    
+    val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm")
+    val timestamp = dateFormat.format(new java.util.Date())
+    
+    val mailActions = getActions("mail","mail:smtp:samplesmtp")
+    
+    val emailBody = "<html><body style='font-family: Arial, sans-serif;'>" +
+        "<div style='background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); " +
+        "color: white; padding: 20px; border-radius: 10px;'>" +
+        "<h2 style='margin: 0;'>🏍️ VEHICLE PARKED</h2>" +
+        "<p style='margin: 5px 0; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</div>" +
+        "<div style='background: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 8px;'>" +
+        "<h3 style='color: #f5576c; margin-top: 0;'>📍 Parked Location</h3>" +
+        "<p style='margin: 5px 0;'>" + address + "</p>" +
+        "<p style='margin-top: 10px;'><a href='" + mapLink + "' " +
+        "style='color: #f5576c; text-decoration: none;'>📍 View on Map</a></p>" +
+        "</div>" +
+        "</body></html>"
+    
+    mailActions.sendHtmlMail("user@example.com", "🏍️ Vehicle Parked", emailBody)
+    logInfo("vehicle", "Ignition OFF notification sent")
+end
+```
 
 ### Trip Distance Tracking
 

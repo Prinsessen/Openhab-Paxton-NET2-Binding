@@ -13,13 +13,19 @@ then
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
-        val speed = if (Vehicle10_Speed.state != NULL) Vehicle10_Speed.state.toString else "0 km/h"
-        val odometer = if (Vehicle10_Odometer.state != NULL) Vehicle10_Odometer.state.toString else "Unknown"
+        val speedState = Vehicle10_Speed.state
+        val speed = if (speedState != NULL && speedState instanceof Number) String.format("%.1f km/h", (speedState as Number).doubleValue) else "0 km/h"
+        val odometerState = Vehicle10_Odometer.state
+        val odometer = if (odometerState != NULL && odometerState instanceof Number) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
         val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
-        val hours = if (Vehicle10_Hours.state != NULL) Vehicle10_Hours.state.toString else "Unknown"
+        val hoursState = Vehicle10_Hours.state
+        val hours = if (hoursState != NULL && hoursState instanceof Number) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
         val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
         val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
-        val timestamp = now.toString("yyyy-MM-dd HH:mm:ss")
+        
+        // Format timestamp properly
+        val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm")
+        val timestamp = dateFormat.format(new java.util.Date())
         
         // Extract latitude and longitude from position
         val coords = position.split(",")
@@ -35,28 +41,31 @@ then
         // Get mail actions using method call style
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
-        // Send detailed email notification
-        val emailBody = "SPRINGFIELD IGNITION STARTED\n\n" +
-            "Time: " + timestamp + "\n\n" +
-            "LOCATION:\n" +
-            address + "\n" +
-            latitude + ", " + longitude + "\n\n" +
-            "MAP LINKS:\n" +
-            "Google Maps: " + googleMapsLink + "\n" +
-            "OpenStreetMap: " + openStreetMapLink + "\n\n" +
-            "VEHICLE STATUS:\n" +
-            "Ignition: ON\n" +
-            "Speed: " + speed + "\n" +
-            "Odometer: " + odometer + "\n" +
-            "Engine Hours: " + hours + "\n" +
-            "Battery: " + battery + "\n\n" +
-            "SIGNAL:\n" +
-            "GPS Satellites: " + satellites + "\n" +
-            "GSM Signal: " + gsmSignal + "\n\n" +
-            "---\n" +
-            "Springfield FMM920 GPS Tracker (Device ID: 10)"
+        // Send detailed HTML email notification
+        val emailBody = "<html><body style='font-family: Arial, sans-serif;'>" +
+            "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px;'>" +
+            "<h2 style='margin: 0;'>🏍️ SPRINGFIELD STARTED</h2>" +
+            "<p style='margin: 5px 0; opacity: 0.9;'>" + timestamp + "</p>" +
+            "</div>" +
+            "<div style='background: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 8px;'>" +
+            "<h3 style='color: #667eea; margin-top: 0;'>📍 Location</h3>" +
+            "<p style='margin: 5px 0;'>" + address + "</p>" +
+            "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
+            "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #667eea; text-decoration: none;'>📍 Google Maps</a> | " +
+            "<a href='" + openStreetMapLink + "' style='color: #667eea; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
+            "</div>" +
+            "<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>" +
+            "<tr><td style='padding: 10px; background: #e8f5e9; border-radius: 5px; margin-bottom: 5px;'><strong>🔥 Ignition:</strong> ON</td></tr>" +
+            "<tr><td style='padding: 10px; background: #fff3e0; border-radius: 5px;'><strong>⚡ Speed:</strong> " + speed + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e3f2fd; border-radius: 5px;'><strong>📏 Odometer:</strong> " + odometer + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #f3e5f5; border-radius: 5px;'><strong>⏱️ Hours:</strong> " + hours + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #fff9c4; border-radius: 5px;'><strong>🔋 Battery:</strong> " + battery + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e0f2f1; border-radius: 5px;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "</table>" +
+            "<p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>Springfield FMM920 (ID: 10)</p>" +
+            "</body></html>"
         
-        val success1 = mailActions.sendMail("nanna@agesen.dk", "🏍️ Springfield Ignition ON", emailBody)
+        val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition ON", emailBody)
         logInfo("springfield_ignition", "Ignition ON email status: " + success1)
         
         val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Ignition ON", "Springfield ignition started at " + timestamp + ". Location: " + address)
@@ -75,12 +84,17 @@ then
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
-        val odometer = if (Vehicle10_Odometer.state != NULL) Vehicle10_Odometer.state.toString else "Unknown"
+        val odometerState = Vehicle10_Odometer.state
+        val odometer = if (odometerState != NULL && odometerState instanceof Number) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
         val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
-        val hours = if (Vehicle10_Hours.state != NULL) Vehicle10_Hours.state.toString else "Unknown"
+        val hoursState = Vehicle10_Hours.state
+        val hours = if (hoursState != NULL && hoursState instanceof Number) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
         val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
         val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
-        val timestamp = now.toString("yyyy-MM-dd HH:mm:ss")
+        
+        // Format timestamp properly
+        val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm")
+        val timestamp = dateFormat.format(new java.util.Date())
         
         // Extract latitude and longitude from position
         val coords = position.split(",")
@@ -96,27 +110,30 @@ then
         // Get mail actions using method call style
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
-        // Send detailed email notification
-        val emailBody = "SPRINGFIELD PARKED - IGNITION OFF\n\n" +
-            "Time: " + timestamp + "\n\n" +
-            "PARKED LOCATION:\n" +
-            address + "\n" +
-            latitude + ", " + longitude + "\n\n" +
-            "MAP LINKS:\n" +
-            "Google Maps: " + googleMapsLink + "\n" +
-            "OpenStreetMap: " + openStreetMapLink + "\n\n" +
-            "VEHICLE STATUS:\n" +
-            "Ignition: OFF\n" +
-            "Odometer: " + odometer + "\n" +
-            "Engine Hours: " + hours + "\n" +
-            "Battery: " + battery + "\n\n" +
-            "SIGNAL:\n" +
-            "GPS Satellites: " + satellites + "\n" +
-            "GSM Signal: " + gsmSignal + "\n\n" +
-            "---\n" +
-            "Springfield FMM920 GPS Tracker (Device ID: 10)"
+        // Send detailed HTML email notification
+        val emailBody = "<html><body style='font-family: Arial, sans-serif;'>" +
+            "<div style='background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 10px;'>" +
+            "<h2 style='margin: 0;'>🏍️ SPRINGFIELD PARKED</h2>" +
+            "<p style='margin: 5px 0; opacity: 0.9;'>" + timestamp + "</p>" +
+            "</div>" +
+            "<div style='background: #f8f9fa; padding: 15px; margin-top: 10px; border-radius: 8px;'>" +
+            "<h3 style='color: #f5576c; margin-top: 0;'>📍 Parked Location</h3>" +
+            "<p style='margin: 5px 0;'>" + address + "</p>" +
+            "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
+            "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #f5576c; text-decoration: none;'>📍 Google Maps</a> | " +
+            "<a href='" + openStreetMapLink + "' style='color: #f5576c; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
+            "</div>" +
+            "<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>" +
+            "<tr><td style='padding: 10px; background: #ffebee; border-radius: 5px; margin-bottom: 5px;'><strong>🔌 Ignition:</strong> OFF</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e3f2fd; border-radius: 5px;'><strong>📏 Odometer:</strong> " + odometer + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #f3e5f5; border-radius: 5px;'><strong>⏱️ Hours:</strong> " + hours + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #fff9c4; border-radius: 5px;'><strong>🔋 Battery:</strong> " + battery + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e0f2f1; border-radius: 5px;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "</table>" +
+            "<p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>Springfield FMM920 (ID: 10)</p>" +
+            "</body></html>"
         
-        val success1 = mailActions.sendMail("nanna@agesen.dk", "🏍️ Springfield Ignition OFF - Parked", emailBody)
+        val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition OFF - Parked", emailBody)
         logInfo("springfield_ignition", "Ignition OFF email status: " + success1)
         
         val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Parked", "Springfield parked at " + timestamp + ". Location: " + address)

@@ -57,4 +57,5 @@ public class TraccarBindingConstants {
     public static final String CHANNEL_DISTANCE = "distance";
     public static final String CHANNEL_ACTIVITY = "activity";
     public static final String CHANNEL_PROTOCOL = "protocol";
+    public static final String CHANNEL_IGNITION = "ignition";
 }

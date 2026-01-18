@@ -282,6 +282,12 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                 updateState(CHANNEL_ACTIVITY, new StringType(activityObj.toString()));
             }
 
+            // Ignition status
+            Object ignitionObj = attributes.get("ignition");
+            if (ignitionObj instanceof Boolean) {
+                updateState(CHANNEL_IGNITION, OnOffType.from((Boolean) ignitionObj));
+            }
+
             // GPS Satellites
             Object satObj = attributes.get("sat");
             if (satObj instanceof Number) {

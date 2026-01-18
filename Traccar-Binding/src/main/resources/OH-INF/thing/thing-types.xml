@@ -83,6 +83,7 @@
 			<channel id="distance" typeId="distance"/>
 			<channel id="activity" typeId="activity"/>
 			<channel id="protocol" typeId="protocol"/>
+			<channel id="ignition" typeId="ignition"/>
 		</channels>
 
 		<properties>
@@ -257,6 +258,13 @@
 		<item-type>String</item-type>
 		<label>Protocol</label>
 		<description>Device protocol/connection type</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="ignition">
+		<item-type>Switch</item-type>
+		<label>Ignition</label>
+		<description>Ignition status (ON = ignition on, OFF = ignition off)</description>
 		<state readOnly="true"/>
 	</channel-type>
 </thing:thing-descriptions>

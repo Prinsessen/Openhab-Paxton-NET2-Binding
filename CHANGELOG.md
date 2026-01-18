@@ -7,6 +7,16 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 11:00:16
+- Modified: Traccar-Binding/AGENTS.md
+- Modified: Traccar-Binding/README.md
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarBindingConstants.java
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java
+- Modified: Traccar-Binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Modified: rules/Springfield_Ignition.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 10:45:06
 - Added: rules/Springfield_Ignition.rules
 

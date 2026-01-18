@@ -148,6 +148,61 @@ if (distanceObj instanceof Number) {
 - Binding sends values in **base units** (meters, not kilometers)
 - OpenHAB framework handles conversion based on item `unit="km"` metadata
 - This allows users to choose any unit (km, mi, ft, etc.) without binding changes
+
+### Vehicle Information Channels
+
+**Source**: `attributes` object from Traccar webhook/API
+
+| Channel | Type | Source Field | Conversion | Notes |
+|---------|------|--------------|------------|-------|
+| `ignition` | Switch | `attributes.ignition` | Boolean → OnOffType | Real-time ignition status |
+| `hours` | Number:Time | `attributes.hours` | milliseconds → hours | Engine running time |
+| `event` | Number | `attributes.event` | Direct | Teltonika AVL event codes |
+
+**Ignition Implementation**:
+```java
+// Ignition status - available on compatible vehicle trackers (e.g., Teltonika)
+Object ignitionObj = attributes.get("ignition");
+if (ignitionObj instanceof Boolean) {
+    updateState(CHANNEL_IGNITION, OnOffType.from((Boolean) ignitionObj));
+}
+```
+
+The `ignition` channel is essential for vehicle automation:
+- Triggers ignition ON/OFF events in rules
+- Enables automatic notifications when vehicle starts/parks
+- Provides real-time ignition state monitoring
+- Works with Traccar's `ignitionOn`/`ignitionOff` event webhooks
+
+**Hours (Engine Time) Conversion**:
+```java
+// Engine hours - convert milliseconds to hours
+Object hoursObj = attributes.get("hours");
+if (hoursObj instanceof Number) {
+    double hoursMillis = ((Number) hoursObj).doubleValue();
+    double hoursValue = hoursMillis / 1000.0 / 3600.0;  // ms → seconds → hours
+    updateState(CHANNEL_HOURS, new QuantityType<>(hoursValue, Units.HOUR));
+}
+```
+
+**Event Codes**:
+```java
+// Event code - device-specific event identifiers
+Object eventObj = attributes.get("event");
+if (eventObj instanceof Number) {
+    int eventCode = ((Number) eventObj).intValue();
+    updateState(CHANNEL_EVENT, new DecimalType(eventCode));
+}
+```
+
+Teltonika event codes (see `transform/teltonika_event.map`):
+- 239 = Ignition status change
+- 240 = Movement status change  
+- 10828/10829/10831 = BLE beacon events
+- 253 = Green driving (harsh acceleration/braking)
+- 255 = Overspeeding
+
+### Activity & Protocol Channels
 - REST API shows converted state: `"state": "33279.52 km"` with `"unitSymbol": "km"`
 
 ### Vehicle Information Channels
