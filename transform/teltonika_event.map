@@ -1,0 +1,52 @@
+# Teltonika FMM920 AVL Event Codes
+# Permanent I/O Elements (Always Available)
+239=Ignition
+240=Movement
+80=Data Mode
+21=GSM Signal
+200=Sleep Mode
+69=GNSS Status
+181=GNSS PDOP
+182=GNSS HDOP
+
+# Physical Inputs & Power
+1=Digital Input 1
+9=Analog Input 1
+179=Digital Output 1
+66=External Power
+67=Battery Voltage
+68=Battery Current
+113=Battery Level
+
+# Trip and Odometer Data
+16=Total Odometer
+199=Trip Odometer
+24=Speed
+
+# Accelerometer & Scenario Events
+17=Axis X
+18=Axis Y
+19=Axis Z
+253=Green Driving
+255=Overspeeding
+175=AutoGeofence
+155=Geofence Zone 1
+156=Geofence Zone 2
+157=Geofence Zone 3
+158=Geofence Zone 4
+159=Geofence Zone 5
+
+# BLE & Advanced Elements (Codec 8 Extended)
+10831=Lost Beacon
+10830=Found Beacon
+10828=Beacon Event
+10829=Beacon Event
+331=BLE Temp Sensor 1
+332=BLE Temp Sensor 2
+333=BLE Temp Sensor 3
+334=BLE Temp Sensor 4
+385=Beacon List
+
+# Default for unknown codes
+NULL=No Event
+-=Unknown Event

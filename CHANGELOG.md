@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 10:15:16
+- Modified: items/traccar.items
+- Modified: sitemaps/myhouse.sitemap
+- Added: transform/motion.map
+- Added: transform/teltonika_event.map
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 10:00:16
 - Modified: items/traccar.items
 - Modified: sitemaps/myhouse.sitemap
