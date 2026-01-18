@@ -41,7 +41,7 @@ Number:Dimensionless Vehicle10_GsmSignal "GSM Signal [%.0f %%]" <qualityofservic
 Number:Time Vehicle10_Hours "Engine Hours [%.1f h]" <time> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:hours", unit="h"}
 Number Vehicle10_Event "Event Code [%d]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:event"}
 Number:Length Vehicle10_Altitude "Altitude [%.1f m]" <altitude> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:altitude"}
-Switch Vehicle10_Valid "GPS Valid" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:valid"}
+Switch Vehicle10_Valid "GPS Valid [MAP(gpsvalid.map):%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:valid"}
 Number:Length Vehicle10_Distance "Distance [%.1f m]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:distance"}
 String Vehicle10_Activity "Activity [%s]" <motion> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:activity"}
 String Vehicle10_Protocol "Protocol [%s]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:protocol"}
