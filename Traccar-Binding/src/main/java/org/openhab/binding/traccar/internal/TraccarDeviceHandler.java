@@ -18,7 +18,6 @@ import java.time.ZonedDateTime;
 import java.util.Map;
 
 import javax.measure.Unit;
-import javax.measure.MetricPrefix;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -219,11 +218,15 @@ public class TraccarDeviceHandler extends BaseThingHandler {
             Object odometerObj = attributes.get("odometer");
             if (odometerObj == null) {
                 odometerObj = attributes.get("totalDistance");
+                logger.debug("Using totalDistance for odometer: {}", odometerObj);
+            } else {
+                logger.debug("Using odometer attribute: {}", odometerObj);
             }
             if (odometerObj instanceof Number) {
                 double odometerMeters = ((Number) odometerObj).doubleValue();
                 double odometerKm = odometerMeters / 1000.0; // Convert to kilometers
-                updateState(CHANNEL_ODOMETER, new QuantityType<>(odometerKm, MetricPrefix.KILO(SIUnits.METRE)));
+                logger.debug("Odometer conversion: {} meters = {} km", odometerMeters, odometerKm);
+                updateState(CHANNEL_ODOMETER, new QuantityType<>(odometerKm, Units.KILOMETRE));
             }
 
             // Motion detection
