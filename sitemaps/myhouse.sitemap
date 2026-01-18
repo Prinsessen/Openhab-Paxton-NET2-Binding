@@ -19,7 +19,7 @@ sitemap myhouse label="Nanna Agesen"
 			}
 			Frame label="Dream Catcher (Phone)" {
 				Text item=Vehicle1_Status label="Status [%s]" icon="last-updates"
-				Text item=Vehicle1_Address label="Address [%s]" icon="address-book"
+				Text item=Vehicle1_Address label="Address: [%s]" icon="address-book"
 				Text item=Vehicle1_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="status-regular"
 				Text item=Vehicle1_Speed label="Speed [%.1f km/h]" icon="speed-color"
 				Text item=Vehicle1_Position label="Position [%s]" icon="position"
@@ -38,7 +38,7 @@ sitemap myhouse label="Nanna Agesen"
 			}
 			Frame label="Springfield (Tracker)" {
 				Text item=Vehicle10_Status label="Status [%s]" icon="last-updates"
-				Text item=Vehicle10_Address label="Address [%s]" icon="address-book"
+				Text item=Vehicle10_Address label="Address: [%s]" icon="address-book"
 				Text item=Vehicle10_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="status-regular"
 				Text item=Vehicle10_Speed label="Speed [%.1f %unit%]" icon="speed-color"
 				Text item=Vehicle10_GpsSatellites label="GPS Satellites [%d]" icon="satellite-1"

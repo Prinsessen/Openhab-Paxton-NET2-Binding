@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 20:45:16
+- Added: Traccar-Binding/src/main/resources/OH-INF/thing/TraccarDeviceHandler.java
+- Added: Traccar-Binding/src/main/resources/OH-INF/thing/TraccarServerConfiguration.java
+- Modified: Traccar-Binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 20:15:16
 - Modified: sitemaps/myhouse.sitemap
 

@@ -48,6 +48,12 @@
 				</options>
 				<advanced>true</advanced>
 			</parameter>
+			<parameter name="speedThreshold" type="decimal" unit="kph" min="0" max="10" step="0.5">
+				<label>Speed Threshold</label>
+				<description>Minimum speed to display (filters GPS noise and small movements). Speeds below this are shown as 0.</description>
+				<default>2.0</default>
+				<advanced>true</advanced>
+			</parameter>
 			<parameter name="useNominatim" type="boolean">
 				<label>Use Nominatim Geocoding</label>
 				<description>Enable reverse geocoding using Nominatim instead of Traccar's address for all devices</description>
