@@ -45,29 +45,33 @@ then
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
         // Send detailed HTML email notification
-        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'><table width='100%' cellpadding='0' cellspacing='0' border='0' style='margin: 0; padding: 0;'><tr><td style='margin: 0; padding: 0;'>" +
-            "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px;'>" +
+        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #667eea; color: white;'>" +
+            "<tr><td style='padding: 20px;'>" +
             "<h2 style='margin: 0; margin-bottom: 5px;'>SPRINGFIELD STARTED</h2>" +
-            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px; opacity: 0.95;'>DreamCatcher - Indian Springfield 1811ccm</p>" +
-            "<p style='margin: 0; opacity: 0.9; font-size: 14px;'>" + timestamp + "</p>" +
-            "</div>" +
-            "<div style='background: #f8f9fa; padding: 15px;'>" +
-            "<h3 style='color: #667eea; margin-top: 0; margin-bottom: 10px;'>📍 Location</h3>" +
+            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>DreamCatcher - Indian Springfield 1811ccm</p>" +
+            "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #f8f9fa;'>" +
+            "<tr><td style='padding: 15px;'>" +
+            "<h3 style='color: #667eea; margin: 0; margin-bottom: 10px;'>📍 Location</h3>" +
             "<p style='margin: 5px 0;'>" + address + "</p>" +
             "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
             "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #667eea; text-decoration: none;'>📍 Google Maps</a> | " +
             "<a href='" + openStreetMapLink + "' style='color: #667eea; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
-            "</div>" +
-            "<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>" +
-            "<tr><td style='padding: 10px; background: #e8f5e9; border-radius: 5px; margin-bottom: 5px;'><strong>🔥 Ignition:</strong> ON</td></tr>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+            "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🔥 Ignition:</strong> ON</td></tr>" +
             "<tr><td style='padding: 10px; background: #fff3e0; border-radius: 5px;'><strong>⚡ Speed:</strong> " + speed + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #e3f2fd; border-radius: 5px;'><strong>📏 Odometer:</strong> " + odometer + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #f3e5f5; border-radius: 5px;'><strong>⏱️ Hours:</strong> " + hours + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #fff9c4; border-radius: 5px;'><strong>🔋 Battery:</strong> " + battery + "</td></tr>" +
-            "<tr><td style='padding: 10px; background: #e0f2f1; border-radius: 5px;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e0f2f1;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Springfield FMM920 (ID: 10)</td></tr>" +
             "</table>" +
-            "<p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>Springfield FMM920 (ID: 10)</p>" +
-            "</td></tr></table></body></html>"
+            "</body></html>"
         
         val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition ON", emailBody)
         logInfo("springfield_ignition", "Ignition ON email status: " + success1)
@@ -118,28 +122,32 @@ then
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
         // Send detailed HTML email notification
-        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'><table width='100%' cellpadding='0' cellspacing='0' border='0' style='margin: 0; padding: 0;'><tr><td style='margin: 0; padding: 0;'>" +
-            "<div style='background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px;'>" +
+        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #f5576c; color: white;'>" +
+            "<tr><td style='padding: 20px;'>" +
             "<h2 style='margin: 0; margin-bottom: 5px;'>SPRINGFIELD PARKED</h2>" +
-            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px; opacity: 0.95;'>DreamCatcher - Indian Springfield 1811ccm</p>" +
-            "<p style='margin: 0; opacity: 0.9; font-size: 14px;'>" + timestamp + "</p>" +
-            "</div>" +
-            "<div style='background: #f8f9fa; padding: 15px;'>" +
-            "<h3 style='color: #f5576c; margin-top: 0; margin-bottom: 10px;'>📍 Parked Location</h3>" +
+            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>DreamCatcher - Indian Springfield 1811ccm</p>" +
+            "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #f8f9fa;'>" +
+            "<tr><td style='padding: 15px;'>" +
+            "<h3 style='color: #f5576c; margin: 0; margin-bottom: 10px;'>📍 Parked Location</h3>" +
             "<p style='margin: 5px 0;'>" + address + "</p>" +
             "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
             "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #f5576c; text-decoration: none;'>📍 Google Maps</a> | " +
             "<a href='" + openStreetMapLink + "' style='color: #f5576c; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
-            "</div>" +
-            "<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>" +
-            "<tr><td style='padding: 10px; background: #ffebee; border-radius: 5px; margin-bottom: 5px;'><strong>🔌 Ignition:</strong> OFF</td></tr>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+            "<tr><td style='padding: 10px; background: #ffebee;'><strong>🔌 Ignition:</strong> OFF</td></tr>" +
             "<tr><td style='padding: 10px; background: #e3f2fd; border-radius: 5px;'><strong>📏 Odometer:</strong> " + odometer + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #f3e5f5; border-radius: 5px;'><strong>⏱️ Hours:</strong> " + hours + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #fff9c4; border-radius: 5px;'><strong>🔋 Battery:</strong> " + battery + "</td></tr>" +
-            "<tr><td style='padding: 10px; background: #e0f2f1; border-radius: 5px;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e0f2f1;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Springfield FMM920 (ID: 10)</td></tr>" +
             "</table>" +
-            "<p style='text-align: center; color: #999; font-size: 12px; margin-top: 20px;'>Springfield FMM920 (ID: 10)</p>" +
-            "</td></tr></table></body></html>"
+            "</body></html>"
         
         val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition OFF - Parked", emailBody)
         logInfo("springfield_ignition", "Ignition OFF email status: " + success1)
