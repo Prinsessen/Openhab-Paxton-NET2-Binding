@@ -1,0 +1,5 @@
+# Ignition Status Transformation
+ON=On
+OFF=Off
+NULL=Unknown
+-=Unknown
