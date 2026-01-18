@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: org.openhab.binding.traccar
-Bnd-LastModified: 1768660976032
+Bnd-LastModified: 1768734133195
 Bundle-Description: This project contains the official add-ons of open
  HAB
 Bundle-Developers: openhab;email="info@openhab.org";name=openHAB;organ
@@ -20,7 +20,7 @@ Bundle-SCM: url="https://github.com/openhab/openhab-addons/org.openhab
  s.reactor.bundles/org.openhab.binding.traccar",tag=HEAD
 Bundle-SymbolicName: org.openhab.binding.traccar
 Bundle-Vendor: openHAB.org
-Bundle-Version: 5.2.0.202601171442
+Bundle-Version: 5.2.0.202601181102
 Created-By: 21.0.9 (Debian)
 Import-Package: org.openhab.core.config.discovery,org.openhab.core.io.
  net.http,org.openhab.core.library.types,org.openhab.core.library.unit

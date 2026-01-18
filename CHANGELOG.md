@@ -7,6 +7,20 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 12:15:16
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java
+- Modified: Traccar-Binding/target/classes/META-INF/MANIFEST.MF
+- Modified: Traccar-Binding/target/classes/OH-INF/thing/thing-types.xml
+- Modified: Traccar-Binding/target/classes/org/openhab/binding/traccar/internal/TraccarBindingConstants.class
+- Modified: Traccar-Binding/target/classes/org/openhab/binding/traccar/internal/TraccarDeviceHandler.class
+- Modified: Traccar-Binding/target/classes/org/openhab/binding/traccar/internal/TraccarWebhookServer$WebhookHandler.class
+- Modified: Traccar-Binding/target/org.openhab.binding.traccar-5.2.0-SNAPSHOT-sources.jar
+- Modified: Traccar-Binding/target/org.openhab.binding.traccar-5.2.0-SNAPSHOT.jar
+- Modified: Traccar-Binding/target/spotless-index
+- Modified: rules/Springfield_Ignition.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 12:00:16
 - Modified: rules/Springfield_Ignition.rules
 

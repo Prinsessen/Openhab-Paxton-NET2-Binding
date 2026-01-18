@@ -10,9 +10,6 @@ when
     Item Vehicle10_Ignition changed from OFF to ON
 then
     try {
-        // Wait for all webhook data to be processed
-        Thread::sleep(5000)
-        
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
@@ -90,9 +87,6 @@ when
     Item Vehicle10_Ignition changed from ON to OFF
 then
     try {
-        // Wait for all webhook data to be processed
-        Thread::sleep(5000)
-        
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"

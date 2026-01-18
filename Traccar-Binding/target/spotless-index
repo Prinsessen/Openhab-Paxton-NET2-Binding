@@ -1,14 +1,14 @@
 dlQ8GOqurT/zKZgnxvgI2de+4ClXGnEglV1MzTdRnng=
 pom.xml 2026-01-17T05:48:41.693314975Z
 src/main/feature/feature.xml 2026-01-17T05:06:20.480005388Z
-src/main/java/org/openhab/binding/traccar/internal/TraccarApiClient.java 2026-01-17T06:21:11.766546504Z
-src/main/java/org/openhab/binding/traccar/internal/TraccarBindingConstants.java 2026-01-17T14:38:53.606370165Z
+src/main/java/org/openhab/binding/traccar/internal/TraccarApiClient.java 2026-01-17T16:51:34.773088066Z
+src/main/java/org/openhab/binding/traccar/internal/TraccarBindingConstants.java 2026-01-18T09:24:09.507214393Z
 src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceConfiguration.java 2026-01-17T05:10:01.074892367Z
-src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java 2026-01-17T14:39:16.506525657Z
-src/main/java/org/openhab/binding/traccar/internal/TraccarDiscoveryService.java 2026-01-17T05:18:11.535906597Z
-src/main/java/org/openhab/binding/traccar/internal/TraccarHandlerFactory.java 2026-01-17T05:13:22.681127818Z
+src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java 2026-01-18T11:01:01.381891943Z
+src/main/java/org/openhab/binding/traccar/internal/TraccarDiscoveryService.java 2026-01-17T16:51:35.417092428Z
+src/main/java/org/openhab/binding/traccar/internal/TraccarHandlerFactory.java 2026-01-17T16:51:35.829095218Z
 src/main/java/org/openhab/binding/traccar/internal/TraccarServerConfiguration.java 2026-01-17T14:00:25.974847771Z
 src/main/java/org/openhab/binding/traccar/internal/TraccarServerHandler.java 2026-01-17T14:00:39.310938584Z
-src/main/java/org/openhab/binding/traccar/internal/TraccarWebhookServer.java 2026-01-17T13:09:10.369800300Z
+src/main/java/org/openhab/binding/traccar/internal/TraccarWebhookServer.java 2026-01-18T08:41:18.014861142Z
 src/main/resources/OH-INF/addon/addon.xml 2026-01-17T05:06:20.500005677Z
-src/main/resources/OH-INF/thing/thing-types.xml 2026-01-17T14:38:53.618370246Z
+src/main/resources/OH-INF/thing/thing-types.xml 2026-01-18T09:24:31.387354395Z

@@ -196,8 +196,10 @@ public class TraccarDeviceHandler extends BaseThingHandler {
 
         // Update protocol
         Object protocolObj = position.get("protocol");
+        String protocol = null;
         if (protocolObj != null) {
-            updateState(CHANNEL_PROTOCOL, new StringType(protocolObj.toString()));
+            protocol = protocolObj.toString();
+            updateState(CHANNEL_PROTOCOL, new StringType(protocol));
         }
 
         // Update course (direction/heading)
@@ -233,13 +235,21 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                 updateState(CHANNEL_BATTERY_LEVEL, new QuantityType<>(battery, Units.PERCENT));
             }
 
-            // Odometer - support both OSMand (odometer) and Teltonika (totalDistance)
-            Object odometerObj = attributes.get("odometer");
-            if (odometerObj == null) {
+            // Odometer - Teltonika uses totalDistance, OSMand uses odometer
+            Object odometerObj = null;
+            if ("teltonika".equalsIgnoreCase(protocol)) {
+                // Teltonika: Always use totalDistance, ignore odometer
                 odometerObj = attributes.get("totalDistance");
-                logger.debug("Using totalDistance for odometer: {}", odometerObj);
+                logger.debug("Teltonika protocol: Using totalDistance for odometer: {}", odometerObj);
             } else {
-                logger.debug("Using odometer attribute: {}", odometerObj);
+                // Other protocols (OSMand): Try odometer first, fallback to totalDistance
+                odometerObj = attributes.get("odometer");
+                if (odometerObj == null) {
+                    odometerObj = attributes.get("totalDistance");
+                    logger.debug("Using totalDistance for odometer: {}", odometerObj);
+                } else {
+                    logger.debug("Using odometer attribute: {}", odometerObj);
+                }
             }
             if (odometerObj instanceof Number) {
                 double odometerMeters = ((Number) odometerObj).doubleValue();
