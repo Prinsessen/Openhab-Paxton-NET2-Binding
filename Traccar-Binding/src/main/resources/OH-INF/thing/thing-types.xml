@@ -93,9 +93,48 @@
 		</properties>
 
 		<config-description>
+			<parameter-group name="geocoding">
+				<label>Reverse Geocoding</label>
+				<description>Configure Nominatim reverse geocoding for addresses</description>
+				<advanced>true</advanced>
+			</parameter-group>
+
 			<parameter name="deviceId" type="integer" required="true">
 				<label>Device ID</label>
 				<description>Traccar device ID</description>
+			</parameter>
+
+			<parameter name="useNominatim" type="boolean" groupName="geocoding">
+				<label>Use Nominatim Geocoding</label>
+				<description>Enable reverse geocoding using Nominatim instead of Traccar's address</description>
+				<default>false</default>
+			</parameter>
+
+			<parameter name="nominatimUrl" type="text" groupName="geocoding">
+				<context>url</context>
+				<label>Nominatim Server URL</label>
+				<description>URL of Nominatim server (default: OpenStreetMap public server)</description>
+				<default>https://nominatim.openstreetmap.org</default>
+			</parameter>
+
+			<parameter name="nominatimLanguage" type="text" groupName="geocoding">
+				<label>Address Language</label>
+				<description>Language code for address results (e.g., en, da, de, fr)</description>
+				<default>en</default>
+				<limitToOptions>false</limitToOptions>
+				<options>
+					<option value="en">English</option>
+					<option value="da">Danish</option>
+					<option value="de">German</option>
+					<option value="fr">French</option>
+					<option value="es">Spanish</option>
+				</options>
+			</parameter>
+
+			<parameter name="geocodingCacheDistance" type="integer" unit="m" min="10" max="1000" groupName="geocoding">
+				<label>Cache Distance</label>
+				<description>Minimum distance in meters to trigger new geocoding request (caches results within this radius)</description>
+				<default>50</default>
 			</parameter>
 		</config-description>
 	</thing-type>

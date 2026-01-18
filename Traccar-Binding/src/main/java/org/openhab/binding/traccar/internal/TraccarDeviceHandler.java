@@ -54,6 +54,7 @@ public class TraccarDeviceHandler extends BaseThingHandler {
     private final Logger logger = LoggerFactory.getLogger(TraccarDeviceHandler.class);
 
     private @Nullable TraccarDeviceConfiguration config;
+    private @Nullable NominatimGeocoder geocoder;
 
     public TraccarDeviceHandler(Thing thing) {
         super(thing);
@@ -69,6 +70,14 @@ public class TraccarDeviceHandler extends BaseThingHandler {
     @Override
     public void initialize() {
         config = getConfigAs(TraccarDeviceConfiguration.class);
+
+        // Initialize Nominatim geocoder if enabled
+        if (config.useNominatim) {
+            geocoder = new NominatimGeocoder(config.nominatimUrl, config.nominatimLanguage,
+                    config.geocodingCacheDistance);
+            logger.info("Nominatim geocoding enabled for device {} (server: {}, language: {})", config.deviceId,
+                    config.nominatimUrl, config.nominatimLanguage);
+        }
 
         Bridge bridge = getBridge();
         if (bridge == null) {
@@ -216,9 +225,30 @@ public class TraccarDeviceHandler extends BaseThingHandler {
             updateState(CHANNEL_ACCURACY, new QuantityType<>(accuracy, SIUnits.METRE));
         }
 
-        // Update address
-        Object addressObj = position.get("address");
-        if (addressObj instanceof String address) {
+        // Update address (use Nominatim if enabled, otherwise use Traccar's address)
+        String address = null;
+        NominatimGeocoder currentGeocoder = geocoder;
+        if (currentGeocoder != null && latObj instanceof Number && lonObj instanceof Number) {
+            // Use Nominatim for reverse geocoding
+            double latitude = ((Number) latObj).doubleValue();
+            double longitude = ((Number) lonObj).doubleValue();
+            address = currentGeocoder.getAddress(latitude, longitude);
+            if (address != null) {
+                logger.debug("Using Nominatim address for device {}: {}", config.deviceId, address);
+            }
+        }
+
+        // Fall back to Traccar's address if Nominatim is disabled or failed
+        if (address == null) {
+            Object addressObj = position.get("address");
+            if (addressObj instanceof String traccarAddress) {
+                address = traccarAddress;
+                logger.debug("Using Traccar address for device {}: {}", config.deviceId, address);
+            }
+        }
+
+        // Update address channel
+        if (address != null) {
             updateState(CHANNEL_ADDRESS, new StringType(address));
         }
 
