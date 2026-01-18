@@ -7,6 +7,16 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 13:15:16
+- Added: icons/classic/address-book.svg
+- Added: icons/classic/battery-4.svg
+- Added: icons/classic/course-1.svg
+- Added: icons/classic/engine-on.svg
+- Added: icons/classic/protocol.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 13:00:16
 - Added: icons/classic/accurate.svg
 - Added: icons/classic/altitude-1.svg
