@@ -224,15 +224,23 @@ public class TraccarDeviceHandler extends BaseThingHandler {
             }
             if (odometerObj instanceof Number) {
                 double odometerMeters = ((Number) odometerObj).doubleValue();
-                double odometerKm = odometerMeters / 1000.0; // Convert to kilometers
-                logger.debug("Odometer conversion: {} meters = {} km", odometerMeters, odometerKm);
-                updateState(CHANNEL_ODOMETER, new QuantityType<>(odometerKm, Units.KILOMETRE));
+                logger.debug("Odometer: {} meters", odometerMeters);
+                updateState(CHANNEL_ODOMETER, new QuantityType<>(odometerMeters, SIUnits.METRE));
             }
 
             // Motion detection
             Object motionObj = attributes.get("motion");
             if (motionObj instanceof Boolean motion) {
                 updateState(CHANNEL_MOTION, OnOffType.from(motion));
+            }
+
+            // Engine hours (in milliseconds from Traccar)
+            Object hoursObj = attributes.get("hours");
+            if (hoursObj instanceof Number) {
+                double hoursMs = ((Number) hoursObj).doubleValue();
+                double hoursValue = hoursMs / 3600000.0; // Convert milliseconds to hours
+                logger.debug("Engine hours: {} ms = {} hours", hoursMs, hoursValue);
+                updateState(CHANNEL_HOURS, new QuantityType<>(hoursValue, Units.HOUR));
             }
 
             // GPS Satellites

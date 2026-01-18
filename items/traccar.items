@@ -32,7 +32,7 @@ String Vehicle10_GeofenceName "Current Geofence [%s]" <fence> (gVehicle10) {chan
 Number:Angle Vehicle10_Course "Course [%.0f %unit%]" <direction> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:course"}
 Number:Length Vehicle10_Accuracy "Accuracy [%.1f %unit%]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:accuracy"}
 Number:Dimensionless Vehicle10_BatteryLevel "Battery [%.0f %%]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:batteryLevel"}
-Number:Length Vehicle10_Odometer "Odometer [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:odometer"}
+Number:Length Vehicle10_Odometer "Odometer [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:odometer", unit="km"}
 Switch Vehicle10_Motion "Motion" <motion> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:motion"}
 String Vehicle10_Address "Address [%s]" <location> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:address"}
 Number Vehicle10_GeofenceId "Geofence ID [%d]" <fence> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:geofenceId"}
@@ -47,7 +47,7 @@ Number:Speed Vehicle1_Speed "Speed [%.1f %unit%]" <speed> (gVehicle1) {channel="
 Number:Angle Vehicle1_Course "Course [%.0f %unit%]" <direction> (gVehicle1) {channel="traccar:device:gpsserver:694049:course"}
 Number:Length Vehicle1_Accuracy "Accuracy [%.1f %unit%]" <zoom> (gVehicle1) {channel="traccar:device:gpsserver:694049:accuracy"}
 Number:Dimensionless Vehicle1_BatteryLevel "Battery [%.0f %%]" <battery> (gVehicle1) {channel="traccar:device:gpsserver:694049:batteryLevel"}
-Number:Length Vehicle1_Odometer "Odometer [%.1f km]" <line> (gVehicle1) {channel="traccar:device:gpsserver:694049:odometer"}
+Number:Length Vehicle1_Odometer "Odometer [%.1f km]" <line> (gVehicle1) {channel="traccar:device:gpsserver:694049:odometer", unit="km"}
 Switch Vehicle1_Motion "Motion" <motion> (gVehicle1) {channel="traccar:device:gpsserver:694049:motion"}
 String Vehicle1_Address "Address [%s]" <location> (gVehicle1) {channel="traccar:device:gpsserver:694049:address"}
 String Vehicle1_Status "Status [%s]" <status> (gVehicle1) {channel="traccar:device:gpsserver:694049:status"}

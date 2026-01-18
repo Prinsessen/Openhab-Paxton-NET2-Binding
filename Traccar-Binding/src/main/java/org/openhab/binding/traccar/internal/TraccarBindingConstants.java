@@ -50,4 +50,5 @@ public class TraccarBindingConstants {
     public static final String CHANNEL_ADDRESS = "address";
     public static final String CHANNEL_GPS_SAT = "gpsSatellites";
     public static final String CHANNEL_GSM_SIGNAL = "gsmSignal";
+    public static final String CHANNEL_HOURS = "hours";
 }

@@ -76,6 +76,7 @@
 			<channel id="address" typeId="address"/>
 			<channel id="gpsSatellites" typeId="gps-satellites"/>
 			<channel id="gsmSignal" typeId="gsm-signal"/>
+			<channel id="hours" typeId="hours"/>
 		</channels>
 
 		<properties>
@@ -202,5 +203,12 @@
 		<label>GSM Signal Strength</label>
 		<description>GSM/Cellular signal strength (RSSI)</description>
 		<state readOnly="true" pattern="%.0f %%"/>
+	</channel-type>
+
+	<channel-type id="hours">
+		<item-type>Number:Time</item-type>
+		<label>Engine Hours</label>
+		<description>Total engine running hours</description>
+		<state readOnly="true" pattern="%.1f h"/>
 	</channel-type>
 </thing:thing-descriptions>
