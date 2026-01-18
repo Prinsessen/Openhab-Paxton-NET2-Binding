@@ -13,7 +13,7 @@ sitemap myhouse label="Nanna Agesen"
 	}
 	Frame label="GPS Fleet" {
 		Webview url="/static/vehicle_tracker.html" height=15
-		Text label="GPS Fleet" icon="car" {
+		Text label="GPS Fleet" icon="position" {
 			Frame label="Live Map" {
 				Webview url="/static/vehicle_tracker.html" height=15
 			}
@@ -47,9 +47,9 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Motion label="Motion [MAP(motion.map):%s]" icon="motion-1"
 				Text item=Vehicle10_Odometer label="Odometer [%.1f %unit%]" icon="odometer"
 				Text item=Vehicle10_Hours label="Engine Hours [%.1f h]" icon="engine-on"
-				Text item=Vehicle10_Event label="Event [MAP(teltonika_event.map):%s]" icon="text"
+				Text item=Vehicle10_Event label="Event [MAP(teltonika_event.map):%s]" icon="event-1"
 				Text item=Vehicle10_Altitude label="Altitude [%.1f m]" icon="altitude-1"
-				Text item=Vehicle10_Valid label="GPS Valid [MAP(gpsvalid.map):%s]" icon="network"
+				Text item=Vehicle10_Valid label="GPS Valid [MAP(gpsvalid.map):%s]" icon="satellite-1"
 				Text item=Vehicle10_Distance label="Distance [%.1f m]" icon="odometer"
 				Text item=Vehicle10_Activity label="Activity [%s]" icon="motion-1"
 				Text item=Vehicle10_Protocol label="Protocol [%s]" icon="protocol"
