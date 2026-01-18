@@ -174,6 +174,49 @@ The `ignition` channel is essential for vehicle automation:
 - Provides real-time ignition state monitoring
 - Works with Traccar's `ignitionOn`/`ignitionOff` event webhooks
 
+**Example ignition notification rule** (see `Springfield_Ignition.rules` in examples):
+```java
+// Global debounce variables (prevent duplicate notifications within 30 seconds)
+var Long lastIgnitionOnTime = 0L
+var Long lastIgnitionOffTime = 0L
+
+rule "Springfield Ignition ON"
+when
+    Item Vehicle10_Ignition changed to ON
+then
+    try {
+        // Debounce check
+        val currentTime = new java.util.Date().time
+        if ((currentTime - lastIgnitionOnTime) < 30000) {
+            logInfo("springfield_ignition", "Ignition ON triggered too soon - skipping")
+            return
+        }
+        lastIgnitionOnTime = currentTime
+        
+        // Extract values
+        val odometerState = Vehicle10_Odometer.state
+        val odometer = if (odometerState != NULL) 
+            String.format("%.1f km", (odometerState as Number).doubleValue) 
+            else "Unknown"
+        
+        // Send email notification
+        sendHtmlMail("email@example.com", "Springfield Ignition ON", 
+            "<html><body><h2>Springfield Motorcycle</h2>" +
+            "<table><tr><td><strong>Status:</strong></td><td>Ignition ON</td></tr>" +
+            "<tr><td><strong>Odometer:</strong></td><td>" + odometer + "</td></tr></table>" +
+            "</body></html>")
+    } catch (Exception e) {
+        logError("springfield_ignition", "Error: {}", e.message)
+    }
+end
+```
+
+**Key learnings from ignition notifications:**
+- Use debounce (30-second minimum) to prevent duplicate notifications from multiple webhooks
+- OpenHAB DSL requires `new java.util.Date().time` for timestamps (not `now.millis`)
+- Use `Long` type for timestamp variables
+- Protocol-aware odometer reading ensures correct values (Teltonika uses `totalDistance`)
+
 **Hours (Engine Time) Conversion**:
 ```java
 // Engine hours - convert milliseconds to hours
@@ -609,11 +652,62 @@ Number:Length Vehicle_New "New Channel [%.1f m]"
 
 ### 5. Rebuild and deploy (see Build and Deployment section)
 
+## Complete Working Examples
+
+### Real-Time Vehicle Tracker HTML Dashboard
+
+Located at: `src/main/resources/examples/vehicle_tracker.html`
+
+**Production-ready web interface featuring:**
+- **Click-to-follow mode**: Click any vehicle icon to track it (yellow glow indicator shows active)
+- **Smooth map panning**: Map smoothly follows selected vehicle with 1-second animation
+- **Custom vehicle icons**: 
+  - Blue circle with "P" for phones (OSMand protocol)
+  - Orange circle with "S" for motorcycle trackers (Teltonika)
+  - Icons rotate to show vehicle heading direction
+- **Real-time updates**: Fetches position every 10 seconds via OpenHAB REST API
+- **Status popups**: Click markers for speed, battery, GPS satellites, status
+- **Info panel**: Shows last update times and status for all vehicles
+- **GPS accuracy priority**: Vehicles stay at actual GPS coordinates on roads
+
+**Technical Implementation:**
+- Leaflet.js 1.9.4 for mapping with OpenStreetMap tiles
+- Fetches data from `/rest/items/gVehicle{ID}?recursive=true` endpoints
+- Smooth animations using `map.panTo()` with easeLinearity 0.25
+- Custom SVG icons for vehicle types with rotation transforms
+- Follow state management (toggle on/off by clicking icons)
+
+**How to use:**
+1. Copy to `/etc/openhab/html/vehicle_tracker.html`
+2. Update item group names in JavaScript (`gVehicle1`, `gVehicle10` to match your devices)
+3. Access at `http://your-openhab:8080/static/vehicle_tracker.html`
+4. Embed in sitemap: `Webview url="/static/vehicle_tracker.html" height=15`
+
+**Item requirements per vehicle:**
+```openhab
+Group gVehicle1 "Vehicle Name"
+Location Vehicle1_Position {channel="traccar:device:server:device1:position"}
+Number:Speed Vehicle1_Speed {channel="traccar:device:server:device1:speed"}
+Number:Angle Vehicle1_Course {channel="traccar:device:server:device1:course"}
+String Vehicle1_Status {channel="traccar:device:server:device1:status"}
+Number:Dimensionless Vehicle1_BatteryLevel {channel="traccar:device:server:device1:batteryLevel"}
+DateTime Vehicle1_LastUpdate {channel="traccar:device:server:device1:lastUpdate"}
+```
+
+**Design decisions:**
+- No map rotation (kept north-up for stability and readability)
+- Smooth panning over forced centering to preserve GPS accuracy
+- Vehicles stay on roads even with slight GPS drift
+- 10-second refresh balances responsiveness with API load
+- Yellow glow provides clear visual feedback for followed vehicle
+
+This example demonstrates the full capabilities of the Traccar binding for building custom fleet management interfaces.
+
 ## Future Enhancement Ideas
 
 1. **Historic position tracking**: Store position history in persistence, display tracks on map
 2. **Geofence creation via UI**: Allow defining geofences from openHAB instead of Traccar
-3. **Multi-tracker routing**: Display routes for multiple vehicles simultaneously
+3. **Multi-vehicle routing**: Display routes for multiple vehicles simultaneously (see vehicle_tracker.html for foundation)
 4. **Fuel consumption**: Calculate based on odometer + engine hours for compatible devices
 5. **Driver behavior scoring**: Aggregate harsh acceleration/braking/cornering events
 6. **Bluetooth beacon support**: For Teltonika devices with BLE sensors

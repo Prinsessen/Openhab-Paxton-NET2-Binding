@@ -362,7 +362,7 @@ Edit `/opt/traccar/conf/traccar.xml` (or equivalent):
 <!-- Enable position forwarding -->
 <entry key='forward.enable'>true</entry>
 <entry key='forward.url'>http://YOUR_OPENHAB_IP:8090/webhook</entry>
-<entry key='forward.json'>true</entry>
+<entry key='forward.type'>json</entry>
 <entry key='forward.retry'>true</entry>
 
 <!-- Enable event forwarding -->
@@ -1207,7 +1207,7 @@ The binding gracefully handles missing attributes - channels simply remain NULL 
    ```xml
    <entry key='forward.enable'>true</entry>
    <entry key='forward.url'>http://OPENHAB_IP:8090/webhook</entry>
-   <entry key='forward.json'>true</entry>
+   <entry key='forward.type'>json</entry>
    ```
 
 6. **Restart Traccar** after configuration changes:

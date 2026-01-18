@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-18 16:00:02
+- Modified: Traccar-Binding/AGENTS.md
+- Modified: Traccar-Binding/README.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 15:45:16
 - Added: Traccar-Binding/src/main/resources/examples/vehicle_tracker.html
 
