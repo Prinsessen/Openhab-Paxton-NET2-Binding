@@ -29,11 +29,9 @@ then
         val odometerState = Vehicle10_Odometer.state
         val odometer = if (odometerState != NULL) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
         logInfo("springfield_ignition", "Ignition ON - Odometer: " + odometer + " (raw: " + odometerState + ")")
-        val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
         val hoursState = Vehicle10_Hours.state
         val hours = if (hoursState != NULL) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
         val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
-        val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
         
         // Format timestamp properly
         val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm")
@@ -76,8 +74,7 @@ then
             "<tr><td style='padding: 10px; background: #fff3e0; border-radius: 5px;'><strong>⚡ Speed:</strong> " + speed + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #e3f2fd; border-radius: 5px;'><strong>📏 Odometer:</strong> " + odometer + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #f3e5f5; border-radius: 5px;'><strong>⏱️ Hours:</strong> " + hours + "</td></tr>" +
-            "<tr><td style='padding: 10px; background: #fff9c4; border-radius: 5px;'><strong>🔋 Battery:</strong> " + battery + "</td></tr>" +
-            "<tr><td style='padding: 10px; background: #e0f2f1;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e0f2f1;'><strong>📡 GPS:</strong> " + satellites + " sats</td></tr>" +
             "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Springfield FMM920 (ID: 10)</td></tr>" +
             "</table>" +
             "</body></html>"
@@ -112,11 +109,9 @@ then
         val odometerState = Vehicle10_Odometer.state
         val odometer = if (odometerState != NULL) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
         logInfo("springfield_ignition", "Ignition OFF - Odometer: " + odometer + " (raw: " + odometerState + ")")
-        val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
         val hoursState = Vehicle10_Hours.state
         val hours = if (hoursState != NULL) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
         val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
-        val gsmSignal = if (Vehicle10_GsmSignal.state != NULL) Vehicle10_GsmSignal.state.toString + " %" else "Unknown"
         
         // Format timestamp properly
         val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm")
@@ -158,8 +153,7 @@ then
             "<tr><td style='padding: 10px; background: #ffebee;'><strong>🔌 Ignition:</strong> OFF</td></tr>" +
             "<tr><td style='padding: 10px; background: #e3f2fd; border-radius: 5px;'><strong>📏 Odometer:</strong> " + odometer + "</td></tr>" +
             "<tr><td style='padding: 10px; background: #f3e5f5; border-radius: 5px;'><strong>⏱️ Hours:</strong> " + hours + "</td></tr>" +
-            "<tr><td style='padding: 10px; background: #fff9c4; border-radius: 5px;'><strong>🔋 Battery:</strong> " + battery + "</td></tr>" +
-            "<tr><td style='padding: 10px; background: #e0f2f1;'><strong>📡 GPS:</strong> " + satellites + " sats | <strong>GSM:</strong> " + gsmSignal + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e0f2f1;'><strong>📡 GPS:</strong> " + satellites + " sats</td></tr>" +
             "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Springfield FMM920 (ID: 10)</td></tr>" +
             "</table>" +
             "</body></html>"
