@@ -11,7 +11,7 @@ when
 then
     try {
         // Wait for all webhook data to be processed
-        Thread::sleep(3000)
+        Thread::sleep(5000)
         
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
@@ -20,6 +20,7 @@ then
         val speed = if (speedState != NULL) String.format("%.1f km/h", (speedState as Number).doubleValue) else "0 km/h"
         val odometerState = Vehicle10_Odometer.state
         val odometer = if (odometerState != NULL) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
+        logInfo("springfield_ignition", "Ignition ON - Odometer: " + odometer + " (raw: " + odometerState + ")")
         val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
         val hoursState = Vehicle10_Hours.state
         val hours = if (hoursState != NULL) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
@@ -90,13 +91,14 @@ when
 then
     try {
         // Wait for all webhook data to be processed
-        Thread::sleep(3000)
+        Thread::sleep(5000)
         
         // Get current vehicle data
         val position = Vehicle10_Position.state.toString
         val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
         val odometerState = Vehicle10_Odometer.state
         val odometer = if (odometerState != NULL) String.format("%.1f km", (odometerState as Number).doubleValue) else "Unknown"
+        logInfo("springfield_ignition", "Ignition OFF - Odometer: " + odometer + " (raw: " + odometerState + ")")
         val battery = if (Vehicle10_BatteryLevel.state != NULL) Vehicle10_BatteryLevel.state.toString + " %" else "Unknown"
         val hoursState = Vehicle10_Hours.state
         val hours = if (hoursState != NULL) String.format("%.1f h", (hoursState as Number).doubleValue) else "Unknown"
