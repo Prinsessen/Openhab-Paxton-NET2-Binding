@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 06:00:17
+- Modified: items/traccar.items
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-18 21:00:16
 - Modified: Traccar-Binding/EXAMPLES.md
 - Modified: Traccar-Binding/README.md
