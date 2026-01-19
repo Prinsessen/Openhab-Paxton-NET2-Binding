@@ -53,11 +53,19 @@ Number:Dimensionless Vehicle10_ObdEngineLoad "Engine Load [%.1f %%]" <pressure> 
 Number:Temperature Vehicle10_ObdCoolantTemp "Coolant Temp [%.1f %unit%]" <temperature> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdCoolantTemp"}
 Number:Dimensionless Vehicle10_ObdShortFuelTrim "Fuel Trim [%.1f %%]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdShortFuelTrim"}
 Number:Pressure Vehicle10_ObdFuelPressure "Fuel Pressure [%.0f kPa]" <pressure> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdFuelPressure", unit="kPa"}
-Number:Frequency Vehicle10_ObdRpm "RPM [%.0f RPM]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdRpm"}
-Number:Frequency Vehicle10_ObdRpmReported "RPM Reported [%.0f RPM]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdRpmReported"}
+Number Vehicle10_ObdRpm "RPM [%d RPM]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdRpm"}
+Number Vehicle10_ObdRpmReported "RPM Reported [%d RPM]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdRpmReported"}
 Number:Speed Vehicle10_ObdSpeed "OBD Speed [%.1f %unit%]" <speed> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdSpeed"}
 Number:Dimensionless Vehicle10_ObdFuelLevel "Fuel Level [%.1f %%]" <oil> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdFuelLevel"}
 Number:Length Vehicle10_ObdOemOdometer "OEM Odometer [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdOemOdometer", unit="km"}
+
+// Additional GPS/Teltonika Data
+Number Vehicle10_Pdop "PDOP [%.1f]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:pdop"}
+Number Vehicle10_Hdop "HDOP [%.1f]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:hdop"}
+Number:ElectricPotential Vehicle10_Power "Vehicle Power [%.2f V]" <energy> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:power"}
+Number:ElectricPotential Vehicle10_Battery "Tracker Battery [%.2f V]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:battery"}
+String Vehicle10_Operator "Mobile Operator [MAP(operator.map):%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:operator"}
+String Vehicle10_Vin "VIN [%s]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:vin"}
 
 // Vehicle 694049 (Device ID: 1)
 Group gVehicle1 "Vehicle 694049" <car>
