@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 06:30:07
+- Modified: Traccar-Binding/AGENTS.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 06:15:16
 - Modified: Traccar-Binding/AGENTS.md
 - Modified: Traccar-Binding/EXAMPLES.md

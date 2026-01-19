@@ -6,6 +6,31 @@ This is a comprehensive GPS tracking binding that integrates Traccar server with
 
 **Key Achievement**: Full dual-mode operation (polling + webhooks) with 22 channels per device, protocol-agnostic attribute handling, and automatic unit conversions.
 
+## Recent Updates (January 2026)
+
+### Distance Channel Architecture
+- **Three separate channels**: `odometer`, `totalDistance`, and `distance` for different tracking needs
+- **Protocol-aware implementation**: 
+  - Teltonika devices: Use `totalDistance` (actual vehicle odometer)
+  - OSMand phones: Use `odometer` (device reading)
+- **No more protocol fallback logic**: Each channel directly maps to its Traccar field
+- **Breaking change**: `Vehicle10_Odometer` renamed to `Vehicle10_TotalDistance` for Teltonika devices
+  - **Action required**: Update any rules referencing `Vehicle10_Odometer` to use `Vehicle10_TotalDistance`
+  - Example: Springfield_Ignition.rules updated in commit 0bf7c99
+
+### Speed Threshold Filtering
+- **GPS noise filtering**: Configurable speed threshold (0-10 km/h, default 2.0)
+- **Bridge-level configuration**: Single setting applies to all devices
+- **Implementation**: Speeds below threshold displayed as 0 km/h
+- **Use case**: Eliminates false motion detection from GPS drift
+
+### Nominatim Reverse Geocoding
+- **Enhanced address resolution**: OpenStreetMap Nominatim integration
+- **Formatted addresses**: "Street number, Postcode City, Province, Country"
+- **English worldwide**: Transliterates Greek, Cyrillic, Arabic, Chinese names
+- **Rate limiting**: 1 request/second compliance with OSM usage policy
+- **Intelligent caching**: Haversine distance with 50m threshold
+
 ## Architecture
 
 ### Core Components
