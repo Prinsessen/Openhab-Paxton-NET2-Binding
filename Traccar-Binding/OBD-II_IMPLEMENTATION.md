@@ -35,6 +35,28 @@ This document details the implementation of OBD-II (On-Board Diagnostics) channe
 | io205 | io205 | Trip Odometer 2 | km | Enable in FMM920 I/O settings |
 | io389 | io389 | Total ECU Mileage | km | Enable in FMM920 I/O settings |
 
+### Tracker Device Channels
+
+| Channel ID | AVL ID | Description | Unit | Notes |
+|------------|--------|-------------|------|-------|
+| pdop | - | Position Dilution of Precision (3D) | - | GPS accuracy indicator |
+| hdop | - | Horizontal Dilution of Precision | - | Horizontal GPS accuracy |
+| power | io16 | External Power Voltage | V | Vehicle battery voltage |
+| battery | io113 | Internal Battery Voltage | V | Tracker backup battery |
+| operator | io70 | GSM Operator Code | - | MCC+MNC code (e.g., 23801) |
+| vin | - | Vehicle Identification Number | - | VIN from OBD-II |
+| rssi | io21 | GSM Signal Strength | - | 0-5 bars or -113 to -51 dBm |
+
+### Experimental Channels
+
+| Channel ID | AVL ID | Description | Unit | Notes |
+|------------|--------|-------------|------|-------|
+| io42 | io42 | Intake Air Temperature | °C | OBD-II sensor |
+| io49 | io49 | Accelerator Pedal Position | % | Throttle position |
+| io51 | io51 | Fuel Type | - | Gasoline/Diesel/Electric |
+| tripDistance | - | Trip Distance | km | Current trip odometer |
+| eventCode | - | Event Code | - | Traccar event identifier |
+
 ## Implementation Details
 
 ### 1. Channel Constants
@@ -110,6 +132,72 @@ if (io199Obj instanceof Number) {
     double trip1Meters = ((Number) io199Obj).doubleValue();
     updateState(CHANNEL_IO199,
         new QuantityType<>(trip1Meters / 1000.0, MetricPrefix.KILO(SIUnits.METRE)));
+}
+```
+
+#### Tracker Device Handlers
+```java
+// PDOP/HDOP - GPS Quality Indicators
+Object pdopObj = position.getDouble("accuracy");  // From position object
+if (pdopObj != null) {
+    updateState(CHANNEL_PDOP, new DecimalType((Double) pdopObj));
+}
+
+// Power Voltage (io16)
+Object io16Obj = attributes.get("io16");
+if (io16Obj instanceof Number) {
+    double voltage = ((Number) io16Obj).doubleValue() / 1000.0;  // mV to V
+    updateState(CHANNEL_POWER, new QuantityType<>(voltage, Units.VOLT));
+}
+
+// Battery Voltage (io113)
+Object io113Obj = attributes.get("io113");
+if (io113Obj instanceof Number) {
+    double batteryVoltage = ((Number) io113Obj).doubleValue() / 1000.0;  // mV to V
+    updateState(CHANNEL_BATTERY, new QuantityType<>(batteryVoltage, Units.VOLT));
+}
+
+// GSM Operator (io70) - Strip decimal for MAP transformation
+Object operatorObj = attributes.get("io70");
+if (operatorObj instanceof Number) {
+    String operatorCode = String.valueOf(((Number) operatorObj).intValue());
+    updateState(CHANNEL_OPERATOR, new StringType(operatorCode));
+}
+
+// RSSI - Handle both Teltonika bar scale (0-5) and dBm scale
+Object io21Obj = attributes.get("io21");
+if (io21Obj instanceof Number) {
+    int rssiValue = ((Number) io21Obj).intValue();
+    if (rssiValue >= 0 && rssiValue <= 5) {
+        // Teltonika bar scale: 0-5
+        updateState(CHANNEL_RSSI, new DecimalType(rssiValue));
+    } else if (rssiValue < 0) {
+        // dBm scale: -113 to -51
+        updateState(CHANNEL_RSSI, new DecimalType(rssiValue));
+    }
+}
+```
+
+#### Experimental Channel Handlers
+```java
+// io42: Intake Air Temperature
+Object io42Obj = attributes.get("io42");
+if (io42Obj instanceof Number) {
+    int temp = ((Number) io42Obj).intValue();
+    updateState(CHANNEL_IO42, new QuantityType<>(temp, SIUnits.CELSIUS));
+}
+
+// io49: Accelerator Pedal Position
+Object io49Obj = attributes.get("io49");
+if (io49Obj instanceof Number) {
+    double position = ((Number) io49Obj).doubleValue();
+    updateState(CHANNEL_IO49, new QuantityType<>(position, Units.PERCENT));
+}
+
+// io51: Fuel Type
+Object io51Obj = attributes.get("io51");
+if (io51Obj instanceof Number) {
+    updateState(CHANNEL_IO51, new DecimalType(((Number) io51Obj).intValue()));
 }
 ```
 
@@ -228,6 +316,60 @@ File: `transform/fuelTrim.js`
 - **Good** (5-10%): Acceptable adjustments
 - **Monitor** (10-15%): Significant adjustment, check soon
 - **Check Engine** (>15%): Problem detected, service needed
+
+### GPS Quality Indicators
+
+Files: `transform/pdop.js` and `transform/hdop.js`
+
+```javascript
+(function(i) {
+    var val = parseFloat(i);
+    if (isNaN(val)) return "Unknown";
+    
+    if (val <= 2) return "Excellent";
+    if (val <= 5) return "Good";
+    if (val <= 10) return "Fair";
+    return "Poor";
+})(input)
+```
+
+**Usage**: Converts numeric GPS precision values to user-friendly quality ratings.
+- **PDOP** (3D Position Dilution of Precision): Overall GPS accuracy
+- **HDOP** (Horizontal Dilution of Precision): Horizontal position accuracy
+
+**Ranges**:
+- **Excellent** (≤2): High precision, ideal conditions
+- **Good** (2-5): Normal GPS operation
+- **Fair** (5-10): Acceptable accuracy
+- **Poor** (>10): Low accuracy, limited satellite visibility
+
+### Mobile Operator Code Transformation
+
+File: `transform/operator.map`
+
+**Coverage**: 400+ worldwide mobile operators from 50+ countries
+
+**Supported Regions**:
+- 🇪🇺 **Europe**: Denmark, Norway, Sweden, Finland, UK, Germany, France, Spain, Italy, Netherlands, Belgium, Switzerland, Austria, Poland, Czech Republic, Portugal, Greece, Romania, Hungary, Ireland, Iceland, Russia, Ukraine
+- 🌎 **Americas**: USA, Canada, Mexico, Brazil, Argentina, Chile, Colombia
+- 🌏 **Asia-Pacific**: China, Japan, South Korea, India, Singapore, Malaysia, Thailand, Philippines, Indonesia, Vietnam, Taiwan, Hong Kong, Australia, New Zealand
+- 🕌 **Middle East**: Turkey, Saudi Arabia, UAE, Israel
+- 🌍 **Africa**: Egypt, South Africa, Nigeria, Kenya
+
+**Format**: MCC+MNC codes (Mobile Country Code + Mobile Network Code)
+
+**Example mappings**:
+```
+23801=TDC NET (Denmark)
+310030=AT&T (USA)
+44010=NTT Docomo (Japan)
+50501=Telstra (Australia)
+26201=T-Mobile Germany (Germany)
+```
+
+**Usage**: Automatically converts numeric operator codes (e.g., "23801") to readable names ("TDC NET (Denmark)") in the UI.
+
+**Applied to**: `Vehicle10_Operator` channel (io70 - GSM operator code)
 
 ## Testing & Validation
 
