@@ -67,6 +67,13 @@ Number:ElectricPotential Vehicle10_Battery "Tracker Battery [%.2f V]" <battery> 
 String Vehicle10_Operator "Mobile Operator [MAP(operator.map):%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:operator"}
 String Vehicle10_Vin "VIN [%s]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:vin"}
 
+// Experimental Teltonika IO Channels (unknown purpose)
+Number Vehicle10_Io42 "IO42 [%d]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io42"}
+Number Vehicle10_Io49 "IO49 [%d]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io49"}
+Number Vehicle10_Io51 "IO51 [%d]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io51"}
+Number:Length Vehicle10_TripDistance "Trip Distance [%.1f %unit%]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:tripDistance"}
+Number Vehicle10_EventCode "Event Code [%d]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:eventCode"}
+
 // Vehicle 694049 (Device ID: 1)
 Group gVehicle1 "Vehicle 694049" <car>
 

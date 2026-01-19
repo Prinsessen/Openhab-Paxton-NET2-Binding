@@ -80,6 +80,13 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_ObdRpmReported label="RPM io37 [%d o/min]" icon="qualityofservice"
 						Text item=Vehicle10_Vin label="VIN [%s]" icon="text"
 					}
+					Frame label="Experimental Channels" {
+						Text item=Vehicle10_Io42 label="IO42 [%d]" icon="zoom"
+						Text item=Vehicle10_Io49 label="IO49 [%d]" icon="zoom"
+						Text item=Vehicle10_Io51 label="IO51 [%d]" icon="zoom"
+						Text item=Vehicle10_TripDistance label="Trip Distance [%.1f m]" icon="line"
+						Text item=Vehicle10_EventCode label="Event Code [%d]" icon="text"
+					}
 				}
 			}
 		}
