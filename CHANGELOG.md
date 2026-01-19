@@ -7,6 +7,85 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 14:45:16
+- Added: icons/classic/airfilter-blue.svg
+- Added: icons/classic/alarm-light-red.svg
+- Added: icons/classic/basement-gray.svg
+- Added: icons/classic/bathroom-cyan.svg
+- Added: icons/classic/bedroom-purple.svg
+- Added: icons/classic/boiler-orange.svg
+- Added: icons/classic/boy-blue.svg
+- Added: icons/classic/brightness-orange.svg
+- Added: icons/classic/camera-pan-blue.svg
+- Added: icons/classic/camera-ptz-blue.svg
+- Added: icons/classic/camera-tilt-blue.svg
+- Added: icons/classic/camera-zoom-blue.svg
+- Added: icons/classic/chart-blue.svg
+- Added: icons/classic/co2-orange.svg
+- Added: icons/classic/color-purple.svg
+- Added: icons/classic/contact-blue.svg
+- Added: icons/classic/dining-orange.svg
+- Added: icons/classic/dishwasher-blue.svg
+- Added: icons/classic/dot-blue.svg
+- Added: icons/classic/energy-bar-green.svg
+- Added: icons/classic/fan-blue.svg
+- Added: icons/classic/fire-orange.svg
+- Added: icons/classic/floor1-blue.svg
+- Added: icons/classic/garage-gray.svg
+- Added: icons/classic/garden-green.svg
+- Added: icons/classic/girl-pink.svg
+- Added: icons/classic/graph-green.svg
+- Added: icons/classic/grid-orange.svg
+- Added: icons/classic/hallway-gray.svg
+- Added: icons/classic/house-blue.svg
+- Added: icons/classic/humidity-cyan.svg
+- Added: icons/classic/image-purple.svg
+- Added: icons/classic/info-blue.svg
+- Added: icons/classic/info-variant-blue.svg
+- Added: icons/classic/kitchen-orange.svg
+- Added: icons/classic/light-off-gray.svg
+- Added: icons/classic/light-yellow.svg
+- Added: icons/classic/list-blue.svg
+- Added: icons/classic/livingroom-green.svg
+- Added: icons/classic/lock-orange.svg
+- Added: icons/classic/moon-yellow.svg
+- Added: icons/classic/music-purple.svg
+- Added: icons/classic/office-blue.svg
+- Added: icons/classic/people-purple.svg
+- Added: icons/classic/reset-blue.svg
+- Added: icons/classic/settings-blue.svg
+- Added: icons/classic/shield-red.svg
+- Added: icons/classic/smoke-red.svg
+- Added: icons/classic/solar-panel-yellow.svg
+- Added: icons/classic/solar-production-yellow.svg
+- Added: icons/classic/speaker-blue.svg
+- Added: icons/classic/stairs-gray.svg
+- Added: icons/classic/sun-yellow.svg
+- Added: icons/classic/sunrise-orange.svg
+- Added: icons/classic/sunset-orange.svg
+- Added: icons/classic/technical-orange.svg
+- Added: icons/classic/temp-max-orange.svg
+- Added: icons/classic/temp-min-cyan.svg
+- Added: icons/classic/time-hour-orange.svg
+- Added: icons/classic/time-month-cyan.svg
+- Added: icons/classic/time-today-blue.svg
+- Added: icons/classic/time-week-purple.svg
+- Added: icons/classic/time-year-yellow.svg
+- Added: icons/classic/timer-blue.svg
+- Added: icons/classic/tools-orange.svg
+- Added: icons/classic/tv-blue.svg
+- Added: icons/classic/utility-blue.svg
+- Added: icons/classic/valve-orange.svg
+- Added: icons/classic/water-blue.svg
+- Added: icons/classic/water-check-green.svg
+- Added: icons/classic/water-pump-blue.svg
+- Added: icons/classic/wind-cyan.svg
+- Added: icons/classic/window-blue.svg
+- Added: icons/classic/wine-red.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 14:30:16
 - Added: icons/classic/activity-teal.svg
 - Added: icons/classic/activity-time-blue.svg
