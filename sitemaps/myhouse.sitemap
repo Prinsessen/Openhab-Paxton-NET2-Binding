@@ -57,9 +57,14 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Ignition label="Ignition [MAP(ignition.map):%s]" icon="fire"
 				Text item=Vehicle10_Accuracy label="Accuracy [%.1f %unit%]" icon="accurate"
 				Text item=Vehicle10_Course label="Course [%.0f°]" icon="course-1"
+				Text item=Vehicle10_Pdop label="GPS 3D Quality [%.1f]" icon="zoom"
+				Text item=Vehicle10_Hdop label="GPS 2D Quality [%.1f]" icon="zoom"
+				Text item=Vehicle10_Power label="Vehicle Power [%.2f V]" icon="energy"
+				Text item=Vehicle10_Battery label="Tracker Battery [%.2f V]" icon="battery"
+				Text item=Vehicle10_Operator label="Operator [MAP(operator.map):%s]" icon="network"
 				Text label="OBD-II Data" icon="engine-on" {
 					Frame label="Engine" {
-						Text item=Vehicle10_ObdRpm label="RPM [%d]" icon="qualityofservice"
+						Text item=Vehicle10_ObdRpm label="RPM [%d o/min]" icon="qualityofservice"
 						Text item=Vehicle10_ObdEngineLoad label="Engine Load [%.1f %%]" icon="pressure"
 						Text item=Vehicle10_ObdCoolantTemp label="Coolant Temp [%.1f °C]" icon="temperature"
 						Text item=Vehicle10_ObdSpeed label="OBD Speed [%.1f km/h]" icon="speed-color"
@@ -72,15 +77,8 @@ sitemap myhouse label="Nanna Agesen"
 					Frame label="Diagnostics" {
 						Text item=Vehicle10_ObdDtcCount label="Trouble Codes [%d]" icon="error"
 						Text item=Vehicle10_ObdOemOdometer label="CAN Odometer [%.1f km]" icon="odometer"
-						Text item=Vehicle10_ObdRpmReported label="RPM (io37) [%d]" icon="qualityofservice"
+						Text item=Vehicle10_ObdRpmReported label="RPM io37 [%d o/min]" icon="qualityofservice"
 						Text item=Vehicle10_Vin label="VIN [%s]" icon="text"
-					}
-					Frame label="GPS & Power" {
-						Text item=Vehicle10_Pdop label="PDOP [%.1f]" icon="zoom"
-						Text item=Vehicle10_Hdop label="HDOP [%.1f]" icon="zoom"
-						Text item=Vehicle10_Power label="Vehicle Power [%.2f V]" icon="energy"
-						Text item=Vehicle10_Battery label="Tracker Battery [%.2f V]" icon="battery"
-						Text item=Vehicle10_Operator label="Operator [MAP(operator.map):%s]" icon="network"
 					}
 				}
 			}
