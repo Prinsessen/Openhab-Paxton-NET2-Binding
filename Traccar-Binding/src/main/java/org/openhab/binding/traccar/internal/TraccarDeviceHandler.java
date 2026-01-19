@@ -277,26 +277,18 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                 updateState(CHANNEL_BATTERY_LEVEL, new QuantityType<>(battery, Units.PERCENT));
             }
 
-            // Odometer - Teltonika uses totalDistance, OSMand uses odometer
-            Object odometerObj = null;
-            if ("teltonika".equalsIgnoreCase(protocol)) {
-                // Teltonika: Always use totalDistance, ignore odometer
-                odometerObj = attributes.get("totalDistance");
-                logger.debug("Teltonika protocol: Using totalDistance for odometer: {}", odometerObj);
-            } else {
-                // Other protocols (OSMand): Try odometer first, fallback to totalDistance
-                odometerObj = attributes.get("odometer");
-                if (odometerObj == null) {
-                    odometerObj = attributes.get("totalDistance");
-                    logger.debug("Using totalDistance for odometer: {}", odometerObj);
-                } else {
-                    logger.debug("Using odometer attribute: {}", odometerObj);
-                }
-            }
+            // Odometer (device-reported, mainly for OSMand)
+            Object odometerObj = attributes.get("odometer");
             if (odometerObj instanceof Number) {
                 double odometerMeters = ((Number) odometerObj).doubleValue();
-                logger.debug("Odometer: {} meters", odometerMeters);
                 updateState(CHANNEL_ODOMETER, new QuantityType<>(odometerMeters, SIUnits.METRE));
+            }
+
+            // Total Distance (Traccar server cumulative distance, all protocols)
+            Object totalDistanceObj = attributes.get("totalDistance");
+            if (totalDistanceObj instanceof Number) {
+                double totalDistanceMeters = ((Number) totalDistanceObj).doubleValue();
+                updateState(CHANNEL_TOTAL_DISTANCE, new QuantityType<>(totalDistanceMeters, SIUnits.METRE));
             }
 
             // Motion detection

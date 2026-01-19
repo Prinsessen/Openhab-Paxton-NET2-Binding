@@ -111,6 +111,7 @@
 			<channel id="accuracy" typeId="accuracy"/>
 			<channel id="batteryLevel" typeId="battery-level"/>
 			<channel id="odometer" typeId="odometer"/>
+			<channel id="totalDistance" typeId="total-distance"/>
 			<channel id="motion" typeId="motion"/>
 			<channel id="address" typeId="address"/>
 			<channel id="gpsSatellites" typeId="gps-satellites"/>
@@ -219,7 +220,14 @@
 	<channel-type id="odometer">
 		<item-type>Number:Length</item-type>
 		<label>Odometer</label>
-		<description>Total distance traveled</description>
+		<description>Device odometer reading (OSMand protocol only)</description>
+		<state readOnly="true" pattern="%.1f km"/>
+	</channel-type>
+
+	<channel-type id="total-distance">
+		<item-type>Number:Length</item-type>
+		<label>Total Distance</label>
+		<description>Cumulative distance tracked by Traccar server (all protocols)</description>
 		<state readOnly="true" pattern="%.1f km"/>
 	</channel-type>
 

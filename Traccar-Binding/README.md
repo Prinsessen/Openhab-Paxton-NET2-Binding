@@ -40,9 +40,12 @@ This binding supports the following thing types:
 - **Bridge-level configuration**: Single setting applies to all devices
 
 ### Distance Tracking
-- **Odometer**: Total distance traveled with automatic km conversion
-- **Incremental Distance**: Distance since last position update (trip tracking)
-- Protocol-agnostic support (Teltonika `totalDistance`, OSMand `odometer`)
+- **Three distance channels**: `odometer`, `totalDistance`, and `distance` for different tracking needs
+- **Protocol-aware**: Automatic handling of protocol-specific fields
+  - **Teltonika**: Use `totalDistance` (actual vehicle odometer from device)
+  - **OSMand**: Use `odometer` (phone app distance tracking)
+- **Incremental tracking**: `distance` channel shows trip distance since last update
+- Automatic meter-to-kilometer conversion with unit specifications
 
 ### Device Information
 - Battery level monitoring
@@ -125,8 +128,14 @@ The binding automatically discovers devices configured in your Traccar server:
 
 | Channel | Type | Description | Example State |
 |---------|------|-------------|---------------|
-| `odometer` | Number:Length | Total distance traveled (auto-converts to km) | 33,279.5 km |
-| `distance` | Number:Length | Incremental distance since last update | 15.3 m |
+| `odometer` | Number:Length | Device odometer reading (OSMand protocol only) | 347.8 km |
+| `totalDistance` | Number:Length | Cumulative distance tracked by Traccar server (all protocols) | 33,279.5 km |
+| `distance` | Number:Length | Trip distance since last position update | 15.3 m |
+
+**Protocol-Specific Usage:**
+- **Teltonika devices**: Use `totalDistance` - contains actual vehicle odometer value
+- **OSMand (phone tracking)**: Use `odometer` - contains device-reported distance
+- **All protocols**: Use `distance` for incremental trip tracking
 
 ### Device Status
 
@@ -212,10 +221,16 @@ String FamilyCar_Address "Address [%s]" (gFamilyCar)
     {channel="traccar:device:myserver:car1:address"}
 
 // Distance Tracking (automatic km conversion with unit="km")
-Number:Length FamilyCar_Odometer "Odometer [%.1f km]" (gFamilyCar) 
-    {channel="traccar:device:myserver:car1:odometer", unit="km"}
+// For Teltonika/vehicle trackers - use totalDistance (actual odometer)
+Number:Length FamilyCar_TotalDistance "Odometer [%.1f km]" (gFamilyCar) 
+    {channel="traccar:device:myserver:car1:totalDistance", unit="km"}
 
-Number:Length FamilyCar_Distance "Distance [%.1f m]" (gFamilyCar) 
+// For OSMand/phone trackers - use odometer (device reading)
+Number:Length Phone_Odometer "Distance [%.1f km]" (gFamilyCar) 
+    {channel="traccar:device:myserver:phone1:odometer", unit="km"}
+
+// Trip distance (all protocols)
+Number:Length FamilyCar_Distance "Trip Distance [%.1f m]" (gFamilyCar) 
     {channel="traccar:device:myserver:car1:distance"}
 
 // Device Status

@@ -46,6 +46,7 @@ public class TraccarBindingConstants {
     public static final String CHANNEL_ACCURACY = "accuracy";
     public static final String CHANNEL_BATTERY_LEVEL = "batteryLevel";
     public static final String CHANNEL_ODOMETER = "odometer";
+    public static final String CHANNEL_TOTAL_DISTANCE = "totalDistance";
     public static final String CHANNEL_MOTION = "motion";
     public static final String CHANNEL_ADDRESS = "address";
     public static final String CHANNEL_GPS_SAT = "gpsSatellites";

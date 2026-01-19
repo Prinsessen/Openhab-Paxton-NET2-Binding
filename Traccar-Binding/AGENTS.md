@@ -116,33 +116,49 @@ switch(speedUnitConfig) {
 updateState(CHANNEL_SPEED, new QuantityType<>(convertedSpeed, speedUnit));
 ```
 
-### Distance Channels (Protocol-Agnostic)
+### Distance Channels (Three Separate Channels)
 
-**Critical Implementation**: Handles both Teltonika (`totalDistance`) and OSMand (`odometer`)
+**Critical Implementation**: Three distinct channels for different distance tracking needs
 
+| Channel | Source Field | Description | Protocol |
+|---------|--------------|-------------|----------|
+| `odometer` | `attributes.odometer` | Device odometer reading | OSMand only |
+| `totalDistance` | `attributes.totalDistance` | Server cumulative distance | All protocols |
+| `distance` | `attributes.distance` | Trip distance since last update | All protocols |
+
+**Implementation**:
 ```java
-// Odometer - support both OSMand (odometer) and Teltonika (totalDistance)
+// Odometer (device-reported, mainly for OSMand)
 Object odometerObj = attributes.get("odometer");
-if (odometerObj == null) {
-    odometerObj = attributes.get("totalDistance");
-    logger.debug("Using totalDistance for odometer: {}", odometerObj);
-} else {
-    logger.debug("Using odometer attribute: {}", odometerObj);
-}
 if (odometerObj instanceof Number) {
     double odometerMeters = ((Number) odometerObj).doubleValue();
-    logger.debug("Odometer: {} meters", odometerMeters);
-    // Send in meters - OpenHAB will convert based on item metadata
     updateState(CHANNEL_ODOMETER, new QuantityType<>(odometerMeters, SIUnits.METRE));
 }
 
-// Distance - incremental distance since last update
+// Total Distance (Traccar server cumulative distance, all protocols)
+Object totalDistanceObj = attributes.get("totalDistance");
+if (totalDistanceObj instanceof Number) {
+    double totalDistanceMeters = ((Number) totalDistanceObj).doubleValue();
+    updateState(CHANNEL_TOTAL_DISTANCE, new QuantityType<>(totalDistanceMeters, SIUnits.METRE));
+}
+
+// Distance (incremental distance since last update)
 Object distanceObj = attributes.get("distance");
 if (distanceObj instanceof Number) {
     double distanceMeters = ((Number) distanceObj).doubleValue();
     updateState(CHANNEL_DISTANCE, new QuantityType<>(distanceMeters, SIUnits.METRE));
 }
 ```
+
+**Protocol-Specific Usage**:
+- **Teltonika devices**: Use `totalDistance` channel - contains actual vehicle odometer value
+  - Example: Springfield motorcycle shows 33,280 km (real odometer reading)
+  - Teltonika sends vehicle odometer in the `totalDistance` field
+- **OSMand (phone tracking)**: Use `odometer` channel - contains device-reported distance
+  - Example: Dream Catcher phone shows 347.8 km (distance tracked by app)
+  - OSMand reports app's own tracking in the `odometer` field
+  - The `totalDistance` field for OSMand contains Traccar's cumulative calculation (often unrealistically high)
+- **All protocols**: Use `distance` channel for real-time trip tracking since last position update
 
 **Unit Conversion Philosophy**:
 - Binding sends values in **base units** (meters, not kilometers)
@@ -194,7 +210,7 @@ then
         lastIgnitionOnTime = currentTime
         
         // Extract values
-        val odometerState = Vehicle10_Odometer.state
+        val odometerState = Vehicle10_TotalDistance.state
         val odometer = if (odometerState != NULL) 
             String.format("%.1f km", (odometerState as Number).doubleValue) 
             else "Unknown"

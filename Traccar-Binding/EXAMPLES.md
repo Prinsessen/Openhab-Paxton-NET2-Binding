@@ -343,11 +343,64 @@ end
 
 ## Distance Tracking
 
+### Understanding Distance Channels
+
+The Traccar binding provides three separate distance channels to accommodate different tracking protocols and use cases:
+
+**1. `odometer` - Device Odometer (OSMand Protocol)**
+- Available only for OSMand protocol (phone tracking apps)
+- Contains the distance value reported by the tracking app
+- Example: 347.8 km (distance tracked by phone app)
+
+**2. `totalDistance` - Server Cumulative Distance (All Protocols)**
+- Available for all protocols (Teltonika, OSMand, etc.)
+- Cumulative distance calculated by Traccar server
+- For Teltonika devices: Contains actual vehicle odometer value
+- For OSMand devices: Contains server-calculated total (may be very high)
+
+**3. `distance` - Trip Distance (All Protocols)**
+- Distance since last position update
+- Used for real-time trip tracking
+- Example: 15.3 m (distance moved in last update)
+
+### Protocol-Specific Examples
+
+#### Teltonika Vehicle Tracker (Motorcycle/Car)
+
+```openhab
+// Use totalDistance for actual vehicle odometer
+Number:Length Springfield_TotalDistance "Odometer [%.1f km]" 
+    {channel="traccar:device:gpsserver:motorcycle:totalDistance", unit="km"}
+
+Number:Length Springfield_Trip "Trip Distance [%.1f m]" 
+    {channel="traccar:device:gpsserver:motorcycle:distance"}
+```
+
+**Why totalDistance?** Teltonika devices send the actual vehicle odometer value in the `totalDistance` field. This gives you the real motorcycle/car odometer reading (e.g., 33,280 km).
+
+#### OSMand Phone Tracker
+
+```openhab
+// Use odometer for device-reported distance
+Number:Length Phone_Odometer "Distance (Device) [%.1f km]" 
+    {channel="traccar:device:gpsserver:phone:odometer", unit="km"}
+
+// Optionally also track server cumulative (usually very high)
+Number:Length Phone_TotalDistance "Total (Server) [%.1f km]" 
+    {channel="traccar:device:gpsserver:phone:totalDistance", unit="km"}
+
+Number:Length Phone_Trip "Trip Distance [%.1f m]" 
+    {channel="traccar:device:gpsserver:phone:distance"}
+```
+
+**Why odometer?** OSMand apps report their own distance tracking in the `odometer` field. This is the actual distance tracked by the phone (e.g., 347.8 km). The `totalDistance` field contains Traccar's cumulative calculation which can be unrealistically high (e.g., 190,021 km).
+
 ### Daily Odometer Reset
 
 ```openhab
-Number:Length MyCar_Odometer "Total Distance [%.1f km]" 
-    {channel="traccar:device:demo:mycar:odometer"}
+// Choose appropriate channel based on your device protocol
+Number:Length MyCar_TotalDistance "Total Distance [%.1f km]" 
+    {channel="traccar:device:demo:mycar:totalDistance", unit="km"}
 
 Number:Length MyCar_DailyDistance "Today [%.1f km]"
 Number:Length MyCar_MonthlyDistance "This Month [%.1f km]"
@@ -370,9 +423,9 @@ end
 
 rule "Update Daily Distance"
 when
-    Item MyCar_Odometer changed
+    Item MyCar_TotalDistance changed
 then
-    val currentOdo = MyCar_Odometer.state as QuantityType<Length>
+    val currentOdo = MyCar_TotalDistance.state as QuantityType<Length>
     val dailyStart = MyCar_DailyDistance.state as QuantityType<Length>
     
     // Calculate distance driven today
