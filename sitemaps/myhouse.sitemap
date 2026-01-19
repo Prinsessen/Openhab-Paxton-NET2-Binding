@@ -73,7 +73,7 @@ sitemap myhouse label="Nanna Agesen"
 					Frame label="Fuel System" {
 						Text item=Vehicle10_ObdFuelLevel label="Fuel Level [%.1f %%]" icon="oil"
 						Text item=Vehicle10_ObdFuelPressure label="Fuel Pressure [%.0f kPa]" icon="pressure"
-						Text item=Vehicle10_ObdShortFuelTrim label="Fuel Trim [%.1f %%]" icon="line"
+						Text item=Vehicle10_ObdShortFuelTrim icon="line"
 					}
 					Frame label="Diagnostics" {
 						Text item=Vehicle10_ObdDtcCount label="Trouble Codes [%d]" icon="error"

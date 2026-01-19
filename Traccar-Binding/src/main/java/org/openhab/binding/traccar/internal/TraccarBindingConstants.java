@@ -58,5 +58,37 @@ public class TraccarBindingConstants {
     public static final String CHANNEL_DISTANCE = "distance";
     public static final String CHANNEL_ACTIVITY = "activity";
     public static final String CHANNEL_PROTOCOL = "protocol";
+
+    // OBD-II Channels (Teltonika FMM920 with Bluetooth OBD-II dongle)
+    public static final String CHANNEL_OBD_DTC_COUNT = "obdDtcCount";
+    public static final String CHANNEL_OBD_ENGINE_LOAD = "obdEngineLoad";
+    public static final String CHANNEL_OBD_COOLANT_TEMP = "obdCoolantTemp";
+    public static final String CHANNEL_OBD_SHORT_FUEL_TRIM = "obdShortFuelTrim";
+    public static final String CHANNEL_OBD_FUEL_PRESSURE = "obdFuelPressure";
+    public static final String CHANNEL_OBD_RPM = "obdRpm";
+    public static final String CHANNEL_OBD_RPM_REPORTED = "obdRpmReported";
+    public static final String CHANNEL_OBD_SPEED = "obdSpeed";
+    public static final String CHANNEL_OBD_FUEL_LEVEL = "obdFuelLevel";
+    public static final String CHANNEL_OBD_OEM_ODOMETER = "obdOemOdometer";
     public static final String CHANNEL_IGNITION = "ignition";
+
+    // Additional Teltonika/GPS Channels
+    public static final String CHANNEL_PDOP = "pdop";
+    public static final String CHANNEL_HDOP = "hdop";
+    public static final String CHANNEL_POWER = "power";
+    public static final String CHANNEL_BATTERY = "battery";
+    public static final String CHANNEL_OPERATOR = "operator";
+    public static final String CHANNEL_VIN = "vin";
+
+    // Additional Teltonika IO Channels (experimental/unknown)
+    public static final String CHANNEL_IO42 = "io42";
+    public static final String CHANNEL_IO49 = "io49";
+    public static final String CHANNEL_IO51 = "io51";
+    public static final String CHANNEL_TRIP_DISTANCE = "tripDistance";
+    public static final String CHANNEL_EVENT_CODE = "eventCode";
+
+    // OBD-II Trip Meters from ECU
+    public static final String CHANNEL_IO199 = "io199";
+    public static final String CHANNEL_IO205 = "io205";
+    public static final String CHANNEL_IO389 = "io389";
 }

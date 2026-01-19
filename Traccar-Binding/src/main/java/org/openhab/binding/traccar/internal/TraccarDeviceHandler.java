@@ -28,6 +28,7 @@ import org.openhab.core.library.types.PointType;
 import org.openhab.core.library.types.QuantityType;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.library.unit.ImperialUnits;
+import org.openhab.core.library.unit.MetricPrefix;
 import org.openhab.core.library.unit.SIUnits;
 import org.openhab.core.library.unit.Units;
 import org.openhab.core.thing.Bridge;
@@ -343,9 +344,16 @@ public class TraccarDeviceHandler extends BaseThingHandler {
             Object rssiObj = attributes.get("rssi");
             if (rssiObj instanceof Number) {
                 double rssi = ((Number) rssiObj).doubleValue();
-                // Convert RSSI to percentage (typical range: -113 to -51 dBm)
-                // Using formula: percentage = 2 * (rssi + 113)
-                double signalPercent = Math.max(0, Math.min(100, 2 * (rssi + 113)));
+                double signalPercent;
+                if (rssi >= 0 && rssi <= 5) {
+                    // Teltonika bar scale: 0-5 bars, convert to percentage
+                    signalPercent = (rssi / 5.0) * 100.0;
+                } else if (rssi < 0) {
+                    // dBm scale: -113 to -51 dBm
+                    signalPercent = Math.max(0, Math.min(100, 2 * (rssi + 113)));
+                } else {
+                    signalPercent = rssi; // Already percentage
+                }
                 updateState(CHANNEL_GSM_SIGNAL, new QuantityType<>(signalPercent, Units.PERCENT));
             } else {
                 // Try alternative attribute name "gsm"
@@ -353,6 +361,192 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                 if (gsmObj instanceof Number) {
                     double gsm = ((Number) gsmObj).doubleValue();
                     updateState(CHANNEL_GSM_SIGNAL, new QuantityType<>(gsm, Units.PERCENT));
+                }
+            }
+
+            // GPS Dilution of Precision (DOP) metrics
+            Object pdopObj = attributes.get("pdop");
+            if (pdopObj instanceof Number) {
+                double pdop = ((Number) pdopObj).doubleValue();
+                updateState(CHANNEL_PDOP, new DecimalType(pdop));
+            }
+
+            Object hdopObj = attributes.get("hdop");
+            if (hdopObj instanceof Number) {
+                double hdop = ((Number) hdopObj).doubleValue();
+                updateState(CHANNEL_HDOP, new DecimalType(hdop));
+            }
+
+            // Power and Battery voltages
+            Object powerObj = attributes.get("power");
+            if (powerObj instanceof Number) {
+                double powerVolts = ((Number) powerObj).doubleValue();
+                updateState(CHANNEL_POWER, new QuantityType<>(powerVolts, Units.VOLT));
+            }
+
+            Object batteryObjVolt = attributes.get("battery");
+            if (batteryObjVolt instanceof Number) {
+                double batteryVolts = ((Number) batteryObjVolt).doubleValue();
+                updateState(CHANNEL_BATTERY, new QuantityType<>(batteryVolts, Units.VOLT));
+            }
+
+            // Mobile operator code
+            Object operatorObj = attributes.get("operator");
+            if (operatorObj != null) {
+                String operatorCode;
+                if (operatorObj instanceof Number) {
+                    // Convert to integer to remove decimal point (23801.0 -> 23801)
+                    operatorCode = String.valueOf(((Number) operatorObj).intValue());
+                } else {
+                    operatorCode = operatorObj.toString();
+                }
+                updateState(CHANNEL_OPERATOR, new StringType(operatorCode));
+            }
+
+            // Vehicle Identification Number (VIN)
+            Object vinObj = attributes.get("vin");
+            if (vinObj != null) {
+                updateState(CHANNEL_VIN, new StringType(vinObj.toString()));
+            }
+
+            // Additional Teltonika IO Channels (experimental/unknown purpose)
+            // io42: Varies 84-94 (possibly intake air temperature or another sensor)
+            Object io42Obj = attributes.get("io42");
+            if (io42Obj instanceof Number) {
+                int io42 = ((Number) io42Obj).intValue();
+                updateState(CHANNEL_IO42, new DecimalType(io42));
+            }
+
+            // io49: Typically constant ~5816 (possibly battery voltage in mV)
+            Object io49Obj = attributes.get("io49");
+            if (io49Obj instanceof Number) {
+                int io49 = ((Number) io49Obj).intValue();
+                updateState(CHANNEL_IO49, new DecimalType(io49));
+            }
+
+            // io51: Varies 14000-14200 (possibly alternator voltage in mV)
+            Object io51Obj = attributes.get("io51");
+            if (io51Obj instanceof Number) {
+                int io51 = ((Number) io51Obj).intValue();
+                updateState(CHANNEL_IO51, new DecimalType(io51));
+            }
+
+            // Trip distance (resets)
+            Object tripDistanceObj = attributes.get("distance");
+            if (tripDistanceObj instanceof Number) {
+                double tripDist = ((Number) tripDistanceObj).doubleValue();
+                updateState(CHANNEL_TRIP_DISTANCE, new QuantityType<>(tripDist, SIUnits.METRE));
+            }
+
+            // Teltonika event code (e.g., 36 = OBD-II data update)
+            Object eventCodeObj = attributes.get("event");
+            if (eventCodeObj instanceof Number) {
+                int eventCode = ((Number) eventCodeObj).intValue();
+                updateState(CHANNEL_EVENT_CODE, new DecimalType(eventCode));
+            }
+
+            // OBD-II Trip Meters from ECU
+            // io199: Trip odometer 1 (in meters, convert to km)
+            Object io199Obj = attributes.get("io199");
+            if (io199Obj instanceof Number) {
+                double trip1Meters = ((Number) io199Obj).doubleValue();
+                updateState(CHANNEL_IO199, new QuantityType<>(trip1Meters / 1000.0, MetricPrefix.KILO(SIUnits.METRE)));
+            }
+
+            // io205: Trip odometer 2 (in meters, convert to km)
+            Object io205Obj = attributes.get("io205");
+            if (io205Obj instanceof Number) {
+                double trip2Meters = ((Number) io205Obj).doubleValue();
+                updateState(CHANNEL_IO205, new QuantityType<>(trip2Meters / 1000.0, MetricPrefix.KILO(SIUnits.METRE)));
+            }
+
+            // io389: Total vehicle mileage from ECU (in meters, convert to km)
+            Object io389Obj = attributes.get("io389");
+            if (io389Obj instanceof Number) {
+                double ecuOdometerMeters = ((Number) io389Obj).doubleValue();
+                updateState(CHANNEL_IO389,
+                        new QuantityType<>(ecuOdometerMeters / 1000.0, MetricPrefix.KILO(SIUnits.METRE)));
+            }
+
+            // OBD-II Data (Teltonika FMM920 with Bluetooth OBD-II dongle)
+            // These channels are only populated when an OBD-II dongle is paired and ignition is ON
+
+            // io30: Number of Diagnostic Trouble Codes (DTCs)
+            Object io30Obj = attributes.get("io30");
+            if (io30Obj instanceof Number) {
+                int dtcCount = ((Number) io30Obj).intValue();
+                updateState(CHANNEL_OBD_DTC_COUNT, new DecimalType(dtcCount));
+            }
+
+            // io31: Engine Load [%]
+            Object io31Obj = attributes.get("io31");
+            if (io31Obj instanceof Number) {
+                double engineLoad = ((Number) io31Obj).doubleValue();
+                updateState(CHANNEL_OBD_ENGINE_LOAD, new QuantityType<>(engineLoad, Units.PERCENT));
+            }
+
+            // io32: Coolant Temperature [°C]
+            Object io32Obj = attributes.get("io32");
+            if (io32Obj instanceof Number) {
+                double coolantTemp = ((Number) io32Obj).doubleValue();
+                updateState(CHANNEL_OBD_COOLANT_TEMP, new QuantityType<>(coolantTemp, SIUnits.CELSIUS));
+            }
+
+            // io33: Short Fuel Trim [%]
+            Object io33Obj = attributes.get("io33");
+            if (io33Obj instanceof Number) {
+                double shortFuelTrim = ((Number) io33Obj).doubleValue();
+                updateState(CHANNEL_OBD_SHORT_FUEL_TRIM, new QuantityType<>(shortFuelTrim, Units.PERCENT));
+            }
+
+            // io35: Fuel Pressure [kPa]
+            Object io35Obj = attributes.get("io35");
+            if (io35Obj instanceof Number) {
+                double fuelPressureKpa = ((Number) io35Obj).doubleValue();
+                // Convert kPa to Pa for OpenHAB (1 kPa = 1000 Pa)
+                double fuelPressurePa = fuelPressureKpa * 1000;
+                updateState(CHANNEL_OBD_FUEL_PRESSURE, new QuantityType<>(fuelPressurePa, SIUnits.PASCAL));
+            }
+
+            // io36: Engine RPM (actual RPM from OBD-II)
+            // This appears to be the real RPM value that varies with engine speed
+            Object io36Obj = attributes.get("io36");
+            if (io36Obj instanceof Number) {
+                int rpm = ((Number) io36Obj).intValue();
+                updateState(CHANNEL_OBD_RPM, new DecimalType(rpm));
+            }
+
+            // io37: Engine RPM Reported (standard OBD-II PID, often shows 0)
+            Object io37Obj = attributes.get("io37");
+            if (io37Obj instanceof Number) {
+                int rpmReported = ((Number) io37Obj).intValue();
+                updateState(CHANNEL_OBD_RPM_REPORTED, new DecimalType(rpmReported));
+            }
+
+            // io38: Vehicle Speed from OBD-II [km/h]
+            Object io38Obj = attributes.get("io38");
+            if (io38Obj instanceof Number) {
+                double obdSpeed = ((Number) io38Obj).doubleValue();
+                updateState(CHANNEL_OBD_SPEED, new QuantityType<>(obdSpeed, SIUnits.KILOMETRE_PER_HOUR));
+            }
+
+            // io48: Fuel Level [%] - Inverted (100 - value) because bike reports fuel used, not remaining
+            Object io48Obj = attributes.get("io48");
+            if (io48Obj instanceof Number) {
+                double fuelUsed = ((Number) io48Obj).doubleValue();
+                double fuelRemaining = 100.0 - fuelUsed;
+                updateState(CHANNEL_OBD_FUEL_LEVEL, new QuantityType<>(fuelRemaining, Units.PERCENT));
+            }
+
+            // OEM Odometer (actual vehicle odometer from CAN bus via OBD-II)
+            // This is different from the generic "odometer" field - when OBD-II is active,
+            // the odometer field contains the real vehicle odometer reading from CAN bus
+            // Check if OBD-II data is present (indicated by io30+ attributes)
+            if (io30Obj != null || io31Obj != null) {
+                Object oemOdometerObj = attributes.get("odometer");
+                if (oemOdometerObj instanceof Number) {
+                    double oemOdometerMeters = ((Number) oemOdometerObj).doubleValue();
+                    updateState(CHANNEL_OBD_OEM_ODOMETER, new QuantityType<>(oemOdometerMeters, SIUnits.METRE));
                 }
             }
         }

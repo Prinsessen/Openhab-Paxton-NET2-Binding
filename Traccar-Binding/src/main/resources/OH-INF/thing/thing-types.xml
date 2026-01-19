@@ -124,6 +124,34 @@
 			<channel id="activity" typeId="activity"/>
 			<channel id="protocol" typeId="protocol"/>
 			<channel id="ignition" typeId="ignition"/>
+			<!-- OBD-II Channels (Teltonika FMM920 with Bluetooth OBD-II dongle) -->
+			<channel id="obdDtcCount" typeId="obd-dtc-count"/>
+			<channel id="obdEngineLoad" typeId="obd-engine-load"/>
+			<channel id="obdCoolantTemp" typeId="obd-coolant-temp"/>
+			<channel id="obdShortFuelTrim" typeId="obd-short-fuel-trim"/>
+			<channel id="obdFuelPressure" typeId="obd-fuel-pressure"/>
+			<channel id="obdRpm" typeId="obd-rpm"/>
+			<channel id="obdRpmReported" typeId="obd-rpm-reported"/>
+			<channel id="obdSpeed" typeId="obd-speed"/>
+			<channel id="obdFuelLevel" typeId="obd-fuel-level"/>
+			<channel id="obdOemOdometer" typeId="obd-oem-odometer"/>
+			<!-- Additional GPS/Teltonika Channels -->
+			<channel id="pdop" typeId="pdop"/>
+			<channel id="hdop" typeId="hdop"/>
+			<channel id="power" typeId="power"/>
+			<channel id="battery" typeId="battery"/>
+			<channel id="operator" typeId="operator"/>
+			<channel id="vin" typeId="vin"/>
+			<!-- Experimental Teltonika IO Channels (unknown purpose) -->
+			<channel id="io42" typeId="io42"/>
+			<channel id="io49" typeId="io49"/>
+			<channel id="io51" typeId="io51"/>
+			<channel id="tripDistance" typeId="trip-distance"/>
+			<channel id="eventCode" typeId="event-code"/>
+			<!-- OBD-II Trip Meters from ECU -->
+			<channel id="io199" typeId="io199"/>
+			<channel id="io205" typeId="io205"/>
+			<channel id="io389" typeId="io389"/>
 		</channels>
 
 		<properties>
@@ -314,4 +342,180 @@
 		<description>Ignition status (ON = ignition on, OFF = ignition off)</description>
 		<state readOnly="true"/>
 	</channel-type>
+
+	<!-- OBD-II Channel Types (Teltonika FMM920 with Bluetooth OBD-II dongle) -->
+	<channel-type id="obd-dtc-count">
+		<item-type>Number</item-type>
+		<label>OBD DTC Count</label>
+		<description>Number of Diagnostic Trouble Codes (DTCs) - AVL ID 30</description>
+		<state readOnly="true" pattern="%d codes"/>
+	</channel-type>
+
+	<channel-type id="obd-engine-load">
+		<item-type>Number:Dimensionless</item-type>
+		<label>OBD Engine Load</label>
+		<description>Engine Load percentage - AVL ID 31</description>
+		<state readOnly="true" pattern="%.1f %%"/>
+	</channel-type>
+
+	<channel-type id="obd-coolant-temp">
+		<item-type>Number:Temperature</item-type>
+		<label>OBD Coolant Temperature</label>
+		<description>Engine Coolant Temperature - AVL ID 32</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="obd-short-fuel-trim">
+		<item-type>Number:Dimensionless</item-type>
+		<label>OBD Short Fuel Trim</label>
+		<description>Short Term Fuel Trim percentage - AVL ID 33</description>
+		<state readOnly="true" pattern="%.1f %%"/>
+	</channel-type>
+
+	<channel-type id="obd-fuel-pressure">
+		<item-type>Number:Pressure</item-type>
+		<label>OBD Fuel Pressure</label>
+		<description>Fuel Rail Pressure - AVL ID 35</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="obd-rpm">
+		<item-type>Number</item-type>
+		<label>OBD RPM</label>
+		<description>Engine RPM (from io36, actual RPM value) - AVL ID 36</description>
+		<state readOnly="true" pattern="%d RPM"/>
+	</channel-type>
+
+	<channel-type id="obd-rpm-reported">
+		<item-type>Number</item-type>
+		<label>OBD RPM Reported</label>
+		<description>Engine RPM from standard OBD-II PID (io37, often 0) - AVL ID 37</description>
+		<state readOnly="true" pattern="%d RPM"/>
+	</channel-type>
+
+	<channel-type id="obd-speed">
+		<item-type>Number:Speed</item-type>
+		<label>OBD Speed</label>
+		<description>Vehicle Speed from OBD-II - AVL ID 38</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="obd-fuel-level">
+		<item-type>Number:Dimensionless</item-type>
+		<label>OBD Fuel Level</label>
+		<description>Fuel Tank Level percentage - AVL ID 48</description>
+		<state readOnly="true" pattern="%.1f %%"/>
+	</channel-type>
+
+	<channel-type id="obd-oem-odometer">
+		<item-type>Number:Length</item-type>
+		<label>OBD OEM Odometer</label>
+		<description>Actual vehicle odometer reading from CAN bus via OBD-II (AVL ID 389). More accurate than totalDistance
+			for vehicles with OBD-II dongles.</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<!-- Additional GPS/Teltonika Channel Types -->
+	<channel-type id="pdop">
+		<item-type>Number</item-type>
+		<label>PDOP</label>
+		<description>Positional Dilution of Precision (3D GPS accuracy indicator, lower is better: 1-2=excellent, 2-5=good,
+			>5=poor)</description>
+		<state readOnly="true" pattern="%.1f"/>
+	</channel-type>
+
+	<channel-type id="hdop">
+		<item-type>Number</item-type>
+		<label>HDOP</label>
+		<description>Horizontal Dilution of Precision (2D GPS accuracy indicator, lower is better: 1-2=excellent, 2-5=good,
+			>5=poor)</description>
+		<state readOnly="true" pattern="%.1f"/>
+	</channel-type>
+
+	<channel-type id="power">
+		<item-type>Number:ElectricPotential</item-type>
+		<label>Vehicle Power</label>
+		<description>Vehicle battery voltage (12V/24V electrical system)</description>
+		<state readOnly="true" pattern="%.2f %unit%"/>
+	</channel-type>
+
+	<channel-type id="battery">
+		<item-type>Number:ElectricPotential</item-type>
+		<label>Tracker Battery</label>
+		<description>GPS tracker internal backup battery voltage</description>
+		<state readOnly="true" pattern="%.2f %unit%"/>
+	</channel-type>
+
+	<channel-type id="operator">
+		<item-type>String</item-type>
+		<label>Mobile Operator</label>
+		<description>Mobile network operator code (MCC+MNC)</description>
+		<state readOnly="true" pattern="%s"/>
+	</channel-type>
+
+	<channel-type id="vin">
+		<item-type>String</item-type>
+		<label>VIN</label>
+		<description>Vehicle Identification Number (from OBD-II or CAN bus)</description>
+		<state readOnly="true" pattern="%s"/>
+	</channel-type>
+
+	<!-- Experimental Teltonika IO Channels (unknown purpose) -->
+	<channel-type id="io42">
+		<item-type>Number</item-type>
+		<label>IO42</label>
+		<description>Teltonika IO parameter 42 (varies 84-94, possibly intake air temperature or sensor)</description>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="io49">
+		<item-type>Number</item-type>
+		<label>IO49</label>
+		<description>Teltonika IO parameter 49 (typically ~5816, possibly battery voltage in mV)</description>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="io51">
+		<item-type>Number</item-type>
+		<label>IO51</label>
+		<description>Teltonika IO parameter 51 (varies 14000-14200, possibly alternator voltage in mV)</description>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="trip-distance">
+		<item-type>Number:Length</item-type>
+		<label>Trip Distance</label>
+		<description>Trip distance since last reset (meters)</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="event-code">
+		<item-type>Number</item-type>
+		<label>Event Code</label>
+		<description>Teltonika event code (e.g., 36 = OBD-II data update)</description>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<!-- OBD-II Trip Meters from ECU -->
+	<channel-type id="io199">
+		<item-type>Number:Length</item-type>
+		<label>Trip 1</label>
+		<description>Trip odometer 1 from bike ECU - AVL ID 199</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="io205">
+		<item-type>Number:Length</item-type>
+		<label>Trip 2</label>
+		<description>Trip odometer 2 from bike ECU - AVL ID 205</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="io389">
+		<item-type>Number:Length</item-type>
+		<label>Total ECU Mileage</label>
+		<description>Total vehicle mileage from bike ECU - AVL ID 389</description>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
 </thing:thing-descriptions>
