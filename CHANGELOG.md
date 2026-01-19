@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 13:00:16
+- Modified: items/traccar.items
+- Added: transform/fuelTrim.js
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 12:45:16
 - Modified: items/traccar.items
 - Modified: sitemaps/myhouse.sitemap

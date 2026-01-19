@@ -51,7 +51,7 @@ Switch Vehicle10_Ignition "Ignition [MAP(ignition.map):%s]" <fire> (gVehicle10) 
 Number Vehicle10_ObdDtcCount "DTC Count [%d codes]" <error> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdDtcCount"}
 Number:Dimensionless Vehicle10_ObdEngineLoad "Engine Load [%.1f %%]" <pressure> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdEngineLoad"}
 Number:Temperature Vehicle10_ObdCoolantTemp "Coolant Temp [%.1f %unit%]" <temperature> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdCoolantTemp"}
-Number:Dimensionless Vehicle10_ObdShortFuelTrim "Fuel Trim [%.1f %%]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdShortFuelTrim"}
+Number:Dimensionless Vehicle10_ObdShortFuelTrim "Fuel Trim [JS(fuelTrim.js):%s] (%.1f %%)" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdShortFuelTrim"}
 Number:Pressure Vehicle10_ObdFuelPressure "Fuel Pressure [%.0f kPa]" <pressure> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdFuelPressure", unit="kPa"}
 Number Vehicle10_ObdRpm "RPM" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdRpm"}
 Number Vehicle10_ObdRpmReported "RPM Reported" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdRpmReported"}
