@@ -57,6 +57,24 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Ignition label="Ignition [MAP(ignition.map):%s]" icon="fire"
 				Text item=Vehicle10_Accuracy label="Accuracy [%.1f %unit%]" icon="accurate"
 				Text item=Vehicle10_Course label="Course [%.0f°]" icon="course-1"
+				Text label="OBD-II Data" icon="engine-on" {
+					Frame label="Engine" {
+						Text item=Vehicle10_ObdRpm label="RPM [%.0f]" icon="qualityofservice"
+						Text item=Vehicle10_ObdEngineLoad label="Engine Load [%.1f %%]" icon="pressure"
+						Text item=Vehicle10_ObdCoolantTemp label="Coolant Temp [%.1f °C]" icon="temperature"
+						Text item=Vehicle10_ObdSpeed label="OBD Speed [%.1f km/h]" icon="speed-color"
+					}
+					Frame label="Fuel System" {
+						Text item=Vehicle10_ObdFuelLevel label="Fuel Level [%.1f %%]" icon="oil"
+						Text item=Vehicle10_ObdFuelPressure label="Fuel Pressure [%.0f kPa]" icon="pressure"
+						Text item=Vehicle10_ObdShortFuelTrim label="Fuel Trim [%.1f %%]" icon="line"
+					}
+					Frame label="Diagnostics" {
+						Text item=Vehicle10_ObdDtcCount label="Trouble Codes [%d]" icon="error"
+						Text item=Vehicle10_ObdOemOdometer label="CAN Odometer [%.1f km]" icon="odometer"
+						Text item=Vehicle10_ObdRpmReported label="RPM (io37) [%.0f]" icon="qualityofservice"
+					}
+				}
 			}
 		}
 	}
