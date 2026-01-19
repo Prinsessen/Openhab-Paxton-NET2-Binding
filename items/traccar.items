@@ -60,8 +60,8 @@ Number:Dimensionless Vehicle10_ObdFuelLevel "Fuel Level [%.1f %%]" <oil> (gVehic
 Number:Length Vehicle10_ObdOemOdometer "OEM Odometer [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdOemOdometer", unit="km"}
 
 // Additional GPS/Teltonika Data
-Number Vehicle10_Pdop "GPS 3D Quality [SCALE(pdop.scale):%s] (%.1f)" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:pdop"}
-Number Vehicle10_Hdop "GPS 2D Quality [%.1f]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:hdop"}
+Number Vehicle10_Pdop "GPS 3D Quality [JS(pdop.js):%s]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:pdop"}
+Number Vehicle10_Hdop "GPS 2D Quality [JS(hdop.js):%s]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:hdop"}
 Number:ElectricPotential Vehicle10_Power "Vehicle Power [%.2f V]" <energy> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:power"}
 Number:ElectricPotential Vehicle10_Battery "Tracker Battery [%.2f V]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:battery"}
 String Vehicle10_Operator "Mobile Operator [MAP(operator.map):%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:operator"}

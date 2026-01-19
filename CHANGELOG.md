@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 12:45:16
+- Modified: items/traccar.items
+- Modified: sitemaps/myhouse.sitemap
+- Added: transform/hdop.js
+- Added: transform/pdop.js
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 12:30:06
 - Modified: items/traccar.items
 - Modified: sitemaps/myhouse.sitemap
