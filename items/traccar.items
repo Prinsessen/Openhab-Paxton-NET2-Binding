@@ -60,7 +60,7 @@ Number:Dimensionless Vehicle10_ObdFuelLevel "Fuel Level [%.1f %%]" <oil> (gVehic
 Number:Length Vehicle10_ObdOemOdometer "OEM Odometer [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:obdOemOdometer", unit="km"}
 
 // Additional GPS/Teltonika Data
-Number Vehicle10_Pdop "GPS 3D Quality [%.1f]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:pdop"}
+Number Vehicle10_Pdop "GPS 3D Quality [SCALE(pdop.scale):%s] (%.1f)" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:pdop"}
 Number Vehicle10_Hdop "GPS 2D Quality [%.1f]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:hdop"}
 Number:ElectricPotential Vehicle10_Power "Vehicle Power [%.2f V]" <energy> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:power"}
 Number:ElectricPotential Vehicle10_Battery "Tracker Battery [%.2f V]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:battery"}
@@ -73,6 +73,11 @@ Number Vehicle10_Io49 "IO49 [%d]" <zoom> (gVehicle10) {channel="traccar:device:g
 Number Vehicle10_Io51 "IO51 [%d]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io51"}
 Number:Length Vehicle10_TripDistance "Trip Distance [%.1f %unit%]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:tripDistance"}
 Number Vehicle10_EventCode "Event Code [%d]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:eventCode"}
+
+// OBD-II Trip Meters from ECU
+Number:Length Vehicle10_Io199 "Trip 1 [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io199", unit="km"}
+Number:Length Vehicle10_Io205 "Trip 2 [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io205", unit="km"}
+Number:Length Vehicle10_Io389 "Total ECU Mileage [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io389", unit="km"}
 
 // Vehicle 694049 (Device ID: 1)
 Group gVehicle1 "Vehicle 694049" <car>

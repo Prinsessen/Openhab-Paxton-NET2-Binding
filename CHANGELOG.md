@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 12:30:06
+- Modified: items/traccar.items
+- Modified: sitemaps/myhouse.sitemap
+- Added: transform/hdop.scale
+- Added: transform/pdop.scale
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 12:15:17
 - Modified: items/traccar.items
 - Modified: sitemaps/myhouse.sitemap

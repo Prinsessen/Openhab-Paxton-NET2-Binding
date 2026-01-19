@@ -1,0 +1,6 @@
+# HDOP (Horizontal Dilution of Precision) - 2D GPS Quality
+# Lower values = better accuracy
+]0,2]=Excellent
+]2,5]=Good
+]5,10]=Fair
+]10,100]=Poor

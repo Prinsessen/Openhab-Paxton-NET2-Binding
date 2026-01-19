@@ -57,10 +57,11 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Ignition label="Ignition [MAP(ignition.map):%s]" icon="fire"
 				Text item=Vehicle10_Accuracy label="Accuracy [%.1f %unit%]" icon="accurate"
 				Text item=Vehicle10_Course label="Course [%.0f°]" icon="course-1"
-				Text item=Vehicle10_Pdop label="GPS 3D Quality [%.1f]" icon="zoom"
-				Text item=Vehicle10_Hdop label="GPS 2D Quality [%.1f]" icon="zoom"
+				Text item=Vehicle10_Pdop label="GPS 3D Quality [SCALE(pdop.scale):%s] (%.1f)" icon="zoom"
+				Text item=Vehicle10_Hdop label="GPS 2D Quality [SCALE(hdop.scale):%s] (%.1f)" icon="zoom"
 				Text item=Vehicle10_Power label="Vehicle Power [%.2f V]" icon="energy"
 				Text item=Vehicle10_Battery label="Tracker Battery [%.2f V]" icon="battery"
+				Text item=Vehicle10_GsmSignal label="GSM Signal [%.0f %%]" icon="qualityofservice"
 				Text item=Vehicle10_Operator label="Operator [MAP(operator.map):%s]" icon="network"
 				Text label="OBD-II Data" icon="engine-on" {
 					Frame label="Engine" {
@@ -86,6 +87,9 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Io51 label="IO51 [%d]" icon="zoom"
 						Text item=Vehicle10_TripDistance label="Trip Distance [%.1f m]" icon="line"
 						Text item=Vehicle10_EventCode label="Event Code [%d]" icon="text"
+						Text item=Vehicle10_Io199 label="Trip 1 [%.1f km]" icon="line"
+						Text item=Vehicle10_Io205 label="Trip 2 [%.1f km]" icon="line"
+						Text item=Vehicle10_Io389 label="Total ECU Mileage [%.1f km]" icon="line"
 					}
 				}
 			}
