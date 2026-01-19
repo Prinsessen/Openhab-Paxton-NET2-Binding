@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 13:45:16
+- Modified: Traccar-Binding/OBD-II_IMPLEMENTATION.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 13:30:16
 - Modified: Traccar-Binding/OBD-II_IMPLEMENTATION.md
 - Modified: Traccar-Binding/src/main/resources/OH-INF/transform/operator.map

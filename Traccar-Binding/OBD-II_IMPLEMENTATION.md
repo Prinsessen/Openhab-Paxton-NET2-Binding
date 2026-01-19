@@ -253,6 +253,22 @@ Number:Dimensionless Vehicle10_ObdFuelLevel "Fuel Level [%.1f %%]" <oil> (gVehic
 Number:Length Vehicle10_Io199 "Trip 1 [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io199", unit="km"}
 Number:Length Vehicle10_Io205 "Trip 2 [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io205", unit="km"}
 Number:Length Vehicle10_Io389 "Total ECU Mileage [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io389", unit="km"}
+
+// Tracker Device Items
+Number Vehicle10_Pdop "GPS 3D Quality [JS(pdop.js):%s]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:pdop"}
+Number Vehicle10_Hdop "GPS 2D Quality [JS(hdop.js):%s]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:hdop"}
+Number:ElectricPotential Vehicle10_Power "Power [%.2f V]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:power"}
+Number:ElectricPotential Vehicle10_Battery "Battery [%.2f V]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:battery"}
+String Vehicle10_Operator "Mobile Operator [MAP(operator.map):%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:operator"}
+String Vehicle10_Vin "VIN [%s]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:vin"}
+Number Vehicle10_Rssi "GSM Signal [%d]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:rssi"}
+
+// Experimental Items
+Number:Temperature Vehicle10_Io42 "Intake Air Temp [%.1f %unit%]" <temperature> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io42"}
+Number:Dimensionless Vehicle10_Io49 "Throttle [%.1f %%]" <pressure> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io49"}
+Number Vehicle10_Io51 "Fuel Type [%d]" <oil> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:io51"}
+Number:Length Vehicle10_TripDistance "Trip Distance [%.1f km]" <line> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:tripDistance", unit="km"}
+Number Vehicle10_EventCode "Event Code [%d]" <text> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:eventCode"}
 ```
 
 ### 5. Sitemap Configuration
@@ -387,10 +403,41 @@ Engine Running (Idle):
 - Speed: 0-5 km/h ✓
 - Fuel Level: 86% (inverted from 14%) ✓
 
+GPS & Tracker Data:
+- PDOP: 1.1-1.5 (Excellent) ✓
+- HDOP: 0.8-1.2 (Excellent) ✓
+- GSM Operator: 23801 → TDC NET (Denmark) ✓
+- Power: 14.3V → 13.9V ✓
+- Battery: 4.1V (tracker internal) ✓
+- RSSI: 4 bars (Good signal) ✓
+
 Ignition Off:
 - All OBD-II channels: NULL ✓
 - Power voltage drops: 14.3V → 13.9V ✓
+- Tracker channels remain active ✓
 ```
+
+### Channel Availability
+
+**Always Available** (regardless of ignition):
+- GPS data (PDOP, HDOP, coordinates)
+- Tracker power and battery voltage
+- GSM operator and signal strength (RSSI)
+- Trip distance from tracker
+
+**Available When Ignition ON**:
+- All OBD-II channels (requires dongle paired and engine running)
+- ECU trip meters (requires FMM920 configuration)
+- Experimental IO channels
+
+**Validation Results**:
+- ✅ All 10 OBD-II channels working correctly
+- ✅ All 7 tracker channels displaying properly (pdop, hdop, power, battery, operator, vin, rssi)
+- ✅ All 5 experimental channels detected in webhook
+- ✅ GPS quality transformations (pdop.js, hdop.js) working
+- ✅ Operator MAP transformation (800+ operators, 119 countries) displaying correctly
+- ✅ Fuel trim quality indicator (fuelTrim.js) functioning
+- ⏸️ Trip meters (io199, io205, io389) awaiting FMM920 AVL ID configuration
 
 ### Common Issues & Solutions
 
