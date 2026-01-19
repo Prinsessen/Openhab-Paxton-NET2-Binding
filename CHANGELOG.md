@@ -7,6 +7,71 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 14:30:16
+- Added: icons/classic/activity-teal.svg
+- Added: icons/classic/activity-time-blue.svg
+- Added: icons/classic/alarm-red.svg
+- Added: icons/classic/blinds-blue.svg
+- Added: icons/classic/camera-blue.svg
+- Added: icons/classic/down-arrow-red.svg
+- Added: icons/classic/error-red.svg
+- Added: icons/classic/event-orange.svg
+- Added: icons/classic/exp-ecu-mileage-orange.svg
+- Added: icons/classic/exp-event-yellow.svg
+- Added: icons/classic/exp-fuel-type-teal.svg
+- Added: icons/classic/exp-intake-air-orange.svg
+- Added: icons/classic/exp-throttle-purple.svg
+- Added: icons/classic/exp-trip-distance-blue.svg
+- Added: icons/classic/exp-trip1-green.svg
+- Added: icons/classic/exp-trip2-cyan.svg
+- Added: icons/classic/gps-accuracy-orange.svg
+- Added: icons/classic/gps-address-cyan.svg
+- Added: icons/classic/gps-altitude-cyan.svg
+- Added: icons/classic/gps-battery-green.svg
+- Added: icons/classic/gps-course-blue.svg
+- Added: icons/classic/gps-engine-hours-orange.svg
+- Added: icons/classic/gps-event-blue.svg
+- Added: icons/classic/gps-geofence-purple.svg
+- Added: icons/classic/gps-gsm-signal-green.svg
+- Added: icons/classic/gps-ignition-red.svg
+- Added: icons/classic/gps-location-pink.svg
+- Added: icons/classic/gps-motion-teal.svg
+- Added: icons/classic/gps-odometer-blue.svg
+- Added: icons/classic/gps-operator-blue.svg
+- Added: icons/classic/gps-pdop-cyan.svg
+- Added: icons/classic/gps-position-green.svg
+- Added: icons/classic/gps-power-yellow.svg
+- Added: icons/classic/gps-protocol-teal.svg
+- Added: icons/classic/gps-satellite-orange.svg
+- Added: icons/classic/gps-speed-green.svg
+- Added: icons/classic/gps-time-blue.svg
+- Added: icons/classic/gps-update-blue.svg
+- Added: icons/classic/gps-valid-green.svg
+- Added: icons/classic/heating-orange.svg
+- Added: icons/classic/key-orange.svg
+- Added: icons/classic/lights-off-gray.svg
+- Added: icons/classic/money-green.svg
+- Added: icons/classic/obd-coolant-cyan.svg
+- Added: icons/classic/obd-engine-orange.svg
+- Added: icons/classic/obd-error-red.svg
+- Added: icons/classic/obd-fuel-green.svg
+- Added: icons/classic/obd-odo-cyan.svg
+- Added: icons/classic/obd-pressure-green.svg
+- Added: icons/classic/obd-rpm-green.svg
+- Added: icons/classic/obd-speed-blue.svg
+- Added: icons/classic/obd-trim-green.svg
+- Added: icons/classic/obd-vin-blue.svg
+- Added: icons/classic/price-green.svg
+- Added: icons/classic/security-red.svg
+- Added: icons/classic/setpoint-blue.svg
+- Added: icons/classic/solar-yellow.svg
+- Added: icons/classic/temp-orange.svg
+- Added: icons/classic/up-arrow-green.svg
+- Added: icons/classic/user-purple.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 13:45:16
 - Modified: Traccar-Binding/OBD-II_IMPLEMENTATION.md
 
