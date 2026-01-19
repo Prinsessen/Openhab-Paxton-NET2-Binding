@@ -159,55 +159,55 @@ sitemap myhouse label="Nanna Agesen"
 			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="camera-zoom-blue"
 	}
 Text label="Access Control" icon="key-orange" {
-Frame label="Front Door - Kirkegade" {
-		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="key-orange" 
-		Switch item=Net2_Door1_Status label="Door Physical Status" icon="activity-teal" 
-		Switch item=Net2_Door1_ControlTimed label="Timed Door" mappings=[1="Open"] icon="key-orange"
-		Text item=Net2_Door1_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity-teal"
+Frame label="Front Door - Kirkegade" icon="door-blue" {
+		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="unlock-green" 
+		Switch item=Net2_Door1_Status label="Door Physical Status" icon="door-status-cyan" 
+		Switch item=Net2_Door1_ControlTimed label="Timed Door" mappings=[1="Open"] icon="timed-lock-orange"
+		Text item=Net2_Door1_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="sensor-green"
  		Default item=Net2_Door1_LastTime label="Last Time Access" icon="activity-time-blue"	
 		Default item=Net2_Door1_LastUser label="Last User Access" icon="user-purple"
-		Text item=Net2_Door1_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity-teal"
-		Text item=Net2_Door1_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error-red" visibility=[Net2_Door1_AccessDenied!="NULL"]
+		Text item=Net2_Door1_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="entry-blue"
+		Text item=Net2_Door1_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="access-denied-red" visibility=[Net2_Door1_AccessDenied!="NULL"]
 	}
-Frame label="Front Door - Terndrupvej " {
-		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="key-orange" 
-		Switch item=Net2_Door2_Status label="Door Physical Status" icon="activity-teal" 
-		Switch item=Net2_Door2_ControlTimed label="Timed Door" mappings=[1="Open"] icon="key-orange"
-		Text item=Net2_Door2_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity-teal"
+Frame label="Front Door - Terndrupvej " icon="door-blue" {
+		Switch item=Net2_Door2_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="unlock-green" 
+		Switch item=Net2_Door2_Status label="Door Physical Status" icon="door-status-cyan" 
+		Switch item=Net2_Door2_ControlTimed label="Timed Door" mappings=[1="Open"] icon="timed-lock-orange"
+		Text item=Net2_Door2_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="sensor-green"
  		Default item=Net2_Door2_LastTime label="Last Time Access" icon="activity-time-blue"	
 		Default item=Net2_Door2_LastUser label="Last User Access" icon="user-purple"
-		Text item=Net2_Door2_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity-teal"
-		Text item=Net2_Door2_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error-red" visibility=[Net2_Door2_AccessDenied!="NULL"]
+		Text item=Net2_Door2_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="entry-blue"
+		Text item=Net2_Door2_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="access-denied-red" visibility=[Net2_Door2_AccessDenied!="NULL"]
 	}
-Frame label="Garage - Kirkegade" {
-		Switch item=Net2_Door3_Action mappings=[ON="Open", OFF="Closed"] label="Control Port" icon="key-orange"
-		Switch item=Net2_Door3_Status label="Port Physical Status" icon="activity-teal" 
-		Switch item=Net2_Door3_ControlTimed label="Port Timed Port" mappings=[1="Open"] icon="key-orange"
-		Text item=Net2_Door3_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity-teal"
+Frame label="Garage - Kirkegade" icon="garage-gray" {
+		Switch item=Net2_Door3_Action mappings=[ON="Open", OFF="Closed"] label="Control Port" icon="unlock-green"
+		Switch item=Net2_Door3_Status label="Port Physical Status" icon="door-status-cyan" 
+		Switch item=Net2_Door3_ControlTimed label="Port Timed Port" mappings=[1="Open"] icon="timed-lock-orange"
+		Text item=Net2_Door3_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="sensor-green"
  		Default item=Net2_Door3_LastTime label="Last Time Access" icon="activity-time-blue"
 		Default item=Net2_Door3_LastUser label="Last User Access" icon="user-purple"
-		Text item=Net2_Door3_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity-teal"
-		Text item=Net2_Door3_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error-red" visibility=[Net2_Door3_AccessDenied!="NULL"]
+		Text item=Net2_Door3_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="entry-blue"
+		Text item=Net2_Door3_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="access-denied-red" visibility=[Net2_Door3_AccessDenied!="NULL"]
 }
-Frame label="Basement Door - Kirkegade" {
-		Switch item=Net2_Door4_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="key-orange"
-		Switch item=Net2_Door4_Status label="Door Physical Status" icon="activity-teal" 
-		Switch item=Net2_Door4_ControlTimed label="Door Timed Door" mappings=[1="Open"] icon="key-orange"
-		Text item=Net2_Door4_Status label="Door Activity [MAP(net2doorstatus.map):%s]" icon="activity-teal"
+Frame label="Basement Door - Kirkegade" icon="basement-door-gray" {
+		Switch item=Net2_Door4_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="unlock-green"
+		Switch item=Net2_Door4_Status label="Door Physical Status" icon="door-status-cyan" 
+		Switch item=Net2_Door4_ControlTimed label="Door Timed Door" mappings=[1="Open"] icon="timed-lock-orange"
+		Text item=Net2_Door4_Status label="Door Activity [MAP(net2doorstatus.map):%s]" icon="sensor-green"
  		Default item=Net2_Door4_LastTime label="Last Time Access" icon="activity-time-blue"
 		Default item=Net2_Door4_LastUser label="Last User Access" icon="user-purple"
-		Text item=Net2_Door4_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity-teal"
-		Text item=Net2_Door4_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error-red" visibility=[Net2_Door4_AccessDenied!="NULL"]
+		Text item=Net2_Door4_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="entry-blue"
+		Text item=Net2_Door4_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="access-denied-red" visibility=[Net2_Door4_AccessDenied!="NULL"]
 }
-Frame label="Fordør - Porsevej 19" {
-		Switch item=Net2_Door5_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="key-orange"
-		Switch item=Net2_Door5_Status label="Door Physical Status" icon="activity-teal" 
-		Switch item=Net2_Door5_ControlTimed label="Timed Door" mappings=[1="Open"] icon="key-orange"
-		Text item=Net2_Door5_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="activity-teal"
+Frame label="Fordør - Porsevej 19" icon="door-blue" {
+		Switch item=Net2_Door5_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="unlock-green"
+		Switch item=Net2_Door5_Status label="Door Physical Status" icon="door-status-cyan" 
+		Switch item=Net2_Door5_ControlTimed label="Timed Door" mappings=[1="Open"] icon="timed-lock-orange"
+		Text item=Net2_Door5_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="sensor-green"
  		Default item=Net2_Door5_LastTime label="Last Time Access" icon="activity-time-blue"
 		Default item=Net2_Door5_LastUser label="Last User Access" icon="user-purple"
-		Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="activity-teal"
-		Text item=Net2_Door5_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="error-red" visibility=[Net2_Door5_AccessDenied!="NULL"]
+		Text item=Net2_Door5_EntryLog label="Last Physical Entry [JS(entrylogdate.js):%s]" icon="entry-blue"
+		Text item=Net2_Door5_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="access-denied-red" visibility=[Net2_Door5_AccessDenied!="NULL"]
 		Webview url="/static/net2_user_activity.html" height=100 icon=none
 
 	}

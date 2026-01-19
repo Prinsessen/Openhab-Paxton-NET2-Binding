@@ -7,6 +7,21 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 15:15:16
+- Added: icons/classic/access-denied-red.svg
+- Added: icons/classic/basement-door-gray.svg
+- Added: icons/classic/door-blue.svg
+- Added: icons/classic/door-closed-red.svg
+- Added: icons/classic/door-open-green.svg
+- Added: icons/classic/door-status-cyan.svg
+- Added: icons/classic/entry-blue.svg
+- Added: icons/classic/sensor-green.svg
+- Added: icons/classic/timed-lock-orange.svg
+- Added: icons/classic/unlock-green.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 15:00:16
 - Added: icons/classic/ac-blue.svg
 - Added: icons/classic/action-blue.svg
