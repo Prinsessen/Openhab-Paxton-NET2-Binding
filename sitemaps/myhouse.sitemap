@@ -732,28 +732,28 @@ Frame label="Fordør - Porsevej 19" {
 				}
 			}
 			Frame label="Device Control" {
-				Group item=gEnergi label="Energy Measurement" icon="electricity"
+				Group item=gEnergi label="Energy Measurement" icon="chart-blue"
 				Text label="Energy History Charts" icon="info-blue" {
 					Frame label="Energy Grid History" {
-						Text item=MeterPower icon="info-blue"
-						Text item=LastHourPower icon="info-blue"
-						Text item=TodayPower icon="info-blue"
-						Text item=LastDayPower icon="info-blue"
-						Text item=LastWeekPower icon="info-blue"
-						Text item=LastMonthPower icon="info-blue"
-						Text item=LastYearPower icon="info-blue"
+						Text item=MeterPower icon="chart-blue"
+						Text item=LastHourPower icon="time-hour-orange"
+						Text item=TodayPower icon="time-today-blue"
+						Text item=LastDayPower icon="time-today-blue"
+						Text item=LastWeekPower icon="time-week-purple"
+						Text item=LastMonthPower icon="time-month-cyan"
+						Text item=LastYearPower icon="time-year-yellow"
 					}
 				}
 				Text label="Freshwater" icon="water-blue" {
-					Text item= Fresh_Water
-					Text item= Fresh_Water_Day
-					Text item= Fresh_Water_Sensor
-					Text item= Fresh_Water_Test
-					Switch item= Tap_Test_Reset mappings=[ON="Click"]
-					Text item= Fresh_Water_Day_Alarm
+					Text item= Fresh_Water icon="water-blue"
+					Text item= Fresh_Water_Day icon="time-today-blue"
+					Text item= Fresh_Water_Sensor icon="water-pump-blue"
+					Text item= Fresh_Water_Test icon="water-check-green"
+					Switch item= Tap_Test_Reset mappings=[ON="Click"] icon="reset-blue"
+					Text item= Fresh_Water_Day_Alarm icon="alarm-light-red"
 				}
 				Text label="Philips Hue" icon="color-purple" {
-					Text label="Dining Room LED Strip" icon="color-purple" {
+					Text label="Dining Room LED Strip" icon="hue-strip-purple" {
 						// Bulb1
 						// Switch item= Light1_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light1_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -763,7 +763,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light1_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light1_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="TV Room LED Strip" icon="color-purple" {
+					Text label="TV Room LED Strip" icon="hue-strip-purple" {
 						// Bulb2
 						// Switch item= Light2_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light2_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -774,7 +774,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light2_Effect label="Effects" mappings=[ON=On, OFF=Off]
 						Switch item= LightsLava label="Lava effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Bedroom LED Strip" icon="color-purple" {
+					Text label="Bedroom LED Strip" icon="hue-strip-purple" {
 						// Bulb3
 						// Switch item= Light3_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light3_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -784,7 +784,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light3_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light3_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Living Room Triangle Light" icon="color-purple" {
+					Text label="Living Room Triangle Light" icon="hue-lamp-blue" {
 						// Bulb4
 						// Switch item= Light4_Toggle label="HUE" mappings=[ON=On, OFF=Off]
 						Switch item= Light4_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -794,7 +794,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light4_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light4_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Kitchen Hood Accent" icon="color-purple" {
+					Text label="Kitchen Hood Accent" icon="hue-ceiling-orange" {
 						// Bulb10
 						// Switch item= Light10_Toggle label="HUE" mappings=[ON=On, OFF=Off]
 						Switch item= Light10_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -804,7 +804,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light10_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light10_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Ensis UP" icon="color-purple" {
+					Text label="Ensis UP" icon="hue-lamp-blue" {
 						// Bulb5
 						// Switch item= Light5_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light5_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -814,7 +814,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light5_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light5_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Ensis Down" icon="color-purple" {
+					Text label="Ensis Down" icon="hue-lamp-blue" {
 						// Bulb6
 						// Switch item= Light6_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light6_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -824,7 +824,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light6_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light6_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Festivitas" icon="color-purple" {
+					Text label="Festivitas" icon="hue-ceiling-orange" {
 						// Bulb13
 						// Switch item= Light13_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light13_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -834,12 +834,12 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light13_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light13_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Luceplan Livingroom" icon="color-purple" {
+					Text label="Luceplan Livingroom" icon="hue-lamp-blue" {
 						Slider item= Light14_Dimmer label="Dimmer"
 						Slider item= Light14_ColorTemp label="Colour temperature"
 
 					}
-					Text label="MOON Maxi" icon="color-purple" {
+					Text label="MOON Maxi" icon="hue-bulb-yellow" {
 						// Bulb7
 						//Switch item= Light7_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light7_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -848,7 +848,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light7_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light7_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="MOON Midi" icon="color-purple" {
+					Text label="MOON Midi" icon="hue-bulb-yellow" {
 						// Bulb8
 						// Switch item= Light8_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light8_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -857,7 +857,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light8_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light8_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="MOON Mini" icon="color-purple" {
+					Text label="MOON Mini" icon="hue-bulb-yellow" {
 						// Bulb9
 						//Switch item= Light9_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light9_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -867,7 +867,7 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light9_Effect label="Effects" mappings=[ON=On, OFF=Off]
 
 					}
-					Text label="VP Kugle" icon="color-purple" {
+					Text label="VP Kugle" icon="hue-bulb-yellow" {
 						// Bulb17
 						//Switch item= Light17_Toggle label="Hue" mappings=[ON=On, OFF=Off]
 						Switch item= Light17_ON label="Fade" mappings=[ON=On, OFF=Off]
@@ -876,20 +876,20 @@ Frame label="Fordør - Porsevej 19" {
 						Switch item= Light17_Alert label="Alarm" mappings=[NONE="None", SELECT="Alert", LSELECT="Long Alert"]
 						Switch item= Light17_Effect label="Effects" mappings=[ON=On, OFF=Off]
 					}
-					Text label="Office Dimmer Switch" icon="switch" {
+					Text label="Office Dimmer Switch" icon="dimmer-switch-cyan" {
 
 						Switch item= Hue_Switch_2
-						Text item= Hue_Switch_2_Battery_Level label="Battery Level"
+						Text item= Hue_Switch_2_Battery_Level label="Battery Level" icon="gps-battery-green"
 					}
-					Text label="Living Room Dimmer Switch" icon="switch" {
+					Text label="Living Room Dimmer Switch" icon="dimmer-switch-cyan" {
 
 						Switch item= Hue_Switch_1
-						Text item= Hue_Switch_1_Battery_Level label="Battery Level"
+						Text item= Hue_Switch_1_Battery_Level label="Battery Level" icon="gps-battery-green"
 					}
 				}
 				Text label="Carbondioxide" icon="co2-orange" {
 					Text item=Nilan_Input_CO2 icon="co2-orange"
-					Text item=Co2_Sove
+					Text item=Co2_Sove icon="co2-orange"
 					Webview url="/static/Carbondioxide.html" height=12 icon=none
 				}
 				Text label="Main Hot Water Boiler" icon="boiler-orange" {
@@ -897,46 +897,46 @@ Frame label="Fordør - Porsevej 19" {
 					Text item=Boiler_Bottom icon="boiler-orange"
 					Text item=District_Heating icon="valve-orange"
 					Setpoint item=District_Heation_Setpoint label="District Heating Setpoint " minValue=5 maxValue=65 step=0.5 icon="settings-blue"
-					Text item=metz_out1
-					Text item=metz_out1_10v
-					Text item=EM24_Boil_Energi_24_kW
-					Text item=Boiler_Energy_New
+					Text item=metz_out1 icon="valve-orange"
+					Text item=metz_out1_10v icon="valve-orange"
+					Text item=EM24_Boil_Energi_24_kW icon="chart-blue"
+					Text item=Boiler_Energy_New icon="energy-bar-green"
 					Text item=Solar_Diff_Send label="Energy sent to grid" visibility=[Solar_Diff_Send>=0] valuecolor=[Solar_Diff_Send>=0="green"] icon="up-arrow-green"
 					Text item=EM24_Energy_Grid label="Energy bought from grid" visibility=[EM24_Energy_Grid>=0] valuecolor=[EM24_Energy_Grid>=0="red"] icon="down-arrow-red"
-					Text item=EM24_Boil_Charge_Avrg
-					Default item=metz_out_run
+					Text item=EM24_Boil_Charge_Avrg icon="energy-bar-green"
+					Default item=metz_out_run icon="valve-orange"
 					Frame label="Graphs" {
 						Webview url="/static/Hotwater.html" height=12 icon=none
 					}
 				}
 				Text label="Solar Energy System" icon="solar-yellow" {
 					Frame label="SMA Inverter Information" {
-						Text item=SMA_Grid_Contactor icon="temp-orange"
-						Text item=SMA_Status icon="temp-orange"
-						Text item=MaxPower icon="temp-orange"
-						Text item=SetMaxPower icon="temp-orange"
-						Text item=SMA_Status_Operation icon="temp-orange"
-						Text item=SMA_Country icon="temp-orange"
+						Text item=SMA_Grid_Contactor icon="contactor-orange"
+						Text item=SMA_Status icon="info-variant-blue"
+						Text item=MaxPower icon="power-yellow"
+						Text item=SetMaxPower icon="power-yellow"
+						Text item=SMA_Status_Operation icon="settings-blue"
+						Text item=SMA_Country icon="info-variant-blue"
 						// Text item=SMA_Ground_Fault
 					}
 					Frame label="SMA DC Side" {
-						Text item=SMA_Power_A icon="solar-yellow"
-						Text item=SMA_Power_B icon="solar-yellow"
-						Text item=DCVolt_input_A icon="solar-yellow"
-						Text item=DCVolt_input_B icon="solar-yellow"
-						Text item=DCCur_input_A icon="solar-yellow"
-						Text item=DCCur_input_B icon="solar-yellow"
+						Text item=SMA_Power_A icon="string-a-purple"
+						Text item=SMA_Power_B icon="string-b-cyan"
+						Text item=DCVolt_input_A icon="string-a-purple"
+						Text item=DCVolt_input_B icon="string-b-cyan"
+						Text item=DCCur_input_A icon="string-a-purple"
+						Text item=DCCur_input_B icon="string-b-cyan"
 					}
 					Frame label="SMA AC Side" {
-						Text item=SMA_Daily_Yield icon="solar-yellow"
-						Text item=SMA_Total_Yield icon="solar-yellow"
-						Text item=SMA_Active_Power icon="solar-yellow"
-						Text item=PowerL1 icon="solar-yellow"
-						Text item=PowerL2 icon="solar-yellow"
-						Text item=PowerL3 icon="solar-yellow"
-						Text item=voltG1 icon="solar-yellow"
-						Text item=voltG2 icon="solar-yellow"
-						Text item=voltG3 icon="solar-yellow"
+						Text item=SMA_Daily_Yield icon="yield-green"
+						Text item=SMA_Total_Yield icon="total-yield-teal"
+						Text item=SMA_Active_Power icon="power-yellow"
+						Text item=PowerL1 icon="power-phase-orange"
+						Text item=PowerL2 icon="power-phase-orange"
+						Text item=PowerL3 icon="power-phase-orange"
+						Text item=voltG1 icon="voltage-red"
+						Text item=voltG2 icon="voltage-red"
+						Text item=voltG3 icon="voltage-red"
 					}
 					Frame label="Energy Net Balance" {
 						Text item=Solar_Diff_Send label="Grid Injection" visibility=[Solar_Diff_Send>=0] valuecolor=[Solar_Diff_Send>=0="green"] icon="up-arrow-green"
@@ -964,12 +964,12 @@ Frame label="Fordør - Porsevej 19" {
 						Text item=HP_Status icon="fan-blue"
 						Text item=HP_RoomTemp icon="temp-orange"
 						Text item=Temperature_Teknik icon="temp-orange"
-						Text item=EM111_Energi_cool_kW label="Energy"
-						Default item=Mitsubishi_Server_Avrg_Energy
+						Text item=EM111_Energi_cool_kW label="Energy" icon="chart-blue"
+						Default item=Mitsubishi_Server_Avrg_Energy icon="energy-bar-green"
 						Switch item=Mitsubishi_Server_Override mappings=[ON=On, OFF=Off]
 					Frame label="Ventilation System" {
 						Setpoint item=Vent_Server_SP1 label="Ventilation Serverroom T1" minValue=16 maxValue=25 step=0.5 icon="setpoint-blue"
-						Default item=Vent_Server_Aout
+						Default item=Vent_Server_Aout icon="fan-blue"
 					}
 					Frame label="Heatpump Energy Usage" {
 						Webview url="/static/Heatpump_Energy.html" height=12 icon=none
@@ -987,7 +987,7 @@ Frame label="Fordør - Porsevej 19" {
 							Text item=Mitsubishi_Room_Temperature label="Air flow Temperature" icon="temp-orange"
 							Setpoint item=Mitsubishi_Temperature_Setpoint label="Temperature Setpoint" minValue=16 maxValue=31 step=1 icon="temp-orange"
 							Switch item=Mitsubishi_Living_Override icon="settings-blue" mappings=[ON=On, OFF=Off]
-						Text item=Mitsubishi_Living_Avrg_Energy
+						Text item=Mitsubishi_Living_Avrg_Energy icon="energy-bar-green"
 							Selection item=Mitsubishi_Fan_Speed_dim label="Fan Speed" mappings=[0="AUTO", 2="Quiet", 3="Weak", 5="Strong", 6="Very strong (SH i)" ] icon="fan-blue"
 					}
 					Frame label="Timer" {
@@ -1019,38 +1019,39 @@ Frame label="Fordør - Porsevej 19" {
 					}
 				}
 				Text label="Kitchen Dishwasher" icon="dishwasher-blue" {
-					Switch item=DishwasherSimulator_PowerState label="Power" mappings=[ON=On, OFF=Off]
-					Selection item=DishwasherSimulator_Basic_Action_State label="Basic Action"
-					Selection item=DishwasherSimulator_SelectedProgramState label="Selected Program" Default item=DishwasherSimulator_DoorState label="Door State"
-					Text item=DishwasherSimulator_OperationState label="Operation"
-					Text item=DishwasherSimulator_RemoteStartAllowanceState label="Remote Start Allowance"
-					Text item=DishwasherSimulator_RemoteControlActiveState label="Remote Control Activation"
-					Text item=DishwasherSimulator_ActiveProgramState label="Active Program"
-					Text item=DishwasherSimulator_RemainingProgramTimeState label="Remaining program time [%d min]"
-					Text item=DishwasherSimulator_ProgramProgressState label="Progress"
-					Switch item=DishwasherSimulator_Solar label="Free energy wash" mappings=[ON=On, OFF=Off]
-					Text item=Dishwasher_Avrg_Energy
+					Switch item=DishwasherSimulator_PowerState label="Power" mappings=[ON=On, OFF=Off] icon="power-on-green"
+					Selection item=DishwasherSimulator_Basic_Action_State label="Basic Action" icon="action-blue"
+					Selection item=DishwasherSimulator_SelectedProgramState label="Selected Program" icon="program-purple"
+				Default item=DishwasherSimulator_DoorState label="Door State" icon="door-orange"
+					Text item=DishwasherSimulator_OperationState label="Operation" icon="state-teal"
+					Text item=DishwasherSimulator_RemoteStartAllowanceState label="Remote Start Allowance" icon="remote-cyan"
+					Text item=DishwasherSimulator_RemoteControlActiveState label="Remote Control Activation" icon="remote-cyan"
+					Text item=DishwasherSimulator_ActiveProgramState label="Active Program" icon="active-green"
+					Text item=DishwasherSimulator_RemainingProgramTimeState label="Remaining program time [%d min]" icon="timer-blue"
+					Text item=DishwasherSimulator_ProgramProgressState label="Progress" icon="progress-orange"
+					Switch item=DishwasherSimulator_Solar label="Free energy wash" mappings=[ON=On, OFF=Off] icon="solar-power-yellow"
+					Text item=Dishwasher_Avrg_Energy icon="energy-bar-green"
 				}
 				Text label="Dreamcatcher" icon="fan-blue" {
 					Frame label="Rear Shock" {
-						Default item=Pressure_psi
-						Default item=Pressure_bar
-						Default item=Pressure_kPa
-						Default item=Temperature_C
-						Default item=Battery
-						Default item=BTrssi
-						Default item=Connected_ssid
-						Default item=Connected_ip_address
-						Default item=Alarm
-						Default item=Dc_Status
-						Default item=Innov
-						Default item=springRPM
-						Default item=powersource
-						Default item=fuel_level
-						Default item=throttle
-						Default item=enginerpm
-						Default item=can_speed
-						Default item=engineload
+						Default item=Pressure_psi icon="info-blue"
+						Default item=Pressure_bar icon="info-blue"
+						Default item=Pressure_kPa icon="info-blue"
+						Default item=Temperature_C icon="temp-orange"
+						Default item=Battery icon="gps-battery-green"
+						Default item=BTrssi icon="info-blue"
+						Default item=Connected_ssid icon="info-blue"
+						Default item=Connected_ip_address icon="info-blue"
+						Default item=Alarm icon="alarm-light-red"
+						Default item=Dc_Status icon="info-blue"
+						Default item=Innov icon="info-blue"
+						Default item=springRPM icon="info-blue"
+						Default item=powersource icon="gps-power-yellow"
+						Default item=fuel_level icon="obd-fuel-green"
+						Default item=throttle icon="exp-throttle-purple"
+						Default item=enginerpm icon="obd-rpm-green"
+						Default item=can_speed icon="obd-speed-blue"
+						Default item=engineload icon="obd-engine-orange"
 						// Webview url="/static/rearshock.html" height=12 icon=none
 					}
 				}
@@ -1073,15 +1074,15 @@ Frame label="Fordør - Porsevej 19" {
 							Text item=Nilan_airFlow_sinceFiltDay label="Days since last air filter change " icon="info-blue"
 					}
 					Frame label="Fresh Air System Sensors" {
-						Text item=Nilan_Output_InletSpeed
-						Text item=Nilan_Output_ExhaustSpeed
+						Text item=Nilan_Output_InletSpeed icon="fan-blue"
+						Text item=Nilan_Output_ExhaustSpeed icon="fan-blue"
 						Text item=Nilan_Input_T15_Room icon="temp-orange"
 						Text item=Nilan_Input_T3_Exhaust icon="temp-orange"
 						Text item=Nilan_Input_T4_Outlet icon="temp-orange"
 						Text item=Nilan_Input_T7_Inlet icon="temp-orange"
 						Text item=Nilan_Input_T8_Outdoor icon="temp-orange"
-						Text item=Nilan_Input_RH
-						Text item=Udv_humidity
+						Text item=Nilan_Input_RH icon="humidity-cyan"
+						Text item=Udv_humidity icon="humidity-cyan"
 						Text item=Nilan_Input_CO2 icon="co2-orange"
 					}
 					Frame label="Temporary High Speed" {
@@ -1091,8 +1092,8 @@ Frame label="Fordør - Porsevej 19" {
 							Text item=Nilan_Timer_DateTime_Stop icon="timer-blue"
 					}
 					Frame label="Humidity Start Condition" {
-						Text item=Nilan_Input_RH_Avrg
-						Text item=Nilan_Input_RH_Trig
+						Text item=Nilan_Input_RH_Avrg icon="humidity-cyan"
+						Text item=Nilan_Input_RH_Trig icon="humidity-cyan"
 					}
 					Frame label="Ventilator Adjust" {
 						Setpoint item=Nilan_AirFlow_InletSpd_1 label="Inlet speed - Step1" minValue=20 maxValue=100 step=1
@@ -1160,15 +1161,15 @@ Frame label="Fordør - Porsevej 19" {
 					}
 				}
 				Text label="Fingerprint Reader" icon="lock-orange" {
-					Default item=Reader_Status
-					Default item=Reader_State
-					Default item=Reader_Mode
-					Default item=Reader_Match
-					Default item=Reader_FingerprintID
-					Default item=Reader_UserId
-					Default item=Reader_Confidence
-					Default item=Reader_gate
-					Default item=FingerprintID_last
+					Default item=Reader_Status icon="info-blue"
+					Default item=Reader_State icon="info-blue"
+					Default item=Reader_Mode icon="settings-blue"
+					Default item=Reader_Match icon="info-blue"
+					Default item=Reader_FingerprintID icon="key-orange"
+					Default item=Reader_UserId icon="user-purple"
+					Default item=Reader_Confidence icon="info-blue"
+					Default item=Reader_gate icon="lock-orange"
+					Default item=FingerprintID_last icon="key-orange"
 					Selection item=enroll_fingerprint mappings=[10="Id 10", 11="Id 11", 12="Id 12", 13="Id 13", 14="Id 14", 15="Id 15", 16="Id 16", 17="Id 17", 18="Id 18", 19="Id 19"]
 					Selection item=delete_fingerprint mappings=[10="Id 10", 11="Id 11", 12="Id 12", 13="Id 13", 14="Id 14", 15="Id 15", 16="Id 16", 17="Id 17", 18="Id 18", 19="Id 19"]
 				}
@@ -1193,8 +1194,8 @@ Frame label="Fordør - Porsevej 19" {
 							Setpoint item=Light_Grovlager_Constant label="Constant setpoint" minValue=101 maxValue=400 step=1 icon="light-off-gray"
 							Text item=Smartlight_Lux_Grovlager label="LUX Niveau [%d Lux]" icon="brightness-orange"
 							Text item=Smartlight_Grovlager_Timer label="Energy Timer [%d s]" icon="timer-blue"
-							Text item=Smartlight_Grovlager_Virtualoff
-							Text item=Smartlight_Grovlager_Dimmermode
+							Text item=Smartlight_Grovlager_Virtualoff icon="settings-blue"
+							Text item=Smartlight_Grovlager_Dimmermode icon="settings-blue"
 							Text item=Smartlight_Grovlager_Presence icon="people-purple"
 						}
 					}
@@ -1204,8 +1205,8 @@ Frame label="Fordør - Porsevej 19" {
 							Setpoint item=Light_Finlager label="Dimmer Setpoint" minValue=0 maxValue=100 step=1 icon="light-off-gray"
 							// Text item=Smartlight_Lux_Finlager label="LUX Niveau [%d Lux]" icon="brightness-orange"
 							Text item=Smartlight_Finlager_Timer label="Energy Timer [%d s]" icon="timer-blue"
-							Text item=Smartlight_Finlager_Virtualoff
-							Text item=Smartlight_Finlager_Dimmermode
+							Text item=Smartlight_Finlager_Virtualoff icon="settings-blue"
+							Text item=Smartlight_Finlager_Dimmermode icon="settings-blue"
 							Text item=Smartlight_Finlager_Presence icon="people-purple"
 						}
 					}

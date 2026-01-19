@@ -7,6 +7,42 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-19 15:00:16
+- Added: icons/classic/ac-blue.svg
+- Added: icons/classic/action-blue.svg
+- Added: icons/classic/active-green.svg
+- Added: icons/classic/alert-bell-orange.svg
+- Added: icons/classic/brightness-slider-orange.svg
+- Added: icons/classic/color-picker-purple.svg
+- Added: icons/classic/contactor-orange.svg
+- Added: icons/classic/current-dc-orange.svg
+- Added: icons/classic/dimmer-switch-cyan.svg
+- Added: icons/classic/door-orange.svg
+- Added: icons/classic/effects-green.svg
+- Added: icons/classic/hue-bulb-yellow.svg
+- Added: icons/classic/hue-ceiling-orange.svg
+- Added: icons/classic/hue-lamp-blue.svg
+- Added: icons/classic/hue-multiple-purple.svg
+- Added: icons/classic/hue-strip-purple.svg
+- Added: icons/classic/phase-red.svg
+- Added: icons/classic/power-on-green.svg
+- Added: icons/classic/power-phase-orange.svg
+- Added: icons/classic/power-yellow.svg
+- Added: icons/classic/program-purple.svg
+- Added: icons/classic/progress-orange.svg
+- Added: icons/classic/remote-cyan.svg
+- Added: icons/classic/solar-power-yellow.svg
+- Added: icons/classic/state-teal.svg
+- Added: icons/classic/string-a-purple.svg
+- Added: icons/classic/string-b-cyan.svg
+- Added: icons/classic/switch-green.svg
+- Added: icons/classic/total-yield-teal.svg
+- Added: icons/classic/voltage-red.svg
+- Added: icons/classic/yield-green.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 14:45:16
 - Added: icons/classic/airfilter-blue.svg
 - Added: icons/classic/alarm-light-red.svg
