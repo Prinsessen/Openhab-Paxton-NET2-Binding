@@ -92,6 +92,68 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Io389 label="Total ECU Mileage [%.1f km]" icon="exp-ecu-mileage-orange"
 					}
 				}
+				Text label="Bluetooth Beacons" icon="bluetooth" {
+					Frame label="Beacon 1" {
+						Text item=Vehicle10_Beacon1_Name label="Name [%s]" icon="text"
+						Text item=Vehicle10_Beacon1_Rssi label="Signal [%.0f dBm]" icon="qualityofservice"
+						Text item=Vehicle10_Beacon1_Distance label="Distance [%.1f m]" icon="zoom"
+						Text item=Vehicle10_Beacon1_Temperature label="Temperature [%.1f °C]" icon="temperature"
+						Text item=Vehicle10_Beacon1_Humidity label="Humidity [%.0f %%]" icon="humidity"
+						Text item=Vehicle10_Beacon1_Battery label="Battery [%.0f mV]" icon="battery"
+						Switch item=Vehicle10_Beacon1_LowBattery label="Low Battery" icon="lowbattery"
+						Switch item=Vehicle10_Beacon1_Motion label="Motion" icon="motion"
+						Text item=Vehicle10_Beacon1_MotionCount label="Motion Count [%d]" icon="motion"
+						Text item=Vehicle10_Beacon1_Magnet label="Magnet [MAP(contact.map):%s]" icon="door"
+						Text item=Vehicle10_Beacon1_Pitch label="Pitch [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon1_Roll label="Roll [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon1_Mac label="MAC [%s]" icon="network"
+					}
+					Frame label="Beacon 2" {
+						Text item=Vehicle10_Beacon2_Name label="Name [%s]" icon="text"
+						Text item=Vehicle10_Beacon2_Rssi label="Signal [%.0f dBm]" icon="qualityofservice"
+						Text item=Vehicle10_Beacon2_Distance label="Distance [%.1f m]" icon="zoom"
+						Text item=Vehicle10_Beacon2_Temperature label="Temperature [%.1f °C]" icon="temperature"
+						Text item=Vehicle10_Beacon2_Humidity label="Humidity [%.0f %%]" icon="humidity"
+						Text item=Vehicle10_Beacon2_Battery label="Battery [%.0f mV]" icon="battery"
+						Switch item=Vehicle10_Beacon2_LowBattery label="Low Battery" icon="lowbattery"
+						Switch item=Vehicle10_Beacon2_Motion label="Motion" icon="motion"
+						Text item=Vehicle10_Beacon2_MotionCount label="Motion Count [%d]" icon="motion"
+						Text item=Vehicle10_Beacon2_Magnet label="Magnet [MAP(contact.map):%s]" icon="door"
+						Text item=Vehicle10_Beacon2_Pitch label="Pitch [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon2_Roll label="Roll [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon2_Mac label="MAC [%s]" icon="network"
+					}
+					Frame label="Beacon 3" {
+						Text item=Vehicle10_Beacon3_Name label="Name [%s]" icon="text"
+						Text item=Vehicle10_Beacon3_Rssi label="Signal [%.0f dBm]" icon="qualityofservice"
+						Text item=Vehicle10_Beacon3_Distance label="Distance [%.1f m]" icon="zoom"
+						Text item=Vehicle10_Beacon3_Temperature label="Temperature [%.1f °C]" icon="temperature"
+						Text item=Vehicle10_Beacon3_Humidity label="Humidity [%.0f %%]" icon="humidity"
+						Text item=Vehicle10_Beacon3_Battery label="Battery [%.0f mV]" icon="battery"
+						Switch item=Vehicle10_Beacon3_LowBattery label="Low Battery" icon="lowbattery"
+						Switch item=Vehicle10_Beacon3_Motion label="Motion" icon="motion"
+						Text item=Vehicle10_Beacon3_MotionCount label="Motion Count [%d]" icon="motion"
+						Text item=Vehicle10_Beacon3_Magnet label="Magnet [MAP(contact.map):%s]" icon="door"
+						Text item=Vehicle10_Beacon3_Pitch label="Pitch [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon3_Roll label="Roll [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon3_Mac label="MAC [%s]" icon="network"
+					}
+					Frame label="Beacon 4" {
+						Text item=Vehicle10_Beacon4_Name label="Name [%s]" icon="text"
+						Text item=Vehicle10_Beacon4_Rssi label="Signal [%.0f dBm]" icon="qualityofservice"
+						Text item=Vehicle10_Beacon4_Distance label="Distance [%.1f m]" icon="zoom"
+						Text item=Vehicle10_Beacon4_Temperature label="Temperature [%.1f °C]" icon="temperature"
+						Text item=Vehicle10_Beacon4_Humidity label="Humidity [%.0f %%]" icon="humidity"
+						Text item=Vehicle10_Beacon4_Battery label="Battery [%.0f mV]" icon="battery"
+						Switch item=Vehicle10_Beacon4_LowBattery label="Low Battery" icon="lowbattery"
+						Switch item=Vehicle10_Beacon4_Motion label="Motion" icon="motion"
+						Text item=Vehicle10_Beacon4_MotionCount label="Motion Count [%d]" icon="motion"
+						Text item=Vehicle10_Beacon4_Magnet label="Magnet [MAP(contact.map):%s]" icon="door"
+						Text item=Vehicle10_Beacon4_Pitch label="Pitch [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon4_Roll label="Roll [%.0f °]" icon="angle"
+						Text item=Vehicle10_Beacon4_Mac label="MAC [%s]" icon="network"
+					}
+				}
 			}
 		}
 	}
