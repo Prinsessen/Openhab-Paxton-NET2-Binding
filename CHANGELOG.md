@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-20 07:45:06
+- Added: scripts/monitor_traccar_beacons.py
+- Added: scripts/monitor_traccar_webhook.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-19 15:15:16
 - Added: icons/classic/access-denied-red.svg
 - Added: icons/classic/basement-door-gray.svg
