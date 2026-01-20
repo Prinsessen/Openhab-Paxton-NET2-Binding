@@ -1,0 +1,34 @@
+// Traccar GPS Tracking System Configuration
+// Server Bridge - Connect to Traccar server
+Bridge traccar:server:gpsserver "Traccar GPS Server" [ 
+    url="https://gps.agesen.dk",
+    username="nanna@agesen.dk",
+    password="chukka8JOKE7housing",
+    refreshInterval=10,
+    webhookPort=8090,
+    speedUnit="kmh",
+    useNominatim=true,
+    nominatimUrl="https://nominatim.openstreetmap.org",
+    nominatimLanguage="en",
+    geocodingCacheDistance=50
+] {
+    // Devices are auto-discovered, but you can also manually define them:
+    // Example: Thing device motorcycle "Springfield Motorcycle" [ deviceId=1 ]
+    // Example: Thing device car "Family Car" [ deviceId=2 ]
+}
+
+// Manual device configuration examples (if not using auto-discovery):
+// Thing traccar:device:gpsserver:springfield "Springfield Motorcycle" (traccar:server:gpsserver) [ deviceId=155 ]
+// Thing traccar:device:gpsserver:familycar "Family Car" (traccar:server:gpsserver) [ deviceId=123 ]
+
+// Active devices:
+Thing traccar:device:gpsserver:866088075183606 "Springfield" (traccar:server:gpsserver) [
+    deviceId=10,
+    beacon1Mac="7cd9f413830b",
+    beacon2Mac="7cd9f414d0d7",
+    beacon3Mac="7cd9f4128704"
+]
+
+Thing traccar:device:gpsserver:694049 "Dream Catcher" (traccar:server:gpsserver) [
+    deviceId=1
+]

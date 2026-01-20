@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-20 21:45:16
+- Added: things/traccar.things.bak
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-20 20:15:16
 - Modified: things/traccar.things
 
