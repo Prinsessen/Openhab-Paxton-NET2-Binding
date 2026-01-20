@@ -74,7 +74,9 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
     webhookPort=8090,
     speedUnit="kmh",
     speedThreshold=2.0,
-    useNominatim=false
+    useNominatim=false,
+    beaconTxPower=-59,           // Default: -59 dBm (adjust for your beacons)
+    beaconPathLoss=2.2           // Default: 2.0 (2.0=outdoor, 2.7-4.3=indoor)
 ] {
     // Vehicle/Motorcycle with BLE beacons
     Thing device motorcycle "My Motorcycle" [
@@ -82,11 +84,8 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
         // Beacon MAC addresses (discovered in Step 2)
         beacon1Mac="7cd9f413830b",  // Replace with your MAC
         beacon2Mac="7cd9f414d0d7",  // Replace with your MAC
-        beacon3Mac="7cd9f4128704",  // Replace with your MAC
-        // beacon4Mac="xxxxxxxxxxxx",  // Optional 4th beacon
-        // Distance calculation tuning (optional)
-        beaconTxPower=-59,           // Default: -59 dBm
-        beaconPathLoss=2.2           // Default: 2.0 (adjust for your environment)
+        beacon3Mac="7cd9f4128704"   // Replace with your MAC
+        // beacon4Mac="xxxxxxxxxxxx"  // Optional 4th beacon
     ]
 }
 ```
@@ -561,13 +560,15 @@ If beacon names/data keep changing between channels:
 
 ### Distance Inaccurate
 
-Adjust `beaconTxPower` and `beaconPathLoss` values:
+Adjust `beaconTxPower` and `beaconPathLoss` values on the Server Bridge:
 
 ```openhab
-Thing device motorcycle [
-    deviceId=10,
+Bridge traccar:server:gpsserver [
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="password",
     beaconTxPower=-62,      // Try different values: -59 to -65
-    beaconPathLoss=2.5      // Try: 2.0 (outdoor) to 4.0 (indoor)
+    beaconPathLoss=2.5      // Try: 2.0 (outdoor) to 4.3 (indoor)
 ]
 ```
 

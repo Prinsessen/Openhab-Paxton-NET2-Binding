@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-20 23:15:16
+- Modified: Traccar-Binding/README.md
+- Modified: Traccar-Binding/docs/beacon-tracking-example.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-20 23:00:17
 - Modified: Traccar-Binding/README.md
 - Added: Traccar-Binding/docs/BEACON-DOCUMENTATION-SUMMARY.md

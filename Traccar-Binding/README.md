@@ -102,6 +102,8 @@ The binding automatically discovers devices configured in your Traccar server:
 | `webhookPort` | integer | No | 8090 | Port for receiving webhooks (1024-65535) |
 | `speedUnit` | text | No | kmh | Speed unit: `kmh`, `mph`, or `knots` |
 | `speedThreshold` | decimal | No | 2.0 | Minimum speed (km/h) to display. Filters GPS noise and small movements (0-10) |
+| `beaconTxPower` | integer | No | -59 | Beacon transmit power at 1m in dBm (for RSSI→distance calculation) |
+| `beaconPathLoss` | decimal | No | 2.0 | Path loss exponent (2.0=free space, 2.7-4.3=indoor with obstacles) |
 | `useNominatim` | boolean | No | false | Enable Nominatim reverse geocoding for all devices |
 | `nominatimUrl` | text | No | https://nominatim.openstreetmap.org | Nominatim server URL |
 | `nominatimLanguage` | text | No | en | Address language (en, da, de, fr, es) |
@@ -118,8 +120,6 @@ The binding automatically discovers devices configured in your Traccar server:
 | `beacon2Mac` | text | No | - | MAC address to assign to beacon2 slot |
 | `beacon3Mac` | text | No | - | MAC address to assign to beacon3 slot |
 | `beacon4Mac` | text | No | - | MAC address to assign to beacon4 slot |
-| `beaconTxPower` | integer | No | -59 | Beacon transmit power at 1m distance (dBm) for distance calculation |
-| `beaconPathLoss` | decimal | No | 2.0 | Path loss exponent for distance calculation (2.0=free space, 3.0-4.0=indoor) |
 
 **Note**: Beacon parameters only apply to devices with BLE capability (e.g., Teltonika FMM920).
 
@@ -215,17 +215,21 @@ Distance is automatically calculated from RSSI using the **log-distance path los
 distance = 10 ^ ((txPower - RSSI) / (10 × pathLossExponent))
 ```
 
-**Configurable parameters** (Thing configuration):
+**Configurable parameters** (Server Bridge configuration):
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `beaconTxPower` | integer | -59 | Beacon transmit power at 1 meter (dBm). Check your beacon specs. |
-| `beaconPathLoss` | decimal | 2.0 | Path loss exponent (2.0 = free space, 3.0-4.0 = indoor with obstacles) |
+| `beaconPathLoss` | decimal | 2.0 | Path loss exponent (2.0 = free space, 2.7-4.3 = indoor with obstacles) |
+
+**Note**: These are server-wide settings that apply to all devices. Configure them on the Traccar Server Bridge.
 
 Example with custom distance calculation:
 ```openhab
-Thing traccar:device:gpsserver:motorcycle "Motorcycle" (traccar:server:gpsserver) [
-    deviceId=10,
+Bridge traccar:server:gpsserver "GPS Server" [
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="password",
     beaconTxPower=-59,
     beaconPathLoss=2.5
 ]
@@ -281,15 +285,15 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
     username="user@example.com",
     password="yourpassword",
     refreshInterval=10,
-    webhookPort=8090
+    webhookPort=8090,
+    beaconTxPower=-59,
+    beaconPathLoss=2.5
 ] {
     Thing device motorcycle "Motorcycle" [
         deviceId=10,
         beacon1Mac="7cd9f413830b",
         beacon2Mac="7cd9f414d0d7", 
-        beacon3Mac="7cd9f4128704",
-        beaconTxPower=-59,
-        beaconPathLoss=2.5
+        beacon3Mac="7cd9f4128704"
     ]
 }
 ```
@@ -545,14 +549,16 @@ Example output:
 2. Adjust `beaconPathLoss`: 
    - `2.0` = open space (outdoor, motorcycle)
    - `2.5-3.0` = light obstacles (car interior)
-   - `3.0-4.0` = heavy obstacles (building with walls)
+   - `2.7-4.3` = heavy obstacles (building with walls)
 
-Example:
+Configure on the Server Bridge:
 ```openhab
-Thing traccar:device:gpsserver:motorcycle [
-    deviceId=10,
+Bridge traccar:server:gpsserver [
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="password",
     beaconTxPower=-62,     // Check your beacon specs
-    beaconPathLoss=2.2     // Adjust based on environment
+    beaconPathLoss=2.5     // Adjust based on environment
 ]
 ```
 
