@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-20 23:45:16
+- Added: scripts/watch_all_beacons.sh
+- Added: scripts/watch_beacon_temps.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-20 23:15:16
 - Modified: Traccar-Binding/README.md
 - Modified: Traccar-Binding/docs/beacon-tracking-example.md
