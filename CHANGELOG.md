@@ -7,6 +7,19 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-20 23:00:17
+- Modified: Traccar-Binding/README.md
+- Added: Traccar-Binding/docs/BEACON-DOCUMENTATION-SUMMARY.md
+- Added: Traccar-Binding/docs/DEVELOPER-REFERENCE.md
+- Added: Traccar-Binding/docs/INDEX.md
+- Added: Traccar-Binding/docs/beacon-quickstart.md
+- Added: Traccar-Binding/docs/beacon-tracking-example.md
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarBindingConstants.java
+- Modified: Traccar-Binding/src/main/java/org/openhab/binding/traccar/internal/TraccarDeviceHandler.java
+- Modified: Traccar-Binding/src/main/resources/OH-INF/thing/thing-types.xml
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-20 21:45:16
 - Added: things/traccar.things.bak
 

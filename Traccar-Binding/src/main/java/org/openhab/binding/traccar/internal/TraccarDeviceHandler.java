@@ -15,6 +15,7 @@ package org.openhab.binding.traccar.internal;
 import static org.openhab.binding.traccar.internal.TraccarBindingConstants.*;
 
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.measure.Unit;
@@ -24,6 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.core.library.types.DateTimeType;
 import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.OpenClosedType;
 import org.openhab.core.library.types.PointType;
 import org.openhab.core.library.types.QuantityType;
 import org.openhab.core.library.types.StringType;
@@ -55,6 +57,7 @@ public class TraccarDeviceHandler extends BaseThingHandler {
     private final Logger logger = LoggerFactory.getLogger(TraccarDeviceHandler.class);
 
     private @Nullable TraccarDeviceConfiguration config;
+    private final Map<String, Integer> macToBeaconSlot = new HashMap<>();
     private @Nullable NominatimGeocoder geocoder;
 
     public TraccarDeviceHandler(Thing thing) {
@@ -102,6 +105,17 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                             serverConfig.nominatimUrl, serverConfig.nominatimLanguage);
                 }
             }
+
+            // Initialize beacon MAC assignments from configuration
+            logger.debug("ABOUT TO INITIALIZE BEACON MAC MAPPINGS FOR DEVICE {}",
+                    config != null ? config.deviceId : "NULL");
+            try {
+                initializeMacMappingFromConfig();
+                logger.debug("BEACON MAC INITIALIZATION COMPLETED");
+            } catch (Exception e) {
+                logger.error("===== EXCEPTION during beacon MAC initialization: {} =====", e.getMessage(), e);
+            }
+
             updateStatus(ThingStatus.ONLINE);
             updatePosition();
         } else {
@@ -148,6 +162,24 @@ public class TraccarDeviceHandler extends BaseThingHandler {
         } catch (Exception e) {
             logger.debug("Failed to update position for device {}: {}", configuration.deviceId, e.getMessage());
         }
+    }
+
+    /**
+     * Initialize MAC to beacon slot mapping from thing configuration.
+     * This ensures consistent beacon assignments across binding restarts.
+     */
+    private void initializeMacMappingFromConfig() {
+        logger.debug("Initializing beacon MAC mappings from configuration");
+        for (int slot = 1; slot <= 4; slot++) {
+            String paramName = "beacon" + slot + "Mac";
+            Object macObj = getThing().getConfiguration().get(paramName);
+            logger.debug("Beacon slot {} config param '{}' = {}", slot, paramName, macObj);
+            if (macObj instanceof String mac && !mac.isBlank()) {
+                macToBeaconSlot.put(mac.toLowerCase().trim(), slot);
+                logger.debug("Configured beacon MAC {} for slot {}", mac, slot);
+            }
+        }
+        logger.debug("Beacon MAC mapping initialized with {} entries", macToBeaconSlot.size());
     }
 
     private void updatePositionChannels(Map<String, Object> position) {
@@ -549,6 +581,10 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                     updateState(CHANNEL_OBD_OEM_ODOMETER, new QuantityType<>(oemOdometerMeters, SIUnits.METRE));
                 }
             }
+
+            // Process Bluetooth Beacon data (Teltonika FMM920 optional accessory)
+            // Route beacons by MAC address to consistent slots
+            processBeaconsWithMacRouting(attributes);
         }
 
         // Update last update time
@@ -560,6 +596,156 @@ public class TraccarDeviceHandler extends BaseThingHandler {
             } catch (Exception e) {
                 logger.debug("Failed to parse device time: {}", e.getMessage());
             }
+        }
+    }
+
+    /**
+     * Update beacon data for a specific beacon number.
+     * Processes both basic telemetry (RSSI, MAC, Battery) and full sensor data
+     * (Temperature, Humidity, Motion, Magnet, Pitch, Roll) when available.
+     *
+     * @param attributes Position attributes map from Traccar
+     * @param beaconPrefix Attribute prefix ("tag1", "tag2", "tag3", or "tag4")
+     * @param beaconNumber Beacon number (1-4)
+     */
+    /**
+     * Process beacon data routing by MAC address.
+     * Routes each tag1-4 to the correct beacon slot based on MAC configuration.
+     */
+    private void processBeaconsWithMacRouting(Map<String, Object> attributes) {
+        logger.debug("Processing beacons with MAC routing");
+
+        // Process each tag (tag1 through tag4) from the device
+        for (int tagNum = 1; tagNum <= 4; tagNum++) {
+            String tagPrefix = "tag" + tagNum;
+            String macKey = tagPrefix + "Mac";
+            Object macObj = attributes.get(macKey);
+
+            if (macObj instanceof String mac && !mac.isBlank()) {
+                String normalizedMac = mac.toLowerCase().trim();
+                logger.debug("Found {} with MAC {}", tagPrefix, normalizedMac);
+
+                // Look up which beacon slot this MAC should go to
+                Integer beaconSlot = macToBeaconSlot.get(normalizedMac);
+
+                if (beaconSlot != null) {
+                    // Route to configured slot
+                    String channelPrefix = "beacon" + beaconSlot;
+                    logger.debug("Routing {} (MAC {}) to {}", tagPrefix, normalizedMac, channelPrefix);
+                    updateBeaconData(attributes, tagPrefix, channelPrefix);
+                } else {
+                    // MAC not configured - find first available slot
+                    logger.debug("MAC {} not configured, finding available slot", normalizedMac);
+                    Integer availableSlot = findAvailableBeaconSlot(normalizedMac);
+                    if (availableSlot != null) {
+                        String channelPrefix = "beacon" + availableSlot;
+                        logger.debug("Assigning {} (MAC {}) to available {}", tagPrefix, normalizedMac, channelPrefix);
+                        updateBeaconData(attributes, tagPrefix, channelPrefix);
+                    } else {
+                        logger.debug("No available slot for {} (MAC {})", tagPrefix, normalizedMac);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Find an available beacon slot (1-4) that doesn't have a MAC assigned.
+     */
+    private @Nullable Integer findAvailableBeaconSlot(String mac) {
+        for (int slot = 1; slot <= 4; slot++) {
+            if (!macToBeaconSlot.containsValue(slot)) {
+                // Temporarily assign this MAC to this slot for this update
+                macToBeaconSlot.put(mac, slot);
+                return slot;
+            }
+        }
+        return null;
+    }
+
+    private void updateBeaconData(Map<String, Object> attributes, String beaconPrefix, String channelPrefix) {
+        // Channel prefix: beacon1, beacon2, etc.
+
+        // Get configuration parameters for distance calculation
+        Object txPowerObj = getThing().getConfiguration().get("beaconTxPower");
+        int txPower = (txPowerObj instanceof Number) ? ((Number) txPowerObj).intValue() : -59;
+
+        Object pathLossObj = getThing().getConfiguration().get("beaconPathLoss");
+        double pathLoss = (pathLossObj instanceof Number) ? ((Number) pathLossObj).doubleValue() : 2.0;
+
+        // Basic telemetry (always check)
+        Object rssi = attributes.get(beaconPrefix + "Rssi");
+        if (rssi instanceof Number rssiValue) {
+            int rssiInt = rssiValue.intValue();
+            updateState(channelPrefix + "-rssi", new DecimalType(rssiInt));
+
+            // Calculate distance from RSSI
+            // Formula: distance = 10 ^ ((txPower - RSSI) / (10 * pathLossExponent))
+            double exponent = (txPower - rssiInt) / (10.0 * pathLoss);
+            double distanceMeters = Math.pow(10, exponent);
+            updateState(channelPrefix + "-distance", new QuantityType<>(distanceMeters, SIUnits.METRE));
+        }
+
+        Object mac = attributes.get(beaconPrefix + "Mac");
+        if (mac instanceof String macValue) {
+            updateState(channelPrefix + "-mac", new StringType(macValue));
+        }
+
+        Object battery = attributes.get(beaconPrefix + "Battery");
+        if (battery instanceof Number batteryValue) {
+            updateState(channelPrefix + "-battery",
+                    new QuantityType<>(batteryValue.doubleValue(), MetricPrefix.MILLI(Units.VOLT)));
+        }
+
+        Object lowBattery = attributes.get(beaconPrefix + "LowBattery");
+        if (lowBattery instanceof Number lowBatteryValue) {
+            updateState(channelPrefix + "-lowBattery", OnOffType.from(lowBatteryValue.intValue() != 0));
+        }
+
+        // Full sensor data (may not always be present)
+        Object name = attributes.get(beaconPrefix + "Name");
+        if (name instanceof String nameValue) {
+            // Trim null characters from name
+            String cleanName = nameValue.replaceAll("\\u0000", "").trim();
+            updateState(channelPrefix + "-name", new StringType(cleanName));
+        }
+
+        Object temp = attributes.get(beaconPrefix + "Temp");
+        if (temp instanceof Number tempValue) {
+            // Temperature is in hundredths of °C
+            double celsius = tempValue.doubleValue() / 100.0;
+            updateState(channelPrefix + "-temperature", new QuantityType<>(celsius, SIUnits.CELSIUS));
+        }
+
+        Object humidity = attributes.get(beaconPrefix + "Humidity");
+        if (humidity instanceof Number humidityValue) {
+            updateState(channelPrefix + "-humidity", new QuantityType<>(humidityValue.doubleValue(), Units.PERCENT));
+        }
+
+        Object magnet = attributes.get(beaconPrefix + "Magnet");
+        if (magnet instanceof Boolean magnetValue) {
+            // Magnet sensor: false=CLOSED (magnet near), true=OPEN (magnet away)
+            updateState(channelPrefix + "-magnet", magnetValue ? OpenClosedType.OPEN : OpenClosedType.CLOSED);
+        }
+
+        Object motion = attributes.get(beaconPrefix + "Motion");
+        if (motion instanceof Boolean motionValue) {
+            updateState(channelPrefix + "-motion", OnOffType.from(motionValue));
+        }
+
+        Object motionCount = attributes.get(beaconPrefix + "MotionCount");
+        if (motionCount instanceof Number motionCountValue) {
+            updateState(channelPrefix + "-motionCount", new DecimalType(motionCountValue.intValue()));
+        }
+
+        Object pitch = attributes.get(beaconPrefix + "Pitch");
+        if (pitch instanceof Number pitchValue) {
+            updateState(channelPrefix + "-pitch", new QuantityType<>(pitchValue.doubleValue(), Units.DEGREE_ANGLE));
+        }
+
+        Object roll = attributes.get(beaconPrefix + "AngleRoll");
+        if (roll instanceof Number rollValue) {
+            updateState(channelPrefix + "-roll", new QuantityType<>(rollValue.doubleValue(), Units.DEGREE_ANGLE));
         }
     }
 

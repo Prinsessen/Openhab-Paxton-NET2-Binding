@@ -91,4 +91,65 @@ public class TraccarBindingConstants {
     public static final String CHANNEL_IO199 = "io199";
     public static final String CHANNEL_IO205 = "io205";
     public static final String CHANNEL_IO389 = "io389";
+
+    // Bluetooth Beacon Channels (Teltonika FMM920 optional accessory)
+    // Beacon 1
+    public static final String CHANNEL_BEACON1_RSSI = "beacon1-rssi";
+    public static final String CHANNEL_BEACON1_DISTANCE = "beacon1-distance";
+    public static final String CHANNEL_BEACON1_MAC = "beacon1-mac";
+    public static final String CHANNEL_BEACON1_BATTERY = "beacon1-battery";
+    public static final String CHANNEL_BEACON1_LOW_BATTERY = "beacon1-lowBattery";
+    public static final String CHANNEL_BEACON1_NAME = "beacon1-name";
+    public static final String CHANNEL_BEACON1_TEMPERATURE = "beacon1-temperature";
+    public static final String CHANNEL_BEACON1_HUMIDITY = "beacon1-humidity";
+    public static final String CHANNEL_BEACON1_MAGNET = "beacon1-magnet";
+    public static final String CHANNEL_BEACON1_MOTION = "beacon1-motion";
+    public static final String CHANNEL_BEACON1_MOTION_COUNT = "beacon1-motionCount";
+    public static final String CHANNEL_BEACON1_PITCH = "beacon1-pitch";
+    public static final String CHANNEL_BEACON1_ROLL = "beacon1-roll";
+
+    // Beacon 2
+    public static final String CHANNEL_BEACON2_RSSI = "beacon2-rssi";
+    public static final String CHANNEL_BEACON2_DISTANCE = "beacon2-distance";
+    public static final String CHANNEL_BEACON2_MAC = "beacon2-mac";
+    public static final String CHANNEL_BEACON2_BATTERY = "beacon2-battery";
+    public static final String CHANNEL_BEACON2_LOW_BATTERY = "beacon2-lowBattery";
+    public static final String CHANNEL_BEACON2_NAME = "beacon2-name";
+    public static final String CHANNEL_BEACON2_TEMPERATURE = "beacon2-temperature";
+    public static final String CHANNEL_BEACON2_HUMIDITY = "beacon2-humidity";
+    public static final String CHANNEL_BEACON2_MAGNET = "beacon2-magnet";
+    public static final String CHANNEL_BEACON2_MOTION = "beacon2-motion";
+    public static final String CHANNEL_BEACON2_MOTION_COUNT = "beacon2-motionCount";
+    public static final String CHANNEL_BEACON2_PITCH = "beacon2-pitch";
+    public static final String CHANNEL_BEACON2_ROLL = "beacon2-roll";
+
+    // Beacon 3
+    public static final String CHANNEL_BEACON3_RSSI = "beacon3-rssi";
+    public static final String CHANNEL_BEACON3_DISTANCE = "beacon3-distance";
+    public static final String CHANNEL_BEACON3_MAC = "beacon3-mac";
+    public static final String CHANNEL_BEACON3_BATTERY = "beacon3-battery";
+    public static final String CHANNEL_BEACON3_LOW_BATTERY = "beacon3-lowBattery";
+    public static final String CHANNEL_BEACON3_NAME = "beacon3-name";
+    public static final String CHANNEL_BEACON3_TEMPERATURE = "beacon3-temperature";
+    public static final String CHANNEL_BEACON3_HUMIDITY = "beacon3-humidity";
+    public static final String CHANNEL_BEACON3_MAGNET = "beacon3-magnet";
+    public static final String CHANNEL_BEACON3_MOTION = "beacon3-motion";
+    public static final String CHANNEL_BEACON3_MOTION_COUNT = "beacon3-motionCount";
+    public static final String CHANNEL_BEACON3_PITCH = "beacon3-pitch";
+    public static final String CHANNEL_BEACON3_ROLL = "beacon3-roll";
+
+    // Beacon 4
+    public static final String CHANNEL_BEACON4_RSSI = "beacon4-rssi";
+    public static final String CHANNEL_BEACON4_DISTANCE = "beacon4-distance";
+    public static final String CHANNEL_BEACON4_MAC = "beacon4-mac";
+    public static final String CHANNEL_BEACON4_BATTERY = "beacon4-battery";
+    public static final String CHANNEL_BEACON4_LOW_BATTERY = "beacon4-lowBattery";
+    public static final String CHANNEL_BEACON4_NAME = "beacon4-name";
+    public static final String CHANNEL_BEACON4_TEMPERATURE = "beacon4-temperature";
+    public static final String CHANNEL_BEACON4_HUMIDITY = "beacon4-humidity";
+    public static final String CHANNEL_BEACON4_MAGNET = "beacon4-magnet";
+    public static final String CHANNEL_BEACON4_MOTION = "beacon4-motion";
+    public static final String CHANNEL_BEACON4_MOTION_COUNT = "beacon4-motionCount";
+    public static final String CHANNEL_BEACON4_PITCH = "beacon4-pitch";
+    public static final String CHANNEL_BEACON4_ROLL = "beacon4-roll";
 }

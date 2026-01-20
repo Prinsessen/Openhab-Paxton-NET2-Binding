@@ -4,6 +4,11 @@ The Traccar binding integrates [Traccar](https://www.traccar.org/) GPS tracking 
 
 Traccar is an open-source GPS tracking system that supports over 200 GPS protocols and 2000+ GPS tracking devices.
 
+## Documentation
+
+- **[BLE Beacon Quick Start](docs/beacon-quickstart.md)** - 5-minute setup guide for beacon tracking
+- **[Complete Beacon Example](docs/beacon-tracking-example.md)** - Full working configuration with rules and automation
+
 ## Author
 
 - **Name**: Nanna Agesen
@@ -106,9 +111,17 @@ The binding automatically discovers devices configured in your Traccar server:
 
 ### Device
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `deviceId` | integer | Yes | Traccar device ID |
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `deviceId` | integer | Yes | - | Traccar device ID |
+| `beacon1Mac` | text | No | - | MAC address to assign to beacon1 slot (e.g., 7cd9f413830b) |
+| `beacon2Mac` | text | No | - | MAC address to assign to beacon2 slot |
+| `beacon3Mac` | text | No | - | MAC address to assign to beacon3 slot |
+| `beacon4Mac` | text | No | - | MAC address to assign to beacon4 slot |
+| `beaconTxPower` | integer | No | -59 | Beacon transmit power at 1m distance (dBm) for distance calculation |
+| `beaconPathLoss` | decimal | No | 2.0 | Path loss exponent for distance calculation (2.0=free space, 3.0-4.0=indoor) |
+
+**Note**: Beacon parameters only apply to devices with BLE capability (e.g., Teltonika FMM920).
 
 ## Channels
 
@@ -170,6 +183,401 @@ The binding automatically discovers devices configured in your Traccar server:
 | `geofenceEvent` | String | Event type | geofenceEnter/geofenceExit |
 | `geofenceId` | Number | Numeric ID of triggered geofence | 1 |
 | `geofenceName` | String | Name of triggered geofence | "Home" |
+
+### BLE Beacon Tracking (Teltonika FMM920)
+
+**Supported devices**: Teltonika FMM920 and other compatible BLE-capable GPS trackers
+
+The binding supports tracking up to **4 Bluetooth Low Energy (BLE) beacons** simultaneously. This is perfect for tracking bags, cargo, or assets attached to your vehicle/motorcycle. Each beacon provides real-time proximity data including signal strength (RSSI), calculated distance, battery level, temperature, and humidity.
+
+**4 beacon groups available**: `beacon1`, `beacon2`, `beacon3`, `beacon4`
+
+#### Channels (per beacon)
+
+| Channel | Type | Description | Example State |
+|---------|------|-------------|---------------|
+| `beacon1-mac` | String | Beacon MAC address | 7cd9f413830b |
+| `beacon1-name` | String | Beacon name (if configured in beacon) | MOSKO_Bag |
+| `beacon1-rssi` | Number | Signal strength in dBm (-30 = very close, -90 = far) | -55 |
+| `beacon1-distance` | Number:Length | Calculated distance from vehicle (meters) | 1.2 m |
+| `beacon1-battery` | Number:ElectricPotential | Beacon battery voltage | 2.87 V |
+| `beacon1-lowBattery` | Switch | Low battery warning (ON = low battery) | OFF |
+| `beacon1-temperature` | Number:Temperature | Ambient temperature from beacon sensor | 21.5 °C |
+| `beacon1-humidity` | Number:Dimensionless | Relative humidity from beacon sensor | 45% |
+
+**Note**: Temperature and humidity channels are only available if your beacons have these sensors (e.g., Teltonika EYE Beacon or similar environmental sensors).
+
+#### Distance Calculation
+
+Distance is automatically calculated from RSSI using the **log-distance path loss model**:
+
+```
+distance = 10 ^ ((txPower - RSSI) / (10 × pathLossExponent))
+```
+
+**Configurable parameters** (Thing configuration):
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `beaconTxPower` | integer | -59 | Beacon transmit power at 1 meter (dBm). Check your beacon specs. |
+| `beaconPathLoss` | decimal | 2.0 | Path loss exponent (2.0 = free space, 3.0-4.0 = indoor with obstacles) |
+
+Example with custom distance calculation:
+```openhab
+Thing traccar:device:gpsserver:motorcycle "Motorcycle" (traccar:server:gpsserver) [
+    deviceId=10,
+    beaconTxPower=-59,
+    beaconPathLoss=2.5
+]
+```
+
+#### MAC Address Routing (Critical Feature!)
+
+**Problem**: Teltonika FMM920 devices assign beacons to `tag1`, `tag2`, `tag3`, `tag4` **dynamically based on scan order**, not by MAC address. This means beacon data can shuffle between channels on every scan, causing chaos in your automation and UI.
+
+**Solution**: The binding automatically routes beacons to consistent slots based on their MAC address.
+
+**Configuration Parameters** (Thing configuration, optional but recommended):
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `beacon1Mac` | text | MAC address to permanently assign to beacon1 slot |
+| `beacon2Mac` | text | MAC address to permanently assign to beacon2 slot |
+| `beacon3Mac` | text | MAC address to permanently assign to beacon3 slot |
+| `beacon4Mac` | text | MAC address to permanently assign to beacon4 slot |
+
+**How It Works**:
+
+1. **With configuration** (recommended): Each configured MAC address always routes to its assigned beacon slot (beacon1-4)
+2. **Without configuration** (automatic): First-discovered MACs are automatically assigned to available slots and remain consistent
+
+**Configuration Example**:
+
+```openhab
+// First, discover your beacon MAC addresses
+// Check logs: grep "Found tag.*with MAC" /var/log/openhab/openhab.log
+
+Thing traccar:device:gpsserver:866088075183606 "Springfield" (traccar:server:gpsserver) [
+    deviceId=10,
+    beacon1Mac="7cd9f413830b",  // MOSKO_Bag
+    beacon2Mac="7cd9f414d0d7",  // PANNIERS
+    beacon3Mac="7cd9f4128704"   // OXFORD_Bag
+]
+```
+
+**Important Notes**:
+- MAC addresses must be lowercase hex without colons (e.g., `7cd9f413830b`, not `7C:D9:F4:13:83:0B`)
+- After adding/changing MAC configuration, restart openHAB or reload the thing: `openhab-cli reload-thing traccar:device:gpsserver:DEVICEID`
+- Unconfigured beacons will automatically take first available slot (works great for most use cases)
+- Name channel clears automatically when beacon has no configured name (fixes stale data)
+
+#### Complete Beacon Example
+
+##### traccar.things
+
+```openhab
+Bridge traccar:server:gpsserver "Traccar GPS Server" [ 
+    url="https://gps.example.com",
+    username="user@example.com",
+    password="yourpassword",
+    refreshInterval=10,
+    webhookPort=8090
+] {
+    Thing device motorcycle "Motorcycle" [
+        deviceId=10,
+        beacon1Mac="7cd9f413830b",
+        beacon2Mac="7cd9f414d0d7", 
+        beacon3Mac="7cd9f4128704",
+        beaconTxPower=-59,
+        beaconPathLoss=2.5
+    ]
+}
+```
+
+##### traccar.items
+
+```openhab
+Group gMotorcycle "Motorcycle" <motorbike>
+Group gBeacons "Cargo Beacons" (gMotorcycle) <bag>
+
+// Beacon 1 - Mosko Bag
+String Beacon1_Mac "Beacon 1 MAC [%s]" (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-mac"}
+String Beacon1_Name "Beacon 1 Name [%s]" <bag> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-name"}
+Number Beacon1_RSSI "Beacon 1 Signal [%d dBm]" (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-rssi"}
+Number:Length Beacon1_Distance "Beacon 1 Distance [%.2f m]" <distance> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-distance"}
+Number:ElectricPotential Beacon1_Battery "Beacon 1 Battery [%.2f V]" <battery> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-battery"}
+Switch Beacon1_LowBattery "Beacon 1 Low Battery" <lowbattery> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-lowBattery"}
+Number:Temperature Beacon1_Temperature "Beacon 1 Temperature [%.1f °C]" <temperature> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-temperature"}
+Number:Dimensionless Beacon1_Humidity "Beacon 1 Humidity [%.0f %%]" <humidity> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-humidity"}
+
+// Beacon 2 - Panniers
+String Beacon2_Mac "Beacon 2 MAC [%s]" (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-mac"}
+String Beacon2_Name "Beacon 2 Name [%s]" <bag> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-name"}
+Number Beacon2_RSSI "Beacon 2 Signal [%d dBm]" (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-rssi"}
+Number:Length Beacon2_Distance "Beacon 2 Distance [%.2f m]" <distance> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-distance"}
+Number:ElectricPotential Beacon2_Battery "Beacon 2 Battery [%.2f V]" <battery> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-battery"}
+Switch Beacon2_LowBattery "Beacon 2 Low Battery" <lowbattery> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-lowBattery"}
+
+// Beacon 3 - Oxford Bag
+String Beacon3_Mac "Beacon 3 MAC [%s]" (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-mac"}
+String Beacon3_Name "Beacon 3 Name [%s]" <bag> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-name"}
+Number Beacon3_RSSI "Beacon 3 Signal [%d dBm]" (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-rssi"}
+Number:Length Beacon3_Distance "Beacon 3 Distance [%.2f m]" <distance> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-distance"}
+
+// Beacon 4 - Available
+String Beacon4_Name "Beacon 4 Name [%s]" <bag> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon4-name"}
+Number:Length Beacon4_Distance "Beacon 4 Distance [%.2f m]" <distance> (gBeacons)
+    {channel="traccar:device:gpsserver:motorcycle:beacon4-distance"}
+```
+
+##### Beacon Automation Rules
+
+```openhab
+rule "Beacon Low Battery Alert"
+when
+    Item Beacon1_LowBattery changed to ON or
+    Item Beacon2_LowBattery changed to ON
+then
+    val beaconName = if (Beacon1_LowBattery.state == ON) {
+        Beacon1_Name.state.toString
+    } else {
+        Beacon2_Name.state.toString
+    }
+    
+    val battery = if (Beacon1_LowBattery.state == ON) {
+        Beacon1_Battery.state.toString
+    } else {
+        Beacon2_Battery.state.toString
+    }
+    
+    logWarn("Beacon", "Low battery alert: {} ({})", beaconName, battery)
+    sendNotification("admin@example.com", 
+        "⚠️ Beacon Low Battery: " + beaconName + " - " + battery)
+end
+
+rule "Cargo Detached Warning"
+when
+    Item Beacon1_Distance changed or
+    Item Beacon2_Distance changed or
+    Item Beacon3_Distance changed
+then
+    val speed = (Motorcycle_Speed.state as QuantityType<Speed>).toUnit("km/h").doubleValue()
+    
+    // Only check when vehicle is moving
+    if (speed > 5.0) {
+        val distance1 = (Beacon1_Distance.state as QuantityType<Length>).toUnit("m").doubleValue()
+        val distance2 = (Beacon2_Distance.state as QuantityType<Length>).toUnit("m").doubleValue()
+        val distance3 = (Beacon3_Distance.state as QuantityType<Length>).toUnit("m").doubleValue()
+        
+        // Alert if any beacon is more than 10 meters away while moving
+        if (distance1 > 10.0) {
+            logWarn("Cargo", "⚠️ {} may be detached! Distance: {} m", 
+                Beacon1_Name.state, distance1)
+            sendNotification("admin@example.com",
+                "⚠️ CARGO WARNING: " + Beacon1_Name.state + " is " + distance1 + "m away!")
+        }
+        
+        if (distance2 > 10.0) {
+            logWarn("Cargo", "⚠️ {} may be detached! Distance: {} m", 
+                Beacon2_Name.state, distance2)
+        }
+        
+        if (distance3 > 10.0) {
+            logWarn("Cargo", "⚠️ {} may be detached! Distance: {} m", 
+                Beacon3_Name.state, distance3)
+        }
+    }
+end
+
+rule "Beacon Temperature Alert"
+when
+    Item Beacon1_Temperature changed
+then
+    val temp = (Beacon1_Temperature.state as QuantityType<Temperature>).toUnit("°C").doubleValue()
+    
+    if (temp > 45.0) {
+        logWarn("Beacon", "High temperature in {}: {} °C", 
+            Beacon1_Name.state, temp)
+        sendNotification("admin@example.com",
+            "🔥 High temperature alert: " + Beacon1_Name.state + " - " + temp + "°C")
+    }
+    
+    if (temp < -10.0) {
+        logWarn("Beacon", "Low temperature in {}: {} °C", 
+            Beacon1_Name.state, temp)
+    }
+end
+
+rule "All Cargo Present Check"
+when
+    Item Motorcycle_Ignition changed to ON
+then
+    Thread::sleep(2000)  // Wait for beacon scan
+    
+    val beacons = newArrayList(
+        Beacon1_Name.state.toString,
+        Beacon2_Name.state.toString,
+        Beacon3_Name.state.toString
+    )
+    
+    val present = beacons.filter[it != "UNDEF" && it != "NULL" && it != "-"].size
+    
+    if (present < 3) {
+        logWarn("Cargo", "⚠️ Only {} of 3 expected beacons detected!", present)
+        sendNotification("admin@example.com",
+            "⚠️ CARGO CHECK: Only " + present + "/3 bags detected at startup!")
+    } else {
+        logInfo("Cargo", "✓ All 3 cargo beacons present")
+    }
+end
+```
+
+##### Beacon Sitemap
+
+```openhab
+sitemap motorcycle label="Motorcycle Tracking" {
+    Frame label="Cargo Beacons" {
+        Text label="Beacon 1 - Mosko Bag" icon="bag" {
+            Text item=Beacon1_Mac label="MAC [%s]" icon="bluetooth"
+            Text item=Beacon1_RSSI label="Signal [%d dBm]" icon="signal" 
+                valuecolor=[Beacon1_RSSI>-50="green", Beacon1_RSSI>-70="orange", ="red"]
+            Text item=Beacon1_Distance label="Distance [%.2f m]" icon="distance"
+                valuecolor=[Beacon1_Distance<2="green", Beacon1_Distance<5="orange", ="red"]
+            Text item=Beacon1_Battery label="Battery [%.2f V]" icon="battery"
+                valuecolor=[Beacon1_Battery>2.8="green", Beacon1_Battery>2.5="orange", ="red"]
+            Switch item=Beacon1_LowBattery label="Low Battery" icon="lowbattery"
+            Text item=Beacon1_Temperature label="Temperature [%.1f °C]" icon="temperature"
+            Text item=Beacon1_Humidity label="Humidity [%.0f %%]" icon="humidity"
+        }
+        
+        Text label="Beacon 2 - Panniers" icon="bag" {
+            Text item=Beacon2_Mac label="MAC [%s]" icon="bluetooth"
+            Text item=Beacon2_RSSI label="Signal [%d dBm]" icon="signal"
+                valuecolor=[Beacon2_RSSI>-50="green", Beacon2_RSSI>-70="orange", ="red"]
+            Text item=Beacon2_Distance label="Distance [%.2f m]" icon="distance"
+                valuecolor=[Beacon2_Distance<2="green", Beacon2_Distance<5="orange", ="red"]
+            Text item=Beacon2_Battery label="Battery [%.2f V]" icon="battery"
+                valuecolor=[Beacon2_Battery>2.8="green", Beacon2_Battery>2.5="orange", ="red"]
+            Switch item=Beacon2_LowBattery label="Low Battery" icon="lowbattery"
+        }
+        
+        Text label="Beacon 3 - Oxford Bag" icon="bag" {
+            Text item=Beacon3_Mac label="MAC [%s]" icon="bluetooth"
+            Text item=Beacon3_RSSI label="Signal [%d dBm]" icon="signal"
+            Text item=Beacon3_Distance label="Distance [%.2f m]" icon="distance"
+        }
+        
+        Text label="Beacon 4 - Available" icon="bag" {
+            Text item=Beacon4_Name label="Name [%s]"
+            Text item=Beacon4_Distance label="Distance [%.2f m]" icon="distance"
+        }
+    }
+}
+```
+
+#### Troubleshooting Beacons
+
+##### 1. Finding Beacon MAC Addresses
+
+Monitor logs to discover beacon MAC addresses:
+
+```bash
+# Watch for beacon detection
+tail -f /var/log/openhab/openhab.log | grep "Found tag.*with MAC"
+
+# See routing decisions
+tail -f /var/log/openhab/openhab.log | grep "Routing tag"
+
+# Check current MAC assignments
+grep "Configured beacon MAC" /var/log/openhab/openhab.log | tail -10
+```
+
+Example output:
+```
+[DEBUG] Found tag1 with MAC 7cd9f413830b
+[DEBUG] Routing tag1 (MAC 7cd9f413830b) to beacon1
+[DEBUG] Configured beacon MAC 7cd9f413830b for slot 1
+```
+
+##### 2. Beacon Data Shuffling
+
+**Symptom**: Beacon names and data keep changing between beacon1/beacon2/beacon3/beacon4 channels.
+
+**Cause**: Teltonika FMM920 assigns beacons to tag1-4 dynamically based on which beacon it scans first.
+
+**Solution**: Configure beacon MAC addresses in thing configuration (see MAC Address Routing above).
+
+##### 3. Stale Beacon Names
+
+**Symptom**: Beacon shows old name even though it's not present or has a different name.
+
+**Cause**: Previous versions didn't clear the name channel when no name was received.
+
+**Solution**: Update to latest binding version (5.2.0+). Name channel now automatically clears to UNDEF when beacon doesn't send a name.
+
+##### 4. Inaccurate Distance
+
+**Symptom**: Distance calculation seems wrong (too close or too far).
+
+**Cause**: Default `beaconTxPower` or `beaconPathLoss` values don't match your beacon or environment.
+
+**Solution**: 
+1. Check your beacon's specifications for actual Tx power (usually -59 to -65 dBm)
+2. Adjust `beaconPathLoss`: 
+   - `2.0` = open space (outdoor, motorcycle)
+   - `2.5-3.0` = light obstacles (car interior)
+   - `3.0-4.0` = heavy obstacles (building with walls)
+
+Example:
+```openhab
+Thing traccar:device:gpsserver:motorcycle [
+    deviceId=10,
+    beaconTxPower=-62,     // Check your beacon specs
+    beaconPathLoss=2.2     // Adjust based on environment
+]
+```
+
+##### 5. Missing Temperature/Humidity
+
+**Symptom**: Temperature and humidity channels show NULL/UNDEF.
+
+**Cause**: Your beacons don't have environmental sensors (temperature/humidity).
+
+**Solution**: This is normal. Only beacons with built-in sensors (like Teltonika EYE Beacon) provide temperature and humidity. Basic BLE beacons only provide MAC, RSSI, battery, and name.
+
+##### 6. Beacon Not Appearing
+
+**Symptom**: Beacon visible in Traccar but not showing in openHAB.
+
+**Checklist**:
+1. Verify beacon is actually being transmitted by Teltonika device - check Traccar web interface
+2. Check webhook is working: `grep "Received webhook" /var/log/openhab/openhab.log | tail -5`
+3. Enable debug logging: `openhab> log:set DEBUG org.openhab.binding.traccar`
+4. Check for errors: `grep ERROR /var/log/openhab/openhab.log | grep traccar | tail -10`
+5. Restart thing: `openhab-cli reload-thing traccar:device:gpsserver:DEVICEID`
+
+##### 7. Multiple Devices with Same Beacon
+
+**Important**: Each beacon can only be tracked by ONE Teltonika device. If multiple vehicles have beacons, each vehicle must have its own unique set of beacons. The binding handles multiple devices correctly - just configure different MAC addresses for each device thing.
 
 ## Full Example
 

@@ -67,6 +67,18 @@
 				<default>https://nominatim.openstreetmap.org</default>
 				<advanced>true</advanced>
 			</parameter>
+			<parameter name="beaconTxPower" type="integer" min="-100" max="0">
+				<label>Beacon TX Power (dBm)</label>
+				<description>Beacon transmit power at 1 meter in dBm (typical: -59 dBm for BLE beacons)</description>
+				<default>-59</default>
+				<advanced>true</advanced>
+			</parameter>
+			<parameter name="beaconPathLoss" type="decimal" min="1.5" max="4.0">
+				<label>Beacon Path Loss Exponent</label>
+				<description>Environmental path loss factor (2.0=free space, 2.7-4.3=indoor with obstacles)</description>
+				<default>2.0</default>
+				<advanced>true</advanced>
+			</parameter>
 			<parameter name="nominatimLanguage" type="text">
 				<label>Address Language</label>
 				<description>Language code for address results (e.g., en, da, de, fr)</description>
@@ -98,6 +110,7 @@
 
 		<label>Traccar Device</label>
 		<description>GPS tracked device/vehicle</description>
+
 
 		<channels>
 			<channel id="geofenceEvent" typeId="geofence-event"/>
@@ -152,7 +165,65 @@
 			<channel id="io199" typeId="io199"/>
 			<channel id="io205" typeId="io205"/>
 			<channel id="io389" typeId="io389"/>
+
+			<!-- Beacon 1 Channels (Teltonika FMM920 optional BLE accessory) -->
+			<channel id="beacon1-rssi" typeId="beacon-rssi"/>
+			<channel id="beacon1-distance" typeId="beacon-distance"/>
+			<channel id="beacon1-mac" typeId="beacon-mac"/>
+			<channel id="beacon1-battery" typeId="beacon-battery"/>
+			<channel id="beacon1-lowBattery" typeId="beacon-lowBattery"/>
+			<channel id="beacon1-name" typeId="beacon-name"/>
+			<channel id="beacon1-temperature" typeId="beacon-temperature"/>
+			<channel id="beacon1-humidity" typeId="beacon-humidity"/>
+			<channel id="beacon1-magnet" typeId="beacon-magnet"/>
+			<channel id="beacon1-motion" typeId="beacon-motion"/>
+			<channel id="beacon1-motionCount" typeId="beacon-motionCount"/>
+			<channel id="beacon1-pitch" typeId="beacon-pitch"/>
+			<channel id="beacon1-roll" typeId="beacon-roll"/>
+			<!-- Beacon 2 Channels (Teltonika FMM920 optional BLE accessory) -->
+			<channel id="beacon2-rssi" typeId="beacon-rssi"/>
+			<channel id="beacon2-distance" typeId="beacon-distance"/>
+			<channel id="beacon2-mac" typeId="beacon-mac"/>
+			<channel id="beacon2-battery" typeId="beacon-battery"/>
+			<channel id="beacon2-lowBattery" typeId="beacon-lowBattery"/>
+			<channel id="beacon2-name" typeId="beacon-name"/>
+			<channel id="beacon2-temperature" typeId="beacon-temperature"/>
+			<channel id="beacon2-humidity" typeId="beacon-humidity"/>
+			<channel id="beacon2-magnet" typeId="beacon-magnet"/>
+			<channel id="beacon2-motion" typeId="beacon-motion"/>
+			<channel id="beacon2-motionCount" typeId="beacon-motionCount"/>
+			<channel id="beacon2-pitch" typeId="beacon-pitch"/>
+			<channel id="beacon2-roll" typeId="beacon-roll"/>
+			<!-- Beacon 3 Channels (Teltonika FMM920 optional BLE accessory) -->
+			<channel id="beacon3-rssi" typeId="beacon-rssi"/>
+			<channel id="beacon3-distance" typeId="beacon-distance"/>
+			<channel id="beacon3-mac" typeId="beacon-mac"/>
+			<channel id="beacon3-battery" typeId="beacon-battery"/>
+			<channel id="beacon3-lowBattery" typeId="beacon-lowBattery"/>
+			<channel id="beacon3-name" typeId="beacon-name"/>
+			<channel id="beacon3-temperature" typeId="beacon-temperature"/>
+			<channel id="beacon3-humidity" typeId="beacon-humidity"/>
+			<channel id="beacon3-magnet" typeId="beacon-magnet"/>
+			<channel id="beacon3-motion" typeId="beacon-motion"/>
+			<channel id="beacon3-motionCount" typeId="beacon-motionCount"/>
+			<channel id="beacon3-pitch" typeId="beacon-pitch"/>
+			<channel id="beacon3-roll" typeId="beacon-roll"/>
+			<!-- Beacon 4 Channels (Teltonika FMM920 optional BLE accessory) -->
+			<channel id="beacon4-rssi" typeId="beacon-rssi"/>
+			<channel id="beacon4-distance" typeId="beacon-distance"/>
+			<channel id="beacon4-mac" typeId="beacon-mac"/>
+			<channel id="beacon4-battery" typeId="beacon-battery"/>
+			<channel id="beacon4-lowBattery" typeId="beacon-lowBattery"/>
+			<channel id="beacon4-name" typeId="beacon-name"/>
+			<channel id="beacon4-temperature" typeId="beacon-temperature"/>
+			<channel id="beacon4-humidity" typeId="beacon-humidity"/>
+			<channel id="beacon4-magnet" typeId="beacon-magnet"/>
+			<channel id="beacon4-motion" typeId="beacon-motion"/>
+			<channel id="beacon4-motionCount" typeId="beacon-motionCount"/>
+			<channel id="beacon4-pitch" typeId="beacon-pitch"/>
+			<channel id="beacon4-roll" typeId="beacon-roll"/>
 		</channels>
+
 
 		<properties>
 			<property name="deviceId">Device ID</property>
@@ -516,6 +587,213 @@
 		<label>Total ECU Mileage</label>
 		<description>Total vehicle mileage from bike ECU - AVL ID 389</description>
 		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<!-- Bluetooth Beacon Channel Group Type (Teltonika FMM920 optional accessory) -->
+
+	<!-- Bluetooth Beacon Support (Teltonika FMM920 optional accessory, up to 4 beacons) -->
+
+	<!-- Beacon Channel Types -->
+	<channel-type id="beacon-rssi">
+		<item-type>Number</item-type>
+		<label>Signal Strength (RSSI)</label>
+		<description>Bluetooth signal strength (-127 to 0 dBm)</description>
+		<category>QualityOfService</category>
+		<state readOnly="true" min="-127" max="0" pattern="%d dBm"/>
+	</channel-type>
+
+	<channel-type id="beacon-distance">
+		<item-type>Number:Length</item-type>
+		<label>Distance</label>
+		<description>Estimated distance to beacon (calculated from RSSI)</description>
+		<category>Distance</category>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="beacon-mac">
+		<item-type>String</item-type>
+		<label>MAC Address</label>
+		<description>Bluetooth MAC address</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-battery">
+		<item-type>Number:ElectricPotential</item-type>
+		<label>Battery Voltage</label>
+		<description>Beacon battery voltage</description>
+		<category>Energy</category>
+		<state readOnly="true" pattern="%.0f mV"/>
+	</channel-type>
+
+	<channel-type id="beacon-low-battery">
+		<item-type>Switch</item-type>
+		<label>Low Battery</label>
+		<description>Low battery warning</description>
+		<category>LowBattery</category>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-name">
+		<item-type>String</item-type>
+		<label>Beacon Name</label>
+		<description>User-configurable beacon name (set on the beacon device itself)</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-temperature">
+		<item-type>Number:Temperature</item-type>
+		<label>Temperature</label>
+		<description>Environmental temperature from beacon sensor</description>
+		<category>Temperature</category>
+		<state readOnly="true" pattern="%.1f %unit%"/>
+	</channel-type>
+
+	<channel-type id="beacon-humidity">
+		<item-type>Number:Dimensionless</item-type>
+		<label>Humidity</label>
+		<description>Relative humidity</description>
+		<category>Humidity</category>
+		<state readOnly="true" pattern="%.0f %%"/>
+	</channel-type>
+
+	<channel-type id="beacon-magnet">
+		<item-type>Contact</item-type>
+		<label>Magnet Sensor</label>
+		<description>Magnetic field detection (door/lid sensor)</description>
+		<category>Door</category>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-motion">
+		<item-type>Switch</item-type>
+		<label>Motion</label>
+		<description>Motion detection status</description>
+		<category>Motion</category>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-motion-count">
+		<item-type>Number</item-type>
+		<label>Motion Events</label>
+		<description>Cumulative motion event counter</description>
+		<state readOnly="true" pattern="%d"/>
+	</channel-type>
+
+	<channel-type id="beacon-pitch">
+		<item-type>Number:Angle</item-type>
+		<label>Pitch</label>
+		<description>Pitch angle (tilt forward/backward)</description>
+		<state readOnly="true" pattern="%.0f %unit%"/>
+	</channel-type>
+
+	<channel-type id="beacon-roll">
+		<item-type>Number:Angle</item-type>
+		<label>Roll</label>
+		<description>Roll angle (tilt left/right)</description>
+		<state readOnly="true" pattern="%.0f %unit%"/>
+	</channel-type>
+
+
+	<!-- Beacon Channel Types (Teltonika FMM920 Bluetooth sensor tags) -->
+	<channel-type id="beacon-rssi">
+		<item-type>Number</item-type>
+		<label>Beacon RSSI</label>
+		<description>Bluetooth signal strength (dBm)</description>
+		<category>QualityOfService</category>
+		<state readOnly="true" pattern="%.0f dBm"/>
+	</channel-type>
+
+	<channel-type id="beacon-distance">
+		<item-type>Number:Length</item-type>
+		<label>Beacon Distance</label>
+		<description>Estimated distance from RSSI</description>
+		<category>Distance</category>
+		<state readOnly="true" pattern="%.1f m"/>
+	</channel-type>
+
+	<channel-type id="beacon-mac">
+		<item-type>String</item-type>
+		<label>Beacon MAC Address</label>
+		<description>Bluetooth MAC address</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-battery">
+		<item-type>Number:ElectricPotential</item-type>
+		<label>Beacon Battery</label>
+		<description>Battery voltage</description>
+		<category>Battery</category>
+		<state readOnly="true" pattern="%.0f mV"/>
+	</channel-type>
+
+	<channel-type id="beacon-lowBattery">
+		<item-type>Switch</item-type>
+		<label>Beacon Low Battery</label>
+		<description>Low battery indicator</description>
+		<category>LowBattery</category>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-name">
+		<item-type>String</item-type>
+		<label>Beacon Name</label>
+		<description>Configurable beacon name</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-temperature">
+		<item-type>Number:Temperature</item-type>
+		<label>Beacon Temperature</label>
+		<description>Environmental temperature</description>
+		<category>Temperature</category>
+		<state readOnly="true" pattern="%.1f °C"/>
+	</channel-type>
+
+	<channel-type id="beacon-humidity">
+		<item-type>Number:Dimensionless</item-type>
+		<label>Beacon Humidity</label>
+		<description>Relative humidity</description>
+		<category>Humidity</category>
+		<state readOnly="true" pattern="%.0f %%"/>
+	</channel-type>
+
+	<channel-type id="beacon-magnet">
+		<item-type>Contact</item-type>
+		<label>Beacon Magnet</label>
+		<description>Magnet sensor state</description>
+		<category>Door</category>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-motion">
+		<item-type>Switch</item-type>
+		<label>Beacon Motion</label>
+		<description>Motion detection</description>
+		<category>Motion</category>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-motionCount">
+		<item-type>Number</item-type>
+		<label>Beacon Motion Count</label>
+		<description>Motion event counter</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="beacon-pitch">
+		<item-type>Number:Angle</item-type>
+		<label>Beacon Pitch</label>
+		<description>Pitch angle</description>
+		<category>Angle</category>
+		<state readOnly="true" pattern="%.0f °"/>
+	</channel-type>
+
+	<channel-type id="beacon-roll">
+		<item-type>Number:Angle</item-type>
+		<label>Beacon Roll</label>
+		<description>Roll angle</description>
+		<category>Angle</category>
+		<state readOnly="true" pattern="%.0f °"/>
 	</channel-type>
 
 </thing:thing-descriptions>
