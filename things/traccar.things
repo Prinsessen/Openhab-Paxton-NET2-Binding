@@ -23,7 +23,10 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
 
 // Active devices:
 Thing traccar:device:gpsserver:866088075183606 "Springfield" (traccar:server:gpsserver) [
-    deviceId=10
+    deviceId=10,
+    beacon1Mac="7cd9f413830b",
+    beacon2Mac="7cd9f414d0d7",
+    beacon3Mac="7cd9f4128704"
 ]
 
 Thing traccar:device:gpsserver:694049 "Dream Catcher" (traccar:server:gpsserver) [
