@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-21 10:30:16
+- Modified: items/traccar.items
+- Modified: rules/Garageport.rules
+- Added: rules/Garageport.rules.bak-20260121-101820
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-21 09:00:16
 - Modified: sitemaps/myhouse.sitemap
 - Added: transform/beacon_magnet.map

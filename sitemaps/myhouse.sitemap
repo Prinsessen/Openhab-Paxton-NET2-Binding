@@ -18,6 +18,7 @@ sitemap myhouse label="Nanna Agesen"
 				Webview url="/static/vehicle_tracker.html" height=15
 			}
 			Frame label="Dream Catcher (Phone)" {
+				Switch item=Vehicle1_AutoPortEnabled label="Auto Garage Port" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle1_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle1_Address label="Address: [%s]" icon="gps-address-cyan"
 				Text item=Vehicle1_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"
@@ -38,6 +39,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
 			}
 			Frame label="Springfield (Tracker)" {
+				Switch item=Vehicle10_AutoPortEnabled label="Auto Garage Port" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle10_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle10_Address label="Address: [%s]" icon="gps-address-cyan"
 				Text item=Vehicle10_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"

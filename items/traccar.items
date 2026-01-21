@@ -23,6 +23,9 @@ Number    engineload                  "Engine Load [%.2f Percent]"              
 
 Group gVehicle10 "Vehicle 866088075183606" <car>
 
+// Automatic Garage Port Control for Vehicle10
+Switch Vehicle10_AutoPortEnabled "Auto Garage Port (Springfield)" <switch>
+
 Location Vehicle10_Position "Position" (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:position"}
 Number:Speed Vehicle10_Speed "Speed [%.1f %unit%]" <speed> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:speed"}
 String Vehicle10_Status "Status [%s]" <status> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:status"}
@@ -146,6 +149,9 @@ Number:Angle Vehicle10_Beacon4_Roll "Beacon 4 Roll [%.0f °]" <angle> (gVehicle1
 
 // Vehicle 694049 (Device ID: 1)
 Group gVehicle1 "Vehicle 694049" <car>
+
+// Automatic Garage Port Control for Vehicle1
+Switch Vehicle1_AutoPortEnabled "Auto Garage Port (Dream Catcher)" <switch>
 
 Location Vehicle1_Position "Position" (gVehicle1) {channel="traccar:device:gpsserver:694049:position"}
 Number:Speed Vehicle1_Speed "Speed [%.1f %unit%]" <speed> (gVehicle1) {channel="traccar:device:gpsserver:694049:speed"}
