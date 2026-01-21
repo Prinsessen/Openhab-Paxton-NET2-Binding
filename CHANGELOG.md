@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-21 16:00:02
+- Added: scripts/traccar_webhook_monitor.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-21 10:45:16
 - Modified: sitemaps/myhouse.sitemap
 
