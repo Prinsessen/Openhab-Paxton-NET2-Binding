@@ -1,0 +1,9 @@
+geofenceEnter=Entered ↓
+geofenceExit=Exited ↑
+deviceOverspeed=Overspeeding
+deviceOnline=Online
+deviceOffline=Offline
+deviceMoving=Moving
+deviceStopped=Stopped
+NULL=No Event
+-=Unknown

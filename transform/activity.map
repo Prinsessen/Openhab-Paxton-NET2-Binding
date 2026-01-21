@@ -1,0 +1,10 @@
+in_vehicle=In Vehicle 🚗
+on_bicycle=On Bicycle 🚴
+on_foot=On Foot 🚶
+still=Stationary 🛑
+walking=Walking 🚶
+running=Running 🏃
+tilting=Tilting ⚠️
+unknown=Unknown ❓
+NULL=No Activity
+-=Unknown

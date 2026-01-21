@@ -7,6 +7,15 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-21 08:45:02
+- Modified: sitemaps/myhouse.sitemap
+- Added: transform/activity.map
+- Added: transform/geofence.map
+- Modified: transform/ignition.map
+- Added: transform/protocol.map
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-21 08:30:16
 - Modified: sitemaps/myhouse.sitemap
 

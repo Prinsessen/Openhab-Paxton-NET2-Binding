@@ -1,5 +1,5 @@
 # Ignition Status Transformation
-ON=On
-OFF=Off
+ON=Engine Running 🏍️
+OFF=Engine Off 🔒
 NULL=Unknown
 -=Unknown
