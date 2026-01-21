@@ -102,8 +102,8 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Beacon1_Temperature label="Temperature [%.1f °C]" icon="bt-thermometer"
 						Text item=Vehicle10_Beacon1_Humidity label="Humidity [%.0f %%]" icon="bt-droplet"
 						Text item=Vehicle10_Beacon1_Battery label="Battery [%.0f mV]" icon="bt-battery-full2"
-						Switch item=Vehicle10_Beacon1_LowBattery label="Low Battery" icon="bt-battery-alert"
-						Switch item=Vehicle10_Beacon1_Motion label="Motion" icon="bt-run-motion"
+						Switch item=Vehicle10_Beacon1_LowBattery label="Low Battery" icon="bt-battery-alert" mappings=[ON="Yes", OFF="No"]
+						Switch item=Vehicle10_Beacon1_Motion label="Motion" icon="bt-run-motion" mappings=[ON="Detected", OFF="Still"]
 						Text item=Vehicle10_Beacon1_MotionCount label="Motion Count [%d]" icon="bt-motion-counter"
 						Text item=Vehicle10_Beacon1_Magnet label="Magnet [MAP(beacon_magnet.map):%s]" icon="bt-reed-switch"
 						Text item=Vehicle10_Beacon1_Pitch label="Pitch [%.0f °]" icon="bt-rotate-angle"
@@ -117,8 +117,8 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Beacon2_Temperature label="Temperature [%.1f °C]" icon="bt-thermometer"
 						Text item=Vehicle10_Beacon2_Humidity label="Humidity [%.0f %%]" icon="bt-droplet"
 						Text item=Vehicle10_Beacon2_Battery label="Battery [%.0f mV]" icon="bt-battery-full2"
-						Switch item=Vehicle10_Beacon2_LowBattery label="Low Battery" icon="bt-battery-alert"
-						Switch item=Vehicle10_Beacon2_Motion label="Motion" icon="bt-run-motion"
+						Switch item=Vehicle10_Beacon2_LowBattery label="Low Battery" icon="bt-battery-alert" mappings=[ON="Yes", OFF="No"]
+						Switch item=Vehicle10_Beacon2_Motion label="Motion" icon="bt-run-motion" mappings=[ON="Detected", OFF="Still"]
 						Text item=Vehicle10_Beacon2_MotionCount label="Motion Count [%d]" icon="bt-motion-counter"
 						Text item=Vehicle10_Beacon2_Magnet label="Magnet [MAP(beacon_magnet.map):%s]" icon="bt-reed-switch"
 						Text item=Vehicle10_Beacon2_Pitch label="Pitch [%.0f °]" icon="bt-rotate-angle"
@@ -132,8 +132,8 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Beacon3_Temperature label="Temperature [%.1f °C]" icon="bt-thermometer"
 						Text item=Vehicle10_Beacon3_Humidity label="Humidity [%.0f %%]" icon="bt-droplet"
 						Text item=Vehicle10_Beacon3_Battery label="Battery [%.0f mV]" icon="bt-battery-full2"
-						Switch item=Vehicle10_Beacon3_LowBattery label="Low Battery" icon="bt-battery-alert"
-						Switch item=Vehicle10_Beacon3_Motion label="Motion" icon="bt-run-motion"
+						Switch item=Vehicle10_Beacon3_LowBattery label="Low Battery" icon="bt-battery-alert" mappings=[ON="Yes", OFF="No"]
+						Switch item=Vehicle10_Beacon3_Motion label="Motion" icon="bt-run-motion" mappings=[ON="Detected", OFF="Still"]
 						Text item=Vehicle10_Beacon3_MotionCount label="Motion Count [%d]" icon="bt-motion-counter"
 						Text item=Vehicle10_Beacon3_Magnet label="Magnet [MAP(beacon_magnet.map):%s]" icon="bt-reed-switch"
 						Text item=Vehicle10_Beacon3_Pitch label="Pitch [%.0f °]" icon="bt-rotate-angle"
@@ -147,8 +147,8 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Beacon4_Temperature label="Temperature [%.1f °C]" icon="bt-thermometer"
 						Text item=Vehicle10_Beacon4_Humidity label="Humidity [%.0f %%]" icon="bt-droplet"
 						Text item=Vehicle10_Beacon4_Battery label="Battery [%.0f mV]" icon="bt-battery-full2"
-						Switch item=Vehicle10_Beacon4_LowBattery label="Low Battery" icon="bt-battery-alert"
-						Switch item=Vehicle10_Beacon4_Motion label="Motion" icon="bt-run-motion"
+						Switch item=Vehicle10_Beacon4_LowBattery label="Low Battery" icon="bt-battery-alert" mappings=[ON="Yes", OFF="No"]
+						Switch item=Vehicle10_Beacon4_Motion label="Motion" icon="bt-run-motion" mappings=[ON="Detected", OFF="Still"]
 						Text item=Vehicle10_Beacon4_MotionCount label="Motion Count [%d]" icon="bt-motion-counter"
 						Text item=Vehicle10_Beacon4_Magnet label="Magnet [MAP(beacon_magnet.map):%s]" icon="bt-reed-switch"
 						Text item=Vehicle10_Beacon4_Pitch label="Pitch [%.0f °]" icon="bt-rotate-angle"
