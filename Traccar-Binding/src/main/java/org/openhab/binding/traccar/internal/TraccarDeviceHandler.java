@@ -58,6 +58,7 @@ public class TraccarDeviceHandler extends BaseThingHandler {
 
     private @Nullable TraccarDeviceConfiguration config;
     private final Map<String, Integer> macToBeaconSlot = new HashMap<>();
+    private final Map<Integer, String> beaconSlotToName = new HashMap<>();
     private @Nullable NominatimGeocoder geocoder;
 
     public TraccarDeviceHandler(Thing thing) {
@@ -111,6 +112,7 @@ public class TraccarDeviceHandler extends BaseThingHandler {
                     config != null ? config.deviceId : "NULL");
             try {
                 initializeMacMappingFromConfig();
+                initializeBeaconNamesFromProperties();
                 logger.debug("BEACON MAC INITIALIZATION COMPLETED");
             } catch (Exception e) {
                 logger.error("===== EXCEPTION during beacon MAC initialization: {} =====", e.getMessage(), e);
@@ -180,6 +182,25 @@ public class TraccarDeviceHandler extends BaseThingHandler {
             }
         }
         logger.debug("Beacon MAC mapping initialized with {} entries", macToBeaconSlot.size());
+    }
+
+    /**
+     * Initialize beacon names from Thing properties.
+     * Restores last known beacon names after binding restart.
+     */
+    private void initializeBeaconNamesFromProperties() {
+        logger.debug("Initializing beacon names from Thing properties");
+        for (int slot = 1; slot <= 4; slot++) {
+            String propName = "beacon" + slot + "Name";
+            String storedName = getThing().getProperties().get(propName);
+            if (storedName != null && !storedName.isBlank()) {
+                beaconSlotToName.put(slot, storedName);
+                logger.debug("Restored beacon {} name: {}", slot, storedName);
+                // Update channel with restored name
+                updateState("beacon" + slot + "-name", new StringType(storedName));
+            }
+        }
+        logger.debug("Beacon name restoration completed with {} entries", beaconSlotToName.size());
     }
 
     private void updatePositionChannels(Map<String, Object> position) {
@@ -707,7 +728,35 @@ public class TraccarDeviceHandler extends BaseThingHandler {
         if (name instanceof String nameValue) {
             // Trim null characters from name
             String cleanName = nameValue.replaceAll("\\u0000", "").trim();
-            updateState(channelPrefix + "-name", new StringType(cleanName));
+            if (!cleanName.isEmpty()) {
+                // Extract beacon slot number from channelPrefix (e.g., "beacon1" -> 1)
+                int beaconSlot = Integer.parseInt(channelPrefix.replace("beacon", ""));
+
+                // Check if name has changed
+                String previousName = beaconSlotToName.get(beaconSlot);
+                if (previousName == null || !previousName.equals(cleanName)) {
+                    logger.info("Beacon {} name updated: '{}' -> '{}'", beaconSlot,
+                            previousName != null ? previousName : "<none>", cleanName);
+
+                    // Store in memory
+                    beaconSlotToName.put(beaconSlot, cleanName);
+
+                    // Persist to Thing properties
+                    Map<String, String> properties = editProperties();
+                    properties.put("beacon" + beaconSlot + "Name", cleanName);
+                    updateProperties(properties);
+                }
+
+                // Always update channel with latest name
+                updateState(channelPrefix + "-name", new StringType(cleanName));
+            }
+        } else {
+            // Name not in current webhook - use stored name if available
+            int beaconSlot = Integer.parseInt(channelPrefix.replace("beacon", ""));
+            String storedName = beaconSlotToName.get(beaconSlot);
+            if (storedName != null) {
+                updateState(channelPrefix + "-name", new StringType(storedName));
+            }
         }
 
         Object temp = attributes.get(beaconPrefix + "Temp");

@@ -59,6 +59,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **[2026-01-21] Beacon Name Persistence**: Beacon names now persist across openHAB restarts. Previously, beacon names would reset when the binding restarted. Now names are stored in Thing properties and automatically restored, ensuring the `beacon-name` channels always display the last known name even when the beacon is out of range or not included in webhook updates.
+
 ### Planned Features
 - Support for Traccar commands (send commands to devices)
 - Driver behavior analysis channels

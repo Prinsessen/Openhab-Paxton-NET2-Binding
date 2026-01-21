@@ -207,6 +207,8 @@ The binding supports tracking up to **4 Bluetooth Low Energy (BLE) beacons** sim
 
 **Note**: Temperature and humidity channels are only available if your beacons have these sensors (e.g., Teltonika EYE Beacon or similar environmental sensors).
 
+**Beacon Name Persistence**: Beacon names are automatically stored when first detected and persist across openHAB restarts. This means the `beacon-name` channel will continue showing the last known name even when the beacon is out of range or the name isn't included in every webhook update. Names are automatically updated whenever the tracker reports a new name value.
+
 #### Distance Calculation
 
 Distance is automatically calculated from RSSI using the **log-distance path loss model**:
