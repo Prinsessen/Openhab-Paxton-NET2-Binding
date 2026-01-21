@@ -7,6 +7,39 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-21 06:45:17
+- Added: icons/classic/beacon-battery-green.svg
+- Added: icons/classic/beacon-bluetooth-purple.svg
+- Added: icons/classic/beacon-distance-cyan.svg
+- Added: icons/classic/beacon-humidity-blue.svg
+- Added: icons/classic/beacon-lowbat-red.svg
+- Added: icons/classic/beacon-mac-blue.svg
+- Added: icons/classic/beacon-magnet-pink.svg
+- Added: icons/classic/beacon-motion-purple.svg
+- Added: icons/classic/beacon-motion-teal.svg
+- Added: icons/classic/beacon-name-blue.svg
+- Added: icons/classic/beacon-pitch-cyan.svg
+- Added: icons/classic/beacon-roll-cyan.svg
+- Added: icons/classic/beacon-signal-green.svg
+- Added: icons/classic/beacon-temp-orange.svg
+- Added: icons/classic/bt-antenna-signal.svg
+- Added: icons/classic/bt-battery-alert.svg
+- Added: icons/classic/bt-battery-full.svg
+- Added: icons/classic/bt-chip-network.svg
+- Added: icons/classic/bt-droplet.svg
+- Added: icons/classic/bt-magnet-sensor.svg
+- Added: icons/classic/bt-radar-scan.svg
+- Added: icons/classic/bt-rotate-angle.svg
+- Added: icons/classic/bt-ruler-measure.svg
+- Added: icons/classic/bt-run-motion.svg
+- Added: icons/classic/bt-signal-bars.svg
+- Added: icons/classic/bt-tag-label.svg
+- Added: icons/classic/bt-thermometer.svg
+- Added: icons/classic/bt-wave-pulse.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-21 06:30:17
 - Modified: sitemaps/myhouse.sitemap
 

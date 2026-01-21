@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Antenna base -->
+  <circle cx="12" cy="12" r="1.5" fill="#4CAF50"/>
+  
+  <!-- Inner signal arc -->
+  <path d="M 9.5 9.5 A 3.5 3.5 0 0 1 14.5 9.5" 
+        fill="none" 
+        stroke="#4CAF50" 
+        stroke-width="1.5" 
+        stroke-linecap="round"/>
+  
+  <!-- Middle signal arc -->
+  <path d="M 7.5 7.5 A 6.5 6.5 0 0 1 16.5 7.5" 
+        fill="none" 
+        stroke="#4CAF50" 
+        stroke-width="1.5" 
+        stroke-linecap="round"/>
+  
+  <!-- Outer signal arc -->
+  <path d="M 5.5 5.5 A 9.5 9.5 0 0 1 18.5 5.5" 
+        fill="none" 
+        stroke="#4CAF50" 
+        stroke-width="1.5" 
+        stroke-linecap="round"/>
+  
+  <!-- Antenna mast -->
+  <rect x="11" y="13" width="2" height="8" rx="1" fill="#4CAF50"/>
+  <rect x="10" y="21" width="4" height="1.5" rx="0.5" fill="#4CAF50"/>
+</svg>
