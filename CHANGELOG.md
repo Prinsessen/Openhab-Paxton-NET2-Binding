@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-21 09:00:16
+- Modified: sitemaps/myhouse.sitemap
+- Added: transform/beacon_magnet.map
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-21 08:45:02
 - Modified: sitemaps/myhouse.sitemap
 - Added: transform/activity.map
