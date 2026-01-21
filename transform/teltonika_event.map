@@ -29,6 +29,7 @@
 19=Axis Z
 253=Green Driving
 255=Overspeeding
+548=Excessive Idling
 175=AutoGeofence
 155=Geofence Zone 1
 156=Geofence Zone 2
@@ -39,10 +40,10 @@
 # BLE & Advanced Elements (Codec 8 Extended)
 10831=Lost Beacon
 10830=Found Beacon
-10828=Beacon Event
-10829=Beacon Event
-11317=Beacon Data
-11318=Beacon Data
+10828=Beacon Full Data (Temp/Humid)
+10829=Beacon Basic Data (RSSI)
+11317=Beacon Scan
+11318=Beacon Scan
 331=BLE Temp Sensor 1
 332=BLE Temp Sensor 2
 333=BLE Temp Sensor 3

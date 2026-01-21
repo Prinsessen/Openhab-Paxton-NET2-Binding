@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-21 07:15:16
+- Modified: transform/teltonika_event.map
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-21 07:00:17
 - Added: icons/classic/bt-battery-full2.svg
 - Added: icons/classic/bt-location-pin.svg
