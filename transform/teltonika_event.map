@@ -38,17 +38,17 @@
 159=Geofence Zone 5
 
 # BLE & Advanced Elements (Codec 8 Extended)
-10831=Lost Beacon
+10831=Lost Eye Beacon List (On Change)
 10830=Found Beacon
-10828=Beacon Full Data (Temp/Humid)
-10829=Beacon Basic Data (RSSI)
-11317=Beacon Scan
-11318=Beacon Scan
+10828=Visible Beacon List (periodic)
+10829=Found Beacon List (On Change)
+11317=Scan EYE Sensor
+11318=Scan Beacon Data
 331=BLE Temp Sensor 1
 332=BLE Temp Sensor 2
 333=BLE Temp Sensor 3
 334=BLE Temp Sensor 4
-385=Beacon List
+385=Standard Beacon Data
 
 # Default for unknown codes
 NULL=No Event
