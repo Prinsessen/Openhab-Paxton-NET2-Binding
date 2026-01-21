@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Glass envelope -->
+  <rect x="4" y="9" width="16" height="6" rx="3" fill="none" stroke="#E91E63" stroke-width="1.5"/>
+  <!-- Reed contacts (closed position) -->
+  <rect x="4" y="11" width="7" height="2" fill="#E91E63"/>
+  <rect x="13" y="11" width="7" height="2" fill="#E91E63"/>
+  <!-- Contact gap -->
+  <rect x="11" y="11" width="2" height="2" fill="white"/>
+  <!-- Connection wires -->
+  <line x1="2" y1="12" x2="4" y2="12" stroke="#E91E63" stroke-width="1.5"/>
+  <line x1="20" y1="12" x2="22" y2="12" stroke="#E91E63" stroke-width="1.5"/>
+</svg>

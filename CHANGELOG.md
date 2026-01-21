@@ -7,6 +7,21 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-21 07:00:17
+- Added: icons/classic/bt-battery-full2.svg
+- Added: icons/classic/bt-location-pin.svg
+- Added: icons/classic/bt-mac-address.svg
+- Added: icons/classic/bt-magnet-clean.svg
+- Added: icons/classic/bt-magnet-simple.svg
+- Added: icons/classic/bt-magnet.svg
+- Added: icons/classic/bt-motion-counter.svg
+- Added: icons/classic/bt-reed-switch.svg
+- Added: icons/classic/bt-signal-wave.svg
+- Modified: sitemaps/myhouse.sitemap
+- Modified: transform/teltonika_event.map
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-21 06:45:17
 - Added: icons/classic/beacon-battery-green.svg
 - Added: icons/classic/beacon-bluetooth-purple.svg

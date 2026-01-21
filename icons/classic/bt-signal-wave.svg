@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Circular waves radiating from center -->
+  <circle cx="12" cy="12" r="2" fill="#4CAF50"/>
+  <circle cx="12" cy="12" r="5" fill="none" stroke="#4CAF50" stroke-width="1.5" opacity="0.8"/>
+  <circle cx="12" cy="12" r="8" fill="none" stroke="#4CAF50" stroke-width="1.5" opacity="0.6"/>
+  <circle cx="12" cy="12" r="11" fill="none" stroke="#4CAF50" stroke-width="1.5" opacity="0.4"/>
+</svg>
