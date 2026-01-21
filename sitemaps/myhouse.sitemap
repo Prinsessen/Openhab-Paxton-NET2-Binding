@@ -82,9 +82,9 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Vin label="VIN [%s]" icon="obd-vin-blue"
 					}
 					Frame label="Experimental Channels" {
-						Text item=Vehicle10_Io42 label="IO42 [%d]" icon="exp-intake-air-orange"
-						Text item=Vehicle10_Io49 label="IO49 [%d]" icon="exp-throttle-purple"
-						Text item=Vehicle10_Io51 label="IO51 [%d]" icon="exp-fuel-type-teal"
+						Text item=Vehicle10_Io42 label="Runtime since engine start [%d]" icon="exp-intake-air-orange"
+						Text item=Vehicle10_Io49 label="Distance Since Codes Clear [%d]" icon="exp-throttle-purple"
+						Text item=Vehicle10_Io51 label="Control Module Voltage [%d]" icon="exp-fuel-type-teal"
 						Text item=Vehicle10_TripDistance label="Trip Distance [%.1f m]" icon="exp-trip-distance-blue"
 						Text item=Vehicle10_EventCode label="Event Code [%d]" icon="exp-event-yellow"
 						Text item=Vehicle10_Io199 label="Trip 1 [%.1f km]" icon="exp-trip1-green"
