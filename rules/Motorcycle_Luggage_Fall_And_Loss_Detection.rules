@@ -1,10 +1,32 @@
 /**
- * Beacon Fall Detection Rule - Enhanced with Baseline Deviation Detection
+ * MOTORCYCLE LUGGAGE ALERT SYSTEM
  * 
- * Monitors pitch and roll angles of up to 3 BLE beacons attached to motorcycle bags.
- * Alerts when bags fall off or tip over during riding or shortly after.
+ * Comprehensive monitoring system for motorcycle luggage using BLE beacons.
+ * Detects two types of luggage security failures: physical tilt/fall and sudden separation.
  * 
- * Features:
+ * === THREE DETECTION RULES ===
+ * 
+ * RULE 1: Track Motorcycle Movement
+ *   - Monitors ignition ON/OFF and vehicle position changes
+ *   - Updates lastMovementTime when ignition turns ON or vehicle moves >20m
+ *   - Provides 30-minute grace period after movement stops
+ *   - Used by Rule 3 to determine if sudden loss alerts should fire
+ * 
+ * RULE 2: Tilt Detection (Fallen Luggage Detection)
+ *   - Monitors pitch and roll angles of up to 3 BLE beacons
+ *   - Compares current angles against baseline (normal mounting position)
+ *   - Alerts when deviation exceeds 45° threshold (bag tilted/fallen)
+ *   - Sends HTML email + SMS with tilt details and location
+ *   - Auto-resets when bag restored to normal position
+ * 
+ * RULE 3: Sudden Loss Detection (Separation/Distance Alert)
+ *   - Monitors distance changes for beacons that were recently close
+ *   - Alerts when beacon <5m suddenly goes >10m or out of range
+ *   - Catches bags falling off at speed (before tilt can be reported)
+ *   - Only fires if vehicle moved recently (within 30 minutes)
+ *   - Sends HTML email + SMS with last known position and distance
+ * 
+ * === FEATURES ===
  * - Monitors beacons 1, 2, and 3 for excessive tilt (pitch/roll)
  * - Uses baseline angles for each bag - detects DEVIATION from normal mounting position
  * - Detects sudden beacon loss (possible fall at speed before tilt reported)
