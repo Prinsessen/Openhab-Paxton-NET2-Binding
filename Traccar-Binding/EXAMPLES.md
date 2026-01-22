@@ -858,6 +858,420 @@ speedThreshold=0.0  // Show all speeds, including GPS drift
 
 ---
 
+## BLE Beacon Fall Detection (Advanced)
+
+### Overview
+
+Comprehensive motorcycle luggage fall detection system using BLE beacon pitch/roll sensors. Monitors up to 3 bags simultaneously with intelligent motion detection to prevent false alarms during unloading.
+
+**Hardware Requirements:**
+- GPS tracker with BLE support (e.g., Teltonika FMM920)
+- BLE beacons with pitch/roll sensors (e.g., Teltonika EYE Beacon)
+- Beacons placed inside motorcycle luggage/bags
+
+**Key Features:**
+- ✅ Monitors tilt angles (pitch/roll) for up to 3 beacons
+- ✅ Motion-aware: Only alerts during riding or within 15-minute grace period
+- ✅ Distance filtering: Ignores bags left at home (>10m)
+- ✅ Intelligent grace period prevents false alarms during camping/unloading
+- ✅ Email + SMS notifications with location and Google Maps link
+- ✅ Cooldown timer prevents alert spam
+- ✅ HTML email with visual status for each beacon
+
+### How It Works
+
+#### Physics of Detection
+
+**Normal Operation:**
+- Bike upright: 0-10° pitch/roll
+- Sidestand lean: 20-25° lean angle
+- Aggressive cornering: 30-40° lean
+- **Alert threshold: 45°** (safe margin)
+
+**When Bag Falls:**
+- Lying on side: 90° roll
+- Upside down: 180° pitch/roll
+- Propped against object: 60-70°
+- **All well above 45° threshold**
+
+#### Motion Detection Logic
+
+The system tracks vehicle movement through two methods:
+
+1. **Ignition Status**: Direct ignition ON = active monitoring
+2. **Position Changes**: Calculates movement using GPS coordinates
+
+```
+Movement detected when:
+  - Ignition turns ON, OR
+  - Position changes > 20 meters
+```
+
+**Grace Period (15 minutes):**
+- After parking, alerts remain active for 15 minutes
+- Allows detection of bags falling immediately after parking
+- After grace period: Bags can be unloaded without triggering alerts
+
+### Configuration
+
+#### Required Items
+
+**traccar.items:**
+```openhab
+// Vehicle position and status
+Location Vehicle10_Position "Position" 
+    {channel="traccar:device:gpsserver:motorcycle:position"}
+
+Switch Vehicle10_Ignition "Ignition" 
+    {channel="traccar:device:gpsserver:motorcycle:ignition"}
+
+String Vehicle10_Address "Address [%s]" 
+    {channel="traccar:device:gpsserver:motorcycle:address"}
+
+Number:Speed Vehicle10_Speed "Speed [%.1f km/h]" 
+    {channel="traccar:device:gpsserver:motorcycle:speed"}
+
+// Beacon 1 - e.g., Main saddlebag
+Number:Angle Vehicle10_Beacon1_Pitch "Beacon 1 Pitch [%.0f °]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-pitch"}
+
+Number:Angle Vehicle10_Beacon1_Roll "Beacon 1 Roll [%.0f °]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-roll"}
+
+Number:Length Vehicle10_Beacon1_Distance "Beacon 1 Distance [%.1f m]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-distance"}
+
+String Vehicle10_Beacon1_Name "Beacon 1 Name [%s]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon1-name"}
+
+// Beacon 2 - e.g., Tank bag
+Number:Angle Vehicle10_Beacon2_Pitch "Beacon 2 Pitch [%.0f °]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-pitch"}
+
+Number:Angle Vehicle10_Beacon2_Roll "Beacon 2 Roll [%.0f °]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-roll"}
+
+Number:Length Vehicle10_Beacon2_Distance "Beacon 2 Distance [%.1f m]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-distance"}
+
+String Vehicle10_Beacon2_Name "Beacon 2 Name [%s]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon2-name"}
+
+// Beacon 3 - e.g., Top case
+Number:Angle Vehicle10_Beacon3_Pitch "Beacon 3 Pitch [%.0f °]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-pitch"}
+
+Number:Angle Vehicle10_Beacon3_Roll "Beacon 3 Roll [%.0f °]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-roll"}
+
+Number:Length Vehicle10_Beacon3_Distance "Beacon 3 Distance [%.1f m]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-distance"}
+
+String Vehicle10_Beacon3_Name "Beacon 3 Name [%s]" 
+    {channel="traccar:device:gpsserver:motorcycle:beacon3-name"}
+```
+
+#### Mail Binding Configuration
+
+**services/mail.cfg:**
+```
+mail:yourmailserver.hostname=smtp.gmail.com
+mail:yourmailserver.port=587
+mail:yourmailserver.username=your.email@gmail.com
+mail:yourmailserver.password=your_app_password
+mail:yourmailserver.from=your.email@gmail.com
+mail:yourmailserver.tls=true
+mail:yourmailserver.security=TLS
+```
+
+### Complete Rule Example
+
+**beacon_fall_detection.rules:**
+
+See `src/main/resources/examples/beacon_fall_detection.rules` for complete implementation.
+
+### Configuration Parameters
+
+Adjust these values in the rule to match your setup:
+
+```openhab
+val tiltThreshold = 45.0        // Degrees - bags fallen/tipped detection
+val maxDistance = 10.0          // Meters - beacon must be near bike
+val movementGraceMinutes = 15   // Minutes after parking to still alert
+val cooldownMinutes = 5         // Minutes between repeated alerts
+```
+
+**Recommended Threshold Settings:**
+
+| Scenario | Threshold | Reasoning |
+|----------|-----------|-----------|
+| Standard motorcycle | 45° | Safe margin above sidestand (20-25°) and cornering (30-40°) |
+| Sport bike (aggressive) | 50-55° | Higher cornering angles |
+| Off-road/adventure | 50° | Rough terrain causes more movement |
+| Cruiser (upright) | 40-45° | Less aggressive lean angles |
+
+### Real-World Scenarios
+
+#### Scenario 1: Bag Falls While Riding
+```
+1. Riding at 80 km/h
+2. Strap breaks, bag falls off
+3. Beacon tilts from 10° → 85°
+4. 🚨 Instant alert: "Saddlebag FALLEN at [location]"
+5. Email + SMS with Google Maps link
+```
+
+#### Scenario 2: Parking at Campsite (No False Alarm)
+```
+1. Arrive at campsite, park bike
+2. Ignition OFF - grace period starts (15 min)
+3. Walk away, set up tent (10 minutes)
+4. Grace period expires
+5. Take bags off bike, tip them around
+6. ✅ No alerts - bike not moving for >15 min
+```
+
+#### Scenario 3: Quick Stop at Gas Station
+```
+1. Pull into gas station, ignition OFF
+2. Grace period active (15 min)
+3. Reorganize bags (5 minutes after parking)
+4. Bag tips over while reorganizing
+5. 🚨 Alert fires - still in grace period
+6. Prevents loss if bag fell while you're inside
+```
+
+#### Scenario 4: Tampering Detection
+```
+1. Bike parked, you're in restaurant
+2. Someone tries to pull off pannier
+3. Beacon tips from 15° → 70°
+4. Grace period still active (10 min since parking)
+5. 🚨 Alert: "Pannier FALLEN"
+6. You can respond immediately
+```
+
+### Calibration Guide
+
+#### Step 1: Install Beacons
+
+Place beacons securely inside each bag:
+- Orient beacon naturally (don't force specific angle)
+- Secure to prevent sliding
+- Test BLE connection (< 10m from tracker)
+
+#### Step 2: Check Baseline Angles
+
+With bike on sidestand and bags mounted:
+
+```bash
+# Check beacon angles
+curl http://localhost:8080/rest/items/Vehicle10_Beacon1_Pitch/state
+curl http://localhost:8080/rest/items/Vehicle10_Beacon1_Roll/state
+```
+
+**Expected baseline:**
+- Pitch: -30° to +30°
+- Roll: -30° to +30°
+- Max absolute angle: Usually < 30°
+
+**If baseline > 40°:**
+1. Check beacon orientation in bag
+2. Ensure bag is properly mounted
+3. Or increase threshold to 55-60°
+
+#### Step 3: Test Fall Detection
+
+With bike parked and ignition ON (to activate monitoring):
+
+```bash
+# Physically tip one bag over
+# Check logs for alert
+tail -f /var/log/openhab/openhab.log | grep BagAlert
+```
+
+**Expected:** Alert within 2-3 seconds of bag tipping.
+
+#### Step 4: Verify Grace Period
+
+```bash
+# Park bike, ignition OFF
+# Wait 20 minutes
+# Tip bag over
+# Expected: No alert (grace period expired)
+```
+
+### Notification Customization
+
+#### Email Styling
+
+The HTML email includes:
+- **Red header** for critical alert
+- **Location** with address and coordinates
+- **Google Maps link** (large, prominent)
+- **Speed, ignition status, time since movement**
+- **Per-beacon status** with color coding:
+  - 🔴 Red background: Beacon fallen
+  - 🟢 Green background: Beacon OK
+
+#### SMS Format
+
+```
+LUGGAGE FALL DETECTED at 22/01 14:09:51. 
+Main Street, City. 
+Google Maps: https://maps.google.com/?q=57.092,9.525
+```
+
+### Troubleshooting
+
+#### Problem: False Alerts During Aggressive Riding
+
+**Symptoms:** Alerts trigger during hard cornering
+
+**Solution:**
+```openhab
+// Increase threshold
+val tiltThreshold = 55.0  // Was 45.0
+```
+
+#### Problem: Alerts During Unloading at Home
+
+**Symptoms:** Alert fires 30 minutes after parking when unloading
+
+**Check:**
+```bash
+# Verify grace period expired
+grep "Last Movement" /var/log/openhab/openhab.log
+```
+
+**Solution:** This is expected behavior - grace period has expired. Either:
+1. Unload within 15 minutes of parking, OR
+2. Increase `movementGraceMinutes` to 30
+
+#### Problem: No Alerts When Bag Falls
+
+**Check beacon distance:**
+```bash
+curl http://localhost:8080/rest/items/Vehicle10_Beacon1_Distance/state
+# Should return < 10m
+```
+
+**If NULL or > 10m:**
+- Beacon out of range
+- Check BLE connection
+- Move beacon closer to tracker
+- Check beacon battery
+
+**Check movement detection:**
+```bash
+# Ensure ignition is detected
+curl http://localhost:8080/rest/items/Vehicle10_Ignition/state
+# Should return ON while riding
+```
+
+#### Problem: Alert Spam (Multiple Emails)
+
+**Symptoms:** Receiving alerts every few seconds
+
+**Check cooldown timer:**
+```openhab
+val cooldownMinutes = 5  // Increase if needed
+```
+
+**Verify in logs:**
+```bash
+grep "cooldown expired" /var/log/openhab/openhab.log
+```
+
+### Advanced: Multi-Vehicle Setup
+
+For multiple vehicles, duplicate the rule and items:
+
+**items:**
+```openhab
+// Motorcycle
+Group gMotorcycle "Motorcycle"
+Location Motorcycle_Position ... (gMotorcycle)
+
+// Car
+Group gCar "Car"
+Location Car_Position ... (gCar)
+```
+
+**rules:**
+```openhab
+// Separate rule for each vehicle
+rule "Motorcycle Bag Detection"
+// Use Motorcycle_* items
+
+rule "Car Bag Detection"  
+// Use Car_* items
+```
+
+### Performance Considerations
+
+**Rule Efficiency:**
+- Uses change triggers (not polling)
+- Cooldown timer prevents excessive processing
+- Distance check filters out irrelevant beacons
+- NULL checks prevent errors
+
+**Expected Load:**
+- Beacon update frequency: 1-10 seconds (depending on tracker config)
+- Rule execution: < 50ms per trigger
+- Memory: ~1MB for timer and position tracking
+
+### Security Considerations
+
+**Data Privacy:**
+- GPS coordinates sent via email
+- Use encrypted email (TLS/SSL)
+- Consider using private SMTP server
+- Limit SMS to essential info
+
+**Notification Security:**
+- Email/SMS contain real-time location
+- Ensure recipient email/phone is secure
+- Consider two-factor authentication
+- Use app-specific passwords (Gmail)
+
+### Integration Examples
+
+#### Home Assistant Integration
+
+Forward alerts to Home Assistant:
+
+```openhab
+// Add to rule after email sending
+val haUrl = "http://homeassistant.local:8123/api/webhook/luggage_fall"
+executeCommandLine(Duration.ofSeconds(5), 
+    "curl", "-X", "POST", haUrl, 
+    "-d", "beacon=" + b1_name + "&location=" + googleMapsLink)
+```
+
+#### Telegram Bot Notifications
+
+```openhab
+// Add Telegram action
+val telegramAction = getActions("telegram", "telegram:telegramBot:mybot")
+telegramAction.sendTelegram("🚨 LUGGAGE FALL\n" + alertMessage + "\n" + googleMapsLink)
+```
+
+#### Pushover Priority Alerts
+
+```openhab
+val pushoverAction = getActions("pushover", "pushover:pushover-account:account")
+pushoverAction.sendPushoverMessage(
+    pushoverBuilder("⚠️ Luggage Fall")
+        .withMessage(alertMessage)
+        .withUrl(googleMapsLink)
+        .withPriority(1)  // High priority
+        .withSound("siren")
+)
+```
+
+---
+
 ## Contact
 
 Questions about these examples? Contact:

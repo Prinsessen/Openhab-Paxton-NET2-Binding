@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-22 14:30:02
+- Modified: Traccar-Binding/EXAMPLES.md
+- Added: Traccar-Binding/src/main/resources/examples/beacon_fall_detection.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-22 13:45:16
 - Modified: rules/Beacon_Fall_Detection.rules
 - Added: rules/Beacon_Fall_Detection.rules.bak-20260122-133625

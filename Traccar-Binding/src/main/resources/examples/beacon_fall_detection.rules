@@ -1,0 +1,264 @@
+/**
+ * Beacon Fall Detection Rule - Enhanced with Motion Detection
+ * 
+ * Monitors pitch and roll angles of up to 3 BLE beacons attached to motorcycle bags.
+ * Alerts when bags fall off or tip over during riding or shortly after.
+ * 
+ * Features:
+ * - Monitors beacons 1, 2, and 3 for excessive tilt (pitch/roll)
+ * - Only alerts for beacons currently connected (within distance range)
+ * - Handles bags left at home (no false alerts)
+ * - Motion detection: Only alerts if ignition ON or bike moved recently
+ * - Grace period: 15 minutes after movement stops before disabling alerts
+ * - Prevents false alarms when unloading bags at campsite/home
+ * - Includes 5-minute cooldown to prevent alert spam
+ * - Provides detailed alert message with bag name and tilt angles
+ * 
+ * Configuration:
+ * - tiltThreshold: Maximum allowed tilt angle in degrees (default 45°)
+ * - maxDistance: Maximum beacon distance to be considered "attached" (default 10m)
+ * - movementGraceMinutes: Minutes after movement stops to still alert (default 15)
+ * - cooldownMinutes: Time between alerts (default 5 minutes)
+ * - positionChangeThreshold: Minimum position change in meters to detect movement (default 20m)
+ * 
+ * Requirements:
+ * - Traccar device with BLE beacon support (e.g., Teltonika FMM920)
+ * - BLE beacons with pitch/roll sensors (e.g., Teltonika EYE Beacon)
+ * - Mail binding configured for notifications
+ * - Items named: VehicleXX_Position, VehicleXX_Ignition, VehicleXX_BeaconX_Pitch, etc.
+ */
+
+var Timer beaconAlertTimer = null
+var String lastKnownPosition = null
+var Long lastMovementTime = null
+
+rule "Track Motorcycle Movement"
+when
+    Item Vehicle10_Position changed or
+    Item Vehicle10_Ignition changed to ON
+then
+    val currentTime = new java.util.Date().time
+    val currentPosition = Vehicle10_Position.state.toString
+    
+    // Update movement time if ignition is ON
+    if (Vehicle10_Ignition.state == ON) {
+        lastMovementTime = currentTime
+        lastKnownPosition = currentPosition
+        logDebug("BagAlert", "Movement detected - Ignition ON")
+        return
+    }
+    
+    // Check if position changed significantly (bike is moving)
+    if (lastKnownPosition !== null && currentPosition !== null) {
+        val lastCoords = lastKnownPosition.split(",")
+        val currentCoords = currentPosition.split(",")
+        
+        if (lastCoords.size >= 2 && currentCoords.size >= 2) {
+            val lastLat = Double.parseDouble(lastCoords.get(0))
+            val lastLon = Double.parseDouble(lastCoords.get(1))
+            val currentLat = Double.parseDouble(currentCoords.get(0))
+            val currentLon = Double.parseDouble(currentCoords.get(1))
+            
+            // Calculate distance change using simple approximation (good enough for detection)
+            val latDiff = Math.abs(currentLat - lastLat)
+            val lonDiff = Math.abs(currentLon - lastLon)
+            val approxDistanceMeters = Math.sqrt(latDiff * latDiff + lonDiff * lonDiff) * 111000
+            
+            if (approxDistanceMeters > 20.0) {  // Moved more than 20 meters
+                lastMovementTime = currentTime
+                logDebug("BagAlert", "Movement detected - Position changed by {:.0f}m", approxDistanceMeters)
+            }
+        }
+    }
+    
+    lastKnownPosition = currentPosition
+end
+
+rule "Motorcycle Bags Fallen Detection - Enhanced"
+when
+    Item Vehicle10_Beacon1_Pitch changed or
+    Item Vehicle10_Beacon1_Roll changed or
+    Item Vehicle10_Beacon2_Pitch changed or
+    Item Vehicle10_Beacon2_Roll changed or
+    Item Vehicle10_Beacon3_Pitch changed or
+    Item Vehicle10_Beacon3_Roll changed
+then
+    val tiltThreshold = 45.0        // degrees - adjust after testing
+    val maxDistance = 10.0          // meters - beacon must be within 10m to be considered "attached"
+    val movementGraceMinutes = 15   // minutes after movement stops to still alert
+    val cooldownMinutes = 5         // minutes between alerts
+    var alertMessage = ""
+    var alertTriggered = false
+    
+    // Check if bike is currently moving or moved recently
+    val currentTime = new java.util.Date().time
+    val ignitionOn = (Vehicle10_Ignition.state == ON)
+    val recentlyMoved = (lastMovementTime !== null && (currentTime - lastMovementTime) < (movementGraceMinutes * 60 * 1000))
+    
+    // Only proceed if bike is in motion or recently was
+    if (!ignitionOn && !recentlyMoved) {
+        logDebug("BagAlert", "Beacon tilt detected but bike not moving - ignoring (avoid false alarm during unloading)")
+        return
+    }
+    
+    // Check Beacon 1 - Only if connected (RSSI exists and distance reasonable)
+    if (Vehicle10_Beacon1_Pitch.state !== NULL && 
+        Vehicle10_Beacon1_Roll.state !== NULL &&
+        Vehicle10_Beacon1_Distance.state !== NULL &&
+        (Vehicle10_Beacon1_Distance.state as Number) < maxDistance) {
+        
+        if (Math.abs((Vehicle10_Beacon1_Pitch.state as Number).doubleValue) > tiltThreshold || 
+            Math.abs((Vehicle10_Beacon1_Roll.state as Number).doubleValue) > tiltThreshold) {
+            alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon1_Name.state.toString + 
+                " FALLEN! (Pitch: " + Vehicle10_Beacon1_Pitch.state + "° Roll: " + 
+                Vehicle10_Beacon1_Roll.state + "° Distance: " + Vehicle10_Beacon1_Distance.state + ")\n"
+            alertTriggered = true
+        }
+    }
+    
+    // Check Beacon 2 - Only if connected
+    if (Vehicle10_Beacon2_Pitch.state !== NULL && 
+        Vehicle10_Beacon2_Roll.state !== NULL &&
+        Vehicle10_Beacon2_Distance.state !== NULL &&
+        (Vehicle10_Beacon2_Distance.state as Number) < maxDistance) {
+        
+        if (Math.abs((Vehicle10_Beacon2_Pitch.state as Number).doubleValue) > tiltThreshold || 
+            Math.abs((Vehicle10_Beacon2_Roll.state as Number).doubleValue) > tiltThreshold) {
+            alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon2_Name.state.toString + 
+                " FALLEN! (Pitch: " + Vehicle10_Beacon2_Pitch.state + "° Roll: " + 
+                Vehicle10_Beacon2_Roll.state + "° Distance: " + Vehicle10_Beacon2_Distance.state + ")\n"
+            alertTriggered = true
+        }
+    }
+    
+    // Check Beacon 3 - Only if connected
+    if (Vehicle10_Beacon3_Pitch.state !== NULL && 
+        Vehicle10_Beacon3_Roll.state !== NULL &&
+        Vehicle10_Beacon3_Distance.state !== NULL &&
+        (Vehicle10_Beacon3_Distance.state as Number) < maxDistance) {
+        
+        if (Math.abs((Vehicle10_Beacon3_Pitch.state as Number).doubleValue) > tiltThreshold || 
+            Math.abs((Vehicle10_Beacon3_Roll.state as Number).doubleValue) > tiltThreshold) {
+            alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon3_Name.state.toString + 
+                " FALLEN! (Pitch: " + Vehicle10_Beacon3_Pitch.state + "° Roll: " + 
+                Vehicle10_Beacon3_Roll.state + "° Distance: " + Vehicle10_Beacon3_Distance.state + ")\n"
+            alertTriggered = true
+        }
+    }
+    
+    // Only send alert if something triggered and timer is not already running
+    if (alertTriggered && (beaconAlertTimer === null || beaconAlertTimer.hasTerminated)) {
+        logWarn("BagAlert", "🚨 LUGGAGE FALL DETECTED:\n{}", alertMessage)
+        
+        try {
+            // Get current vehicle data
+            val position = Vehicle10_Position.state.toString
+            val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
+            val speedState = Vehicle10_Speed.state
+            val speed = if (speedState != NULL) String.format("%.1f km/h", (speedState as Number).doubleValue) else "0 km/h"
+            val ignitionStatus = if (Vehicle10_Ignition.state == ON) "ON (Riding)" else "OFF (Recently parked)"
+            
+            // Format timestamp
+            val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm:ss")
+            val timestamp = dateFormat.format(new java.util.Date())
+            
+            // Extract latitude and longitude from position
+            val coords = position.split(",")
+            val latitude = coords.get(0)
+            val longitude = coords.get(1)
+            
+            // Create map links
+            val googleMapsLink = "https://www.google.com/maps?q=" + latitude + "," + longitude
+            val openStreetMapLink = "https://www.openstreetmap.org/?mlat=" + latitude + "&mlon=" + longitude + "&zoom=16"
+            
+            // Calculate time since last movement
+            val minutesSinceMovement = if (lastMovementTime !== null) ((currentTime - lastMovementTime) / 60000).intValue else 0
+            
+            // Build beacon status table rows
+            var beaconStatusRows = ""
+            
+            // Beacon 1
+            if (Vehicle10_Beacon1_Distance.state !== NULL && (Vehicle10_Beacon1_Distance.state as Number) < maxDistance) {
+                val b1_name = if (Vehicle10_Beacon1_Name.state != NULL) Vehicle10_Beacon1_Name.state.toString else "Beacon 1"
+                val b1_pitch = if (Vehicle10_Beacon1_Pitch.state != NULL) String.format("%.0f°", (Vehicle10_Beacon1_Pitch.state as Number).doubleValue) else "N/A"
+                val b1_roll = if (Vehicle10_Beacon1_Roll.state != NULL) String.format("%.0f°", (Vehicle10_Beacon1_Roll.state as Number).doubleValue) else "N/A"
+                val b1_dist = if (Vehicle10_Beacon1_Distance.state != NULL) String.format("%.1f m", (Vehicle10_Beacon1_Distance.state as Number).doubleValue) else "N/A"
+                val b1_alert = (Math.abs((Vehicle10_Beacon1_Pitch.state as Number).doubleValue) > tiltThreshold || Math.abs((Vehicle10_Beacon1_Roll.state as Number).doubleValue) > tiltThreshold)
+                val b1_bgcolor = if (b1_alert) "#ffebee" else "#e8f5e9"
+                val b1_status = if (b1_alert) "⚠️ FALLEN" else "✅ OK"
+                
+                beaconStatusRows = beaconStatusRows + "<tr><td style='padding: 10px; background: " + b1_bgcolor + ";'><strong>" + b1_status + " " + b1_name + ":</strong> Pitch: " + b1_pitch + " | Roll: " + b1_roll + " | Distance: " + b1_dist + "</td></tr>"
+            }
+            
+            // Beacon 2
+            if (Vehicle10_Beacon2_Distance.state !== NULL && (Vehicle10_Beacon2_Distance.state as Number) < maxDistance) {
+                val b2_name = if (Vehicle10_Beacon2_Name.state != NULL) Vehicle10_Beacon2_Name.state.toString else "Beacon 2"
+                val b2_pitch = if (Vehicle10_Beacon2_Pitch.state != NULL) String.format("%.0f°", (Vehicle10_Beacon2_Pitch.state as Number).doubleValue) else "N/A"
+                val b2_roll = if (Vehicle10_Beacon2_Roll.state != NULL) String.format("%.0f°", (Vehicle10_Beacon2_Roll.state as Number).doubleValue) else "N/A"
+                val b2_dist = if (Vehicle10_Beacon2_Distance.state != NULL) String.format("%.1f m", (Vehicle10_Beacon2_Distance.state as Number).doubleValue) else "N/A"
+                val b2_alert = (Math.abs((Vehicle10_Beacon2_Pitch.state as Number).doubleValue) > tiltThreshold || Math.abs((Vehicle10_Beacon2_Roll.state as Number).doubleValue) > tiltThreshold)
+                val b2_bgcolor = if (b2_alert) "#ffebee" else "#e8f5e9"
+                val b2_status = if (b2_alert) "⚠️ FALLEN" else "✅ OK"
+                
+                beaconStatusRows = beaconStatusRows + "<tr><td style='padding: 10px; background: " + b2_bgcolor + ";'><strong>" + b2_status + " " + b2_name + ":</strong> Pitch: " + b2_pitch + " | Roll: " + b2_roll + " | Distance: " + b2_dist + "</td></tr>"
+            }
+            
+            // Beacon 3
+            if (Vehicle10_Beacon3_Distance.state !== NULL && (Vehicle10_Beacon3_Distance.state as Number) < maxDistance) {
+                val b3_name = if (Vehicle10_Beacon3_Name.state != NULL) Vehicle10_Beacon3_Name.state.toString else "Beacon 3"
+                val b3_pitch = if (Vehicle10_Beacon3_Pitch.state != NULL) String.format("%.0f°", (Vehicle10_Beacon3_Pitch.state as Number).doubleValue) else "N/A"
+                val b3_roll = if (Vehicle10_Beacon3_Roll.state != NULL) String.format("%.0f°", (Vehicle10_Beacon3_Roll.state as Number).doubleValue) else "N/A"
+                val b3_dist = if (Vehicle10_Beacon3_Distance.state != NULL) String.format("%.1f m", (Vehicle10_Beacon3_Distance.state as Number).doubleValue) else "N/A"
+                val b3_alert = (Math.abs((Vehicle10_Beacon3_Pitch.state as Number).doubleValue) > tiltThreshold || Math.abs((Vehicle10_Beacon3_Roll.state as Number).doubleValue) > tiltThreshold)
+                val b3_bgcolor = if (b3_alert) "#ffebee" else "#e8f5e9"
+                val b3_status = if (b3_alert) "⚠️ FALLEN" else "✅ OK"
+                
+                beaconStatusRows = beaconStatusRows + "<tr><td style='padding: 10px; background: " + b3_bgcolor + ";'><strong>" + b3_status + " " + b3_name + ":</strong> Pitch: " + b3_pitch + " | Roll: " + b3_roll + " | Distance: " + b3_dist + "</td></tr>"
+            }
+            
+            // Get mail actions
+            val mailActions = getActions("mail","mail:smtp:yourmailserver")
+            
+            // Send detailed HTML email notification
+            val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+                "<tr><td style='padding: 20px;'>" +
+                "<h2 style='margin: 0; margin-bottom: 5px;'>⚠️ LUGGAGE FALL DETECTED</h2>" +
+                "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Motorcycle Beacon Alert</p>" +
+                "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #f8f9fa;'>" +
+                "<tr><td style='padding: 15px;'>" +
+                "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>📍 Current Location</h3>" +
+                "<p style='margin: 5px 0;'>" + address + "</p>" +
+                "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
+                "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #ff5252; text-decoration: none; font-weight: bold; font-size: 16px;'>📍 Open in Google Maps</a> | " +
+                "<a href='" + openStreetMapLink + "' style='color: #ff5252; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+                "<tr><td style='padding: 10px; background: #fff3e0;'><strong>⚡ Speed:</strong> " + speed + "</td></tr>" +
+                "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🔥 Ignition:</strong> " + ignitionStatus + "</td></tr>" +
+                "<tr><td style='padding: 10px; background: #f3e5f5;'><strong>⏱️ Last Movement:</strong> " + minutesSinceMovement + " min ago</td></tr>" +
+                beaconStatusRows +
+                "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Tilt Threshold: " + tiltThreshold + "° | Max Distance: " + maxDistance + " m | Grace Period: " + movementGraceMinutes + " min</td></tr>" +
+                "</table>" +
+                "</body></html>"
+            
+            val success1 = mailActions.sendHtmlMail("your.email@example.com", "🚨 Luggage Fall Alert", emailBody)
+            logInfo("BagAlert", "Luggage fall email status: " + success1)
+            
+            val success2 = mailActions.sendMail("phonenumber@sms.provider.com", "Luggage Fall", "LUGGAGE FALL DETECTED at " + timestamp + ". " + address + ". Google Maps: " + googleMapsLink)
+            logInfo("BagAlert", "Luggage fall SMS status: " + success2)
+            
+        } catch (Exception e) {
+            logError("BagAlert", "Error sending luggage fall notification: " + e.getMessage())
+        }
+        
+        // Set cooldown timer to prevent spam
+        beaconAlertTimer = createTimer(now.plusMinutes(cooldownMinutes), [|
+            logInfo("BagAlert", "Alert cooldown expired, monitoring resumed")
+        ])
+    }
+end
