@@ -1,72 +1,23 @@
 /**
- * Beacon Fall Detection Rule - Enhanced with Motion Detection
+ * Beacon Fall Detection Rule
  * 
  * Monitors pitch and roll angles of up to 3 BLE beacons attached to motorcycle bags.
- * Alerts when bags fall off or tip over during riding or shortly after.
+ * Alerts when bags fall off or tip over during riding.
  * 
  * Features:
  * - Monitors beacons 1, 2, and 3 for excessive tilt (pitch/roll)
  * - Only alerts for beacons currently connected (within distance range)
  * - Handles bags left at home (no false alerts)
- * - Motion detection: Only alerts if ignition ON or bike moved recently
- * - Grace period: 15 minutes after movement stops before disabling alerts
- * - Prevents false alarms when unloading bags at campsite/home
  * - Includes 5-minute cooldown to prevent alert spam
  * - Provides detailed alert message with bag name and tilt angles
  * 
  * Configuration:
  * - tiltThreshold: Maximum allowed tilt angle in degrees (default 45°)
  * - maxDistance: Maximum beacon distance to be considered "attached" (default 10m)
- * - movementGraceMinutes: Minutes after movement stops to still alert (default 15)
  * - cooldownMinutes: Time between alerts (default 5 minutes)
- * - positionChangeThreshold: Minimum position change in meters to detect movement (default 20m)
  */
 
 var Timer beaconAlertTimer = null
-var String lastKnownPosition = null
-var Long lastMovementTime = null
-
-rule "Track Motorcycle Movement"
-when
-    Item Vehicle10_Position changed or
-    Item Vehicle10_Ignition changed to ON
-then
-    val currentTime = new java.util.Date().time
-    val currentPosition = Vehicle10_Position.state.toString
-    
-    // Update movement time if ignition is ON
-    if (Vehicle10_Ignition.state == ON) {
-        lastMovementTime = currentTime
-        lastKnownPosition = currentPosition
-        logDebug("BagAlert", "Movement detected - Ignition ON")
-        return
-    }
-    
-    // Check if position changed significantly (bike is moving)
-    if (lastKnownPosition !== null && currentPosition !== null) {
-        val lastCoords = lastKnownPosition.split(",")
-        val currentCoords = currentPosition.split(",")
-        
-        if (lastCoords.size >= 2 && currentCoords.size >= 2) {
-            val lastLat = Double.parseDouble(lastCoords.get(0))
-            val lastLon = Double.parseDouble(lastCoords.get(1))
-            val currentLat = Double.parseDouble(currentCoords.get(0))
-            val currentLon = Double.parseDouble(currentCoords.get(1))
-            
-            // Calculate distance change using simple approximation (good enough for detection)
-            val latDiff = Math.abs(currentLat - lastLat)
-            val lonDiff = Math.abs(currentLon - lastLon)
-            val approxDistanceMeters = Math.sqrt(latDiff * latDiff + lonDiff * lonDiff) * 111000
-            
-            if (approxDistanceMeters > 20.0) {  // Moved more than 20 meters
-                lastMovementTime = currentTime
-                logDebug("BagAlert", "Movement detected - Position changed by {:.0f}m", approxDistanceMeters)
-            }
-        }
-    }
-    
-    lastKnownPosition = currentPosition
-end
 
 rule "Motorcycle Bags Fallen Detection - Enhanced"
 when
@@ -77,23 +28,11 @@ when
     Item Vehicle10_Beacon3_Pitch changed or
     Item Vehicle10_Beacon3_Roll changed
 then
-    val tiltThreshold = 45.0        // degrees - adjust after testing
-    val maxDistance = 10.0          // meters - beacon must be within 10m to be considered "attached"
-    val movementGraceMinutes = 15   // minutes after movement stops to still alert
-    val cooldownMinutes = 5         // minutes between alerts
+    val tiltThreshold = 45.0  // degrees - adjust after testing
+    val maxDistance = 10.0    // meters - beacon must be within 10m to be considered "attached"
+    val cooldownMinutes = 5   // minutes between alerts
     var alertMessage = ""
     var alertTriggered = false
-    
-    // Check if bike is currently moving or moved recently
-    val currentTime = new java.util.Date().time
-    val ignitionOn = (Vehicle10_Ignition.state == ON)
-    val recentlyMoved = (lastMovementTime !== null && (currentTime - lastMovementTime) < (movementGraceMinutes * 60 * 1000))
-    
-    // Only proceed if bike is in motion or recently was
-    if (!ignitionOn && !recentlyMoved) {
-        logDebug("BagAlert", "Beacon tilt detected but bike not moving - ignoring (avoid false alarm during unloading)")
-        return
-    }
     
     // Check Beacon 1 - Only if connected (RSSI exists and distance reasonable)
     if (Vehicle10_Beacon1_Pitch.state !== NULL && 
@@ -150,7 +89,6 @@ then
             val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
             val speedState = Vehicle10_Speed.state
             val speed = if (speedState != NULL) String.format("%.1f km/h", (speedState as Number).doubleValue) else "0 km/h"
-            val ignitionStatus = if (Vehicle10_Ignition.state == ON) "ON (Riding)" else "OFF (Recently parked)"
             
             // Format timestamp
             val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm:ss")
@@ -164,9 +102,6 @@ then
             // Create map links
             val googleMapsLink = "https://www.google.com/maps?q=" + latitude + "," + longitude
             val openStreetMapLink = "https://www.openstreetmap.org/?mlat=" + latitude + "&mlon=" + longitude + "&zoom=16"
-            
-            // Calculate time since last movement
-            val minutesSinceMovement = if (lastMovementTime !== null) ((currentTime - lastMovementTime) / 60000).intValue else 0
             
             // Build beacon status table rows
             var beaconStatusRows = ""
@@ -227,23 +162,21 @@ then
                 "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>📍 Current Location</h3>" +
                 "<p style='margin: 5px 0;'>" + address + "</p>" +
                 "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
-                "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #ff5252; text-decoration: none; font-weight: bold; font-size: 16px;'>📍 Open in Google Maps</a> | " +
+                "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #ff5252; text-decoration: none;'>📍 Google Maps</a> | " +
                 "<a href='" + openStreetMapLink + "' style='color: #ff5252; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
                 "</td></tr>" +
                 "</table>" +
                 "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
                 "<tr><td style='padding: 10px; background: #fff3e0;'><strong>⚡ Speed:</strong> " + speed + "</td></tr>" +
-                "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🔥 Ignition:</strong> " + ignitionStatus + "</td></tr>" +
-                "<tr><td style='padding: 10px; background: #f3e5f5;'><strong>⏱️ Last Movement:</strong> " + minutesSinceMovement + " min ago</td></tr>" +
                 beaconStatusRows +
-                "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Tilt Threshold: " + tiltThreshold + "° | Max Distance: " + maxDistance + " m | Grace Period: " + movementGraceMinutes + " min</td></tr>" +
+                "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Tilt Threshold: " + tiltThreshold + "° | Max Distance: " + maxDistance + " m</td></tr>" +
                 "</table>" +
                 "</body></html>"
             
             val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🚨 Springfield Luggage Fall Alert", emailBody)
             logInfo("BagAlert", "Luggage fall email status: " + success1)
             
-            val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Luggage Fall", "LUGGAGE FALL DETECTED at " + timestamp + ". " + address + ". Google Maps: " + googleMapsLink)
+            val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Luggage Fall", "LUGGAGE FALL DETECTED at " + timestamp + ". Location: " + address)
             logInfo("BagAlert", "Luggage fall SMS status: " + success2)
             
         } catch (Exception e) {
