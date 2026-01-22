@@ -112,9 +112,9 @@ then
     var alertTriggered = false
     
     // Check if bike is currently moving or moved recently
-    val currentTime = new java.util.Date().time
+    val currentTimeTilt = new java.util.Date().time
     val ignitionOn = (Vehicle10_Ignition.state == ON)
-    val recentlyMoved = (lastMovementTime !== null && (currentTime - lastMovementTime) < (movementGraceMinutes * 60 * 1000))
+    val recentlyMoved = (lastMovementTime !== null && (currentTimeTilt - lastMovementTime) < (movementGraceMinutes * 60 * 1000))
     
     // Only proceed if bike is in motion or recently was
     if (!ignitionOn && !recentlyMoved) {
@@ -383,6 +383,149 @@ then
             
         } catch (Exception e) {
             logError("BagAlert", "Error sending luggage fall notification: " + e.getMessage())
+        }
+    }
+end
+
+rule "Beacon Sudden Loss Detection"
+when
+    Item Vehicle10_Beacon1_Distance changed or
+    Item Vehicle10_Beacon2_Distance changed or
+    Item Vehicle10_Beacon3_Distance changed
+then
+    val closeDistanceThreshold = 5.0 // meters - beacon must have been this close
+    val lostDistanceThreshold = 10.0 // meters - beyond this is considered lost
+    val timeThreshold = 30000 // 30 seconds - recent enough to be considered sudden
+    
+    // Only check if ignition is ON (bike is moving)
+    val ignitionOn = (Vehicle10_Ignition.state == ON)
+    if (!ignitionOn) {
+        return // Don't alert for beacon loss when parked
+    }
+    
+    val currentTimeLoss = new java.util.Date().time
+    var String lossMessage = ""
+    var Boolean lossDetected = false
+    
+    // Check Beacon 1 sudden loss
+    if (lastBeacon1Distance !== null && lastBeacon1Distance < closeDistanceThreshold &&
+        lastBeacon1Seen !== null && (currentTimeLoss - lastBeacon1Seen) < timeThreshold &&
+        !beacon1AlertActive) {
+        
+        val currentDist = if (Vehicle10_Beacon1_Distance.state === NULL) null 
+                         else (Vehicle10_Beacon1_Distance.state as Number).doubleValue
+        
+        if (currentDist === null || currentDist > lostDistanceThreshold) {
+            lossMessage = lossMessage + "⚠️ " + Vehicle10_Beacon1_Name.state.toString + 
+                " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon1Distance) + 
+                "m away, now out of range - possible fall at speed)\n"
+            lossDetected = true
+            beacon1AlertActive = true
+            logWarn("BagAlert", "Beacon 1 sudden loss detected!")
+        }
+    }
+    
+    // Check Beacon 2 sudden loss
+    if (lastBeacon2Distance !== null && lastBeacon2Distance < closeDistanceThreshold &&
+        lastBeacon2Seen !== null && (currentTimeLoss - lastBeacon2Seen) < timeThreshold &&
+        !beacon2AlertActive) {
+        
+        val currentDist = if (Vehicle10_Beacon2_Distance.state === NULL) null 
+                         else (Vehicle10_Beacon2_Distance.state as Number).doubleValue
+        
+        if (currentDist === null || currentDist > lostDistanceThreshold) {
+            lossMessage = lossMessage + "⚠️ " + Vehicle10_Beacon2_Name.state.toString + 
+                " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon2Distance) + 
+                "m away, now out of range - possible fall at speed)\n"
+            lossDetected = true
+            beacon2AlertActive = true
+            logWarn("BagAlert", "Beacon 2 sudden loss detected!")
+        }
+    }
+    
+    // Check Beacon 3 sudden loss
+    if (lastBeacon3Distance !== null && lastBeacon3Distance < closeDistanceThreshold &&
+        lastBeacon3Seen !== null && (currentTimeLoss - lastBeacon3Seen) < timeThreshold &&
+        !beacon3AlertActive) {
+        
+        val currentDist = if (Vehicle10_Beacon3_Distance.state === NULL) null 
+                         else (Vehicle10_Beacon3_Distance.state as Number).doubleValue
+        
+        if (currentDist === null || currentDist > lostDistanceThreshold) {
+            lossMessage = lossMessage + "⚠️ " + Vehicle10_Beacon3_Name.state.toString + 
+                " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon3Distance) + 
+                "m away, now out of range - possible fall at speed)\n"
+            lossDetected = true
+            beacon3AlertActive = true
+            logWarn("BagAlert", "Beacon 3 sudden loss detected!")
+        }
+    }
+    
+    // Update tracking for beacons that are still connected
+    if (Vehicle10_Beacon1_Distance.state !== NULL && 
+        (Vehicle10_Beacon1_Distance.state as Number) < lostDistanceThreshold) {
+        lastBeacon1Distance = (Vehicle10_Beacon1_Distance.state as Number).doubleValue
+        lastBeacon1Seen = currentTimeLoss
+    }
+    if (Vehicle10_Beacon2_Distance.state !== NULL && 
+        (Vehicle10_Beacon2_Distance.state as Number) < lostDistanceThreshold) {
+        lastBeacon2Distance = (Vehicle10_Beacon2_Distance.state as Number).doubleValue
+        lastBeacon2Seen = currentTimeLoss
+    }
+    if (Vehicle10_Beacon3_Distance.state !== NULL && 
+        (Vehicle10_Beacon3_Distance.state as Number) < lostDistanceThreshold) {
+        lastBeacon3Distance = (Vehicle10_Beacon3_Distance.state as Number).doubleValue
+        lastBeacon3Seen = currentTimeLoss
+    }
+    
+    // Send alert if loss detected
+    if (lossDetected) {
+        logWarn("BagAlert", "🚨 BEACON LOSS DETECTED:\n{}", lossMessage)
+        
+        try {
+            // Get current vehicle data
+            val position = Vehicle10_Position.state.toString
+            val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
+            val speedState = Vehicle10_Speed.state
+            val speed = if (speedState != NULL) String.format("%.1f km/h", (speedState as Number).doubleValue) else "0 km/h"
+            
+            // Format timestamp
+            val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm:ss")
+            val timestamp = dateFormat.format(new java.util.Date())
+            
+            // Calculate Google Maps link
+            val coords = position.split(",")
+            val googleMapsLink = "https://www.google.com/maps?q=" + coords.get(0).trim + "," + coords.get(1).trim
+            
+            // Create HTML email body
+            val emailBody = "<html><body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>" +
+                "<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;'>" +
+                "<h1 style='margin: 0; font-size: 24px;'>⚠️ Springfield Beacon Loss Alert</h1>" +
+                "<p style='margin: 5px 0 0 0; opacity: 0.9;'>" + timestamp + "</p>" +
+                "</div>" +
+                "<div style='background: #f8f9fa; padding: 20px; border-radius: 0 0 10px 10px;'>" +
+                "<div style='background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800; margin-bottom: 15px;'>" +
+                "<h2 style='margin: 0 0 10px 0; color: #ff9800; font-size: 18px;'>🚨 Beacon Lost Contact</h2>" +
+                "<p style='margin: 0; white-space: pre-line; color: #333;'>" + lossMessage + "</p>" +
+                "</div>" +
+                "<table style='width: 100%; border-collapse: collapse; margin-top: 10px;'>" +
+                "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>📍 Location:</strong> " + address + "</td></tr>" +
+                "<tr><td style='padding: 10px; background: #f3e5f5;'><strong>🗺️ Google Maps:</strong> <a href='" + googleMapsLink + "' style='color: #1976d2;'>Open in Maps</a></td></tr>" +
+                "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🏍️ Speed:</strong> " + speed + "</td></tr>" +
+                "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Beacon was close (<5m) and suddenly lost contact - possible fall at speed</td></tr>" +
+                "</table>" +
+                "</div>" +
+                "</body></html>"
+            
+            val mailActions = getActions("mail", "mail:smtp:default")
+            val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🚨 Springfield Beacon Loss Alert", emailBody)
+            logInfo("BagAlert", "Beacon loss email status: " + success1)
+            
+            val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Beacon Loss", "BEACON LOST CONTACT at " + timestamp + ". " + address + ". Google Maps: " + googleMapsLink)
+            logInfo("BagAlert", "Beacon loss SMS status: " + success2)
+            
+        } catch (Exception e) {
+            logError("BagAlert", "Error sending beacon loss notification: " + e.getMessage())
         }
     }
 end
