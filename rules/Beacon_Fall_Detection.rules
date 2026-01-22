@@ -40,6 +40,14 @@ var Boolean beacon1AlertActive = false
 var Boolean beacon2AlertActive = false
 var Boolean beacon3AlertActive = false
 
+// Track beacon connection status to detect sudden loss (possible fall at speed)
+var Double lastBeacon1Distance = null
+var Double lastBeacon2Distance = null
+var Double lastBeacon3Distance = null
+var Long lastBeacon1Seen = null
+var Long lastBeacon2Seen = null
+var Long lastBeacon3Seen = null
+
 var String lastKnownPosition = null
 var Long lastMovementTime = null
 
