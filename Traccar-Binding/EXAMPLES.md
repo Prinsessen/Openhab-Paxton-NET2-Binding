@@ -17,6 +17,7 @@ Complete working examples for the Traccar binding.
 6. [Distance Tracking](#distance-tracking)
 7. [Multi-Vehicle Tracking](#multi-vehicle-tracking)
 8. [GPS Signal and Connectivity Monitoring](#gps-signal-and-connectivity-monitoring)
+9. [BLE Beacon Fall Detection (Advanced)](#ble-beacon-fall-detection-advanced)
 
 ---
 
