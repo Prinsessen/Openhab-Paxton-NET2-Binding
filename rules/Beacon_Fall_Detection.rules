@@ -39,9 +39,13 @@ val BEACON3_BASELINE_PITCH = 9.0    // Aux Pox normal pitch
 val BEACON3_BASELINE_ROLL = -13.0   // Aux Pox normal roll
 
 // State tracking - prevents repeat alerts for same fall
-var Boolean beacon1AlertActive = false
-var Boolean beacon2AlertActive = false
-var Boolean beacon3AlertActive = false
+var Boolean beacon1TiltAlertActive = false
+var Boolean beacon2TiltAlertActive = false
+var Boolean beacon3TiltAlertActive = false
+
+var Boolean beacon1LossAlertActive = false
+var Boolean beacon2LossAlertActive = false
+var Boolean beacon3LossAlertActive = false
 
 // Track beacon connection status to detect sudden loss (possible fall at speed)
 var Double lastBeacon1Distance = null
@@ -134,16 +138,16 @@ then
         val b1_roll_deviation = Math.abs(b1_roll - BEACON1_BASELINE_ROLL)
         val b1_fallen = (b1_pitch_deviation > tiltThreshold || b1_roll_deviation > tiltThreshold)
         
-        if (b1_fallen && !beacon1AlertActive) {
+        if (b1_fallen && !beacon1TiltAlertActive) {
             // NEW fall detected - send alert and set flag
             alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon1_Name.state.toString + 
                 " FALLEN! (Pitch: " + Vehicle10_Beacon1_Pitch.state + "° [Δ" + String.format("%.0f", b1_pitch_deviation) + "°] Roll: " + 
                 Vehicle10_Beacon1_Roll.state + "° [Δ" + String.format("%.0f", b1_roll_deviation) + "°] Distance: " + Vehicle10_Beacon1_Distance.state + ")\n"
             alertTriggered = true
-            beacon1AlertActive = true
-        } else if (!b1_fallen && beacon1AlertActive) {
+            beacon1TiltAlertActive = true
+        } else if (!b1_fallen && beacon1TiltAlertActive) {
             // Bag restored to normal - clear alert flag
-            beacon1AlertActive = false
+            beacon1TiltAlertActive = false
             logInfo("BagAlert", "Beacon 1 restored to normal position")
         }
     }
@@ -160,16 +164,16 @@ then
         val b2_roll_deviation = Math.abs(b2_roll - BEACON2_BASELINE_ROLL)
         val b2_fallen = (b2_pitch_deviation > tiltThreshold || b2_roll_deviation > tiltThreshold)
         
-        if (b2_fallen && !beacon2AlertActive) {
+        if (b2_fallen && !beacon2TiltAlertActive) {
             // NEW fall detected - send alert and set flag
             alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon2_Name.state.toString + 
                 " FALLEN! (Pitch: " + Vehicle10_Beacon2_Pitch.state + "° [Δ" + String.format("%.0f", b2_pitch_deviation) + "°] Roll: " + 
                 Vehicle10_Beacon2_Roll.state + "° [Δ" + String.format("%.0f", b2_roll_deviation) + "°] Distance: " + Vehicle10_Beacon2_Distance.state + ")\n"
             alertTriggered = true
-            beacon2AlertActive = true
-        } else if (!b2_fallen && beacon2AlertActive) {
+            beacon2TiltAlertActive = true
+        } else if (!b2_fallen && beacon2TiltAlertActive) {
             // Bag restored to normal - clear alert flag
-            beacon2AlertActive = false
+            beacon2TiltAlertActive = false
             logInfo("BagAlert", "Beacon 2 restored to normal position")
         }
     }
@@ -186,16 +190,16 @@ then
         val b3_roll_deviation = Math.abs(b3_roll - BEACON3_BASELINE_ROLL)
         val b3_fallen = (b3_pitch_deviation > tiltThreshold || b3_roll_deviation > tiltThreshold)
         
-        if (b3_fallen && !beacon3AlertActive) {
+        if (b3_fallen && !beacon3TiltAlertActive) {
             // NEW fall detected - send alert and set flag
             alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon3_Name.state.toString + 
                 " FALLEN! (Pitch: " + Vehicle10_Beacon3_Pitch.state + "° [Δ" + String.format("%.0f", b3_pitch_deviation) + "°] Roll: " + 
                 Vehicle10_Beacon3_Roll.state + "° [Δ" + String.format("%.0f", b3_roll_deviation) + "°] Distance: " + Vehicle10_Beacon3_Distance.state + ")\n"
             alertTriggered = true
-            beacon3AlertActive = true
-        } else if (!b3_fallen && beacon3AlertActive) {
+            beacon3TiltAlertActive = true
+        } else if (!b3_fallen && beacon3TiltAlertActive) {
             // Bag restored to normal - clear alert flag
-            beacon3AlertActive = false
+            beacon3TiltAlertActive = false
             logInfo("BagAlert", "Beacon 3 restored to normal position")
         }
     }
@@ -332,7 +336,7 @@ when
 then
     val closeDistanceThreshold = 5.0 // meters - beacon must have been this close
     val lostDistanceThreshold = 10.0 // meters - beyond this is considered lost
-    val timeThreshold = 30000 // 30 seconds - recent enough to be considered sudden
+    val timeThreshold = 120000 // 120 seconds (2 min) - BLE takes time to report loss
     
     // Only check if ignition is ON (bike is moving)
     val ignitionOn = (Vehicle10_Ignition.state == ON)
@@ -344,10 +348,16 @@ then
     var String lossMessage = ""
     var Boolean lossDetected = false
     
+    // Debug logging
+    logInfo("BagAlert", "Sudden Loss Check - B1: {}m seen {}ms ago, B2: {}m seen {}ms ago, B3: {}m seen {}ms ago", 
+        lastBeacon1Distance, if(lastBeacon1Seen !== null) (currentTimeLoss - lastBeacon1Seen) else "never",
+        lastBeacon2Distance, if(lastBeacon2Seen !== null) (currentTimeLoss - lastBeacon2Seen) else "never",
+        lastBeacon3Distance, if(lastBeacon3Seen !== null) (currentTimeLoss - lastBeacon3Seen) else "never")
+    
     // Check Beacon 1 sudden loss
     if (lastBeacon1Distance !== null && lastBeacon1Distance < closeDistanceThreshold &&
         lastBeacon1Seen !== null && (currentTimeLoss - lastBeacon1Seen) < timeThreshold &&
-        !beacon1AlertActive) {
+        !beacon1LossAlertActive) {
         
         val currentDist = if (Vehicle10_Beacon1_Distance.state === NULL) null 
                          else (Vehicle10_Beacon1_Distance.state as Number).doubleValue
@@ -357,7 +367,7 @@ then
                 " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon1Distance) + 
                 "m away, now out of range - possible fall at speed)\n"
             lossDetected = true
-            beacon1AlertActive = true
+            beacon1LossAlertActive = true
             logWarn("BagAlert", "Beacon 1 sudden loss detected!")
         }
     }
@@ -365,7 +375,7 @@ then
     // Check Beacon 2 sudden loss
     if (lastBeacon2Distance !== null && lastBeacon2Distance < closeDistanceThreshold &&
         lastBeacon2Seen !== null && (currentTimeLoss - lastBeacon2Seen) < timeThreshold &&
-        !beacon2AlertActive) {
+        !beacon2LossAlertActive) {
         
         val currentDist = if (Vehicle10_Beacon2_Distance.state === NULL) null 
                          else (Vehicle10_Beacon2_Distance.state as Number).doubleValue
@@ -375,7 +385,7 @@ then
                 " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon2Distance) + 
                 "m away, now out of range - possible fall at speed)\n"
             lossDetected = true
-            beacon2AlertActive = true
+            beacon2LossAlertActive = true
             logWarn("BagAlert", "Beacon 2 sudden loss detected!")
         }
     }
@@ -383,7 +393,7 @@ then
     // Check Beacon 3 sudden loss
     if (lastBeacon3Distance !== null && lastBeacon3Distance < closeDistanceThreshold &&
         lastBeacon3Seen !== null && (currentTimeLoss - lastBeacon3Seen) < timeThreshold &&
-        !beacon3AlertActive) {
+        !beacon3LossAlertActive) {
         
         val currentDist = if (Vehicle10_Beacon3_Distance.state === NULL) null 
                          else (Vehicle10_Beacon3_Distance.state as Number).doubleValue
@@ -393,24 +403,21 @@ then
                 " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon3Distance) + 
                 "m away, now out of range - possible fall at speed)\n"
             lossDetected = true
-            beacon3AlertActive = true
+            beacon3LossAlertActive = true
             logWarn("BagAlert", "Beacon 3 sudden loss detected!")
         }
     }
     
-    // Update tracking for beacons that are still connected
-    if (Vehicle10_Beacon1_Distance.state !== NULL && 
-        (Vehicle10_Beacon1_Distance.state as Number) < lostDistanceThreshold) {
+    // Update last seen tracking for connected beacons (update regardless of distance to track transitions)
+    if (Vehicle10_Beacon1_Distance.state !== NULL) {
         lastBeacon1Distance = (Vehicle10_Beacon1_Distance.state as Number).doubleValue
         lastBeacon1Seen = currentTimeLoss
     }
-    if (Vehicle10_Beacon2_Distance.state !== NULL && 
-        (Vehicle10_Beacon2_Distance.state as Number) < lostDistanceThreshold) {
+    if (Vehicle10_Beacon2_Distance.state !== NULL) {
         lastBeacon2Distance = (Vehicle10_Beacon2_Distance.state as Number).doubleValue
         lastBeacon2Seen = currentTimeLoss
     }
-    if (Vehicle10_Beacon3_Distance.state !== NULL && 
-        (Vehicle10_Beacon3_Distance.state as Number) < lostDistanceThreshold) {
+    if (Vehicle10_Beacon3_Distance.state !== NULL) {
         lastBeacon3Distance = (Vehicle10_Beacon3_Distance.state as Number).doubleValue
         lastBeacon3Seen = currentTimeLoss
     }
