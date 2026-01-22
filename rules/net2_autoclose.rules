@@ -1,23 +1,28 @@
 // ==============================================
-// Net2 Door Auto-Close Rule
+// Net2 Door Auto-Close Rule with Email Notifications
 // ==============================================
-// Automatically closes all open Net2 doors at 17:00 every day
+// Automatically closes all open Net2 doors at 17:00 and 23:00 every day
 // Checks door status and sends close command to doors that are open
+// Sends HTML email notification if any doors had to be closed
 
-rule "Auto-close Net2 Doors at 17:00"
+rule "Auto-close Net2 Doors - Evening and Night Check"
 when
-    Time cron "0 00 17 * * ?" // Every day at 17:00 (5 PM)
+    Time cron "0 00 17 * * ?" or  // Every day at 17:00 (5 PM)
+    Time cron "0 00 23 * * ?"     // Every day at 23:00 (11 PM)
 then
-    logInfo("net2_autoclose", "Running daily door auto-close check at 17:00")
+    val checkTime = if (now.getHour == 17) "17:00" else "23:00"
+    logInfo("net2_autoclose", "Running door auto-close check at " + checkTime)
     
     var doorsClosed = 0
     var doorsAlreadyClosed = 0
+    var doorsClosedList = ""
     
     // Check Door 1 - Front Door Kirkegade
     if (Net2_Door1_Status.state == ON) {
         logInfo("net2_autoclose", "Door 1 (Front Door - Kirkegade) is open, sending close command")
         Net2_Door1_Action.sendCommand(OFF)
         doorsClosed = doorsClosed + 1
+        doorsClosedList = doorsClosedList + "🚪 Door 1: Front Door - Kirkegade\n"
     } else {
         doorsAlreadyClosed = doorsAlreadyClosed + 1
     }
@@ -27,6 +32,7 @@ then
         logInfo("net2_autoclose", "Door 2 (Front Door - Terndrupvej) is open, sending close command")
         Net2_Door2_Action.sendCommand(OFF)
         doorsClosed = doorsClosed + 1
+        doorsClosedList = doorsClosedList + "🚪 Door 2: Front Door - Terndrupvej\n"
     } else {
         doorsAlreadyClosed = doorsAlreadyClosed + 1
     }
@@ -38,6 +44,7 @@ then
         logInfo("net2_autoclose", "Door 3 (Garage Port - Kirkegade) is open (TopStop OPEN, Bundstop CLOSED), sending timed close command")
         Net2_Door3_ControlTimed.sendCommand(5)  // Send timed close command (5 seconds)
         doorsClosed = doorsClosed + 1
+        doorsClosedList = doorsClosedList + "🚗 Door 3: Garage Port - Kirkegade\n"
     } else {
         doorsAlreadyClosed = doorsAlreadyClosed + 1
     }
@@ -47,6 +54,7 @@ then
         logInfo("net2_autoclose", "Door 4 (Basement - Kirkegade) is open, sending close command")
         Net2_Door4_Action.sendCommand(OFF)
         doorsClosed = doorsClosed + 1
+        doorsClosedList = doorsClosedList + "🚪 Door 4: Basement - Kirkegade\n"
     } else {
         doorsAlreadyClosed = doorsAlreadyClosed + 1
     }
@@ -56,10 +64,84 @@ then
         logInfo("net2_autoclose", "Door 5 (Porsevej 19) is open, sending close command")
         Net2_Door5_Action.sendCommand(OFF)
         doorsClosed = doorsClosed + 1
+        doorsClosedList = doorsClosedList + "🚪 Door 5: Porsevej 19\n"
     } else {
         doorsAlreadyClosed = doorsAlreadyClosed + 1
     }
     
     // Log summary
     logInfo("net2_autoclose", "Auto-close completed: " + doorsClosed + " door(s) closed, " + doorsAlreadyClosed + " door(s) already closed")
+    
+    // Send email notification if any doors were closed
+    if (doorsClosed > 0) {
+        try {
+            // Format timestamp
+            val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm:ss")
+            val timestamp = dateFormat.format(new java.util.Date())
+            
+            // Build door status table rows
+            var doorStatusRows = ""
+            
+            // Door 1 status
+            val d1_status = if (Net2_Door1_Status.state == ON) "⚠️ WAS OPEN" else "✅ Closed"
+            val d1_bgcolor = if (Net2_Door1_Status.state == ON) "#ffebee" else "#e8f5e9"
+            doorStatusRows = doorStatusRows + "<tr><td style='padding: 10px; background: " + d1_bgcolor + ";'><strong>" + d1_status + "</strong> Door 1: Front Door - Kirkegade</td></tr>"
+            
+            // Door 2 status
+            val d2_status = if (Net2_Door2_Status.state == ON) "⚠️ WAS OPEN" else "✅ Closed"
+            val d2_bgcolor = if (Net2_Door2_Status.state == ON) "#ffebee" else "#e8f5e9"
+            doorStatusRows = doorStatusRows + "<tr><td style='padding: 10px; background: " + d2_bgcolor + ";'><strong>" + d2_status + "</strong> Door 2: Front Door - Terndrupvej</td></tr>"
+            
+            // Door 3 (Garage) status
+            val d3_open = (Garageport_TopStop.state == OPEN && Garageport_Bundstop.state == CLOSED)
+            val d3_status = if (d3_open) "⚠️ WAS OPEN" else "✅ Closed"
+            val d3_bgcolor = if (d3_open) "#ffebee" else "#e8f5e9"
+            doorStatusRows = doorStatusRows + "<tr><td style='padding: 10px; background: " + d3_bgcolor + ";'><strong>" + d3_status + "</strong> Door 3: Garage Port - Kirkegade</td></tr>"
+            
+            // Door 4 status
+            val d4_status = if (Net2_Door4_Status.state == ON) "⚠️ WAS OPEN" else "✅ Closed"
+            val d4_bgcolor = if (Net2_Door4_Status.state == ON) "#ffebee" else "#e8f5e9"
+            doorStatusRows = doorStatusRows + "<tr><td style='padding: 10px; background: " + d4_bgcolor + ";'><strong>" + d4_status + "</strong> Door 4: Basement - Kirkegade</td></tr>"
+            
+            // Door 5 status
+            val d5_status = if (Net2_Door5_Status.state == ON) "⚠️ WAS OPEN" else "✅ Closed"
+            val d5_bgcolor = if (Net2_Door5_Status.state == ON) "#ffebee" else "#e8f5e9"
+            doorStatusRows = doorStatusRows + "<tr><td style='padding: 10px; background: " + d5_bgcolor + ";'><strong>" + d5_status + "</strong> Door 5: Porsevej 19</td></tr>"
+            
+            // Get mail actions
+            val mailActions = getActions("mail","mail:smtp:samplesmtp")
+            
+            // Build HTML email
+            val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff9800; color: white;'>" +
+                "<tr><td style='padding: 20px;'>" +
+                "<h2 style='margin: 0; margin-bottom: 5px;'>🚪 Net2 Doors Auto-Closed</h2>" +
+                "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Automatic Door Security Check</p>" +
+                "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + " - " + checkTime + " Check</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #fff3e0;'>" +
+                "<tr><td style='padding: 15px;'>" +
+                "<h3 style='color: #ff9800; margin: 0; margin-bottom: 10px;'>⚠️ Doors Automatically Closed</h3>" +
+                "<p style='margin: 5px 0; font-size: 14px;'><strong>" + doorsClosed + " door(s)</strong> were found open and have been automatically closed.</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+                doorStatusRows +
+                "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+                "<p style='margin: 0; color: #666; font-size: 13px;'><strong>Summary:</strong> " + doorsClosed + " door(s) closed | " + doorsAlreadyClosed + " door(s) already secure</p>" +
+                "<p style='margin: 5px 0 0 0; color: #999; font-size: 12px;'>Automatic checks run at 17:00 and 23:00 daily</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "</body></html>"
+            
+            val success = mailActions.sendHtmlMail("nanna@agesen.dk", "🚪 Net2 Doors Auto-Closed at " + checkTime, emailBody)
+            logInfo("net2_autoclose", "Email notification sent: " + success)
+            
+        } catch (Exception e) {
+            logError("net2_autoclose", "Error sending email notification: " + e.getMessage())
+        }
+    } else {
+        logInfo("net2_autoclose", "All doors were already closed - no email notification needed")
+    }
 end

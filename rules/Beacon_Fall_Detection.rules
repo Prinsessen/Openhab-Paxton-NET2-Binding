@@ -12,7 +12,8 @@
  * - Motion detection: Only alerts if ignition ON or bike moved recently
  * - Grace period: 15 minutes after movement stops before disabling alerts
  * - Prevents false alarms when unloading bags at campsite/home
- * - Includes 5-minute cooldown to prevent alert spam
+ * - State tracking: Alerts only once per fall (when state changes from OK to FALLEN)
+ * - Auto-reset: Clears alert when bag restored to normal position, can re-alert on new fall
  * - Provides detailed alert message with bag name and tilt angles
  * 
  * Configuration:
@@ -20,7 +21,6 @@
  * - baseline angles: Normal mounted position for each bag (calibrated)
  * - maxDistance: Maximum beacon distance to be considered "attached" (default 10m)
  * - movementGraceMinutes: Minutes after movement stops to still alert (default 15)
- * - cooldownMinutes: Time between alerts (default 5 minutes)
  * - positionChangeThreshold: Minimum position change in meters to detect movement (default 20m)
  */
 
@@ -35,7 +35,11 @@ val BEACON2_BASELINE_ROLL = -4.0    // Stinger22 normal roll
 val BEACON3_BASELINE_PITCH = 9.0    // Aux Pox normal pitch
 val BEACON3_BASELINE_ROLL = -13.0   // Aux Pox normal roll
 
-var Timer beaconAlertTimer = null
+// State tracking - prevents repeat alerts for same fall
+var Boolean beacon1AlertActive = false
+var Boolean beacon2AlertActive = false
+var Boolean beacon3AlertActive = false
+
 var String lastKnownPosition = null
 var Long lastMovementTime = null
 
@@ -93,7 +97,6 @@ then
     val tiltThreshold = 45.0        // degrees - adjust after testing
     val maxDistance = 10.0          // meters - beacon must be within 10m to be considered "attached"
     val movementGraceMinutes = 15   // minutes after movement stops to still alert
-    val cooldownMinutes = 5         // minutes between alerts
     var alertMessage = ""
     var alertTriggered = false
     
@@ -118,12 +121,19 @@ then
         val b1_roll = (Vehicle10_Beacon1_Roll.state as Number).doubleValue
         val b1_pitch_deviation = Math.abs(b1_pitch - BEACON1_BASELINE_PITCH)
         val b1_roll_deviation = Math.abs(b1_roll - BEACON1_BASELINE_ROLL)
+        val b1_fallen = (b1_pitch_deviation > tiltThreshold || b1_roll_deviation > tiltThreshold)
         
-        if (b1_pitch_deviation > tiltThreshold || b1_roll_deviation > tiltThreshold) {
+        if (b1_fallen && !beacon1AlertActive) {
+            // NEW fall detected - send alert and set flag
             alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon1_Name.state.toString + 
                 " FALLEN! (Pitch: " + Vehicle10_Beacon1_Pitch.state + "° [Δ" + String.format("%.0f", b1_pitch_deviation) + "°] Roll: " + 
                 Vehicle10_Beacon1_Roll.state + "° [Δ" + String.format("%.0f", b1_roll_deviation) + "°] Distance: " + Vehicle10_Beacon1_Distance.state + ")\n"
             alertTriggered = true
+            beacon1AlertActive = true
+        } else if (!b1_fallen && beacon1AlertActive) {
+            // Bag restored to normal - clear alert flag
+            beacon1AlertActive = false
+            logInfo("BagAlert", "Beacon 1 restored to normal position")
         }
     }
     
@@ -137,12 +147,19 @@ then
         val b2_roll = (Vehicle10_Beacon2_Roll.state as Number).doubleValue
         val b2_pitch_deviation = Math.abs(b2_pitch - BEACON2_BASELINE_PITCH)
         val b2_roll_deviation = Math.abs(b2_roll - BEACON2_BASELINE_ROLL)
+        val b2_fallen = (b2_pitch_deviation > tiltThreshold || b2_roll_deviation > tiltThreshold)
         
-        if (b2_pitch_deviation > tiltThreshold || b2_roll_deviation > tiltThreshold) {
+        if (b2_fallen && !beacon2AlertActive) {
+            // NEW fall detected - send alert and set flag
             alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon2_Name.state.toString + 
                 " FALLEN! (Pitch: " + Vehicle10_Beacon2_Pitch.state + "° [Δ" + String.format("%.0f", b2_pitch_deviation) + "°] Roll: " + 
                 Vehicle10_Beacon2_Roll.state + "° [Δ" + String.format("%.0f", b2_roll_deviation) + "°] Distance: " + Vehicle10_Beacon2_Distance.state + ")\n"
             alertTriggered = true
+            beacon2AlertActive = true
+        } else if (!b2_fallen && beacon2AlertActive) {
+            // Bag restored to normal - clear alert flag
+            beacon2AlertActive = false
+            logInfo("BagAlert", "Beacon 2 restored to normal position")
         }
     }
     
@@ -156,17 +173,24 @@ then
         val b3_roll = (Vehicle10_Beacon3_Roll.state as Number).doubleValue
         val b3_pitch_deviation = Math.abs(b3_pitch - BEACON3_BASELINE_PITCH)
         val b3_roll_deviation = Math.abs(b3_roll - BEACON3_BASELINE_ROLL)
+        val b3_fallen = (b3_pitch_deviation > tiltThreshold || b3_roll_deviation > tiltThreshold)
         
-        if (b3_pitch_deviation > tiltThreshold || b3_roll_deviation > tiltThreshold) {
+        if (b3_fallen && !beacon3AlertActive) {
+            // NEW fall detected - send alert and set flag
             alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon3_Name.state.toString + 
                 " FALLEN! (Pitch: " + Vehicle10_Beacon3_Pitch.state + "° [Δ" + String.format("%.0f", b3_pitch_deviation) + "°] Roll: " + 
                 Vehicle10_Beacon3_Roll.state + "° [Δ" + String.format("%.0f", b3_roll_deviation) + "°] Distance: " + Vehicle10_Beacon3_Distance.state + ")\n"
             alertTriggered = true
+            beacon3AlertActive = true
+        } else if (!b3_fallen && beacon3AlertActive) {
+            // Bag restored to normal - clear alert flag
+            beacon3AlertActive = false
+            logInfo("BagAlert", "Beacon 3 restored to normal position")
         }
     }
     
-    // Only send alert if something triggered and timer is not already running
-    if (alertTriggered && (beaconAlertTimer === null || beaconAlertTimer.hasTerminated)) {
+    // Only send alert if something triggered (NEW fall, not continuing fall)
+    if (alertTriggered) {
         logWarn("BagAlert", "🚨 LUGGAGE FALL DETECTED:\n{}", alertMessage)
         
         try {
@@ -286,10 +310,5 @@ then
         } catch (Exception e) {
             logError("BagAlert", "Error sending luggage fall notification: " + e.getMessage())
         }
-        
-        // Set cooldown timer to prevent spam
-        beaconAlertTimer = createTimer(now.plusMinutes(cooldownMinutes), [|
-            logInfo("BagAlert", "Alert cooldown expired, monitoring resumed")
-        ])
     }
 end
