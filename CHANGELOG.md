@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-22 13:30:07
+- Modified: rules/Beacon_Fall_Detection.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-22 13:15:17
 - Added: rules/Beacon_Fall_Detection.rules
 
