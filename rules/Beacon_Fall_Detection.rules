@@ -200,69 +200,6 @@ then
         }
     }
     
-    // Check for sudden beacon loss (possible fall at speed before tilt reported)
-    // Only check if bike is moving and beacon was recently close
-    val currentTime = new java.util.Date().time
-    val beaconLossThreshold = 30000 // 30 seconds - account for irregular updates
-    val closeDistanceThreshold = 5.0 // meters - beacon must have been close recently
-    
-    // Check Beacon 1 sudden loss
-    if (ignitionOn && 
-        lastBeacon1Distance !== null && lastBeacon1Distance < closeDistanceThreshold &&
-        lastBeacon1Seen !== null && (currentTime - lastBeacon1Seen) < beaconLossThreshold &&
-        (Vehicle10_Beacon1_Distance.state === NULL || 
-         (Vehicle10_Beacon1_Distance.state as Number) > maxDistance)) {
-        // Beacon 1 was close and now suddenly lost while riding
-        alertMessage = alertMessage + "⚠️ " + Vehicle10_Beacon1_Name.state.toString + 
-            " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon1Distance) + "m away, now out of range - possible fall at speed)\n"
-        alertTriggered = true
-        beacon1AlertActive = true
-        lastBeacon1Distance = null // Reset to avoid repeat alerts
-    }
-    
-    // Check Beacon 2 sudden loss
-    if (ignitionOn && 
-        lastBeacon2Distance !== null && lastBeacon2Distance < closeDistanceThreshold &&
-        lastBeacon2Seen !== null && (currentTime - lastBeacon2Seen) < beaconLossThreshold &&
-        (Vehicle10_Beacon2_Distance.state === NULL || 
-         (Vehicle10_Beacon2_Distance.state as Number) > maxDistance)) {
-        alertMessage = alertMessage + "⚠️ " + Vehicle10_Beacon2_Name.state.toString + 
-            " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon2Distance) + "m away, now out of range - possible fall at speed)\n"
-        alertTriggered = true
-        beacon2AlertActive = true
-        lastBeacon2Distance = null
-    }
-    
-    // Check Beacon 3 sudden loss
-    if (ignitionOn && 
-        lastBeacon3Distance !== null && lastBeacon3Distance < closeDistanceThreshold &&
-        lastBeacon3Seen !== null && (currentTime - lastBeacon3Seen) < beaconLossThreshold &&
-        (Vehicle10_Beacon3_Distance.state === NULL || 
-         (Vehicle10_Beacon3_Distance.state as Number) > maxDistance)) {
-        alertMessage = alertMessage + "⚠️ " + Vehicle10_Beacon3_Name.state.toString + 
-            " LOST CONTACT! (Was " + String.format("%.1f", lastBeacon3Distance) + "m away, now out of range - possible fall at speed)\n"
-        alertTriggered = true
-        beacon3AlertActive = true
-        lastBeacon3Distance = null
-    }
-    
-    // Update last seen tracking for connected beacons
-    if (Vehicle10_Beacon1_Distance.state !== NULL && 
-        (Vehicle10_Beacon1_Distance.state as Number) < maxDistance) {
-        lastBeacon1Distance = (Vehicle10_Beacon1_Distance.state as Number).doubleValue
-        lastBeacon1Seen = currentTime
-    }
-    if (Vehicle10_Beacon2_Distance.state !== NULL && 
-        (Vehicle10_Beacon2_Distance.state as Number) < maxDistance) {
-        lastBeacon2Distance = (Vehicle10_Beacon2_Distance.state as Number).doubleValue
-        lastBeacon2Seen = currentTime
-    }
-    if (Vehicle10_Beacon3_Distance.state !== NULL && 
-        (Vehicle10_Beacon3_Distance.state as Number) < maxDistance) {
-        lastBeacon3Distance = (Vehicle10_Beacon3_Distance.state as Number).doubleValue
-        lastBeacon3Seen = currentTime
-    }
-    
     // Only send alert if something triggered (NEW fall, not continuing fall)
     if (alertTriggered) {
         logWarn("BagAlert", "🚨 LUGGAGE FALL DETECTED:\n{}", alertMessage)
@@ -289,7 +226,7 @@ then
             val openStreetMapLink = "https://www.openstreetmap.org/?mlat=" + latitude + "&mlon=" + longitude + "&zoom=16"
             
             // Calculate time since last movement
-            val minutesSinceMovement = if (lastMovementTime !== null) ((currentTime - lastMovementTime) / 60000).intValue else 0
+            val minutesSinceMovement = if (lastMovementTime !== null) ((currentTimeTilt - lastMovementTime) / 60000).intValue else 0
             
             // Build beacon status table rows
             var beaconStatusRows = ""
