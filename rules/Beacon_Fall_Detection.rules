@@ -1,0 +1,97 @@
+/**
+ * Beacon Fall Detection Rule
+ * 
+ * Monitors pitch and roll angles of up to 3 BLE beacons attached to motorcycle bags.
+ * Alerts when bags fall off or tip over during riding.
+ * 
+ * Features:
+ * - Monitors beacons 1, 2, and 3 for excessive tilt (pitch/roll)
+ * - Only alerts for beacons currently connected (within distance range)
+ * - Handles bags left at home (no false alerts)
+ * - Includes 5-minute cooldown to prevent alert spam
+ * - Provides detailed alert message with bag name and tilt angles
+ * 
+ * Configuration:
+ * - tiltThreshold: Maximum allowed tilt angle in degrees (default 45°)
+ * - maxDistance: Maximum beacon distance to be considered "attached" (default 10m)
+ * - cooldownMinutes: Time between alerts (default 5 minutes)
+ */
+
+var Timer beaconAlertTimer = null
+
+rule "Motorcycle Bags Fallen Detection - Enhanced"
+when
+    Item Vehicle10_Beacon1_Pitch changed or
+    Item Vehicle10_Beacon1_Roll changed or
+    Item Vehicle10_Beacon2_Pitch changed or
+    Item Vehicle10_Beacon2_Roll changed or
+    Item Vehicle10_Beacon3_Pitch changed or
+    Item Vehicle10_Beacon3_Roll changed
+then
+    val tiltThreshold = 45.0  // degrees - adjust after testing
+    val maxDistance = 10.0    // meters - beacon must be within 10m to be considered "attached"
+    val cooldownMinutes = 5   // minutes between alerts
+    var alertMessage = ""
+    var alertTriggered = false
+    
+    // Check Beacon 1 - Only if connected (RSSI exists and distance reasonable)
+    if (Vehicle10_Beacon1_Pitch.state !== NULL && 
+        Vehicle10_Beacon1_Roll.state !== NULL &&
+        Vehicle10_Beacon1_Distance.state !== NULL &&
+        (Vehicle10_Beacon1_Distance.state as Number) < maxDistance) {
+        
+        if ((Vehicle10_Beacon1_Pitch.state as Number).abs > tiltThreshold || 
+            (Vehicle10_Beacon1_Roll.state as Number).abs > tiltThreshold) {
+            alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon1_Name.state.toString + 
+                " FALLEN! (Pitch: " + Vehicle10_Beacon1_Pitch.state + "° Roll: " + 
+                Vehicle10_Beacon1_Roll.state + "° Distance: " + Vehicle10_Beacon1_Distance.state + ")\n"
+            alertTriggered = true
+        }
+    }
+    
+    // Check Beacon 2 - Only if connected
+    if (Vehicle10_Beacon2_Pitch.state !== NULL && 
+        Vehicle10_Beacon2_Roll.state !== NULL &&
+        Vehicle10_Beacon2_Distance.state !== NULL &&
+        (Vehicle10_Beacon2_Distance.state as Number) < maxDistance) {
+        
+        if ((Vehicle10_Beacon2_Pitch.state as Number).abs > tiltThreshold || 
+            (Vehicle10_Beacon2_Roll.state as Number).abs > tiltThreshold) {
+            alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon2_Name.state.toString + 
+                " FALLEN! (Pitch: " + Vehicle10_Beacon2_Pitch.state + "° Roll: " + 
+                Vehicle10_Beacon2_Roll.state + "° Distance: " + Vehicle10_Beacon2_Distance.state + ")\n"
+            alertTriggered = true
+        }
+    }
+    
+    // Check Beacon 3 - Only if connected
+    if (Vehicle10_Beacon3_Pitch.state !== NULL && 
+        Vehicle10_Beacon3_Roll.state !== NULL &&
+        Vehicle10_Beacon3_Distance.state !== NULL &&
+        (Vehicle10_Beacon3_Distance.state as Number) < maxDistance) {
+        
+        if ((Vehicle10_Beacon3_Pitch.state as Number).abs > tiltThreshold || 
+            (Vehicle10_Beacon3_Roll.state as Number).abs > tiltThreshold) {
+            alertMessage = alertMessage + "🚨 " + Vehicle10_Beacon3_Name.state.toString + 
+                " FALLEN! (Pitch: " + Vehicle10_Beacon3_Pitch.state + "° Roll: " + 
+                Vehicle10_Beacon3_Roll.state + "° Distance: " + Vehicle10_Beacon3_Distance.state + ")\n"
+            alertTriggered = true
+        }
+    }
+    
+    // Only send alert if something triggered and timer is not already running
+    if (alertTriggered && (beaconAlertTimer === null || beaconAlertTimer.hasTerminated)) {
+        logWarn("BagAlert", "🚨 LUGGAGE FALL DETECTED:\n{}", alertMessage)
+        
+        // ===== ADD YOUR NOTIFICATION HERE =====
+        // Examples:
+        // sendTelegram("bot", "chat", "⚠️ LUGGAGE FALL DETECTED:\n" + alertMessage)
+        // sendPushoverMessage(pushoverBuilder("⚠️ Luggage Fall").withMessage(alertMessage))
+        // say("Warning! Motorcycle luggage has fallen!")
+        
+        // Set cooldown timer to prevent spam
+        beaconAlertTimer = createTimer(now.plusMinutes(cooldownMinutes), [|
+            logInfo("BagAlert", "Alert cooldown expired, monitoring resumed")
+        ])
+    }
+end
