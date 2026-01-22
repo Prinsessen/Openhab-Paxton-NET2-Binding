@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-22 15:00:16
+- Modified: Traccar-Binding/BLE_BEACON_FALL_DETECTION_OVERVIEW.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-22 14:45:16
 - Added: Traccar-Binding/BLE_BEACON_FALL_DETECTION_OVERVIEW.md
 - Modified: Traccar-Binding/EXAMPLES.md
