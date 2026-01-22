@@ -8,7 +8,7 @@
 rule "Auto-close Net2 Doors - Evening and Night Check"
 when
     Time cron "0 00 17 * * ?" or  // Every day at 17:00 (5 PM)
-    Time cron "0 00 23 * * ?"     // Every day at 23:00 (11 PM)
+    Time cron "0 30 23 * * ?"     // Every day at 23:00 (11 PM)
 then
     val checkTime = if (now.getHour == 17) "17:00" else "23:00"
     logInfo("net2_autoclose", "Running door auto-close check at " + checkTime)
