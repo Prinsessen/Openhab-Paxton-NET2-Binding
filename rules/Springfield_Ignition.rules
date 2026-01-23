@@ -51,8 +51,6 @@ then
         // Get mail actions using method call style
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
-        logInfo("springfield_ignition", "Building HTML email body for Ignition ON...")
-        
         // Send detailed HTML email notification
         val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
             "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #667eea; color: white;'>" +
@@ -83,8 +81,7 @@ then
             "</table>" +
             "</body></html>"
         
-        logInfo("springfield_ignition", "Sending HTML email to nanna@agesen.dk...")
-        val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition ON", emailBody)
+        val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "Springfield Ignition ON", emailBody)
         logInfo("springfield_ignition", "Ignition ON email status: " + success1)
         
         val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Ignition ON", "Springfield ignition started at " + timestamp + ". Location: " + address)
@@ -136,8 +133,6 @@ then
         // Get mail actions using method call style
         val mailActions = getActions("mail","mail:smtp:samplesmtp")
         
-        logInfo("springfield_ignition", "Building HTML email body for Ignition OFF...")
-        
         // Send detailed HTML email notification
         val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
             "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #f5576c; color: white;'>" +
@@ -167,8 +162,7 @@ then
             "</table>" +
             "</body></html>"
         
-        logInfo("springfield_ignition", "Sending HTML email to nanna@agesen.dk...")
-        val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🏍️ Springfield Ignition OFF - Parked", emailBody)
+        val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "Springfield Ignition OFF - Parked", emailBody)
         logInfo("springfield_ignition", "Ignition OFF email status: " + success1)
         
         val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Parked", "Springfield parked at " + timestamp + ". Location: " + address)
