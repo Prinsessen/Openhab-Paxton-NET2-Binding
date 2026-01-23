@@ -18,7 +18,6 @@ sitemap myhouse label="Nanna Agesen"
 				Webview url="/static/vehicle_tracker.html" height=15
 			}
 			Frame label="Dream Catcher (Phone)" {
-				Switch item=Vehicle1_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle1_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle1_Address label="Address: [%s]" icon="gps-address-cyan"
 				Text item=Vehicle1_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"
@@ -37,18 +36,19 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_BatteryLevel label="Battery [%.0f %%]" icon="gps-battery-green"
 				Text item=Vehicle1_Activity label="Activity [MAP(activity.map):%s]" icon="gps-motion-teal"
 				Text item=Vehicle1_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
+				Switch item=Vehicle1_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 			}
 			Frame label="Springfield FMM920" {
-				Switch item=Vehicle10_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle10_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle10_Ignition label="Ignition [MAP(ignition.map):%s]" icon="gps-ignition-red"
+				Text item=Vehicle10_GeofenceEvent label="Geofence Direction [MAP(geofence.map):%s]" icon="gps-geofence-purple"
 				Text item=Vehicle10_Address label="Address: [%s]" icon="gps-address-cyan"
 				Text item=Vehicle10_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"
 				Text item=Vehicle10_Speed label="Speed [%.1f %unit%]" icon="gps-speed-green"
 				Text item=Vehicle10_GpsSatellites label="GPS Satellites [%d]" icon="gps-satellite-orange"
 				Text item=Vehicle10_GsmSignal label="GSM Signal [%.0f %%]" icon="gps-gsm-signal-green"
+				Text item=Vehicle10_Operator label="Operator [MAP(operator.map):%s]" icon="gps-operator-blue"
 				Text item=Vehicle10_Position label="Position [%s]" icon="gps-position-green"
-				Text item=Vehicle10_GeofenceEvent label="Geofence Direction [MAP(geofence.map):%s]" icon="gps-geofence-purple"
 				Text item=Vehicle10_GeofenceName label="Geofence Name [%s]" icon="gps-location-pink"
 				Text item=Vehicle10_Motion label="Motion [MAP(motion.map):%s]" icon="gps-motion-teal"
 				Text item=Vehicle10_TotalDistance label="Odometer (Total) [%.1f km]" icon="gps-odometer-blue"
@@ -64,7 +64,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Hdop label="GPS 2D Quality [JS(hdop.js):%s]" icon="gps-pdop-cyan"
 				Text item=Vehicle10_Power label="Vehicle Power [%.2f V]" icon="gps-power-yellow"
 				Text item=Vehicle10_Battery label="Tracker Battery [%.2f V]" icon="gps-battery-green"
-				Text item=Vehicle10_Operator label="Operator [MAP(operator.map):%s]" icon="gps-operator-blue"
+				Switch item=Vehicle10_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text label="OBD-II Data" icon="engine-on" {
 					Frame label="Engine" {
 						Text item=Vehicle10_ObdRpm label="RPM [%d o/min]" icon="obd-rpm-green"
@@ -158,7 +158,6 @@ sitemap myhouse label="Nanna Agesen"
 				}
 			}
 			Frame label="Hugerock Navi" {
-				Switch item=Vehicle4_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle4_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle4_Address label="Address: [%s]" icon="gps-address-cyan"
 				Text item=Vehicle4_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"
@@ -177,6 +176,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle4_BatteryLevel label="Battery [%.0f %%]" icon="gps-battery-green"
 				Text item=Vehicle4_Activity label="Activity [MAP(activity.map):%s]" icon="gps-motion-teal"
 				Text item=Vehicle4_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
+				Switch item=Vehicle4_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 			}
 		}
 	}
