@@ -7,6 +7,24 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-23 10:45:17
+- Deleted: Deleted rules - items - things etc/Rules/Texecom_Arm.rules
+- Deleted: Deleted rules - items - things etc/Rules/Texecom_Arm_Status.rules
+- Deleted: Deleted rules - items - things etc/Rules/Texecom_Exit.rules
+- Deleted: Deleted rules - items - things etc/Rules/Texecom_LSTATUS.rules
+- Deleted: Deleted rules - items - things etc/Rules/Texecom_UDP.old
+- Deleted: Deleted rules - items - things etc/Rules/Texecom_UDP_New.rules
+- Deleted: Deleted rules - items - things etc/Rules/Texecom_alarmtrigger.rules
+- Deleted: Deleted rules - items - things etc/Rules/hue_fade.notwork
+- Deleted: Deleted rules - items - things etc/Rules/nilan_boost.test
+- Deleted: Deleted rules - items - things etc/Rules/pws.rules
+- Deleted: Deleted rules - items - things etc/Rules/texecom_mirror.rules
+- Modified: items/traccar.items
+- Renamed: rules/Traccar.rules	rules/Traccar.rules_old_mqtt_rule_replaced.backup
+- Added: sitemaps/myhouse.sitemap.bak
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-23 10:30:02
 - Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260106211352
 - Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260107145603

@@ -1,20 +1,30 @@
-// Springfield Garage Opener
-String    GeofenceID                  "GeofenceID"                              {channel="mqtt:topic:broker:Traccar:GeofenceID"}
-String    UseruniqueID                "UseruniqueID"                            {channel="mqtt:topic:broker:Traccar:UseruniqueID"}
-String    Geodirection                "Geodirection"                            {channel="mqtt:topic:broker:Traccar:Geodirection"}
-String    GeofenceIo155               "GeodirectionTrackerIO155"                {channel="mqtt:topic:broker:Traccar:GeofenceIo155"}
-// Motorcycle Information
-Number    totalDistance               "Total Distance [%.1f km]"                {channel="mqtt:topic:broker:Traccar:totalDistance"}
-Number    totalDistanceSpringfield    "Springfield Total Distance [%.1f km]"
-Number    springRPM                   "Springfield RPM"                         {channel="mqtt:topic:broker:Traccar:springRPM"}
-// Motorcycle CANbus Information from Flepsi
-Number    powersource                 "Battery Voltage [%.3f V]"                {channel="mqtt:topic:broker:flepsi:powersource"}
-Number    fuel_level                  "Fuel level [%.2f L]"                     {channel="mqtt:topic:broker:flepsi:fuel_level"}
-Number    throttle                    "Throttle Position [%.2f Percent]"        {channel="mqtt:topic:broker:flepsi:throttle"}
-Number    enginerpm                   "Engine RPM [%.2f RPM]"                   {channel="mqtt:topic:broker:flepsi:enginerpm"}
-Number    can_speed                   "CAN Speed [%.2f kmt]"                    {channel="mqtt:topic:broker:flepsi:can_speed"}
-Number    engineload                  "Engine Load [%.2f Percent]"              {channel="mqtt:topic:broker:flepsi:engineload"}
+// ============================================================================
+// DEPRECATED - Legacy MQTT Items (Replaced by Traccar Binding)
+// ============================================================================
+// NOTE: These items were replaced by the native Traccar binding structure below
+// The new binding provides direct integration with Traccar server via REST API
+// instead of MQTT, offering better reliability and more comprehensive data access.
+// Deprecated: January 2026
+// ============================================================================
 
+// Springfield Garage Opener (DEPRECATED - use Vehicle10_GeofenceId, Vehicle10_GeofenceName, Vehicle10_GeofenceEvent)
+// String    GeofenceID                  "GeofenceID"                              {channel="mqtt:topic:broker:Traccar:GeofenceID"}
+// String    UseruniqueID                "UseruniqueID"                            {channel="mqtt:topic:broker:Traccar:UseruniqueID"}
+// String    Geodirection                "Geodirection"                            {channel="mqtt:topic:broker:Traccar:Geodirection"}
+// String    GeofenceIo155               "GeodirectionTrackerIO155"                {channel="mqtt:topic:broker:Traccar:GeofenceIo155"}
+
+// Motorcycle Information (DEPRECATED - use Vehicle10_TotalDistance, Vehicle10_ObdRpm)
+// Number    totalDistance               "Total Distance [%.1f km]"                {channel="mqtt:topic:broker:Traccar:totalDistance"}
+// Number    totalDistanceSpringfield    "Springfield Total Distance [%.1f km]"
+// Number    springRPM                   "Springfield RPM"                         {channel="mqtt:topic:broker:Traccar:springRPM"}
+
+// Motorcycle CANbus Information from Flepsi (DEPRECATED - use Vehicle10_Power, Vehicle10_ObdFuelLevel, Vehicle10_ObdSpeed, Vehicle10_ObdEngineLoad)
+// Number    powersource                 "Battery Voltage [%.3f V]"                {channel="mqtt:topic:broker:flepsi:powersource"}
+// Number    fuel_level                  "Fuel level [%.2f L]"                     {channel="mqtt:topic:broker:flepsi:fuel_level"}
+// Number    throttle                    "Throttle Position [%.2f Percent]"        {channel="mqtt:topic:broker:flepsi:throttle"}
+// Number    enginerpm                   "Engine RPM [%.2f RPM]"                   {channel="mqtt:topic:broker:flepsi:enginerpm"}
+// Number    can_speed                   "CAN Speed [%.2f kmt]"                    {channel="mqtt:topic:broker:flepsi:can_speed"}
+// Number    engineload                  "Engine Load [%.2f Percent]"              {channel="mqtt:topic:broker:flepsi:engineload"}
 
 // ============================================================================
 // Traccar Binding Items - Modern GPS Tracking
