@@ -1,0 +1,136 @@
+// =============================================================================
+// Springfield Battery Alert Rule
+// =============================================================================
+// Monitors motorcycle battery voltage and sends HTML email alerts
+// WARNING: < 12.5V | CRITICAL: < 12.0V
+// =============================================================================
+
+var Number lastAlertVoltage = null
+var Long lastAlertTime = 0L
+
+rule "Springfield Battery Voltage Alert"
+when
+    Item Vehicle10_Power changed
+then
+    try {
+        // Skip if voltage is NULL
+        if (Vehicle10_Power.state === NULL) {
+            return
+        }
+        
+        val currentVoltage = (Vehicle10_Power.state as Number).doubleValue
+        val currentTime = new java.util.Date().time
+        
+        // Determine alert level
+        var String alertLevel = null
+        var String alertColor = null
+        var String alertTitle = null
+        
+        if (currentVoltage < 12.0) {
+            alertLevel = "CRITICAL"
+            alertColor = "#f5576c"
+            alertTitle = "🔴 CRITICAL BATTERY ALERT"
+        } else if (currentVoltage < 12.5) {
+            alertLevel = "WARNING"
+            alertColor = "#ff9800"
+            alertTitle = "⚠️ LOW BATTERY WARNING"
+        } else {
+            // Voltage OK - clear alert tracking
+            lastAlertVoltage = null
+            return
+        }
+        
+        // Debounce: Prevent duplicate alerts
+        // Only send if:
+        // 1. First alert OR
+        // 2. More than 2 hours (120 minutes) since last alert OR
+        // 3. Voltage dropped by more than 0.3V since last alert
+        val minutesSinceLastAlert = ((currentTime - lastAlertTime) / 60000).intValue
+        val voltageDrop = if (lastAlertVoltage !== null) (lastAlertVoltage.doubleValue - currentVoltage) else 999.0
+        
+        if (lastAlertTime != 0 && minutesSinceLastAlert < 120 && voltageDrop < 0.3) {
+            logInfo("battery_alert", "Battery alert debounced - voltage: " + currentVoltage + "V (last: " + lastAlertVoltage + "V, " + minutesSinceLastAlert + " min ago)")
+            return
+        }
+        
+        lastAlertTime = currentTime
+        lastAlertVoltage = currentVoltage
+        
+        logWarn("battery_alert", "⚠️ " + alertLevel + " - Springfield battery voltage: " + currentVoltage + "V")
+        
+        // Get current vehicle data
+        val position = Vehicle10_Position.state.toString
+        val address = if (Vehicle10_Address.state != NULL) Vehicle10_Address.state.toString else "Address not available"
+        val ignitionStatus = if (Vehicle10_Ignition.state == ON) "ON (Engine Running)" else "OFF (Parked)"
+        val lastUpdateState = Vehicle10_LastUpdate.state
+        val lastUpdate = if (lastUpdateState != NULL) lastUpdateState.toString else "Unknown"
+        val trackerBattery = if (Vehicle10_Battery.state != NULL) String.format("%.2f V", (Vehicle10_Battery.state as Number).doubleValue) else "Unknown"
+        val gpsStatus = if (Vehicle10_Valid.state == ON) "Valid" else "Invalid"
+        val satellites = if (Vehicle10_GpsSatellites.state != NULL) Vehicle10_GpsSatellites.state.toString else "Unknown"
+        
+        // Format timestamp
+        val dateFormat = new java.text.SimpleDateFormat("dd/MM HH:mm:ss")
+        val timestamp = dateFormat.format(new java.util.Date())
+        
+        // Extract latitude and longitude from position
+        val coords = position.split(",")
+        val latitude = coords.get(0)
+        val longitude = coords.get(1)
+        
+        // Create map links
+        val googleMapsLink = "https://www.google.com/maps?q=" + latitude + "," + longitude
+        val openStreetMapLink = "https://www.openstreetmap.org/?mlat=" + latitude + "&mlon=" + longitude + "&zoom=16"
+        
+        // Determine voltage status color
+        val voltageColor = if (currentVoltage < 12.0) "#ffebee" else "#fff3e0"
+        
+        // Get mail actions
+        val mailActions = getActions("mail","mail:smtp:samplesmtp")
+        
+        // Build HTML email using net2_autoclose design pattern
+        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: " + alertColor + "; color: white;'>" +
+            "<tr><td style='padding: 20px;'>" +
+            "<h2 style='margin: 0; margin-bottom: 5px;'>" + alertTitle + "</h2>" +
+            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Springfield Battery Voltage Monitor</p>" +
+            "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: " + voltageColor + ";'>" +
+            "<tr><td style='padding: 15px;'>}" +
+            "<h3 style='color: " + alertColor + "; margin: 0; margin-bottom: 10px;'>⚡ Battery Status</h3>" +
+            "<p style='margin: 5px 0; font-size: 16px;'><strong>Current Voltage: " + String.format("%.2f", currentVoltage) + " V</strong></p>" +
+            "<p style='margin: 5px 0; font-size: 14px; color: #666;'>Alert Level: <strong>" + alertLevel + "</strong></p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #e3f2fd;'>" +
+            "<tr><td style='padding: 15px;'>}" +
+            "<h3 style='color: #1976d2; margin: 0; margin-bottom: 10px;'>📍 Location</h3>" +
+            "<p style='margin: 5px 0; font-size: 14px;'>" + address + "</p>" +
+            "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
+            "<p style='margin: 10px 0 5px 0;'><a href='" + googleMapsLink + "' style='color: #1976d2; text-decoration: none; font-weight: bold;'>📍 Google Maps</a> | " +
+            "<a href='" + openStreetMapLink + "' style='color: #1976d2; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+            "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🔥 Ignition:</strong> " + ignitionStatus + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #f3e5f5;'><strong>🔋 Tracker Battery:</strong> " + trackerBattery + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e0f2f1;'><strong>📡 GPS Status:</strong> " + gpsStatus + " (" + satellites + " sats)</td></tr>" +
+            "<tr><td style='padding: 10px; background: #fff3e0;'><strong>⏰ Last Update:</strong> " + lastUpdate + "</td></tr>" +
+            "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+            "<p style='margin: 0; color: #666; font-size: 13px;'><strong>Important:</strong> Normal motorcycle battery voltage should be 12.6-13.2V when engine off, 13.5-14.5V when running</p>" +
+            "<p style='margin: 5px 0 0 0; color: #999; font-size: 12px;'>Device: Springfield FMM920 (ID: 10)</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "</body></html>"
+        
+        val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "Springfield Battery " + alertLevel + " - " + String.format("%.2f", currentVoltage) + "V", emailBody)
+        logInfo("battery_alert", "Battery alert email status: " + success1)
+        
+        val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Springfield Battery " + alertLevel, "Battery voltage: " + String.format("%.2f", currentVoltage) + "V at " + timestamp + ". Location: " + address)
+        logInfo("battery_alert", "Battery alert SMS status: " + success2)
+        
+    } catch (Exception e) {
+        logError("battery_alert", "Error sending battery alert notification: " + e.getMessage())
+    }
+end

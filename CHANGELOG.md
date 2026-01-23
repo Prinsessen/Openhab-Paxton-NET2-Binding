@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-23 12:15:16
+- Added: rules/Springfield_Battery_Alert.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-23 12:00:07
 - Modified: rules/Springfield_Ignition.rules
 
