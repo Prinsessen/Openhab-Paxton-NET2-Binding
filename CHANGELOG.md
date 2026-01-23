@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-23 17:15:16
+- Modified: items/traccar.items
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-23 12:15:16
 - Added: rules/Springfield_Battery_Alert.rules
 

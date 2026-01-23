@@ -18,7 +18,7 @@ sitemap myhouse label="Nanna Agesen"
 				Webview url="/static/vehicle_tracker.html" height=15
 			}
 			Frame label="Dream Catcher (Phone)" {
-				Switch item=Vehicle1_AutoPortEnabled label="Auto Garage Port" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
+				Switch item=Vehicle1_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle1_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle1_Address label="Address: [%s]" icon="gps-address-cyan"
 				Text item=Vehicle1_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"
@@ -29,7 +29,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_Motion label="Motion [MAP(motion.map):%s]" icon="gps-motion-teal"
 				Text item=Vehicle1_Odometer label="Odometer (Device) [%.1f km]" icon="gps-odometer-blue"
 				Text item=Vehicle1_TotalDistance label="Total Distance (Server) [%.1f km]" icon="gps-odometer-blue"
-				Text item=Vehicle1_Distance label="Distance [%.1f m]" icon="gps-odometer-blue"
+				Text item=Vehicle1_Distance label="Δ Distance [%.1f m]" icon="gps-odometer-blue"
 				Text item=Vehicle1_Altitude label="Altitude [%.1f m]" icon="gps-altitude-cyan"
 				Text item=Vehicle1_Valid label="GPS Valid [MAP(gpsvalid.map):%s]" icon="gps-valid-green"
 				Text item=Vehicle1_Accuracy label="Accuracy [%.1f m]" icon="gps-accuracy-orange"
@@ -39,7 +39,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
 			}
 			Frame label="Springfield (Tracker)" {
-				Switch item=Vehicle10_AutoPortEnabled label="Auto Garage Port" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
+				Switch item=Vehicle10_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle10_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle10_Address label="Address: [%s]" icon="gps-address-cyan"
 				Text item=Vehicle10_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"
@@ -54,7 +54,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle10_Event label="Event [MAP(teltonika_event.map):%s]" icon="gps-event-blue"
 				Text item=Vehicle10_Altitude label="Altitude [%.1f m]" icon="gps-altitude-cyan"
 				Text item=Vehicle10_Valid label="GPS Valid [MAP(gpsvalid.map):%s]" icon="gps-valid-green"
-				Text item=Vehicle10_Distance label="Distance [%.1f m]" icon="gps-odometer-blue"
+				Text item=Vehicle10_Distance label="Δ Distance [%.1f m]" icon="gps-odometer-blue"
 				Text item=Vehicle10_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
 				Text item=Vehicle10_Ignition label="Ignition [MAP(ignition.map):%s]" icon="gps-ignition-red"
 				Text item=Vehicle10_Accuracy label="Accuracy [%.1f %unit%]" icon="gps-accuracy-orange"
