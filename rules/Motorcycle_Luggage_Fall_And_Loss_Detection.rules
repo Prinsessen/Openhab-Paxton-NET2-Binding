@@ -311,32 +311,39 @@ then
             // Get mail actions
             val mailActions = getActions("mail","mail:smtp:samplesmtp")
             
-            // Send detailed HTML email notification
-            val emailBody = "<html><body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>" +
-                "<div style='background: linear-gradient(135deg, #ff5252 0%, #c62828 100%); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;'>" +
-                "<h1 style='margin: 0; font-size: 24px;'>⚠️ Springfield Luggage Fall Alert</h1>" +
-                "<p style='margin: 5px 0 0 0; opacity: 0.9;'>" + timestamp + "</p>" +
-                "</div>" +
-                "<div style='background: #f8f9fa; padding: 20px; border-radius: 0 0 10px 10px;'>" +
-                "<div style='background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #ff5252; margin-bottom: 15px;'>" +
-                "<h2 style='margin: 0 0 10px 0; color: #ff5252; font-size: 18px;'>🚨 Tilt Detected</h2>" +
-                "<p style='margin: 0; white-space: pre-line; color: #333;'>" + alertMessage + "</p>" +
-                "</div>" +
-                "<div style='background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #1976d2; margin-bottom: 15px;'>" +
-                "<h3 style='margin: 0 0 10px 0; color: #1976d2; font-size: 16px;'>📍 Location</h3>" +
-                "<p style='margin: 5px 0;'>" + address + "</p>" +
-                "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + latitude + ", " + longitude + "</p>" +
-                "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #1976d2; text-decoration: none; font-weight: bold;'>📍 Open in Google Maps</a> | " +
+            // Build HTML email using net2_autoclose design pattern
+            val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+                "<tr><td style='padding: 20px;'>" +
+                "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Springfield Luggage Fall Alert</h2>" +
+                "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Motorcycle Luggage Tilt Detection</p>" +
+                "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+                "<tr><td style='padding: 15px;'>" +
+                "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Tilt Detected</h3>" +
+                "<p style='margin: 5px 0; font-size: 14px; white-space: pre-line;'>" + alertMessage + "</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #e3f2fd;'>" +
+                "<tr><td style='padding: 15px;'>" +
+                "<h3 style='color: #1976d2; margin: 0; margin-bottom: 10px;'>📍 Location</h3>" +
+                "<p style='margin: 5px 0; font-size: 14px;'>" + address + "</p>" +
+                "<p style='margin: 5px 0; font-size: 13px; color: #666;'>" + latitude + ", " + longitude + "</p>" +
+                "<p style='margin: 10px 0 5px 0;'><a href='" + googleMapsLink + "' style='color: #1976d2; text-decoration: none; font-weight: bold;'>📍 Google Maps</a> | " +
                 "<a href='" + openStreetMapLink + "' style='color: #1976d2; text-decoration: none;'>🗺️ OpenStreetMap</a></p>" +
-                "</div>" +
-                "<table style='width: 100%; border-collapse: collapse; margin-top: 10px;'>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
                 "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>⚡ Speed:</strong> " + speed + "</td></tr>" +
                 "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🔥 Ignition:</strong> " + ignitionStatus + "</td></tr>" +
                 "<tr><td style='padding: 10px; background: #f3e5f5;'><strong>⏱️ Last Movement:</strong> " + minutesSinceMovement + " min ago</td></tr>" +
                 beaconStatusRows +
-                "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Tilt Threshold: " + tiltThreshold + "° | Max Distance: " + maxDistance + " m | Grace Period: " + movementGraceMinutes + " min</td></tr>" +
+                "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+                "<p style='margin: 0; color: #666; font-size: 13px;'><strong>Configuration:</strong> Tilt Threshold: " + tiltThreshold + "° | Max Distance: " + maxDistance + " m | Grace Period: " + movementGraceMinutes + " min</p>" +
+                "</td></tr>" +
                 "</table>" +
-                "</div>" +
                 "</body></html>"
             
             val success1 = mailActions.sendHtmlMail("nanna@agesen.dk", "🚨 Springfield Luggage Fall Alert", emailBody)
@@ -482,29 +489,36 @@ then
             val googleMapsLink = "https://www.google.com/maps?q=" + coords.get(0).trim + "," + coords.get(1).trim
             
             logInfo("BagAlert", "Building email body...")
-            // Create HTML email body
-            val emailBody = "<html><body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>" +
-                "<div style='background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;'>" +
-                "<h1 style='margin: 0; font-size: 24px;'>⚠️ Springfield Beacon Loss Alert</h1>" +
-                "<p style='margin: 5px 0 0 0; opacity: 0.9;'>" + timestamp + "</p>" +
-                "</div>" +
-                "<div style='background: #f8f9fa; padding: 20px; border-radius: 0 0 10px 10px;'>" +
-                "<div style='background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #ff9800; margin-bottom: 15px;'>" +
-                "<h2 style='margin: 0 0 10px 0; color: #ff9800; font-size: 18px;'>🚨 Beacon Lost Contact</h2>" +
-                "<p style='margin: 0; white-space: pre-line; color: #333;'>" + lossMessage + "</p>" +
-                "</div>" +
-                "<div style='background: white; padding: 15px; border-radius: 8px; border-left: 4px solid #1976d2; margin-bottom: 15px;'>" +
-                "<h3 style='margin: 0 0 10px 0; color: #1976d2; font-size: 16px;'>📍 Location</h3>" +
-                "<p style='margin: 5px 0;'>" + address + "</p>" +
-                "<p style='margin: 5px 0; color: #666; font-size: 13px;'>" + coords.get(0).trim + ", " + coords.get(1).trim + "</p>" +
-                "<p style='margin-top: 10px;'><a href='" + googleMapsLink + "' style='color: #1976d2; text-decoration: none; font-weight: bold;'>📍 Open in Google Maps</a></p>" +
-                "</div>" +
-                "<table style='width: 100%; border-collapse: collapse; margin-top: 10px;'>" +
+            // Build HTML email using net2_autoclose design pattern
+            val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff9800; color: white;'>" +
+                "<tr><td style='padding: 20px;'>" +
+                "<h2 style='margin: 0; margin-bottom: 5px;'>⚠️ Springfield Beacon Loss Alert</h2>" +
+                "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Motorcycle Luggage Separation Detection</p>" +
+                "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #fff3e0;'>" +
+                "<tr><td style='padding: 15px;'>" +
+                "<h3 style='color: #ff9800; margin: 0; margin-bottom: 10px;'>🚨 Beacon Lost Contact</h3>" +
+                "<p style='margin: 5px 0; font-size: 14px; white-space: pre-line;'>" + lossMessage + "</p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #e3f2fd;'>" +
+                "<tr><td style='padding: 15px;'>" +
+                "<h3 style='color: #1976d2; margin: 0; margin-bottom: 10px;'>📍 Location</h3>" +
+                "<p style='margin: 5px 0; font-size: 14px;'>" + address + "</p>" +
+                "<p style='margin: 5px 0; font-size: 13px; color: #666;'>" + coords.get(0).trim + ", " + coords.get(1).trim + "</p>" +
+                "<p style='margin: 10px 0 5px 0;'><a href='" + googleMapsLink + "' style='color: #1976d2; text-decoration: none; font-weight: bold;'>📍 Google Maps</a></p>" +
+                "</td></tr>" +
+                "</table>" +
+                "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
                 "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>⚡ Speed:</strong> " + speed + "</td></tr>" +
                 "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🏍️ Ignition:</strong> ON</td></tr>" +
-                "<tr><td style='padding: 10px; text-align: center; color: #999; font-size: 12px;'>Beacon was close (<5m) and suddenly lost contact - possible fall at speed</td></tr>" +
+                "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+                "<p style='margin: 0; color: #666; font-size: 13px;'><strong>Note:</strong> Beacon was close (<5m) and suddenly lost contact - possible fall at speed</p>" +
+                "</td></tr>" +
                 "</table>" +
-                "</div>" +
                 "</body></html>"
             
             logInfo("BagAlert", "Getting mail actions...")

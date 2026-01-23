@@ -1,2 +1,6 @@
 Shut=OFF
 Open=ON
+OPEN=Open 📂
+CLOSED=Closed 🔒
+NULL=Unknown
+-=Unknown
