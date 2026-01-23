@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-23 18:30:13
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-23 17:45:17
 - Modified: rules/Garageport.rules
 - Modified: sitemaps/myhouse.sitemap
