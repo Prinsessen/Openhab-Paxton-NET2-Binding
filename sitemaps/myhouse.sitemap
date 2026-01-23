@@ -38,7 +38,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_Activity label="Activity [MAP(activity.map):%s]" icon="gps-motion-teal"
 				Text item=Vehicle1_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
 			}
-			Frame label="Springfield (Tracker)" {
+			Frame label="Springfield FMM920" {
 				Switch item=Vehicle10_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
 				Text item=Vehicle10_Status label="Status [%s]" icon="gps-update-blue"
 				Text item=Vehicle10_Address label="Address: [%s]" icon="gps-address-cyan"
@@ -156,6 +156,27 @@ sitemap myhouse label="Nanna Agesen"
 						Text item=Vehicle10_Beacon4_Mac label="MAC [%s]" icon="bt-mac-address"
 					}
 				}
+			}
+			Frame label="Hugerock Navi" {
+				Switch item=Vehicle4_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
+				Text item=Vehicle4_Status label="Status [%s]" icon="gps-update-blue"
+				Text item=Vehicle4_Address label="Address: [%s]" icon="gps-address-cyan"
+				Text item=Vehicle4_LastUpdate label="Last Update [%1$tH:%1$tM:%1$tS]" icon="gps-update-blue"
+				Text item=Vehicle4_Speed label="Speed [%.1f km/h]" icon="gps-speed-green"
+				Text item=Vehicle4_Position label="Position [%s]" icon="gps-position-green"
+				Text item=Vehicle4_GeofenceEvent label="Geofence Direction [MAP(geofence.map):%s]" icon="gps-geofence-purple"
+				Text item=Vehicle4_GeofenceName label="Geofence Name [%s]" icon="gps-location-pink"
+				Text item=Vehicle4_Motion label="Motion [MAP(motion.map):%s]" icon="gps-motion-teal"
+				Text item=Vehicle4_Odometer label="Odometer (Device) [%.1f km]" icon="gps-odometer-blue"
+				Text item=Vehicle4_TotalDistance label="Total Distance (Server) [%.1f km]" icon="gps-odometer-blue"
+				Text item=Vehicle4_Distance label="Δ Distance [%.1f m]" icon="gps-odometer-blue"
+				Text item=Vehicle4_Altitude label="Altitude [%.1f m]" icon="gps-altitude-cyan"
+				Text item=Vehicle4_Valid label="GPS Valid [MAP(gpsvalid.map):%s]" icon="gps-valid-green"
+				Text item=Vehicle4_Accuracy label="Accuracy [%.1f m]" icon="gps-accuracy-orange"
+				Text item=Vehicle4_Course label="Course [%.0f°]" icon="gps-course-blue"
+				Text item=Vehicle4_BatteryLevel label="Battery [%.0f %%]" icon="gps-battery-green"
+				Text item=Vehicle4_Activity label="Activity [MAP(activity.map):%s]" icon="gps-motion-teal"
+				Text item=Vehicle4_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
 			}
 		}
 	}

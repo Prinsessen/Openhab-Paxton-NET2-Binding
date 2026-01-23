@@ -33,6 +33,6 @@ Thing traccar:device:gpsserver:694049 "Dream Catcher" (traccar:server:gpsserver)
     deviceId=1
 ]
 
-Thing traccar:device:gpsserver:699978 "Osmand" (traccar:server:gpsserver) [
+Thing traccar:device:gpsserver:699978 "Hugerock" (traccar:server:gpsserver) [
     deviceId=4
 ]
