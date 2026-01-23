@@ -99,7 +99,7 @@ Number:Length Vehicle10_Io389 "Total ECU Mileage [%.1f km]" <line> (gVehicle10) 
 
 // --- Beacon 1 ---
 Number Vehicle10_Beacon1_Rssi "Beacon 1 RSSI [%.0f dBm]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon1-rssi"}
-Number:Length Vehicle10_Beacon1_Distance "Beacon 1 Δ Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon1-distance"}
+Number:Length Vehicle10_Beacon1_Distance "Beacon 1 Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon1-distance"}
 String Vehicle10_Beacon1_Mac "Beacon 1 MAC [%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon1-mac"}
 Number:ElectricPotential Vehicle10_Beacon1_Battery "Beacon 1 Battery [%.0f mV]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon1-battery"}
 Switch Vehicle10_Beacon1_LowBattery "Beacon 1 Low Battery" <lowbattery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon1-lowBattery"}
@@ -114,7 +114,7 @@ Number:Angle Vehicle10_Beacon1_Roll "Beacon 1 Roll [%.0f °]" <angle> (gVehicle1
 
 // --- Beacon 2 ---
 Number Vehicle10_Beacon2_Rssi "Beacon 2 RSSI [%.0f dBm]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon2-rssi"}
-Number:Length Vehicle10_Beacon2_Distance "Beacon 2 Δ Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon2-distance"}
+Number:Length Vehicle10_Beacon2_Distance "Beacon 2 Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon2-distance"}
 String Vehicle10_Beacon2_Mac "Beacon 2 MAC [%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon2-mac"}
 Number:ElectricPotential Vehicle10_Beacon2_Battery "Beacon 2 Battery [%.0f mV]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon2-battery"}
 Switch Vehicle10_Beacon2_LowBattery "Beacon 2 Low Battery" <lowbattery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon2-lowBattery"}
@@ -129,7 +129,7 @@ Number:Angle Vehicle10_Beacon2_Roll "Beacon 2 Roll [%.0f °]" <angle> (gVehicle1
 
 // --- Beacon 3 ---
 Number Vehicle10_Beacon3_Rssi "Beacon 3 RSSI [%.0f dBm]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon3-rssi"}
-Number:Length Vehicle10_Beacon3_Distance "Beacon 3 Δ Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon3-distance"}
+Number:Length Vehicle10_Beacon3_Distance "Beacon 3 Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon3-distance"}
 String Vehicle10_Beacon3_Mac "Beacon 3 MAC [%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon3-mac"}
 Number:ElectricPotential Vehicle10_Beacon3_Battery "Beacon 3 Battery [%.0f mV]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon3-battery"}
 Switch Vehicle10_Beacon3_LowBattery "Beacon 3 Low Battery" <lowbattery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon3-lowBattery"}
@@ -144,7 +144,7 @@ Number:Angle Vehicle10_Beacon3_Roll "Beacon 3 Roll [%.0f °]" <angle> (gVehicle1
 
 // --- Beacon 4 ---
 Number Vehicle10_Beacon4_Rssi "Beacon 4 RSSI [%.0f dBm]" <qualityofservice> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon4-rssi"}
-Number:Length Vehicle10_Beacon4_Distance "Beacon 4 Δ Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon4-distance"}
+Number:Length Vehicle10_Beacon4_Distance "Beacon 4 Distance [%.1f m]" <zoom> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon4-distance"}
 String Vehicle10_Beacon4_Mac "Beacon 4 MAC [%s]" <network> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon4-mac"}
 Number:ElectricPotential Vehicle10_Beacon4_Battery "Beacon 4 Battery [%.0f mV]" <battery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon4-battery"}
 Switch Vehicle10_Beacon4_LowBattery "Beacon 4 Low Battery" <lowbattery> (gVehicle10) {channel="traccar:device:gpsserver:866088075183606:beacon4-lowBattery"}
@@ -184,6 +184,34 @@ Number:Length Vehicle1_Distance "Δ Distance [%.1f m]" <line> (gVehicle1) {chann
 String Vehicle1_Activity "Activity [%s]" <motion> (gVehicle1) {channel="traccar:device:gpsserver:694049:activity"}
 String Vehicle1_Protocol "Protocol [%s]" <text> (gVehicle1) {channel="traccar:device:gpsserver:694049:protocol"}
 Number:Dimensionless Vehicle1_GsmSignal "GSM Signal [%.0f %%]" <qualityofservice> (gVehicle1) {channel="traccar:device:gpsserver:694049:gsmSignal"}
+
+// Vehicle 699978 (Device ID: 4)
+Group gVehicle4 "Vehicle 699978" <car>
+
+// Automatic Garage Port Control for Vehicle4
+Switch Vehicle4_AutoPortEnabled "Smart Entry (Osmand)" <switch>
+
+Location Vehicle4_Position "Position" (gVehicle4) {channel="traccar:device:gpsserver:699978:position"}
+Number:Speed Vehicle4_Speed "Speed [%.1f %unit%]" <speed> (gVehicle4) {channel="traccar:device:gpsserver:699978:speed"}
+Number:Angle Vehicle4_Course "Course [%.0f %unit%]" <direction> (gVehicle4) {channel="traccar:device:gpsserver:699978:course"}
+Number:Length Vehicle4_Accuracy "Accuracy [%.1f %unit%]" <zoom> (gVehicle4) {channel="traccar:device:gpsserver:699978:accuracy"}
+Number:Dimensionless Vehicle4_BatteryLevel "Battery [%.0f %%]" <battery> (gVehicle4) {channel="traccar:device:gpsserver:699978:batteryLevel"}
+Number:Length Vehicle4_Odometer "Odometer (Device) [%.1f km]" <line> (gVehicle4) {channel="traccar:device:gpsserver:699978:odometer", unit="km"}
+Number:Length Vehicle4_TotalDistance "Total Distance (Server) [%.1f km]" <line> (gVehicle4) {channel="traccar:device:gpsserver:699978:totalDistance", unit="km"}
+Switch Vehicle4_Motion "Motion [MAP(motion.map):%s]" <motion> (gVehicle4) {channel="traccar:device:gpsserver:699978:motion"}
+String Vehicle4_Address "Address [%s]" <location> (gVehicle4) {channel="traccar:device:gpsserver:699978:address"}
+String Vehicle4_Status "Status [%s]" <status> (gVehicle4) {channel="traccar:device:gpsserver:699978:status"}
+DateTime Vehicle4_LastUpdate "Last Update [%1$tF %1$tR]" <time> (gVehicle4) {channel="traccar:device:gpsserver:699978:lastUpdate"}
+String Vehicle4_GeofenceEvent "Geofence Event [%s]" <fence> (gVehicle4) {channel="traccar:device:gpsserver:699978:geofenceEvent"}
+Number Vehicle4_GeofenceId "Geofence ID [%d]" <fence> (gVehicle4) {channel="traccar:device:gpsserver:699978:geofenceId"}
+String Vehicle4_GeofenceName "Current Geofence [%s]" <fence> (gVehicle4) {channel="traccar:device:gpsserver:699978:geofenceName"}
+Number Vehicle4_GpsSatellites "GPS Satellites [%d]" <network> (gVehicle4) {channel="traccar:device:gpsserver:699978:gpsSatellites"}
+Number:Length Vehicle4_Altitude "Altitude [%.1f m]" <altitude> (gVehicle4) {channel="traccar:device:gpsserver:699978:altitude"}
+Switch Vehicle4_Valid "GPS Valid [MAP(gpsvalid.map):%s]" <network> (gVehicle4) {channel="traccar:device:gpsserver:699978:valid"}
+Number:Length Vehicle4_Distance "Δ Distance [%.1f m]" <line> (gVehicle4) {channel="traccar:device:gpsserver:699978:distance"}
+String Vehicle4_Activity "Activity [%s]" <motion> (gVehicle4) {channel="traccar:device:gpsserver:699978:activity"}
+String Vehicle4_Protocol "Protocol [%s]" <text> (gVehicle4) {channel="traccar:device:gpsserver:699978:protocol"}
+Number:Dimensionless Vehicle4_GsmSignal "GSM Signal [%.0f %%]" <qualityofservice> (gVehicle4) {channel="traccar:device:gpsserver:699978:gsmSignal"}
 
 // Family Car Example (uncomment and configure after auto-discovery)
 // Group gFamilyCar "Family Car" <car>
