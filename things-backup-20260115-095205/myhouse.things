@@ -1,3 +1,0 @@
-yahooweather:weather:brovst [ location=552691 ]
-astro:sun:home   [ geolocation="57.0921701,9.5245017", interval=60 ]
-astro:moon:home  [ geolocation="57.0921701,9.5245017", interval=60 ]

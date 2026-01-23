@@ -7,6 +7,52 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-23 10:30:02
+- Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260106211352
+- Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260107145603
+- Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260107152258
+- Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260107191501
+- Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.1.0.jar.bak-20260109153552
+- Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.2.0-SNAPSHOT.jar
+- Deleted: Backup of current and old NET2_jar/org.openhab.binding.net2-5.2.0-SNAPSHOT.jar.bak-20260116165601
+- Deleted: Backup old sitemaps
+- Deleted: Traccar-Binding-backup-20260121-163526
+- Deleted: myhouse.buggy
+- Deleted: myhouse.newest
+- Deleted: myhouse.working
+- Deleted: net2-binding-backup-20260110-201429
+- Deleted: net2-binding-backup-20260112-160256
+- Deleted: net2-binding-backup-20260116-165241
+- Deleted: sitemaps-backup-20260115-091344/myhouse.sitemap
+- Deleted: sitemaps-backup-20260115-091344/myhouse.sitemap.backup
+- Deleted: sitemaps-backup-20260115-091344/net2.sitemap
+- Deleted: sitemaps-backup-20260115-091344/net2_timed_example.sitemap
+- Deleted: sitemaps-backup-20260115-091344/readme.txt
+- Deleted: things-backup-20260115-095205/Airquality.things
+- Deleted: things-backup-20260115-095205/Backup/hue_api2.test
+- Deleted: things-backup-20260115-095205/Homeconnect.things
+- Deleted: things-backup-20260115-095205/Mitsubishi_living.things
+- Deleted: things-backup-20260115-095205/Mqtt.things
+- Deleted: things-backup-20260115-095205/Remote_Openhab.things
+- Deleted: things-backup-20260115-095205/Telegram.things
+- Deleted: things-backup-20260115-095205/Terndrupvej.things
+- Deleted: things-backup-20260115-095205/carbondioxide.things
+- Deleted: things-backup-20260115-095205/hue.things
+- Deleted: things-backup-20260115-095205/icalendar.things
+- Deleted: things-backup-20260115-095205/kamstrup.things
+- Deleted: things-backup-20260115-095205/mail.things
+- Deleted: things-backup-20260115-095205/metz.things
+- Deleted: things-backup-20260115-095205/myhouse.things
+- Deleted: things-backup-20260115-095205/net2.things
+- Deleted: things-backup-20260115-095205/nilan.things
+- Deleted: things-backup-20260115-095205/openhab.code-workspace
+- Deleted: things-backup-20260115-095205/paxton.things
+- Deleted: things-backup-20260115-095205/sma.things
+- Deleted: things-backup-20260115-095205/smarthouse.things
+- Deleted: things-backup-20260115-095205/weather.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-23 10:15:16
 - Modified: rules/Device_error.rules
 - Modified: rules/Freshwater_alarm.rules

@@ -1,3 +1,0 @@
-// "%2$s" will be replace by the input channel command, this makes it possible to use one command line with different arguments.
-// e.g: "ls" as <YOUR COMMAND> and "-a" or "-l" as additional argument set to the input channel in the rule.
-Thing exec:command:net2 [ command="python3 /etc/openhab/scripts/net2.py %2$s"]

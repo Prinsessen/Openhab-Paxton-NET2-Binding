@@ -1,3 +1,0 @@
-Bridge airquality:api:main "Bridge" [apiKey="bacee6c56fce146d0148f5cb604c7084657a4066"] {
-    station home "Aalborg"[stationId="3317", refresh=60]
-}

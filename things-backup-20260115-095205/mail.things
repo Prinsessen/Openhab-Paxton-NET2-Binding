@@ -1,2 +1,0 @@
-
-Thing mail:smtp:samplesmtp [ hostname="smtp.office365.com", sender="Nanna@Agesen.dk", security="STARTTLS", username="Nanna@agesen.dk", password="txwmjxzflfkwcyhl", port="587" ]

@@ -1,5 +1,0 @@
-// Thing telegram:telegramBot:Telegram_Bot [ chatIds="1466990276", botToken="1409465079:AAEWomAC6STfYKQjcyz6pPGQpGYbBaARVkQ", proxyHost="localhost", proxyPort="8123", proxyType="HTTP" ]
-
-
-Thing telegram:telegramBot:Telegram_Bot [ chatIds="1466990276", botToken="1409465079:AAEWomAC6STfYKQjcyz6pPGQpGYbBaARVkQ" ]
-Thing telegram:telegramBot:Telegram_EMS [ chatIds="1466990276", botToken="1821588213:AAGelDpaD07_Wzl6SLxVBoVM7ebViN4pBoE" ]

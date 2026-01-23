@@ -1,1 +1,0 @@
-Bridge remoteopenhab:server:oh2 "OH2 server" [ host="192.168.100.26", port=8080, useHttps=false, trustedCertificate=true ] 
