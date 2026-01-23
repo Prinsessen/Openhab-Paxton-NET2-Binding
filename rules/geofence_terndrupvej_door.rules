@@ -1,0 +1,50 @@
+/**
+ * GEOFENCE AUTOMATIC DOOR OPENER - FIRMA
+ * 
+ * This rule automatically opens the Terndrupvej front door when Vehicle1 (Dreamcatcher phone)
+ * enters the "Firma" geofence (ID: 10), but only if the door is currently closed.
+ * 
+ * Logic:
+ * - Triggers when Vehicle1 enters geofence ID 10 (Firma)
+ * - Checks if Net2_Door2_Status is OFF (closed)
+ * - If closed, sends ON command to open the door
+ * - Does nothing when leaving the geofence
+ * 
+ * Created: 2026-01-23
+ */
+
+rule "Vehicle1 Enter Firma Geofence - Auto Open Terndrupvej Door"
+when
+    Item Vehicle1_GeofenceEvent changed to "geofenceEnter"
+then
+    // Check if this is the Firma geofence (ID 10)
+    if (Vehicle1_GeofenceId.state == 10) {
+        logInfo("geofence_door", "Vehicle1 entered Firma geofence - checking Terndrupvej door status")
+        
+        // Check if the door is closed (OFF state means closed)
+        if (Net2_Door2_Status.state == OFF) {
+            logInfo("geofence_door", "Door is closed - sending command to open")
+            Net2_Door2_Action.sendCommand(ON)
+        } else {
+            logInfo("geofence_door", "Door is already open - no action needed")
+        }
+        
+        // Check if Grovlager Light is off (0% or OFF)
+        if (Light_Grovlager.state == 0) {
+            logInfo("geofence_door", "Grovlager Light is off - turning on to 100%")
+            Light_Grovlager.sendCommand(100)
+        } else {
+            logInfo("geofence_door", "Grovlager Light is already on - no action needed")
+        }
+        
+        // Turn on Office Light
+        if (Light_Office.state == OFF) {
+            logInfo("geofence_door", "Office Light is off - turning on")
+            Light_Office.sendCommand(ON)
+        } else {
+            logInfo("geofence_door", "Office Light is already on")
+        }
+    } else {
+        logInfo("geofence_door", "Vehicle1 entered different geofence (ID: " + Vehicle1_GeofenceId.state + ") - ignoring")
+    }
+end
