@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-23 10:15:16
+- Modified: rules/Device_error.rules
+- Modified: rules/Freshwater_alarm.rules
+- Modified: rules/net2_access_denied.rules
+- Deleted: rules/test_entrylog.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-23 10:00:17
 - Added: rules/geofence_terndrupvej_door.rules
 

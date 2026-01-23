@@ -20,13 +20,46 @@ rule "Raise freshwater Alarm Email/SMS"
     then
         logInfo("Freshwater Alert", "Abnormal water usage")
         
+        val timestamp = now.toString
+        val currentUsage = if (Fresh_Water_Day.state != NULL) String.format("%.1f L", (Fresh_Water_Day.state as Number).doubleValue) else "N/A"
+        val threshold = "500 L"
+        val usagePercent = if (Fresh_Water_Day.state != NULL) String.format("%.0f%%", ((Fresh_Water_Day.state as Number).doubleValue / 500) * 100) else "N/A"
+        
         // Use method call style for getActions (ensuring the mail binding is configured)
         val mailActions = getActions("mail", "mail:smtp:samplesmtp")
         
-        // Send mail to multiple recipients
-        val success = mailActions.sendMail("Nanna@agesen.dk, 20960210@sms.uni-tel.dk", "Freshwater Alert", "Abnormal water usage.")
+        // Build HTML email
+        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+            "<tr><td style='padding: 20px;'>" +
+            "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Freshwater Usage Alert</h2>" +
+            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Abnormal Water Consumption</p>" +
+            "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+            "<tr><td style='padding: 15px;'>" +
+            "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ High Water Usage Detected</h3>" +
+            "<p style='margin: 5px 0; font-size: 14px;'>Daily water usage has exceeded the normal threshold.</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+            "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>💧 Current Usage:</strong> " + currentUsage + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #fff3e0;'><strong>⚠️ Threshold:</strong> " + threshold + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #ffebee;'><strong>📊 Usage Level:</strong> " + usagePercent + " of threshold</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>⏰ Time Period:</strong> Today (24h rolling)</td></tr>" +
+            "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+            "<p style='margin: 0; color: #666; font-size: 13px;'><strong>Note:</strong> Check for leaks, running taps, or unusual consumption patterns</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "</body></html>"
         
-        logInfo("Freshwater Alert", "Mail actions success status: " + success)
+        // Send HTML email and SMS
+        val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 Freshwater Usage Alert", emailBody)
+        logInfo("Freshwater Alert", "HTML email status: " + success1)
+        
+        val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Freshwater Alert", "Abnormal water usage: " + currentUsage)
+        logInfo("Freshwater Alert", "SMS status: " + success2)
         
         // Reset the alarm item after sending the notification
         Fresh_Water_Day_Alarm.postUpdate(OFF)

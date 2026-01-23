@@ -19,11 +19,40 @@ when
 then
 	logInfo("Device","Nilan Gateway Error")
 
+    val timestamp = now.toString
+    val gateway = "10.0.5.101"
+    val deviceName = "Nilan Ventilation System"
+    
     // Use method call style for getActions (ensuring the mail binding is configured)
     val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Nilan Gateway Error</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Device Offline Alert</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🔌 Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
-    val success1 = mailActions.sendMail("Nanna@agesen.dk", "Nilan Gateway Error", "Nilan Offline, reboot gateway at 10.0.5.101" )
+    val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 Nilan Gateway Error", emailBody)
 	logInfo("Device Error - Nilan Gateway Error", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Nilan Gateway Error", "Nilan Offline, reboot gateway at 10.0.5.101" )
@@ -52,11 +81,40 @@ then
 	// Log the item's state using .state
 	logInfo ("Device Error", "Smarthouse " + Smarthouse_error_Dummy.state)
     
+    val timestamp = now.toString
+    val gateway = "192.168.100.86"
+    val deviceName = "Smarthouse (Kirkegade)"
+    
     // Get mail actions using method call style
     val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Smarthouse Error</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Device Offline Alert</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🔌 Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
-    val success1 = mailActions.sendMail("Nanna@agesen.dk", "SMARTHOUSE ERROR", "Smarthouse Offline, reboot gateway at 192.168.100.86" )
+    val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 Smarthouse Error", emailBody)
 	logInfo("Device Error - SMARTHOUSE ERROR", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE ERROR", "Smarthouse Offline, reboot gateway at 192.168.100.86" )
@@ -84,11 +142,40 @@ when
 then
     logInfo("Device Error","SMA Inverter Error")
     
+    val timestamp = now.toString
+    val gateway = "192.168.100.141"
+    val deviceName = "SMA Solar Inverter"
+    
     // Get mail actions using method call style
     val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 SMA Inverter Error</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Solar System Offline</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>☀️ Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
-    val success1 = mailActions.sendMail("Nanna@agesen.dk", "SMA INVERTER ERROR", "SMA Inverter Offline, reboot gateway at 192.168.100.141" )
+    val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 SMA Inverter Error", emailBody)
 	logInfo("Device Error - SMA INVERTER ERROR", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMA INVERTER ERROR", "SMA Inverter Offline, reboot gateway at 192.168.100.141" )
@@ -120,11 +207,40 @@ then
     // Log the item's state using .state
     logInfo("Device Error", "METZ Output Error " + Metz_error_Dummy.state)
 
+    val timestamp = now.toString
+    val gateway = "10.0.5.100"
+    val deviceName = "METZ Output Module"
+    
     // Get mail actions using method call style
 	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 METZ Output Error</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Device Offline Alert</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🔌 Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
- 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "METZ OUTPUT ERROR", "METZ Output Offline, reboot gateway at 10.0.5.100" )
+ 	val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 METZ Output Error", emailBody)
 	logInfo("Device Error - METZ OUTPUT ERROR", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "METZ OUTPUT ERROR", "METZ Output Offline, reboot gateway at 10.0.5.100" )
@@ -152,11 +268,40 @@ when
 then
     logInfo("Device Error","Carbondioxide Sensor Error")
     
+    val timestamp = now.toString
+    val gateway = "10.0.5.100"
+    val deviceName = "CO2 Sensor"
+    
     // Get mail actions using method call style
 	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 CO2 Sensor Error</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Air Quality Monitoring Offline</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🌫️ Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
- 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "CARBONDIOXIDE SENSOR ERROR", "Carbondioxide Sensor Offline, reboot gateway at 10.0.5.100" )
+ 	val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 CO2 Sensor Error", emailBody)
 	logInfo("Device Error - CARBONDIOXIDE SENSOR ERROR", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "CARBONDIOXIDE SENSOR ERROR", "Carbondioxide Sensor Offline, reboot gateway at 10.0.5.100" )
@@ -184,11 +329,40 @@ when
 then
     logInfo("Device Error","Multical 603 Error")
     
+    val timestamp = now.toString
+    val gateway = "10.0.5.102"
+    val deviceName = "Kampstrup Multical 603"
+    
     // Get mail actions using method call style
 	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Multical 603 Error</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Heat Meter Offline</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🌡️ Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
- 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "MULTICAL 603 ERROR", "Multical 603 Offline, reboot gateway at 10.0.5.102" )
+ 	val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 Multical 603 Error", emailBody)
 	logInfo("Device Error - MULTICAL 603 ERROR", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MULTICAL 603 ERROR", "Multical 603 Offline, reboot gateway at 10.0.5.102" )
@@ -216,11 +390,40 @@ when
 then
     logInfo("Device Error","Smarthouse Terndrupvej Error")
     
+    val timestamp = now.toString
+    val gateway = "10.0.1.17"
+    val deviceName = "Smarthouse (Terndrupvej)"
+    
     // Get mail actions using method call style
 	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Smarthouse Terndrupvej Error</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Device Offline Alert</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>💡 Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
- 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "SMARTHOUSE TERNDRUPVEJ ERROR", "Smarthouse Terndrupvej Offline, reboot gateway at 10.0.1.17" )
+ 	val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 Smarthouse Terndrupvej Error", emailBody)
 	logInfo("Device Error - SMARTHOUSE TERNDRUPVEJ ERROR", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE TERNDRUPVEJ ERROR", "Smarthouse Terndrupvej Offline, reboot gateway at 10.0.1.17" )
@@ -248,11 +451,40 @@ when
 then
     logInfo("Device Error","Mitsubishi Livingroom Error")
     
+    val timestamp = now.toString
+    val gateway = "192.168.100.45"
+    val deviceName = "Mitsubishi Heat Pump (Living Room)"
+    
     // Get mail actions using method call style
 	val mailActions = getActions("mail","mail:smtp:samplesmtp")		
  	
+    // Build HTML email
+    val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+        "<tr><td style='padding: 20px;'>" +
+        "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Mitsubishi Heat Pump Offline</h2>" +
+        "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Climate Control System Error</p>" +
+        "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+        "<tr><td style='padding: 15px;'>" +
+        "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Connection Lost</h3>" +
+        "<p style='margin: 5px 0; font-size: 14px;'>" + deviceName + " is offline and not responding.</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+        "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>❄️ Device:</strong> " + deviceName + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🌐 Gateway IP:</strong> " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🔧 Action Required:</strong> Reboot gateway at " + gateway + "</td></tr>" +
+        "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+        "<p style='margin: 0; color: #666; font-size: 13px;'>Automatic monitoring alert from OpenHAB</p>" +
+        "</td></tr>" +
+        "</table>" +
+        "</body></html>"
+    
     // Use unique variable names for success results to prevent naming conflicts
- 	val success1 = mailActions.sendMail("Nanna@agesen.dk", "MITSUBISHI LIVINGROOM OFFLINE", "Mitsubishi Livingroom Offline, reboot gateway at 192.168.100.45" )
+ 	val success1 = mailActions.sendHtmlMail("Nanna@agesen.dk", "🚨 Mitsubishi Heat Pump Offline", emailBody)
 	logInfo("Device Error - Mitsubishi Livingroom Error", "Mailactions says - " + success1)
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MITSUBISHI LIVINGROOM OFFLINE", "Mitsubishi Livingroom Offline, reboot gateway at 192.168.100.45" )

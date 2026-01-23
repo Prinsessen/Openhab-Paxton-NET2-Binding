@@ -101,17 +101,37 @@ then
         // Send email notifications
         val mailActions = getActions("mail", "mail:smtp:samplesmtp")
         
-        // Email 1: Detailed notification to Nanna
-        val success1 = mailActions.sendMail(
+        // Build HTML email
+        val emailBody = "<!DOCTYPE html><html><head><meta charset='UTF-8'></head><body style='margin: 0; padding: 0; font-family: Arial, sans-serif;'>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ff5252; color: white;'>" +
+            "<tr><td style='padding: 20px;'>" +
+            "<h2 style='margin: 0; margin-bottom: 5px;'>🚨 Unauthorized Access Alert</h2>" +
+            "<p style='margin: 0; margin-bottom: 8px; font-size: 15px;'>Net2 Security Alert</p>" +
+            "<p style='margin: 0; font-size: 14px; opacity: 0.9;'>" + timestamp + "</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0' style='background: #ffebee;'>" +
+            "<tr><td style='padding: 15px;'>" +
+            "<h3 style='color: #ff5252; margin: 0; margin-bottom: 10px;'>⚠️ Invalid Access Attempt</h3>" +
+            "<p style='margin: 5px 0; font-size: 14px;'>An invalid or unauthorized card was presented to the reader.</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "<table width='100%' cellpadding='0' cellspacing='0' border='0'>" +
+            "<tr><td style='padding: 10px; background: #e3f2fd;'><strong>🚪 Door:</strong> " + doorName + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #fff3e0;'><strong>🎫 Token/Card:</strong> " + tokenNumber + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #f3e5f5;'><strong>⏰ Time:</strong> " + timeStr + "</td></tr>" +
+            "<tr><td style='padding: 10px; background: #e8f5e9;'><strong>🔢 Door ID:</strong> " + doorId + "</td></tr>" +
+            "<tr><td style='padding: 15px; text-align: center; background: #f5f5f5;'>" +
+            "<p style='margin: 0; color: #666; font-size: 13px;'><strong>Action Required:</strong> Verify this access attempt and check security cameras if available</p>" +
+            "</td></tr>" +
+            "</table>" +
+            "</body></html>"
+        
+        // Email 1: Detailed HTML notification to Nanna
+        val success1 = mailActions.sendHtmlMail(
             "Nanna@agesen.dk",
             "⚠️ Net2 Unauthorized Access Alert",
-            "SECURITY ALERT: Unauthorized Access Attempt\n\n" +
-            "Door: " + doorName + "\n" +
-            "Token/Card Number: " + tokenNumber + "\n" +
-            "Timestamp: " + timestamp + "\n" +
-            "Door ID: " + doorId + "\n\n" +
-            "An invalid or unauthorized card was presented to the reader.\n" +
-            "Please verify this access attempt and check security cameras if available."
+            emailBody
         )
         logInfo("net2_access_denied", "Email sent to Nanna@agesen.dk - Status: " + success1)
         
