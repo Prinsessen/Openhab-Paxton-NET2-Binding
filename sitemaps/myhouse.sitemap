@@ -725,10 +725,6 @@ Frame label="Fordør - Porsevej 19" icon="door-blue" {
 								Slider item=Light_GA_Bil_Loft label="Ceiling Light"
 								Default item=Garageport_TopStop label="Garageport Top Stop"
 								Default item=Garageport_Bundstop label="Garageport Bund Stop"
-								Default item=UseruniqueID
-								Default item=GeofenceID
-								Default item=Geodirection
-								Default item=GeofenceIo155
 							}
 						}
 						Text icon="tools-orange" label="Workshop" {
@@ -1095,29 +1091,6 @@ Frame label="Fordør - Porsevej 19" icon="door-blue" {
 					Text item=DishwasherSimulator_ProgramProgressState label="Progress" icon="progress-orange"
 					Switch item=DishwasherSimulator_Solar label="Free energy wash" mappings=[ON=On, OFF=Off] icon="solar-power-yellow"
 					Text item=Dishwasher_Avrg_Energy icon="energy-bar-green"
-				}
-				Text label="Dreamcatcher" icon="fan-blue" {
-					Frame label="Rear Shock" {
-						Default item=Pressure_psi icon="info-blue"
-						Default item=Pressure_bar icon="info-blue"
-						Default item=Pressure_kPa icon="info-blue"
-						Default item=Temperature_C icon="temp-orange"
-						Default item=Battery icon="gps-battery-green"
-						Default item=BTrssi icon="info-blue"
-						Default item=Connected_ssid icon="info-blue"
-						Default item=Connected_ip_address icon="info-blue"
-						Default item=Alarm icon="alarm-light-red"
-						Default item=Dc_Status icon="info-blue"
-						Default item=Innov icon="info-blue"
-						Default item=springRPM icon="info-blue"
-						Default item=powersource icon="gps-power-yellow"
-						Default item=fuel_level icon="obd-fuel-green"
-						Default item=throttle icon="exp-throttle-purple"
-						Default item=enginerpm icon="obd-rpm-green"
-						Default item=can_speed icon="obd-speed-blue"
-						Default item=engineload icon="obd-engine-orange"
-						// Webview url="/static/rearshock.html" height=12 icon=none
-					}
 				}
 				Text label="Fresh Air System" icon="airfilter-blue" {
 					Frame label="Fresh Air Management" {

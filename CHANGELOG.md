@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-23 11:00:17
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-23 10:45:17
 - Deleted: Deleted rules - items - things etc/Rules/Texecom_Arm.rules
 - Deleted: Deleted rules - items - things etc/Rules/Texecom_Arm_Status.rules
