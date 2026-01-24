@@ -3,6 +3,11 @@
 # MCC = Mobile Country Code (3 digits)
 # MNC = Mobile Network Code (2-3 digits)
 
+# Default values
+0=Unknown
+NULL=Unknown
+-=Unknown
+
 # Denmark (238)
 23801=TDC NET (Denmark)
 23802=Telenor Denmark (Denmark)
