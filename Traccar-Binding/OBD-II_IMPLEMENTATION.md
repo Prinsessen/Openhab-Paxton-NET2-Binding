@@ -50,6 +50,37 @@ This document details the implementation of OBD-II (On-Board Diagnostics) channe
 - Pin B (VCMACC-6): Pink/Green wire - **NOT connected in standard adapter cable**
 - Pin D (GND3-03): Black wire - Ground reference
 
+#### 16-pin OBD-II Connector Pinout (SAE J1962)
+
+**Standard OBD-II connector (where ODBLink MX+ plugs in):**
+
+| Pin | Signal | Description | Notes |
+|-----|--------|-------------|-------|
+| 1 | - | Manufacturer discretion | |
+| 2 | J1850 Bus+ | SAE J1850 PWM and VPW bus (Ford, GM) | |
+| 3 | - | Manufacturer discretion | |
+| 4 | **Chassis Ground** | **Main ground reference** | **Connected** |
+| 5 | Signal Ground | Signal/logic ground reference | Connected |
+| 6 | CAN High (CAN-H) | ISO 15765-4 / ISO 11898-2 | J1939 on heavy duty vehicles |
+| 7 | K-Line | ISO 9141-2 and ISO 14230-4 | |
+| 8 | - | Manufacturer discretion | |
+| 9 | - | Manufacturer discretion | |
+| 10 | J1850 Bus- | SAE J1850 PWM bus only | |
+| 11 | - | Manufacturer discretion | |
+| 12 | - | Manufacturer discretion | |
+| 13 | - | Manufacturer discretion | |
+| 14 | CAN Low (CAN-L) | ISO 15765-4 / ISO 11898-2 | J1939 on heavy duty vehicles |
+| 15 | L-Line | ISO 9141-2 and ISO 14230-4 | |
+| 16 | **Battery Power** | **Permanent +12V** | **THIS is what we modify** |
+
+**Key Points:**
+- **Pin 16**: Provides permanent battery voltage (mandated by OBD-II standard) - **This is the pin we're modifying**
+- **Pin 4**: Chassis ground - always connected
+- **Pin 6 & 14**: CAN bus (most modern vehicles including Indian Motorcycles)
+- **Pin 7 & 15**: K-Line/L-Line (older diagnostic protocols)
+
+**In our modification**: We cut the connection to Pin 16 and replace it with switched 12V from the vehicle's ACC circuit.
+
 #### Modification Procedure
 
 **Step 1: Locate and Split the Adapter Cable**

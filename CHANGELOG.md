@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-25 14:00:17
+- Modified: Traccar-Binding/OBD-II_IMPLEMENTATION.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-25 13:45:16
 - Modified: Traccar-Binding/OBD-II_IMPLEMENTATION.md
 - Modified: Traccar-Binding/README.md
