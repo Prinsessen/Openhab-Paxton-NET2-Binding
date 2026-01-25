@@ -7,6 +7,16 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-25 13:45:16
+- Modified: Traccar-Binding/OBD-II_IMPLEMENTATION.md
+- Modified: Traccar-Binding/README.md
+- Added: Traccar-Binding/docs/resources/.placeholder
+- Renamed: 8Pin_16Pin_ODB_Cable.png	Traccar-Binding/docs/resources/8pin_16pin_ODB_cable.png
+- Renamed: Indian_Motorcycle_Service_Plug.png	Traccar-Binding/docs/resources/indian_motorcycle_service_plug.png
+- Added: Traccar-Binding/docs/resources/indian_motorcycle_service_plug.png.base64
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-25 13:30:07
 - Added: 8Pin_16Pin_ODB_Cable.png
 - Added: Indian_Motorcycle_Service_Plug.png

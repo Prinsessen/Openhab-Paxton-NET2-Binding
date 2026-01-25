@@ -8,8 +8,162 @@ This document details the implementation of OBD-II (On-Board Diagnostics) channe
 
 - **Vehicle**: Motorcycle (Springfield)
 - **GPS Tracker**: Teltonika FMM920 (IMEI: 866088075183606)
-- **OBD-II Dongle**: Bluetooth ELM327/STN1110 compatible
+- **OBD-II Dongle**: Bluetooth ELM327/STN1110 compatible (ODBLink MX+ recommended)
 - **Connection**: Dongle paired with FMM920 via Bluetooth, transmits as AVL IO parameters
+
+### OBD-II Dongle Auto-Reconnection Modification
+
+**Problem**: OBD-II dongles (ODBLink MX+, ELM327, etc.) receive permanent 12V power as mandated by OBD-II standards (SAE J1962 / ISO 15031-3). When the vehicle ignition is turned off, the dongle goes into sleep mode but **never automatically reconnects** to the FMM920 when the vehicle is restarted because it never fully powers down.
+
+**Solution**: Modify the adapter cable to provide switched 12V (ACC/ignition power) instead of permanent 12V. This forces the dongle to fully power down and reboot when the ignition cycles, enabling automatic reconnection to the FMM920.
+
+#### Required Materials
+
+- 8-pin to 16-pin OBD adapter cable
+- Wire strippers/cutters
+- Soldering iron and solder
+- Heat shrink tubing
+- 1A inline fuse
+- Electrical tape
+
+![8-pin to 16-pin OBD Adapter Cable](docs/resources/8pin_16pin_ODB_cable.png)
+
+#### Wire Identification (Indian Motorcycle Service Plug)
+
+![Indian Motorcycle Service Plug Pinout](docs/resources/indian_motorcycle_service_plug.png)
+
+**8-pin Indian Motorcycle diagnostic connector pinout:**
+
+| Pin | Wire Color | Function | Description |
+|-----|------------|----------|-------------|
+| A | ENGBRK-8 RD/DB | **Red/Dark Blue** | **Permanent 12V** (OBD-II standard) |
+| B | VCMACC-6 PK/GN | **Pink/Green** | **Switched 12V** (ACC/Ignition) |
+| C | - | - | Not used in adapter |
+| D | GND3-03 BK | Black | Ground |
+| E | - | - | Signal |
+| F | - | - | Signal |
+| G | C02-2 DG | Dark Green | CAN High |
+| H | C02-1 YE | Yellow | CAN Low |
+
+**Important Notes:**
+- Pin A (ENGBRK-8): Red/Dark Blue wire - Permanent 12V power (OBD-II mandated)
+- Pin B (VCMACC-6): Pink/Green wire - **NOT connected in standard adapter cable**
+- Pin D (GND3-03): Black wire - Ground reference
+
+#### Modification Procedure
+
+**Step 1: Locate and Split the Adapter Cable**
+
+1. Find the 8-pin to 16-pin OBD adapter cable
+2. Measure approximately **5-6 cm** from the 8-pin connector end
+3. Carefully split the cable insulation at this point (do not cut through wires yet)
+4. Separate the internal wires to access them individually
+
+**Step 2: Identify the Red Power Wire**
+
+1. Locate the **red wire** inside the cable - this carries permanent 12V from pin A (ENGBRK-8)
+2. Note the wire direction:
+   - One end goes to the 8-pin Indian motorcycle connector (permanent 12V source)
+   - Other end goes to the 16-pin OBD-II connector (to the dongle)
+
+**Step 3: Cut and Isolate Permanent 12V**
+
+1. **Cut the red wire** at your split point
+2. **Isolate the end going to the 8-pin connector** (permanent 12V source):
+   - Strip back insulation slightly
+   - Cover with heat shrink tubing or electrical tape
+   - **This wire is no longer needed** - it provided permanent 12V which we're replacing
+
+**Step 4: Connect Switched 12V**
+
+1. **Prepare the red wire end going to the 16-pin OBD-II connector** (to the dongle):
+   - Strip back insulation ~5mm
+   - Tin the wire with solder for a solid connection
+
+2. **Run a new wire from switched 12V source**:
+   - Find a switched 12V source on the motorcycle (examples below)
+   - Cut appropriate length wire (18-22 AWG recommended)
+   - Install **1A inline fuse** near the power source for protection
+   - Route wire cleanly to the adapter cable split point
+
+3. **Solder the new switched 12V wire to the red wire** going to the dongle
+   - Ensure solid mechanical and electrical connection
+   - Cover joint with heat shrink tubing
+   - Secure with electrical tape
+
+**Step 5: Reassemble and Test**
+
+1. Wrap the cable split point with electrical tape
+2. Ensure no exposed wires or short circuit risks
+3. Connect the modified adapter to the motorcycle
+4. Turn ignition ON - ODBLink MX+ should power up and connect to FMM920
+5. Turn ignition OFF - dongle should power down completely
+6. Turn ignition ON again - dongle should reboot and automatically reconnect to FMM920
+
+#### Switched 12V Source Options
+
+**Best options for switched 12V on Indian Motorcycles:**
+
+1. **Accessory Circuit (ACC)** - Powers on with ignition, off when key removed
+   - Recommended if available on your model
+   - Check service manual for accessory wire location
+
+2. **Headlight Circuit** - Powers with ignition (running lights)
+   - Use only if headlight draws less than available circuit capacity
+   - May not be suitable for models with high-wattage headlights
+
+3. **Ignition Coil** - Direct ignition power
+   - Reliable switched source
+   - Tap at relay or fuse box for cleaner install
+
+4. **Instrument Cluster Power** - Powers with key on
+   - Low current draw circuit, good for sharing
+   - Check wiring diagram for tap point
+
+**Important**: Always use a **1A fuse** on the switched 12V wire to protect both the dongle and vehicle wiring.
+
+#### Why This Modification Works
+
+**OBD-II Standard Requirement (SAE J1962 / ISO 15031-3):**
+- Pin 16 on OBD-II connector **must provide permanent battery voltage** (constant 12V)
+- This allows diagnostic tools to access vehicle systems even when ignition is off
+- Purpose: Enable technicians to read fault codes from non-running vehicles
+
+**The Problem with GPS Trackers:**
+- FMM920 expects Bluetooth devices to fully power cycle to re-establish connections
+- OBD dongles with permanent power only enter sleep mode, never fully reboot
+- Sleep mode prevents automatic Bluetooth reconnection on wake-up
+
+**The Fix:**
+- Switched 12V (ACC) forces complete power-down when ignition turns off
+- On ignition restart, dongle performs fresh boot sequence
+- Bluetooth stack reinitializes and automatically connects to paired FMM920
+- Normal operation resumes with OBD-II data flowing to Traccar
+
+#### Safety and Warranty Considerations
+
+⚠️ **Warning**: This modification alters the OBD-II adapter cable and may:
+- Void the warranty on the OBD dongle
+- Void the warranty on the adapter cable
+- Prevent use with traditional OBD-II scan tools that require constant power
+
+✅ **Advantages**:
+- Automatic reconnection eliminates manual intervention
+- Clean power cycles reduce dongle firmware glitches
+- Lower parasitic battery drain when vehicle is parked
+- Synchronized operation with vehicle ignition state
+
+**Best Practice**: Keep an unmodified adapter cable for diagnostic work with traditional OBD-II scan tools.
+
+#### Troubleshooting
+
+| Issue | Possible Cause | Solution |
+|-------|---------------|----------|
+| Dongle doesn't power on | No voltage at switched 12V source | Test with multimeter, verify ignition is ON |
+| Dongle powers on but doesn't connect | Bluetooth pairing lost | Re-pair dongle with FMM920 via Teltonika configurator |
+| Intermittent connection | Poor solder joint | Re-solder connection, ensure mechanical strength |
+| Fuse blows immediately | Short circuit in wiring | Check all connections, ensure no wire-to-ground contact |
+| Dongle stays on with ignition off | Wrong wire tapped (permanent 12V) | Re-verify switched 12V source, check with multimeter |
 
 ## Implemented Channels
 

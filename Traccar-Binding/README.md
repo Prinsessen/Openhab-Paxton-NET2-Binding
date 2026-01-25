@@ -8,6 +8,7 @@ Traccar is an open-source GPS tracking system that supports over 200 GPS protoco
 
 - **[BLE Beacon Quick Start](docs/beacon-quickstart.md)** - 5-minute setup guide for beacon tracking
 - **[Complete Beacon Example](docs/beacon-tracking-example.md)** - Full working configuration with rules and automation
+- **[OBD-II Integration Guide](OBD-II_IMPLEMENTATION.md)** - Complete OBD-II setup including dongle auto-reconnection fix
 
 ## Author
 
