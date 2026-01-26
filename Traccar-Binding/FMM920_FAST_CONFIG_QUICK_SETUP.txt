@@ -1,0 +1,302 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    FMM920 FASTEST POSITION UPDATE                            ║
+║                      QUICK CONFIGURATION GUIDE                               ║
+║                         (Sleep Compatible)                                   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Firmware: 04.00.00.Rev.13 ✓
+Time to configure: 5-10 minutes
+Expected result: 3 second position updates, 1-3 sec effective rate
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 1: SYSTEM SETTINGS
+═══════════════════════════════════════════════════════════════════════════════
+
+Movement Source:
+  ☑ Accelerometer (Movement)
+  ☑ GNSS
+
+Speed Source:
+  ○ GNSS
+
+Records Saving/Sending Without TS:
+  ○ After Time Sync
+
+GNSS Source:
+  ☑ GPS
+  ☑ GLONASS
+  ☑ GALILEO
+
+Static Navigation Filter:
+  ○ Disabled
+
+Sleep Mode:
+  ○ GPS Sleep
+  Timeout (min): 5
+
+Bluetooth® On While In Sleep:
+  ○ Enable (or Disable if not using beacons)
+
+Ignition Source:
+  ☑ Power Voltage
+  ☑ Accelerometer
+  High Voltage Level (V): 13.5
+  Low Voltage Level (V): 11.5
+
+Accelerometer Delay Settings:
+  Movement Start Delay (s): 0
+  Movement Stop Delay (s): 3
+
+AGPS:
+  ☑ Home Network
+  AGPS File Duration: ○ 3 days
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 2: GPRS SETTINGS
+═══════════════════════════════════════════════════════════════════════════════
+
+Domain: [your-traccar-server.com or IP]
+Port: 5027
+Protocol: ○ TCP
+
+APN: [your-carrier-APN]
+APN Username: [if required]
+APN Password: [if required]
+
+Open Link Timeout: 30
+Response Timeout: 60
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 3: DATA ACQUISITION - HOME ON MOVING ⚡⚡⚡ CRITICAL
+═══════════════════════════════════════════════════════════════════════════════
+
+Priority: ○ Low
+
+Min Saved Records: 1
+Send Period (s): 5
+
+Min Period (s): 3          ⚡⚡⚡ FASTEST
+Min Distance (m): 20       ⚡⚡⚡ FASTEST
+Min Angle (°): 15          ⚡ CAPTURES TURNS
+Min Speed Delta (km/h): 0
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 4: DATA ACQUISITION - HOME ON STOP (Sleep Compatible)
+═══════════════════════════════════════════════════════════════════════════════
+
+Priority: ○ Low
+
+Min Saved Records: 1
+Send Period (s): 30
+
+Min Period (s): 60
+Min Distance (m): 0
+Min Angle (°): 0
+Min Speed Delta (km/h): 0
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 5: DATA ACQUISITION - ROAMING & UNKNOWN (Copy Home Settings)
+═══════════════════════════════════════════════════════════════════════════════
+
+Roaming On Moving: Same as Home On Moving (Section 3)
+Roaming On Stop: Same as Home On Stop (Section 4)
+Unknown On Moving: Same as Home On Moving (Section 3)
+Unknown On Stop: Same as Home On Stop (Section 4)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 6: I/O ELEMENTS ⚡ CRITICAL FOR POSITIONING DATA
+═══════════════════════════════════════════════════════════════════════════════
+
+Go to: I/O → I/O Elements
+
+Configure these AVL IDs as "Low Priority" (sent with EVERY record):
+
+ESSENTIAL POSITIONING (check these):
+  ☑ 1 - Digital Input 1
+  ☑ 66 - External Voltage
+  ☑ 67 - Battery Voltage
+  ☑ 68 - Battery Current
+  ☑ 69 - GNSS Status
+  ☑ 181 - GNSS PDOP
+  ☑ 182 - GNSS HDOP
+  ☑ 21 - GSM Signal
+  ☑ 200 - Sleep Mode
+  ☑ 240 - Movement
+  ☑ 80 - Data Mode
+  ☑ 24 - Speed
+  ☑ 205 - GSM Cell ID
+  ☑ 206 - GSM Area Code
+  ☑ 16 - Total Odometer
+
+Configure these as "On Change/Eventual" (only when value changes):
+  ☑ 239 - Ignition (Eventual)
+  ☑ 240 - Movement (Eventual)
+  ☑ 250 - Trip (Eventual)
+  ☑ 251 - Idling (Eventual)
+  ☑ 252 - Unplug Detection (Eventual)
+
+IF USING BLE BEACONS, add "On Change":
+  ☑ 385 - Beacon 1 (Eventual)
+  ☑ 386 - Beacon 2 (Eventual)
+  ☑ 387 - Beacon 3 (Eventual)
+  ☑ 388 - Beacon 4 (Eventual)
+
+IF USING OBD-II, add "Low Priority":
+  ☑ 16 - Engine RPM
+  ☑ 1 - Engine Load
+  ☑ 14 - Coolant Temp
+  ☑ 13 - Vehicle Speed (OBD)
+  ☑ 47 - Fuel Level
+  ☑ 17 - Throttle Position
+
+DISABLE (uncheck) everything else to minimize data usage
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 7: BLUETOOTH (if using beacons)
+═══════════════════════════════════════════════════════════════════════════════
+
+Features → Bluetooth®:
+  ○ Enable
+  Mode: ○ Both
+
+Features → Bluetooth® 4.0:
+  ○ Enable
+  Scan Interval (s): 10
+  Scan Duration (s): 5
+  ☑ Send Beacon Data
+
+Features → Beacon List:
+  [Click "Scan for beacons" and add your beacons]
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 8: GSM OPERATORS
+═══════════════════════════════════════════════════════════════════════════════
+
+Home Operators List:
+  Add your carrier MCC-MNC code
+  Example Denmark TDC: 23801
+  Example Denmark Telia: 23820
+
+═══════════════════════════════════════════════════════════════════════════════
+
+SECTION 9: ACCELEROMETER FEATURES (Optional but Recommended)
+═══════════════════════════════════════════════════════════════════════════════
+
+Unplug Detection:
+  ○ Enable
+  Priority: High
+
+Towing Detection:
+  ○ Enable
+  Priority: High
+  Activation Timeout (s): 60
+  Threshold (mg): 50
+  Duration (ms): 500
+
+═══════════════════════════════════════════════════════════════════════════════
+
+FINAL STEPS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Click "Save to Device" (💾)
+2. Wait for confirmation
+3. Click "Reboot Device" (🔄)
+4. Wait 3 minutes for full reboot
+5. Click "Save to File" → Backup: FMM920_FastConfig_2026-01-26.cfg
+
+═══════════════════════════════════════════════════════════════════════════════
+
+VERIFICATION CHECKLIST
+═══════════════════════════════════════════════════════════════════════════════
+
+Status Tab:
+  [ ] GPS Fix: Latitude/Longitude present
+  [ ] GSM Signal: > 10
+  [ ] GPRS: Connected
+  [ ] Server: Online
+
+Physical Test:
+  [ ] Shake device → Green LED blinks faster (moving mode)
+  [ ] Leave still 3 sec → Green LED blinks slower
+  [ ] Drive 1 minute → Check Traccar: 15-20 position updates
+  [ ] Park 5 min → Device enters sleep (Orange LED off)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+EXPECTED PERFORMANCE
+═══════════════════════════════════════════════════════════════════════════════
+
+Position Updates (Moving):
+  • Highway 100 km/h: Every 1-3 seconds
+  • City 50 km/h: Every 1-3 seconds
+  • Slow 20 km/h: Every 3 seconds
+
+Position Updates (Stopped):
+  • Parked: Every 60 seconds
+  • Sleep mode: Every 60 seconds (GPS off, last position)
+
+Sleep Mode:
+  • Activates: After 5 minutes stationary
+  • Wake: Instant (0 sec delay)
+  • Power: 30 mA (40% reduction)
+
+Data Usage:
+  • Per hour moving: 0.2-0.3 MB
+  • Per day (8h): 1.5-2.5 MB
+  • Per month: 45-75 MB
+
+═══════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING QUICK FIXES
+═══════════════════════════════════════════════════════════════════════════════
+
+No positions → Check GPS fix (Status tab), verify GPRS connected
+Slow updates → Verify "Home on Moving" Min Period = 3 sec
+No sleep → Wait full 5 minutes, check ignition voltage < 11.5V
+High battery drain → Verify sleep activating (check LEDs)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+CRITICAL SETTINGS SUMMARY
+═══════════════════════════════════════════════════════════════════════════════
+
+Moving Mode:
+  Min Period: 3 sec ⚡⚡⚡
+  Min Distance: 20 m ⚡⚡⚡
+  Min Angle: 15° ⚡
+  Send Period: 5 sec ⚡⚡
+  Min Saved Records: 1 ⚡⚡⚡
+
+Stopped Mode:
+  Min Period: 60 sec
+  Send Period: 30 sec
+  Other acquisitions: 0
+
+System:
+  Movement Start Delay: 0 sec ⚡⚡⚡
+  Movement Stop Delay: 3 sec
+  Movement Source: Accel + GNSS ⚡⚡
+  GNSS: GPS+GLONASS+GALILEO ⚡
+  AGPS: Enabled ⚡⚡
+
+Sleep:
+  Mode: GPS Sleep
+  Timeout: 5 min
+
+I/O Elements:
+  Essential positioning IDs: Enabled (Low Priority)
+  Events: Enabled (Eventual)
+  Unused: Disabled
+
+═══════════════════════════════════════════════════════════════════════════════
+Configuration Time: ~10 minutes | Result: 1-3 sec position updates
+Document: FMM920_FAST_CONFIG_QUICK_SETUP.txt | Date: 2026-01-26
+═══════════════════════════════════════════════════════════════════════════════

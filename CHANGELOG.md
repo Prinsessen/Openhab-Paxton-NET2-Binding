@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-26 07:45:17
+- Added: Traccar-Binding/FMM920_FAST_CONFIG_QUICK_SETUP.txt
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-26 07:30:17
 - Added: Traccar-Binding/FMM920_CONFIGURATOR_SETTINGS_REFERENCE.txt
 - Added: Traccar-Binding/FMM920_CONFIG_COMPARISON.md
