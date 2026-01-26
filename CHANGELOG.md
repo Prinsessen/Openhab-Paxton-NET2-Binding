@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-26 14:30:16
+- Modified: things/traccar.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-26 11:15:17
 - Deleted: Traccar-Binding/FMM920 GOOD 26-01-2026.cfg
 - Deleted: Traccar-Binding/FMM920 OPTIMIZED FAST 26-01-2026.cfg
