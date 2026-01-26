@@ -10,7 +10,7 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
     useNominatim=true,
     nominatimUrl="https://nominatim.openstreetmap.org",
     nominatimLanguage="en",
-    geocodingCacheDistance=200
+    geocodingCacheDistance=100
 ] {
     // Devices are auto-discovered, but you can also manually define them:
     // Example: Thing device motorcycle "Springfield Motorcycle" [ deviceId=1 ]
