@@ -7,6 +7,18 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-26 11:15:17
+- Deleted: Traccar-Binding/FMM920 GOOD 26-01-2026.cfg
+- Deleted: Traccar-Binding/FMM920 OPTIMIZED FAST 26-01-2026.cfg
+- Deleted: Traccar-Binding/FMM920_GOOD_backup.cfg.gz
+- Deleted: Traccar-Binding/FMM920_OPTIMIZED_FAST_26-01-2026.txt
+- Deleted: Traccar-Binding/FMM920_OPTIMIZED_FAST_26-01-2026_SUMMARY.md
+- Deleted: Traccar-Binding/FMM920_OPTIMIZED_QUICK_REFERENCE.md
+- Added: Traccar-Binding/Fmm920 Optimized for speed but time flipping.cfg
+- Added: Traccar-Binding/Fmm920_FAST_NO_TIME_FLIP.cfg
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-26 09:30:17
 - Deleted: Traccar-Binding/Config_866088075183606_20250403_092717_rev3.cfg
 - Deleted: Traccar-Binding/Config_866088075183606_FAST_MODE.cfg
