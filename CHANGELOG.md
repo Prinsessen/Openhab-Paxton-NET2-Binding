@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-26 07:30:17
+- Added: Traccar-Binding/FMM920_CONFIGURATOR_SETTINGS_REFERENCE.txt
+- Added: Traccar-Binding/FMM920_CONFIG_COMPARISON.md
+- Added: Traccar-Binding/FMM920_OPTIMAL_FAST_TRACKING_CONFIG.md
+- Added: Traccar-Binding/FMM920_README.md
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-25 14:00:17
 - Modified: Traccar-Binding/OBD-II_IMPLEMENTATION.md
 

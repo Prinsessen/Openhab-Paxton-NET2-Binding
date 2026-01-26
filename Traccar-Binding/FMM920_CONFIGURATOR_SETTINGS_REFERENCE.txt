@@ -1,0 +1,850 @@
+================================================================================
+FMM920 TELTONIKA CONFIGURATOR - EXACT SETTINGS REFERENCE
+================================================================================
+Purpose: Fastest Position Updates with Sleep Mode Compatibility
+Firmware: 04.00.00.Rev.13 ✅ LATEST VERSION 4
+Device: FMM920
+Date: January 26, 2026
+================================================================================
+
+INSTRUCTIONS:
+1. Connect FMM920 to Teltonika Configurator
+2. Load configuration from device
+3. Apply settings below section by section
+4. Save to device after ALL changes complete
+5. Reboot device
+6. Test in vehicle (drive 1 minute, check Traccar for 15-20 positions)
+
+================================================================================
+SECTION 1: SYSTEM SETTINGS
+================================================================================
+
+Tab: System Settings → System Settings
+
+[✓] Movement Source
+    ☑ Accelerometer (Movement)
+    ☑ GNSS
+    Note: Check BOTH boxes for multiple sources
+    Parameter ID: 138 (firmware 04.00.00+ includes enhanced movement detection)
+
+[✓] Speed Source
+    ○ GNSS
+    
+[✓] Records Saving/Sending Without TS
+    ○ After Time Sync
+    
+[✓] LED Indication
+    ○ Enable (recommended for troubleshooting)
+    
+[✓] GNSS Source
+    ☑ GPS
+    ☑ GLONASS
+    ☑ GALILEO
+    Note: Check all three for maximum satellite coverage
+    
+[✓] Battery Charge Mode
+    ○ On Need (default)
+    
+[✓] Data Protocol
+    ○ Codec 8 (standard)
+    Alternative: Codec 8 Extended (if using crash trace or high-freq data)
+
+--------------------------------------------------------------------------------
+
+Tab: System Settings → Static Navigation Settings
+
+[✓] Static Navigation Filter
+    ○ Disabled
+    
+[✓] Movement Source for Static Nav
+    (Grayed out when disabled)
+    
+[✓] Ignition Source for Static Nav
+    (Grayed out when disabled)
+
+--------------------------------------------------------------------------------
+
+Tab: System Settings → Sleep Mode
+
+[✓] Sleep Mode
+    ○ GPS Sleep
+    Note: NOT Deep Sleep (unless you adjust On Stop settings per main doc)
+    
+[✓] Timeout (min)
+    Value: 5
+    Unit: minutes
+    
+[✓] Bluetooth® On While In Sleep
+    ○ Enable
+    Note: Disable if NOT using BLE beacons to save power
+    
+[✓] Periodic Wakeup
+    Value: 0
+    Note: Set to 300 (5 min) only if you need beacon scanning during sleep
+
+--------------------------------------------------------------------------------
+
+Tab: System Settings → Ignition Source
+
+[✓] Ignition Source
+    ☑ Power Voltage
+    ☑ Accelerometer
+    Note: Check BOTH boxes for redundant ignition detection
+    
+[✓] High Voltage Level (V)
+    Value: 13.5
+    
+[✓] Low Voltage Level (V)
+    Value: 11.5
+
+--------------------------------------------------------------------------------
+
+Tab: System Settings → Accelerometer Delay Settings
+
+[✓] Movement Start Delay (s)
+    Value: 0
+    Note: ZERO for instant movement detection
+    
+[✓] Movement Stop Delay (s)
+    Value: 3
+    Note: 3 seconds prevents false stops from bumps/vibrations
+
+--------------------------------------------------------------------------------
+
+Tab: System Settings → Time Synchronization
+
+[✓] Time Synchronization (if using old firmware 03.25.13 or older)
+    ○ NITZ and NTP
+    
+[✓] NTP Resync (s)
+    Value: 86400 (24 hours)
+    
+[✓] NTP Server 1
+    Value: time.google.com (or your preferred NTP server)
+    
+[✓] NTP Server 2
+    Value: time.cloudflare.com (optional backup)
+
+Note: Firmware 04.00.00+ uses enhanced time sync method (automatic via GNSS/NTP/NITZ)
+
+--------------------------------------------------------------------------------
+
+Tab: System Settings → Accelerometer Auto Calibration
+
+[✓] Accelerometer Auto Calibration
+    ○ Continuous (default in FMM920, not changeable via Configurator)
+    
+[✓] Gravity Filter
+    ○ Enabled (default)
+
+Note: FMM920 forces continuous calibration (good for OBD mounting)
+
+--------------------------------------------------------------------------------
+
+Tab: System Settings → Assisted GPS Settings
+
+[✓] AGPS
+    ☑ Home Network (check this box)
+    ☐ Roaming Network (optional)
+    ☐ Unknown Network (optional)
+    
+[✓] AGPS File Duration
+    ○ 3 days
+    Note: Longer duration = larger file but less frequent downloads
+
+================================================================================
+SECTION 2: GPRS SETTINGS
+================================================================================
+
+Tab: GPRS → GPRS
+
+[✓] Domain
+    Value: gps.agesen.dk
+    Note: Replace with YOUR Traccar server domain/IP
+    
+[✓] Port
+    Value: 5027
+    Note: Standard Teltonika protocol port on Traccar
+    
+[✓] Protocol
+    ○ TCP
+    
+[✓] APN
+    Value: [Your carrier's APN]
+    Examples:
+      - Denmark TDC: internet
+      - Denmark Telia: internet.telia.dk
+      - Generic: internet
+    
+[✓] APN Username
+    Value: (leave blank unless carrier requires)
+    
+[✓] APN Password
+    Value: (leave blank unless carrier requires)
+    
+[✓] Open Link Timeout
+    Value: 30
+    Unit: seconds
+    Note: MUST be less than On Stop Send Period for Deep Sleep
+    
+[✓] Response Timeout
+    Value: 60
+    Unit: seconds
+    
+[✓] Server Time-Zone
+    Value: 0 (GMT)
+    Note: Traccar handles timezone conversion
+
+================================================================================
+SECTION 3: DATA ACQUISITION SETTINGS
+================================================================================
+
+Tab: Data Acquisition → Home on Stop
+
+NOTE: These are the "parked vehicle" settings
+
+[✓] Priority
+    ○ Low
+    
+Record Saving:
+
+[✓] Min Saved Records
+    Value: 1
+    Note: Send immediately when available
+    
+[✓] Send Period (s)
+    Value: 30
+    Unit: seconds
+    Note: Attempts server connection every 30 seconds
+    
+Acquisition Methods:
+
+[✓] Min Period (s)
+    Value: 60
+    Unit: seconds
+    ⚡ KEY SETTING - Position acquired every 60 seconds when stopped
+    
+[✓] Min Distance (m)
+    Value: 0
+    Note: DISABLED - no distance-based acquisition when stopped
+    
+[✓] Min Angle (°)
+    Value: 0
+    Note: DISABLED - no angle-based acquisition when stopped
+    
+[✓] Min Speed Delta (km/h)
+    Value: 0
+    Note: DISABLED - no speed-based acquisition when stopped
+
+--------------------------------------------------------------------------------
+
+Tab: Data Acquisition → Home on Moving
+
+NOTE: These are the "vehicle driving" settings - CRITICAL FOR FAST TRACKING
+
+[✓] Priority
+    ○ Low (or High if you want immediate transmission of every record)
+    
+Record Saving:
+
+[✓] Min Saved Records
+    Value: 1
+    ⚡ CRITICAL - Zero buffering, send immediately
+    
+[✓] Send Period (s)
+    Value: 5
+    Unit: seconds
+    ⚡ CRITICAL - Transmit to server every 5 seconds
+    
+Acquisition Methods:
+
+[✓] Min Period (s)
+    Value: 3
+    Unit: seconds
+    ⚡⚡⚡ FASTEST TIME-BASED - Position acquired every 3 seconds
+    
+[✓] Min Distance (m)
+    Value: 20
+    Unit: meters
+    ⚡⚡⚡ FASTEST DISTANCE - Position acquired every 20 meters
+    Note: At 72 km/h, this triggers every ~1 second
+    
+[✓] Min Angle (°)
+    Value: 15
+    Unit: degrees
+    ⚡ CAPTURES TURNS - Position acquired on 15° heading change
+    
+[✓] Min Speed Delta (km/h)
+    Value: 0
+    Note: DISABLED - time/distance/angle are sufficient
+
+--------------------------------------------------------------------------------
+
+Tab: Data Acquisition → Roaming on Stop
+
+[✓] Configure IDENTICALLY to "Home on Stop"
+    (Copy all values from Home on Stop section above)
+
+--------------------------------------------------------------------------------
+
+Tab: Data Acquisition → Roaming on Moving
+
+[✓] Configure IDENTICALLY to "Home on Moving"
+    (Copy all values from Home on Moving section above)
+
+--------------------------------------------------------------------------------
+
+Tab: Data Acquisition → Unknown on Stop
+
+[✓] Configure IDENTICALLY to "Home on Stop"
+    (Copy all values from Home on Stop section above)
+
+--------------------------------------------------------------------------------
+
+Tab: Data Acquisition → Unknown on Moving
+
+[✓] Configure IDENTICALLY to "Home on Moving"
+    (Copy all values from Home on Moving section above)
+
+--------------------------------------------------------------------------------
+
+Tab: Data Acquisition → On Demand Tracking (optional)
+
+[✓] Tracking On Demand
+    ○ Disable (unless you need this feature)
+    
+If enabling:
+[✓] Period (s)
+    Value: 1-2 seconds (ultra-fast tracking on demand)
+[✓] Duration (s)
+    Value: 300 (5 minutes tracking burst)
+[✓] Activation Source
+    ☑ DIN1 (if button connected)
+
+================================================================================
+SECTION 4: GSM OPERATORS SETTINGS
+================================================================================
+
+Tab: GSM Operators
+
+[✓] Home Operators List
+    Add your carrier's MCC-MNC code
+    
+    Examples:
+    - Denmark TDC: 23801
+    - Denmark Telia: 23820
+    - Denmark 3: 23806
+    
+    To find yours:
+    1. Insert SIM in FMM920
+    2. Connect Configurator
+    3. Status → GSM Info → Current Operator Code
+    4. Add that code to Home Operators list
+
+[✓] Roaming Operators List
+    (Leave empty unless you want specific roaming behavior)
+    
+[✓] Operator Search Period (min)
+    Value: 15 (default)
+
+================================================================================
+SECTION 5: FEATURES → BLUETOOTH SETTINGS (if using BLE beacons)
+================================================================================
+
+Tab: Features → Bluetooth®
+
+[✓] Bluetooth®
+    ○ Enable
+    Note: Disable if NOT using BLE beacons to save power
+    
+[✓] Mode
+    ○ Both (allows connections from configurator)
+    
+[✓] Pin Code
+    Value: 5555 (default, change for security)
+    
+[✓] Visibility
+    ○ Visible (for initial pairing)
+    Note: Can set to Hidden after pairing complete
+
+--------------------------------------------------------------------------------
+
+Tab: Features → Bluetooth® 4.0 (BLE beacon scanning)
+
+[✓] Bluetooth®
+    ○ Enable
+    Note: This is SEPARATE from classic Bluetooth above
+    
+[✓] Scan Interval (s)
+    Value: 10
+    Unit: seconds
+    
+[✓] Scan Duration (s)
+    Value: 5
+    Unit: seconds
+    
+[✓] Send Beacon Data
+    ○ Enable
+    
+[✓] Keep Alive Period (s)
+    Value: 3600 (1 hour default)
+
+--------------------------------------------------------------------------------
+
+Tab: Features → Beacon List
+
+[✓] Add your BLE beacons here
+    1. Click "Scan for beacons"
+    2. Select detected beacons
+    3. Assign names (e.g., "Helmet", "Pannier_Left", "Pannier_Right")
+    4. Click Add
+
+Note: MAC addresses will be sent to Traccar and routed by binding
+
+================================================================================
+SECTION 6: ACCELEROMETER FEATURES (optional but recommended)
+================================================================================
+
+Tab: Accelerometer Features → Excessive Idling
+
+[✓] Excessive Idling
+    ○ Enable (optional - alerts when engine running but stationary)
+    Priority: Low or High
+    
+[✓] Time to Stopped (s)
+    Value: 300 (5 minutes)
+    
+[✓] Time to Moving (s)
+    Value: 5
+
+--------------------------------------------------------------------------------
+
+Tab: Accelerometer Features → Unplug Detection
+
+[✓] Unplug Detection
+    ○ Enable (recommended - alerts when device disconnected)
+    Priority: High (generates immediate alert)
+    
+[✓] Eventual Records
+    ○ Enable
+    
+[✓] Unplug Detection Mode
+    ○ Simple (for vehicles with constant power)
+    ○ Advanced (for vehicles where power cuts with ignition)
+
+--------------------------------------------------------------------------------
+
+Tab: Accelerometer Features → Towing Detection
+
+[✓] Towing Detection
+    ○ Enable (optional - alerts if vehicle moved without ignition)
+    Priority: High or Panic
+    
+[✓] Activation Timeout (s)
+    Value: 60
+    
+[✓] Threshold (mg)
+    Value: 50-100 (adjust for sensitivity)
+    
+[✓] Duration (ms)
+    Value: 500
+    
+[✓] Event Timeout (s)
+    Value: 10
+
+--------------------------------------------------------------------------------
+
+Tab: Accelerometer Features → Crash Detection
+
+[✓] Crash Detection
+    ○ Enable (optional - detects accidents)
+    Priority: Panic (sends SMS if GPRS fails)
+    
+[✓] Crash Trace
+    ○ Trace Full (captures complete crash data)
+    Alternative: Trace Full with IOs, Trace Changes
+    
+[✓] Threshold (mg)
+    Value: 4000 (severe impact)
+    Note: Lower for higher sensitivity
+    
+[✓] Duration (ms)
+    Value: 50
+    
+[✓] Trace ODR (Hz)
+    Value: 100 (100 samples/second)
+    
+[✓] Accel Duration (s)
+    Before: 5, After: 10
+    
+[✓] GNSS Duration (s)
+    Before: 10, After: 20
+    
+[✓] IO Duration (s)
+    Before: 10, After: 20
+
+================================================================================
+SECTION 7: SMS SETTINGS (optional)
+================================================================================
+
+Tab: SMS/Call Settings → SMS Settings
+
+[✓] SMS Login
+    ○ Enable (if you want SMS configuration access)
+    
+[✓] SMS Password
+    Value: [your secure password]
+    Default: 12345 (CHANGE THIS!)
+    
+[✓] Authorized Numbers
+    Add phone numbers that can send commands (international format)
+    Example: +4512345678
+
+--------------------------------------------------------------------------------
+
+Tab: SMS/Call Settings → SMS Data Sending
+
+[✓] SMS Data Sending
+    ○ Enable (if you want SMS backup when GPRS fails)
+    
+[✓] SMS Data Send
+    ○ If GPRS not available
+    
+[✓] Send Records (rec)
+    Value: 1
+    
+[✓] Send Period (rec)
+    Value: 1
+    
+[✓] Data SMS Number
+    Value: [phone number to receive data SMS]
+
+================================================================================
+SECTION 8: I/O ELEMENT CONFIGURATION (CRITICAL FOR POSITIONING DATA)
+================================================================================
+
+Tab: I/O → I/O Elements
+
+This section controls WHICH data is sent with each position record.
+Each AVL ID can be configured for different priority levels.
+
+RECOMMENDED CONFIGURATION FOR POSITIONING:
+
+[✓] ALWAYS SEND (Low Priority - included in every record):
+
+Essential Position Data:
+    ☑ 1 - Digital Input 1 (Ignition if connected)
+    ☑ 66 - External Voltage (mV)
+    ☑ 67 - Battery Voltage (mV)
+    ☑ 68 - Battery Current (mA)
+    ☑ 69 - GNSS Status (GPS fix quality)
+    ☑ 181 - GNSS PDOP (position dilution)
+    ☑ 182 - GNSS HDOP (horizontal dilution)
+    ☑ 21 - GSM Signal Strength (signal quality)
+    ☑ 200 - Sleep Mode (current sleep state)
+    ☑ 240 - Movement (accelerometer movement detection)
+    ☑ 80 - Data Mode (Home/Roaming/Unknown)
+    ☑ 199 - Trip Odometer (if used)
+    ☑ 16 - Total Odometer
+
+GNSS Satellites:
+    ☑ 24 - Speed (km/h)
+    ☑ 205 - GSM Cell ID
+    ☑ 206 - GSM Area Code
+
+[✓] ON CHANGE (Eventual Records - sent when value changes):
+
+State Changes:
+    ☑ 239 - Ignition (ON/OFF state changes)
+    ☑ 240 - Movement (movement start/stop)
+    ☑ 250 - Trip (trip start/end)
+    ☑ 251 - Idling (excessive idling events)
+    ☑ 252 - Unplug Detection
+    ☑ 253 - Green Driving Type
+    ☑ 255 - Overspeeding Event
+    ☑ 385 - Beacon 1 detected
+    ☑ 386 - Beacon 2 detected
+    ☑ 387 - Beacon 3 detected
+    ☑ 388 - Beacon 4 detected
+
+[✓] DISABLE (to reduce data usage):
+
+Unnecessary for Position Tracking:
+    ☐ 72 - Dallas Temperature sensors (if not used)
+    ☐ 73-78 - Dallas sensors 2-7
+    ☐ 150-157 - 1-Wire device data (if not used)
+    ☐ 110-115 - Analog inputs 2-7 (if not connected)
+
+[✓] HIGH PRIORITY (if using these features):
+
+OBD-II Data (if OBD dongle connected):
+    ☑ 16 - Engine RPM (io16)
+    ☑ 1 - Engine Load (io1)
+    ☑ 14 - Coolant Temperature (io14)
+    ☑ 13 - Vehicle Speed from OBD (io13)
+    ☑ 47 - Fuel Level (io47)
+    ☑ 17 - Throttle Position (io17)
+    ☑ 19 - DTC Count (io19)
+
+BLE Beacon Data (if using beacons):
+    ☑ 385-388 - Beacon detection
+    ☑ 389-392 - Beacon RSSI
+    ☑ 393-396 - Beacon battery
+    ☑ 397-400 - Beacon temperature
+    ☑ 401-404 - Beacon humidity
+
+Accelerometer Features:
+    ☑ 247 - Crash Detection
+    ☑ 248 - Towing Detection
+    ☑ 252 - Unplug Detection
+
+CONFIGURATION STEPS:
+
+1. Go to I/O tab in Configurator
+2. Click "I/O Elements" sub-tab
+3. For each AVL ID listed above:
+   - Find the ID in the list
+   - Check the appropriate priority box (Low/High/On Change)
+   - Uncheck "Disable" if previously disabled
+
+4. CRITICAL: Don't select TOO MANY IOs
+   - More IOs = larger records = more data usage
+   - Select only what you actually need
+   - The list above is RECOMMENDED, adjust for your needs
+
+5. Save configuration after all IOs configured
+
+NOTES:
+- Low Priority: Sent with EVERY record (use sparingly)
+- High Priority: Sent with high priority records (scenarios, events)
+- On Change: Only sent when value changes (efficient for state data)
+- Panic Priority: Same as High, but sends via SMS if GPRS fails
+
+DATA USAGE IMPACT:
+- Each Low Priority IO adds ~4-8 bytes per record
+- 20 IOs × 720 records/hour = ~11 KB/hour additional
+- Be selective to minimize data costs
+
+================================================================================
+SECTION 9: I/O PHYSICAL INPUTS/OUTPUTS (if using hardware connections)
+================================================================================
+
+Tab: I/O → Digital Input
+
+[✓] DIN1 (if connected to ignition wire)
+    ○ Enable
+    
+    Note: Not required if using "Power Voltage" as ignition source
+    Digital input 1 is dedicated for ignition but optional
+
+--------------------------------------------------------------------------------
+
+Tab: I/O → Analog Input
+
+[✓] AIN1 (if monitoring external voltage/sensor)
+    ○ Enable
+    
+    Note: Can monitor external sensors, fuel levels, etc.
+
+--------------------------------------------------------------------------------
+
+Tab: I/O → Digital Output
+
+[✓] DOUT1 (if controlling external relay/device)
+    ○ Enable
+    
+    Can be triggered by scenarios (Excessive Idling, Towing, etc.)
+
+--------------------------------------------------------------------------------
+
+Tab: I/O → OBD (if using Bluetooth OBD-II dongle)
+
+[✓] OBD
+    ○ Enable
+    
+[✓] Enable PIDs you want to track:
+    ☑ Engine RPM (ID: 16)
+    ☑ Engine Load (ID: 1)
+    ☑ Engine Coolant Temperature (ID: 14)
+    ☑ Vehicle Speed (ID: 13)
+    ☑ Fuel Level (ID: 47)
+    ☑ Throttle Position (ID: 17)
+    ☑ Intake Air Temperature (ID: 42)
+    ☑ DTC Count (ID: 19)
+    
+    Note: More PIDs = more data but slightly higher processing overhead
+
+================================================================================
+SECTION 10: SAVING & VERIFICATION
+================================================================================
+
+BEFORE SAVING:
+[✓] Review ALL sections above
+[✓] Double-check critical values:
+    - Min Period (Moving): 3 seconds ⚡
+    - Min Distance: 20 meters ⚡
+    - Send Period (Moving): 5 seconds ⚡
+    - Min Saved Records: 1 ⚡
+    - Sleep Timeout: 5 minutes
+    - Movement Start Delay: 0 seconds
+    - Records Without TS: After Time Sync
+    
+SAVE PROCESS:
+1. Click "Save to Device" button (💾 icon)
+2. Wait for "Configuration saved successfully" message
+3. Click "Reboot Device" button (🔄 icon)
+4. Wait 2-3 minutes for device to fully reboot
+5. Reconnect to Configurator
+6. Click "Save to File" and save as backup:
+   Filename: FMM920_FastTracking_YYYYMMDD.cfg
+
+VERIFICATION:
+1. Go to Status tab
+2. Check:
+   [✓] GNSS Fix acquired (latitude/longitude present)
+   [✓] GSM Signal > 10 (adequate signal)
+   [✓] GPRS Status: Connected
+   [✓] Server Connection: Online
+
+3. Physical test:
+   [✓] Shake device → Green LED blinks faster (moving mode activated)
+   [✓] Leave still → Green LED blinks slower after 3 seconds
+   [✓] Install in vehicle
+   [✓] Drive for 1 minute
+   [✓] Check Traccar: should see 15-20 position updates
+
+4. Sleep test:
+   [✓] Turn off ignition
+   [✓] Wait 5 minutes
+   [✓] Observe LEDs:
+       - GPS Sleep: Orange LED off, Green LED slow blink
+   [✓] Shake device → LEDs resume normal pattern instantly
+   [✓] Check Traccar: position updates resume within 15 seconds
+
+================================================================================
+SECTION 11: TROUBLESHOOTING CONFIGURATOR
+================================================================================
+
+Cannot connect to device:
+- Windows: Install COM port drivers (TeltonikaCOMDriver.exe)
+- Check USB cable (must be data cable, not charging-only)
+- Try Bluetooth: Pair as "FMM920_[last7digits]", PIN: 5555
+- Verify device is powered (LEDs blinking)
+
+Settings grayed out:
+- Some settings require other settings enabled first
+- Example: Static Navigation details grayed out when Disabled
+- This is normal behavior
+
+Configuration not saving:
+- Verify device not in sleep mode
+- Disconnect and reconnect
+- Try Bluetooth instead of USB (or vice versa)
+- Check Configurator version matches firmware
+
+After saving, device not working as expected:
+- Verify reboot completed (wait 3 minutes)
+- Check Status tab for GPS fix and GPRS connection
+- Review system log (Advanced → System Info → Logs)
+- Reset to factory defaults and reconfigure if corrupted
+
+================================================================================
+SECTION 12: QUICK REFERENCE - KEY VALUES FOR FASTEST TRACKING
+================================================================================
+
+HOME MOVING MODE (Critical for fast tracking):
+  Min Period: 3 seconds          ⚡⚡⚡
+  Min Distance: 20 meters        ⚡⚡⚡
+  Min Angle: 15 degrees          ⚡
+  Send Period: 5 seconds         ⚡⚡
+  Min Saved Records: 1           ⚡⚡⚡
+
+HOME ON STOP MODE (Sleep-compatible):
+  Min Period: 60 seconds
+  Other acquisitions: 0 (disabled)
+  Send Period: 30 seconds
+
+SYSTEM:
+  Movement Source: Accel + GNSS  ⚡⚡
+  Movement Start Delay: 0 sec    ⚡⚡⚡
+  Movement Stop Delay: 3 sec
+  GNSS Source: GPS+GLONASS+GAL   ⚡
+  AGPS: Enabled                  ⚡⚡
+
+SLEEP:
+  Mode: GPS Sleep
+  Timeout: 5 minutes
+  BT in Sleep: Enabled (if using beacons)
+
+GPRS:
+  Open Link Timeout: 30 sec
+  Response Timeout: 60 sec
+
+================================================================================
+SECTION 13: EXPECTED RESULTS
+================================================================================
+
+MOVING (Highway at 100 km/h):
+  Update frequency: Every 1-3 seconds
+  Latency: < 8 seconds from GPS to server
+  Position resolution: ~30 meters
+
+MOVING (City at 50 km/h):
+  Update frequency: Every 1-3 seconds
+  Position resolution: ~20 meters
+
+STOPPED (Parked):
+  Update frequency: Every 60 seconds
+  Data sent: Every 30 seconds (2 records buffered)
+
+SLEEP (After 5 min parked):
+  GPS: OFF
+  GSM: ON
+  Wake: Instant on movement
+  Battery: ~25-40 mA draw
+
+================================================================================
+SECTION 14: CONFIGURATION CHECKLIST
+================================================================================
+
+Print this checklist and mark off as you configure:
+
+[ ] System Settings - Movement Source (Accel + GNSS)
+[ ] System Settings - Records Without TS (After Time Sync)
+[ ] System Settings - GNSS Source (GPS+GLONASS+GALILEO)
+[ ] System Settings - AGPS Enabled
+[ ] System Settings - Accelerometer Start Delay (0 sec)
+[ ] Sleep Mode - GPS Sleep, 5 min timeout
+[ ] Ignition Source - Voltage + Accelerometer
+[ ] GPRS - Domain, Port 5027, APN configured
+[ ] GPRS - Open Link Timeout 30 sec
+[ ] Data Acq Home Moving - Min Period 3 sec ⚡
+[ ] Data Acq Home Moving - Min Distance 20 m ⚡
+[ ] Data Acq Home Moving - Min Angle 15 deg ⚡
+[ ] Data Acq Home Moving - Send Period 5 sec ⚡
+[ ] Data Acq Home Moving - Min Saved Records 1 ⚡
+[ ] Data Acq Home On Stop - Min Period 60 sec
+[ ] Data Acq Home On Stop - Send Period 30 sec
+[ ] Copy Home settings to Roaming/Unknown
+[ ] I/O Elements - Configure AVL IDs (essential positioning data) ⚡
+[ ] Bluetooth 4.0 - Scan Interval 10 sec (if using beacons)
+[ ] Save to Device
+[ ] Reboot Device
+[ ] Save to File (backup)
+[ ] Test in vehicle (drive 1 min, verify Traccar updates)
+[ ] Test sleep mode (park 5 min, verify sleep entry)
+
+================================================================================
+END OF CONFIGURATOR SETTINGS REFERENCE
+================================================================================
+
+For detailed explanations of each setting and why it was chosen, see:
+  FMM920_OPTIMAL_FAST_TRACKING_CONFIG.md
+
+For troubleshooting and advanced configurations, see main documentation.
+
+Configuration by: GitHub Copilot
+Date: January 26, 2026
+Version: 1.0
+
+================================================================================
