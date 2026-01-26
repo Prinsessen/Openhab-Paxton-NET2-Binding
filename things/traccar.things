@@ -4,11 +4,13 @@ Bridge traccar:server:gpsserver "Traccar GPS Server" [
     url="https://gps.agesen.dk",
     username="nanna@agesen.dk",
     password="chukka8JOKE7housing",
-    refreshInterval=5,
+    refreshInterval=3600,
     webhookPort=8090,
     speedUnit="kmh",
-    useNominatim=false,
-    geocodingCacheDistance=50
+    useNominatim=true,
+    nominatimUrl="https://nominatim.openstreetmap.org",
+    nominatimLanguage="en",
+    geocodingCacheDistance=200
 ] {
     // Devices are auto-discovered, but you can also manually define them:
     // Example: Thing device motorcycle "Springfield Motorcycle" [ deviceId=1 ]

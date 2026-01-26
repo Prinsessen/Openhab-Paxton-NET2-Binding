@@ -2,7 +2,7 @@
 // Springfield Battery Alert Rule
 // =============================================================================
 // Monitors motorcycle battery voltage and sends HTML email alerts
-// WARNING: < 12.5V | CRITICAL: < 12.0V
+// WARNING: < 12.3V | CRITICAL: < 12.0V
 // =============================================================================
 
 var Number lastAlertVoltage = null
@@ -30,7 +30,7 @@ then
             alertLevel = "CRITICAL"
             alertColor = "#f5576c"
             alertTitle = "🔴 CRITICAL BATTERY ALERT"
-        } else if (currentVoltage < 12.5) {
+        } else if (currentVoltage < 12.3) {
             alertLevel = "WARNING"
             alertColor = "#ff9800"
             alertTitle = "⚠️ LOW BATTERY WARNING"

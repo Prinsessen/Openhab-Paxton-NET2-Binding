@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-26 14:45:16
+- Modified: rules/Springfield_Battery_Alert.rules
+- Modified: things/traccar.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-26 14:30:16
 - Modified: things/traccar.things
 
