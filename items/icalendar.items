@@ -19,5 +19,7 @@ Number      Calendar_Test_Temperature    "Temperature test [%.1f]"              
 String      Lauge_Next_event_name        "Lauges Next event [%s]"                          <schedule>    {channel="icalendar:calendar:lauge:next_title"}            
 DateTime    Lauge_Next_event_at          "Lauges Next at [%1$tT, %1$tY-%1$tm-%1$td]"       <schedule>    {channel="icalendar:calendar:lauge:next_start"}            
 
-// Combined item - automatically updated by rule when name or datetime changes
+// Combined items - automatically updated by rule when name or datetime changes
+// Format: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS" (Danish locale)
+String      Next_Event_Combined          "Nanna: Next Event [%s]"                          <event-orange>
 String      Lauge_Next_Event_Combined    "Lauge: Next Event [%s]"                          <event-orange>            

@@ -5,16 +5,17 @@
 // for cleaner sitemap display
 // =============================================================================
 
-import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.ZonedDateTime
 import java.util.Locale
+import org.openhab.core.library.types.DateTimeType
 
 // =============================================================================
 // Lauge's Next Event - Combined Display
 // =============================================================================
 // Combines Lauge_Next_event_name and Lauge_Next_event_at into single string
 // Format: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
-// Example: "Meeting - Wednesday, 29-01-2026 - 14:30:00"
+// Example: "Meeting - onsdag, 29-01-2026 - 14:30:00"
 // =============================================================================
 
 rule "Update Lauge Combined Event Display"
@@ -26,17 +27,20 @@ then
         // Check if both items have valid values
         if (Lauge_Next_event_name.state === NULL || Lauge_Next_event_name.state === UNDEF ||
             Lauge_Next_event_at.state === NULL || Lauge_Next_event_at.state === UNDEF) {
-            Lauge_Next_Event_Combined.postUpdate("No upcoming events")
+            Lauge_Next_Event_Combined.postUpdate("Ingen kommende events")
             return
         }
         
         // Get event name
         val eventName = Lauge_Next_event_name.state.toString
         
-        // Get datetime and format it
-        val eventDateTime = new DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", new Locale("da", "DK"))
-        val zonedDateTime = ZonedDateTime.parse(Lauge_Next_event_at.state.toString)
-        val formattedDateTime = zonedDateTime.format(eventDateTime)
+        // Get datetime as DateTimeType and access ZonedDateTime
+        val dateTimeState = Lauge_Next_event_at.state as DateTimeType
+        val zonedDateTime = dateTimeState.getZonedDateTime()
+        
+        // Format datetime: Dayname, dd-mm-yyyy - HH:MM:SS
+        val formatter = DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", new Locale("da", "DK"))
+        val formattedDateTime = zonedDateTime.format(formatter)
         
         // Combine: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
         val combined = eventName + " - " + formattedDateTime
@@ -48,6 +52,52 @@ then
         
     } catch (Exception e) {
         logError("iCalendar", "Error updating Lauge combined event display: {}", e.getMessage())
-        Lauge_Next_Event_Combined.postUpdate("Error displaying event")
+        Lauge_Next_Event_Combined.postUpdate("Fejl ved visning af event")
+    }
+end
+
+// =============================================================================
+// Nanna's Next Event - Combined Display
+// =============================================================================
+// Combines next_event_name and next_event_at into single string
+// Format: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
+// Example: "Meeting - onsdag, 29-01-2026 - 14:30:00"
+// =============================================================================
+
+rule "Update Nanna Combined Event Display"
+when
+    Item next_event_name changed or
+    Item next_event_at changed
+then
+    try {
+        // Check if both items have valid values
+        if (next_event_name.state === NULL || next_event_name.state === UNDEF ||
+            next_event_at.state === NULL || next_event_at.state === UNDEF) {
+            Next_Event_Combined.postUpdate("Ingen kommende events")
+            return
+        }
+        
+        // Get event name
+        val eventName = next_event_name.state.toString
+        
+        // Get datetime as DateTimeType and access ZonedDateTime
+        val dateTimeState = next_event_at.state as DateTimeType
+        val zonedDateTime = dateTimeState.getZonedDateTime()
+        
+        // Format datetime: Dayname, dd-mm-yyyy - HH:MM:SS
+        val formatter = DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", new Locale("da", "DK"))
+        val formattedDateTime = zonedDateTime.format(formatter)
+        
+        // Combine: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
+        val combined = eventName + " - " + formattedDateTime
+        
+        // Update combined item
+        Next_Event_Combined.postUpdate(combined)
+        
+        logDebug("iCalendar", "Updated Nanna combined event: {}", combined)
+        
+    } catch (Exception e) {
+        logError("iCalendar", "Error updating Nanna combined event display: {}", e.getMessage())
+        Next_Event_Combined.postUpdate("Fejl ved visning af event")
     }
 end
