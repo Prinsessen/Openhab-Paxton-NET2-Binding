@@ -1,0 +1,19 @@
+import java.time.ZonedDateTime
+
+var Timer testTimer = null
+
+rule "Test Timer Simple"
+when
+    Item Lauge_Next_event_name changed
+then
+    logInfo("TestTimer", "Rule triggered, setting timer for 30 seconds from now")
+    
+    if (testTimer !== null && !testTimer.hasTerminated) {
+        testTimer.cancel()
+    }
+    
+    val now = ZonedDateTime.now()
+    testTimer = createTimer(now.plusSeconds(30)) [ |
+        logInfo("TestTimer", "TIMER FIRED! This message should appear 30 seconds after trigger")
+    ]
+end

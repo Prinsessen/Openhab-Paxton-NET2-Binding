@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-29 23:00:17
+- Modified: rules/lauge_event_reminder.rules
+- Added: rules/test_timer_simple.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-29 22:45:17
 - Modified: rules/lauge_event_reminder.rules
 

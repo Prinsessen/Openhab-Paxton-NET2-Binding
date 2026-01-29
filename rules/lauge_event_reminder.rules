@@ -58,8 +58,8 @@ then
             // Store event time as final value for use in timer callback
             val finalEventTime = eventTime
             
-            // Create timer to fire at reminder time
-            laugeReminderTimer = createTimer(reminderTime, [ |
+            // Create timer to fire at reminder time using now.plusMinutes
+            laugeReminderTimer = createTimer(now.plusMinutes(minutesUntilReminder)) [ |
                 // Get event name and time
                 val eventName = Lauge_Next_event_name.state.toString
                 val eventTimeFormatted = finalEventTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
@@ -83,7 +83,7 @@ then
                 executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", announcement)
                 Thread::sleep(1000)
                 executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", announcement)
-            ])
+            ]
         } else {
             logDebug("LaugeReminder", "Event '{}' is too soon or in the past, reminder time would be {}",
                 Lauge_Next_event_name.state.toString, reminderTime)
