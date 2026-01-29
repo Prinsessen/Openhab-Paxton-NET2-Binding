@@ -6,9 +6,7 @@
 // =============================================================================
 
 import java.time.format.DateTimeFormatter
-import java.time.ZonedDateTime
 import java.util.Locale
-import org.openhab.core.library.types.DateTimeType
 
 // =============================================================================
 // Lauge's Next Event - Combined Display
@@ -34,12 +32,12 @@ then
         // Get event name
         val eventName = Lauge_Next_event_name.state.toString
         
-        // Get datetime as DateTimeType and access ZonedDateTime
-        val dateTimeState = Lauge_Next_event_at.state as DateTimeType
-        val zonedDateTime = dateTimeState.getZonedDateTime()
+        // Get datetime and parse it (OpenHAB format includes milliseconds)
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        val zonedDateTime = java.time.ZonedDateTime.parse(Lauge_Next_event_at.state.toString, inputFormatter)
         
         // Format datetime: Dayname, dd-mm-yyyy - HH:MM:SS
-        val formatter = DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", new Locale("da", "DK"))
+        val formatter = DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", Locale.of("da", "DK"))
         val formattedDateTime = zonedDateTime.format(formatter)
         
         // Combine: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
@@ -80,12 +78,12 @@ then
         // Get event name
         val eventName = next_event_name.state.toString
         
-        // Get datetime as DateTimeType and access ZonedDateTime
-        val dateTimeState = next_event_at.state as DateTimeType
-        val zonedDateTime = dateTimeState.getZonedDateTime()
+        // Get datetime and parse it (OpenHAB format includes milliseconds)
+        val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        val zonedDateTime = java.time.ZonedDateTime.parse(next_event_at.state.toString, inputFormatter)
         
         // Format datetime: Dayname, dd-mm-yyyy - HH:MM:SS
-        val formatter = DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", new Locale("da", "DK"))
+        val formatter = DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", Locale.of("da", "DK"))
         val formattedDateTime = zonedDateTime.format(formatter)
         
         // Combine: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
