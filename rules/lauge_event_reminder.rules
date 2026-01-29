@@ -3,6 +3,7 @@
 // =============================================================================
 // Announces upcoming events from Lauge's calendar 15 minutes before they start
 // Uses OpenHAB's say() action for text-to-speech announcement
+// Updated: 2026-01-29
 // =============================================================================
 
 import java.time.ZonedDateTime
@@ -20,8 +21,7 @@ var Timer laugeReminderTimer = null
 
 rule "Schedule Lauge Event Reminder"
 when
-    Item Lauge_Next_event_at changed or
-    System started
+    Item Lauge_Next_event_at changed
 then
     try {
         // Cancel existing timer if any
@@ -55,16 +55,22 @@ then
                 reminderTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")),
                 minutesUntilReminder)
             
+            // Store event time as final value for use in timer callback
+            val finalEventTime = eventTime
+            
             // Create timer to fire at reminder time
             laugeReminderTimer = createTimer(reminderTime, [ |
                 // Get event name and time
                 val eventName = Lauge_Next_event_name.state.toString
-                val eventTimeFormatted = eventTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
+                val eventTimeFormatted = finalEventTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
+                
+                // Calculate actual minutes until event (from when announcement is played)
+                val minutesUntilEvent = ChronoUnit.MINUTES.between(ZonedDateTime.now(), finalEventTime)
                 
                 // Create announcement text (doorbell sound plays separately)
                 val announcement = "Bedstemor, det er lauge: " + eventName + 
                     " klokken " + eventTimeFormatted + 
-                    ", og der er 15 minutter til jeg skal være der"
+                    ", og der er " + minutesUntilEvent + " minutter til jeg skal være der"
                 
                 logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
                 
