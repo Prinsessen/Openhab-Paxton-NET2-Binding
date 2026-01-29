@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-29 22:00:17
+- Modified: rules/lauge_event_reminder.rules
+- Deleted: scripts/sonos_restore_volumes.sh
+- Modified: scripts/sonos_tts.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-29 21:45:17
 - Added: scripts/sonos_restore_volumes.sh
 - Modified: scripts/sonos_tts.sh

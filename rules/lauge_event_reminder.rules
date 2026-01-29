@@ -65,7 +65,7 @@ then
                 
                 logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
                 
-                // Play announcement through Sonos speakers:
+                // Play announcement through Sonos speakers (handles volume and source restoration internally):
                 // .170 = Kitchen, .171 = Bathroom, .174 = Living room (surround coordinator), .177 = Bedroom
                 executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.170", announcement)
                 executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.171", announcement)

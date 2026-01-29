@@ -47,8 +47,21 @@ CURRENT_VOLUME=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/Render
   </s:Body>
 </s:Envelope>" | grep -oP '(?<=CurrentVolume>)[0-9]+')
 
-# Save volume to temp file for restoration later
-echo "${SPEAKER_IP}:${CURRENT_VOLUME}" >> /tmp/sonos_volumes.txt
+# Get current transport info (to restore source after TTS)
+CURRENT_URI=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
+  -H "Content-Type: text/xml; charset=utf-8" \
+  -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#GetPositionInfo" \
+  -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+  <s:Body>
+    <u:GetPositionInfo xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
+      <InstanceID>0</InstanceID>
+    </u:GetPositionInfo>
+  </s:Body>
+</s:Envelope>" | grep -oP '(?<=TrackURI>)[^<]+' | head -1)
+
+# Save volume and source URI to temp file for restoration later
+echo "${SPEAKER_IP}:${CURRENT_VOLUME}:${CURRENT_URI}" >> /tmp/sonos_volumes.txt
 
 # Set volume to 30 to ensure speaker can be heard
 curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
@@ -114,6 +127,39 @@ if [ ! -z "$CURRENT_VOLUME" ]; then
     </u:SetVolume>
   </s:Body>
 </s:Envelope>" > /dev/null
+fi
+
+# Restore audio source if it was saved
+if [ ! -z "$CURRENT_URI" ] && [ "$CURRENT_URI" != "NOT_IMPLEMENTED" ]; then
+  curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
+    -H "Content-Type: text/xml; charset=utf-8" \
+    -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#SetAVTransportURI" \
+    -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+  <s:Body>
+    <u:SetAVTransportURI xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
+      <InstanceID>0</InstanceID>
+      <CurrentURI>${CURRENT_URI}</CurrentURI>
+      <CurrentURIMetaData></CurrentURIMetaData>
+    </u:SetAVTransportURI>
+  </s:Body>
+</s:Envelope>" > /dev/null
+
+  # Start playback if it was a line-in source (TV or regular line-in)
+  if [[ "$CURRENT_URI" == *"x-rincon-stream"* ]] || [[ "$CURRENT_URI" == *"x-sonos-htastream"* ]]; then
+    curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
+      -H "Content-Type: text/xml; charset=utf-8" \
+      -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#Play" \
+      -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+  <s:Body>
+    <u:Play xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
+      <InstanceID>0</InstanceID>
+      <Speed>1</Speed>
+    </u:Play>
+  </s:Body>
+</s:Envelope>" > /dev/null
+  fi
 fi
 
 # Clean up old TTS files (older than 1 day) to prevent disk filling
