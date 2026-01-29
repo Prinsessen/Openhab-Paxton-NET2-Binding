@@ -9,7 +9,7 @@ sitemap myhouse label="Nanna Agesen"
 	}
 	Frame label="Events" {
 		Text item=next_event_name label="Next Event [%s]" icon="event-orange"
-		Text item=next_event_at label="Next At [%1$tT, %1$tY-%1$tm-%1$td]" icon="gps-time-blue"
+		Text item=next_event_at label="Next At [%1$tA, %1$td-%1$tm-%1$tY - %1$tT]" icon="gps-time-blue"
 	}
 	Frame label="GPS Fleet" {
 		Webview url="/static/vehicle_tracker.html" height=15
