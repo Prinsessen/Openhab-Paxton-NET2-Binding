@@ -33,6 +33,23 @@ OPENHAB_IP=$(hostname -I | awk '{print $1}')
 # Create local URL that Sonos can access
 LOCAL_TTS_URL="http://${OPENHAB_IP}:8080/static/${FILENAME}"
 
+# Get current volume and save it
+CURRENT_VOLUME=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
+  -H "Content-Type: text/xml; charset=utf-8" \
+  -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#GetVolume" \
+  -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+  <s:Body>
+    <u:GetVolume xmlns:u=\"urn:schemas-upnp-org:service:RenderingControl:1\">
+      <InstanceID>0</InstanceID>
+      <Channel>Master</Channel>
+    </u:GetVolume>
+  </s:Body>
+</s:Envelope>" | grep -oP '(?<=CurrentVolume>)[0-9]+')
+
+# Save volume to temp file for restoration later
+echo "${SPEAKER_IP}:${CURRENT_VOLUME}" >> /tmp/sonos_volumes.txt
+
 # Set volume to 30 to ensure speaker can be heard
 curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
   -H "Content-Type: text/xml; charset=utf-8" \
@@ -76,6 +93,28 @@ curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
     </u:Play>
   </s:Body>
 </s:Envelope>" > /dev/null
+
+# Wait for TTS to finish playing (estimate based on message length)
+MESSAGE_LENGTH=${#MESSAGE}
+PLAY_TIME=$((MESSAGE_LENGTH / 10 + 3))  # Roughly 10 chars per second + 3 second buffer
+sleep ${PLAY_TIME}
+
+# Restore original volume
+if [ ! -z "$CURRENT_VOLUME" ]; then
+  curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
+    -H "Content-Type: text/xml; charset=utf-8" \
+    -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#SetVolume" \
+    -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+  <s:Body>
+    <u:SetVolume xmlns:u=\"urn:schemas-upnp-org:service:RenderingControl:1\">
+      <InstanceID>0</InstanceID>
+      <Channel>Master</Channel>
+      <DesiredVolume>${CURRENT_VOLUME}</DesiredVolume>
+    </u:SetVolume>
+  </s:Body>
+</s:Envelope>" > /dev/null
+fi
 
 # Clean up old TTS files (older than 1 day) to prevent disk filling
 find /etc/openhab/html/tts_*.mp3 -type f -mtime +1 -delete 2>/dev/null
