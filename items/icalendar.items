@@ -15,3 +15,6 @@ Switch      MeetingBegins                "Meeting begins 1"                     
 Switch      MeetingBegins1               "Meeting begins 2"                                <schedule>
 Switch      MeetingBegins2               "Meeting begins 3"                                <schedule>
 Number      Calendar_Test_Temperature    "Temperature test [%.1f]"                         <schedule>
+
+String      Lauge_First_event_name_tomorrow    "Lauges First event [%s]"                                <schedule>    {channel="icalendar:eventfilter:laugetomorrow:result_0#title"}
+DateTime    Lauge_First_event_at_tomorrow      "Lauges First at [%1$tT, %1$tY-%1$tm-%1$td]"             <schedule>    {channel="icalendar:eventfilter:laugetomorrow:result_0#begin"}
