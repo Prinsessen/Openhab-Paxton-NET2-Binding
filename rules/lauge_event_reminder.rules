@@ -57,20 +57,26 @@ then
             
             // Create timer to fire at reminder time
             laugeReminderTimer = createTimer(reminderTime, [ |
-                // Get event name
+                // Get event name and time
                 val eventName = Lauge_Next_event_name.state.toString
+                val eventTimeFormatted = eventTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
                 
-                // Create announcement text with custom format
-                val announcement = "Lauge kalder bedstemor du skal komme: " + eventName
+                // Create announcement text (doorbell sound plays separately)
+                val announcement = "Bedstemor, det er lauge: " + eventName + 
+                    " klokken " + eventTimeFormatted + 
+                    ", og der er 15 minutter til jeg skal være der"
                 
                 logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
                 
-                // Play announcement through Sonos speakers (handles volume and source restoration internally):
-                // .170 = Kitchen, .171 = Bathroom, .174 = Living room (surround coordinator), .177 = Bedroom
-                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.170", announcement)
-                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.171", announcement)
-                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.174", announcement)
-                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.177", announcement)
+                // Play doorbell + announcement through Sonos speakers sequentially (one at a time):
+                // .177 = Bedroom, .174 = Living room (surround coordinator), .171 = Bathroom, .170 = Kitchen
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", announcement)
+                Thread::sleep(1000)  // Brief pause between speakers
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", announcement)
+                Thread::sleep(1000)
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", announcement)
+                Thread::sleep(1000)
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", announcement)
             ])
         } else {
             logDebug("LaugeReminder", "Event '{}' is too soon or in the past, reminder time would be {}",

@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-29 22:30:00
+- Modified: rules/lauge_event_reminder.rules
+- Added: scripts/sonos_doorbell_tts.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-29 22:00:17
 - Modified: rules/lauge_event_reminder.rules
 - Deleted: scripts/sonos_restore_volumes.sh
