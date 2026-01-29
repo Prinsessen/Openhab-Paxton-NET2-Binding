@@ -1,0 +1,17 @@
+// =============================================================================
+// Sonos Speakers - Manual Configuration for Cross-VLAN Access
+// =============================================================================
+// Manually configured with IP addresses and UDNs since Sonos is on different VLAN
+// (192.168.100.x) than OpenHAB server (10.0.5.21)
+// =============================================================================
+
+Thing sonos:PLAY1:koekken "Køkken" @ "Køkken" [ udn="RINCON_7828CAECC61001400", ipAddress="192.168.100.170", refresh=60 ]
+Thing sonos:PLAY1:badevaerelse "Badeværelse" @ "Badeværelse" [ udn="RINCON_7828CAEF56E001400", ipAddress="192.168.100.171", refresh=60 ]
+Thing sonos:PLAY1:livingroom_1 "Livingroom 1" @ "Livingroom" [ udn="RINCON_949F3E917E5E01400", ipAddress="192.168.100.173", refresh=60 ]
+Thing sonos:PLAY1:livingroom_2 "Livingroom 2" @ "Livingroom" [ udn="RINCON_B8E9377870F201400", ipAddress="192.168.100.174", refresh=60 ]
+Thing sonos:PLAY1:livingroom_3 "Livingroom 3" @ "Livingroom" [ udn="RINCON_949F3E71B0C601400", ipAddress="192.168.100.175", refresh=60 ]
+Thing sonos:PLAY1:livingroom_4 "Livingroom 4" @ "Livingroom" [ udn="RINCON_949F3E71FE4E01400", ipAddress="192.168.100.176", refresh=60 ]
+Thing sonos:PLAY1:sovevaerelse "Soveværelse" @ "Soveværelse" [ udn="RINCON_7828CAE0D5BE01400", ipAddress="192.168.100.177", refresh=60 ]
+
+// Note: PLAY1 is used as generic type. The binding will auto-detect the actual model.
+// UDN format: RINCON_XXXXX (without uuid: prefix)

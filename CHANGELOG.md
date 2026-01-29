@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-29 15:00:17
+- Modified: rules/lauge_event_reminder.rules
+- Added: things/sonos.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-29 14:45:17
 - Added: rules/lauge_event_reminder.rules
 

@@ -66,12 +66,14 @@ then
                 
                 logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
                 
-                // Play announcement using TTS on system speaker
-                say(announcement, "enhancedjavasound")
-                
-                // Alternative options:
-                // say(announcement, "webaudio") // Play through web browser
-                // playSound("enhancedjavasound", "doorbell.mp3") // Play sound file instead
+                // Play announcement through ALL Sonos speakers
+                say(announcement, "sonos:PLAY1:koekken")
+                say(announcement, "sonos:PLAY1:badevaerelse")
+                say(announcement, "sonos:PLAY1:sovevaerelse")
+                say(announcement, "sonos:PLAY1:livingroom_1")
+                say(announcement, "sonos:PLAY1:livingroom_2")
+                say(announcement, "sonos:PLAY1:livingroom_3")
+                say(announcement, "sonos:PLAY1:livingroom_4")
             ])
         } else {
             logDebug("LaugeReminder", "Event '{}' is too soon or in the past, reminder time would be {}",
