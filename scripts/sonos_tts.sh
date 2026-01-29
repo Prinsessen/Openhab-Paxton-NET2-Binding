@@ -1,10 +1,10 @@
 #!/bin/bash
 # ==============================================================================
-# Sonos TTS Script - Download and serve locally via OpenHAB
+# Sonos TTS Script - Download once and serve locally via OpenHAB
 # ==============================================================================
 # Usage: sonos_tts.sh <speaker_ip> <message>
 # Plays text-to-speech announcement on Sonos speaker
-# Downloads TTS from Google, serves via OpenHAB, plays on Sonos
+# Downloads TTS from Google once (cached), serves via OpenHAB, plays on Sonos
 # ==============================================================================
 
 SPEAKER_IP="$1"
@@ -13,16 +13,19 @@ MESSAGE="$2"
 # URL encode the message
 MESSAGE_ENCODED=$(echo -n "$MESSAGE" | jq -sRr @uri)
 
-# Generate unique filename based on timestamp and hash
-TIMESTAMP=$(date +%s%N)
-FILENAME="tts_${TIMESTAMP}.mp3"
+# Create hash of message for filename (reuse same file for same message)
+MESSAGE_HASH=$(echo -n "$MESSAGE" | md5sum | cut -d' ' -f1)
+FILENAME="tts_${MESSAGE_HASH}.mp3"
 LOCAL_PATH="/etc/openhab/html/${FILENAME}"
 
-# Use Google Translate TTS (free, no API key needed)
-TTS_URL="http://translate.google.com/translate_tts?ie=UTF-8&tl=da&client=tw-ob&q=${MESSAGE_ENCODED}"
-
-# Download TTS file from Google
-curl -s -A "Mozilla/5.0" "${TTS_URL}" -o "${LOCAL_PATH}"
+# Only download if file doesn't exist (reuse cached files)
+if [ ! -f "${LOCAL_PATH}" ]; then
+    # Use Google Translate TTS (free, no API key needed)
+    TTS_URL="http://translate.google.com/translate_tts?ie=UTF-8&tl=da&client=tw-ob&q=${MESSAGE_ENCODED}"
+    
+    # Download TTS file from Google
+    curl -s -A "Mozilla/5.0" "${TTS_URL}" -o "${LOCAL_PATH}"
+fi
 
 # Get OpenHAB IP address
 OPENHAB_IP=$(hostname -I | awk '{print $1}')
@@ -74,7 +77,7 @@ curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
   </s:Body>
 </s:Envelope>" > /dev/null
 
-# Clean up old TTS files (older than 5 minutes) to prevent disk filling
-find /etc/openhab/html/tts_*.mp3 -type f -mmin +5 -delete 2>/dev/null
+# Clean up old TTS files (older than 1 day) to prevent disk filling
+find /etc/openhab/html/tts_*.mp3 -type f -mtime +1 -delete 2>/dev/null
 
 echo "TTS sent to ${SPEAKER_IP}: ${MESSAGE}"

@@ -65,13 +65,11 @@ then
                 
                 logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
                 
-                // Play announcement through ALL Sonos speakers using direct SOAP API
+                // Play announcement through Sonos speakers:
+                // .170 = Kitchen, .171 = Bathroom, .174 = Living room (surround coordinator), .177 = Bedroom
                 executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.170", announcement)
                 executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.171", announcement)
-                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.173", announcement)
                 executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.174", announcement)
-                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.175", announcement)
-                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.176", announcement)
                 executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.177", announcement)
             ])
         } else {
