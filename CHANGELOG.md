@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-29 11:45:17
+- Modified: items/icalendar.items
+- Added: rules/icalendar.rules
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-29 11:30:17
 - Modified: items/icalendar.items
 - Modified: things/icalendar.things

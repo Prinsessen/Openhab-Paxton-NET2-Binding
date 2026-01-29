@@ -1,0 +1,53 @@
+// =============================================================================
+// iCalendar Combined Event Display Rules
+// =============================================================================
+// Combines calendar event name and datetime into single formatted string
+// for cleaner sitemap display
+// =============================================================================
+
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+// =============================================================================
+// Lauge's Next Event - Combined Display
+// =============================================================================
+// Combines Lauge_Next_event_name and Lauge_Next_event_at into single string
+// Format: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
+// Example: "Meeting - Wednesday, 29-01-2026 - 14:30:00"
+// =============================================================================
+
+rule "Update Lauge Combined Event Display"
+when
+    Item Lauge_Next_event_name changed or
+    Item Lauge_Next_event_at changed
+then
+    try {
+        // Check if both items have valid values
+        if (Lauge_Next_event_name.state === NULL || Lauge_Next_event_name.state === UNDEF ||
+            Lauge_Next_event_at.state === NULL || Lauge_Next_event_at.state === UNDEF) {
+            Lauge_Next_Event_Combined.postUpdate("No upcoming events")
+            return
+        }
+        
+        // Get event name
+        val eventName = Lauge_Next_event_name.state.toString
+        
+        // Get datetime and format it
+        val eventDateTime = new DateTimeFormatter.ofPattern("EEEE, dd-MM-yyyy - HH:mm:ss", new Locale("da", "DK"))
+        val zonedDateTime = ZonedDateTime.parse(Lauge_Next_event_at.state.toString)
+        val formattedDateTime = zonedDateTime.format(eventDateTime)
+        
+        // Combine: "EventName - Dayname, dd-mm-yyyy - HH:MM:SS"
+        val combined = eventName + " - " + formattedDateTime
+        
+        // Update combined item
+        Lauge_Next_Event_Combined.postUpdate(combined)
+        
+        logDebug("iCalendar", "Updated Lauge combined event: {}", combined)
+        
+    } catch (Exception e) {
+        logError("iCalendar", "Error updating Lauge combined event display: {}", e.getMessage())
+        Lauge_Next_Event_Combined.postUpdate("Error displaying event")
+    }
+end
