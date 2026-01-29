@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-29 14:45:17
+- Added: rules/lauge_event_reminder.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-29 12:45:07
 - Modified: sitemaps/myhouse.sitemap
 

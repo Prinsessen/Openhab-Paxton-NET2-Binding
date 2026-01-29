@@ -1,0 +1,84 @@
+// =============================================================================
+// Lauge Calendar Event Reminder
+// =============================================================================
+// Announces upcoming events from Lauge's calendar 15 minutes before they start
+// Uses OpenHAB's say() action for text-to-speech announcement
+// =============================================================================
+
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
+
+var Timer laugeReminderTimer = null
+
+// =============================================================================
+// Rule: Schedule reminder when Lauge's next event changes
+// =============================================================================
+// Triggers when the next event datetime changes
+// Calculates 15 minutes before event start
+// Creates timer to fire reminder at the calculated time
+// =============================================================================
+
+rule "Schedule Lauge Event Reminder"
+when
+    Item Lauge_Next_event_at changed or
+    System started
+then
+    try {
+        // Cancel existing timer if any
+        if (laugeReminderTimer !== null && !laugeReminderTimer.hasTerminated) {
+            laugeReminderTimer.cancel()
+            laugeReminderTimer = null
+            logDebug("LaugeReminder", "Cancelled existing reminder timer")
+        }
+        
+        // Check if event time is valid
+        if (Lauge_Next_event_at.state === NULL || Lauge_Next_event_at.state === UNDEF ||
+            Lauge_Next_event_name.state === NULL || Lauge_Next_event_name.state === UNDEF) {
+            logDebug("LaugeReminder", "No valid event found, skipping reminder setup")
+            return
+        }
+        
+        // Parse event time
+        val inputFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+        val eventTime = ZonedDateTime.parse(Lauge_Next_event_at.state.toString, inputFormatter)
+        
+        // Calculate reminder time (15 minutes before event)
+        val reminderTime = eventTime.minusMinutes(15)
+        val now = ZonedDateTime.now()
+        
+        // Only schedule if reminder time is in the future
+        if (reminderTime.isAfter(now)) {
+            val minutesUntilReminder = ChronoUnit.MINUTES.between(now, reminderTime)
+            
+            logInfo("LaugeReminder", "Scheduling reminder for '{}' at {} ({} minutes from now)",
+                Lauge_Next_event_name.state.toString,
+                reminderTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")),
+                minutesUntilReminder)
+            
+            // Create timer to fire at reminder time
+            laugeReminderTimer = createTimer(reminderTime, [ |
+                // Get event name and time
+                val eventName = Lauge_Next_event_name.state.toString
+                val eventTimeStr = eventTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
+                
+                // Create announcement text in Danish
+                val announcement = "Påmindelse: Lauge har " + eventName + " om 15 minutter klokken " + eventTimeStr
+                
+                logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
+                
+                // Play announcement using TTS on system speaker
+                say(announcement, "enhancedjavasound")
+                
+                // Alternative options:
+                // say(announcement, "webaudio") // Play through web browser
+                // playSound("enhancedjavasound", "doorbell.mp3") // Play sound file instead
+            ])
+        } else {
+            logDebug("LaugeReminder", "Event '{}' is too soon or in the past, reminder time would be {}",
+                Lauge_Next_event_name.state.toString, reminderTime)
+        }
+        
+    } catch (Exception e) {
+        logError("LaugeReminder", "Error scheduling reminder: {}", e.getMessage())
+    }
+end
