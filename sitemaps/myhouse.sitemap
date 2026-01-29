@@ -8,8 +8,8 @@ sitemap myhouse label="Nanna Agesen"
 		Switch item=Energy_Crisis icon="alarm-red"
 	}
 	Frame label="Events" {
-		Text item=Next_Event_Combined label="Nannas Next Event [%s]" icon="event-orange"
-		Text item=Lauge_Next_Event_Combined label="Lauges Next Event [%s]" icon="event-orange"
+		Text item=Next_Event_Combined label="Nannas Kalender [%s]" icon="event-orange"
+		Text item=Lauge_Next_Event_Combined label="Lauges Kalender [%s]" icon="event-orange"
 	}
 	Frame label="GPS Fleet" {
 		Webview url="/static/vehicle_tracker.html" height=15
