@@ -30,6 +30,21 @@ OPENHAB_IP=$(hostname -I | awk '{print $1}')
 # Create local URL that Sonos can access
 LOCAL_TTS_URL="http://${OPENHAB_IP}:8080/static/${FILENAME}"
 
+# Set volume to 30 to ensure speaker can be heard
+curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
+  -H "Content-Type: text/xml; charset=utf-8" \
+  -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#SetVolume" \
+  -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+  <s:Body>
+    <u:SetVolume xmlns:u=\"urn:schemas-upnp-org:service:RenderingControl:1\">
+      <InstanceID>0</InstanceID>
+      <Channel>Master</Channel>
+      <DesiredVolume>30</DesiredVolume>
+    </u:SetVolume>
+  </s:Body>
+</s:Envelope>" > /dev/null
+
 # Send SOAP request to play the local TTS URL
 curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
   -H "Content-Type: text/xml; charset=utf-8" \
