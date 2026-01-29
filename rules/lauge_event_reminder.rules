@@ -57,23 +57,22 @@ then
             
             // Create timer to fire at reminder time
             laugeReminderTimer = createTimer(reminderTime, [ |
-                // Get event name and time
+                // Get event name
                 val eventName = Lauge_Next_event_name.state.toString
-                val eventTimeStr = eventTime.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"))
                 
-                // Create announcement text in Danish
-                val announcement = "Påmindelse: Lauge har " + eventName + " om 15 minutter klokken " + eventTimeStr
+                // Create announcement text with custom format
+                val announcement = "Lauge kalder bedstemor du skal komme: " + eventName
                 
                 logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
                 
-                // Play announcement through ALL Sonos speakers
-                say(announcement, "sonos:PLAY1:koekken")
-                say(announcement, "sonos:PLAY1:badevaerelse")
-                say(announcement, "sonos:PLAY1:sovevaerelse")
-                say(announcement, "sonos:PLAY1:livingroom_1")
-                say(announcement, "sonos:PLAY1:livingroom_2")
-                say(announcement, "sonos:PLAY1:livingroom_3")
-                say(announcement, "sonos:PLAY1:livingroom_4")
+                // Play announcement through ALL Sonos speakers using direct SOAP API
+                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.170", announcement)
+                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.171", announcement)
+                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.173", announcement)
+                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.174", announcement)
+                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.175", announcement)
+                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.176", announcement)
+                executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_tts.sh", "192.168.100.177", announcement)
             ])
         } else {
             logDebug("LaugeReminder", "Event '{}' is too soon or in the past, reminder time would be {}",

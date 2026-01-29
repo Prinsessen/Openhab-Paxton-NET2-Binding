@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-29 15:15:17
+- Modified: misc/exec.whitelist
+- Modified: rules/lauge_event_reminder.rules
+- Added: scripts/sonos_tts.sh
+- Modified: things/sonos.things
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-29 15:00:17
 - Modified: rules/lauge_event_reminder.rules
 - Added: things/sonos.things
