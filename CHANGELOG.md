@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-30 11:15:17
+- Modified: scripts/sonos_tts.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-30 10:45:17
 - Modified: rules/Device_error.rules
 - Modified: scripts/sonos_doorbell_tts.sh

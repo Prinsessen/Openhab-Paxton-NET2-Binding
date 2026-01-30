@@ -153,12 +153,14 @@ if [ ! -z "$CURRENT_URI" ] && [ "$CURRENT_URI" != "NOT_IMPLEMENTED" ]; then
   </s:Body>
 </s:Envelope>" > /dev/null
 
-  # Start playback if it was a line-in source (TV or regular line-in)
-  if [[ "$CURRENT_URI" == *"x-rincon-stream"* ]] || [[ "$CURRENT_URI" == *"x-sonos-htastream"* ]]; then
-    curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
-      -H "Content-Type: text/xml; charset=utf-8" \
-      -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#Play" \
-      -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+  # Give Sonos a moment to set the URI
+  sleep 1
+
+  # Resume playback for all sources (not just line-in)
+  curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
+    -H "Content-Type: text/xml; charset=utf-8" \
+    -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#Play" \
+    -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
   <s:Body>
     <u:Play xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
@@ -167,7 +169,6 @@ if [ ! -z "$CURRENT_URI" ] && [ "$CURRENT_URI" != "NOT_IMPLEMENTED" ]; then
     </u:Play>
   </s:Body>
 </s:Envelope>" > /dev/null
-  fi
 fi
 
 # Clean up old TTS files (older than 1 day) to prevent disk filling
