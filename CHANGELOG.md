@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-30 11:45:17
+- Modified: rules/Device_error.rules
+- Modified: scripts/sonos_tts.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-30 11:30:17
 - Modified: rules/Device_error.rules
 - Deleted: scripts/generate_tts.py
