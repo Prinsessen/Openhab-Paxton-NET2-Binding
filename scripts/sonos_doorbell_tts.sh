@@ -87,10 +87,11 @@ curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
 # Wait for doorbell to finish (3 seconds)
 sleep 3
 
-# Now play TTS message using the existing script
-/etc/openhab/scripts/sonos_tts.sh "${SPEAKER_IP}" "${MESSAGE}"
+# Pass the saved volume and URI to sonos_tts.sh via environment variables
+export SAVED_VOLUME="${CURRENT_VOLUME}"
+export SAVED_URI="${CURRENT_URI}"
 
-# Note: sonos_tts.sh will restore volume and source, but we need to ensure it uses our saved values
-# So we pass them through environment or let it handle its own restoration
+# Now play TTS message using the existing script (will use our saved values)
+/etc/openhab/scripts/sonos_tts.sh "${SPEAKER_IP}" "${MESSAGE}"
 
 echo "Doorbell + TTS sent to ${SPEAKER_IP}: ${MESSAGE}"

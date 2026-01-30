@@ -33,11 +33,14 @@ OPENHAB_IP=$(hostname -I | awk '{print $1}')
 # Create local URL that Sonos can access
 LOCAL_TTS_URL="http://${OPENHAB_IP}:8080/static/${FILENAME}"
 
-# Get current volume and save it
-CURRENT_VOLUME=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
-  -H "Content-Type: text/xml; charset=utf-8" \
-  -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#GetVolume" \
-  -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+# Get current volume and save it (or use saved value from parent script)
+if [ ! -z "$SAVED_VOLUME" ]; then
+  CURRENT_VOLUME="$SAVED_VOLUME"
+else
+  CURRENT_VOLUME=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
+    -H "Content-Type: text/xml; charset=utf-8" \
+    -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#GetVolume" \
+    -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
   <s:Body>
     <u:GetVolume xmlns:u=\"urn:schemas-upnp-org:service:RenderingControl:1\">
@@ -46,12 +49,16 @@ CURRENT_VOLUME=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/Render
     </u:GetVolume>
   </s:Body>
 </s:Envelope>" | grep -oP '(?<=CurrentVolume>)[0-9]+')
+fi
 
-# Get current transport info (to restore source after TTS)
-CURRENT_URI=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
-  -H "Content-Type: text/xml; charset=utf-8" \
-  -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#GetPositionInfo" \
-  -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+# Get current transport info (or use saved value from parent script)
+if [ ! -z "$SAVED_URI" ]; then
+  CURRENT_URI="$SAVED_URI"
+else
+  CURRENT_URI=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
+    -H "Content-Type: text/xml; charset=utf-8" \
+    -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#GetPositionInfo" \
+    -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
   <s:Body>
     <u:GetPositionInfo xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
@@ -59,6 +66,7 @@ CURRENT_URI=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTranspo
     </u:GetPositionInfo>
   </s:Body>
 </s:Envelope>" | grep -oP '(?<=TrackURI>)[^<]+' | head -1)
+fi
 
 # Save volume and source URI to temp file for restoration later
 echo "${SPEAKER_IP}:${CURRENT_VOLUME}:${CURRENT_URI}" >> /tmp/sonos_volumes.txt
