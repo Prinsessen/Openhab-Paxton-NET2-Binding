@@ -3,6 +3,8 @@
 // *******************************************************************
 // Optimized for Openhab 5.0
 
+import java.time.ZonedDateTime
+
 rule "Nilan Error Dummy"
 when
     Item Nilan_error changed
@@ -58,16 +60,21 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Nilan Gateway Error", "Nilan Offline, reboot gateway at 10.0.5.101" )
 	logInfo("Device Error - Nilan Gateway Error", "Mailactions says - " + success2)
 	
-	// Broadcast error via Sonos speakers with doorbell + TTS (sequential with delays)
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
-	Thread::sleep(1000)
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
-	Thread::sleep(1000)
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
-	Thread::sleep(1000)
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
-	Thread::sleep(1000)
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val nilanMessage = "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101"
+	val nilanSpeakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", nilanSpeakers.get(0), nilanMessage)
+	
+	// Schedule remaining speakers with 15-second delays to allow each to finish
+	for (var i = 1; i < nilanSpeakers.size; i++) {
+		val speakerIP = nilanSpeakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, nilanMessage)
+		]
+	}
 end
 
 // *******************************************************************
@@ -131,12 +138,21 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE ERROR", "Smarthouse Offline, reboot gateway at 192.168.100.86" )
 	logInfo("Device Error - SMARTHOUSE ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error via Sonos speakers with doorbell + TTS
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val smarthouseMessage = "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86"
+	val smarthouseSpeakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", smarthouseSpeakers.get(0), smarthouseMessage)
+	
+	// Schedule remaining speakers with 15-second delays
+	for (var i = 1; i < smarthouseSpeakers.size; i++) {
+		val speakerIP = smarthouseSpeakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, smarthouseMessage)
+		]
+	}
 end
 
 // *******************************************************************
@@ -199,12 +215,21 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMA INVERTER ERROR", "SMA Inverter Offline, reboot gateway at 192.168.100.141" )
 	logInfo("Device Error - SMA INVERTER ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error via Sonos speakers with doorbell + TTS
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val smaMessage = "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141"
+	val smaSpeakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", smaSpeakers.get(0), smaMessage)
+	
+	// Schedule remaining speakers with 15-second delays
+	for (var i = 1; i < smaSpeakers.size; i++) {
+		val speakerIP = smaSpeakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, smaMessage)
+		]
+	}
 end
 
 // *******************************************************************
@@ -271,12 +296,21 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "METZ OUTPUT ERROR", "METZ Output Offline, reboot gateway at 10.0.5.100" )
 	logInfo("Device Error - METZ OUTPUT ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error via Sonos speakers with doorbell + TTS
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val metzMessage = "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100"
+	val metzSpeakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", metzSpeakers.get(0), metzMessage)
+	
+	// Schedule remaining speakers with 15-second delays
+	for (var i = 1; i < metzSpeakers.size; i++) {
+		val speakerIP = metzSpeakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, metzMessage)
+		]
+	}
 end
 
 // *******************************************************************
@@ -339,12 +373,21 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "CARBONDIOXIDE SENSOR ERROR", "Carbondioxide Sensor Offline, reboot gateway at 10.0.5.100" )
 	logInfo("Device Error - CARBONDIOXIDE SENSOR ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error via Sonos speakers with doorbell + TTS
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val co2Message = "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100"
+	val co2Speakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", co2Speakers.get(0), co2Message)
+	
+	// Schedule remaining speakers with 15-second delays
+	for (var i = 1; i < co2Speakers.size; i++) {
+		val speakerIP = co2Speakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, co2Message)
+		]
+	}
 end
 
 // *******************************************************************
@@ -406,12 +449,21 @@ then
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MULTICAL 603 ERROR", "Multical 603 Offline, reboot gateway at 10.0.5.102" )
 	logInfo("Device Error - MULTICAL 603 ERROR", "Mailactions says - " + success2)	
-	// Broadcast error via Sonos speakers with doorbell + TTS
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 10.0.5.102")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val kampstrupMessage = "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 10.0.5.102"
+	val kampstrupSpeakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", kampstrupSpeakers.get(0), kampstrupMessage)
+	
+	// Schedule remaining speakers with 15-second delays
+	for (var i = 1; i < kampstrupSpeakers.size; i++) {
+		val speakerIP = kampstrupSpeakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, kampstrupMessage)
+		]
+	}
 end
 
 // *******************************************************************
@@ -473,12 +525,21 @@ then
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE TERNDRUPVEJ ERROR", "Smarthouse Terndrupvej Offline, reboot gateway at 10.0.1.17" )
 	logInfo("Device Error - SMARTHOUSE TERNDRUPVEJ ERROR", "Mailactions says - " + success2)	
-	// Broadcast error via Sonos speakers with doorbell + TTS
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 10.0.1.17")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 10.0.1.17")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 10.0.1.17")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 10.0.1.17")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 10.0.1.17")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val terndrupMessage = "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 10.0.1.17"
+	val terndrupSpeakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", terndrupSpeakers.get(0), terndrupMessage)
+	
+	// Schedule remaining speakers with 15-second delays
+	for (var i = 1; i < terndrupSpeakers.size; i++) {
+		val speakerIP = terndrupSpeakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, terndrupMessage)
+		]
+	}
 end
 
 // *******************************************************************
@@ -540,10 +601,19 @@ then
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MITSUBISHI LIVINGROOM OFFLINE", "Mitsubishi Livingroom Offline, reboot gateway at 10.0.5.59" )
     logInfo("Device Error - Mitsubishi Livingroom Error", "Mailactions says - " + success2)	
-	// Broadcast error via Sonos speakers with doorbell + TTS
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.59")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.59")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.59")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.59")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.59")
+	// Broadcast error via Sonos speakers with doorbell + TTS (non-blocking with timers)
+	val mitsubishiMessage = "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.59"
+	val mitsubishiSpeakers = newArrayList("192.168.100.170", "192.168.100.171", "192.168.100.174", "192.168.100.177", "10.0.1.100")
+	
+	// Announce to first speaker immediately
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", mitsubishiSpeakers.get(0), mitsubishiMessage)
+	
+	// Schedule remaining speakers with 15-second delays
+	for (var i = 1; i < mitsubishiSpeakers.size; i++) {
+		val speakerIP = mitsubishiSpeakers.get(i)
+		val delaySeconds = i * 15
+		createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
+			executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, mitsubishiMessage)
+		]
+	}
 end
