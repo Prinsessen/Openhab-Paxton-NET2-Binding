@@ -74,21 +74,15 @@ then
                 
                 logInfo("LaugeReminder", "Announcing reminder: {}", announcement)
                 
-                // Play doorbell + announcement through Sonos speakers sequentially with cascading timers
+                // Play doorbell + announcement through Sonos speakers sequentially (one at a time):
                 // .177 = Bedroom, .174 = Living room (surround coordinator), .171 = Bathroom, .170 = Kitchen
-                val speakers = newArrayList("192.168.100.177", "192.168.100.174", "192.168.100.171", "192.168.100.170")
-                
-                // Play first speaker immediately
-                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakers.get(0), announcement)
-                
-                // Schedule remaining speakers with 15-second delays (allows full message to play)
-                for (var i = 1; i < speakers.size; i++) {
-                    val speakerIP = speakers.get(i)
-                    val delaySeconds = i * 15  // 15s, 30s, 45s delays
-                    createTimer(ZonedDateTime.now().plusSeconds(delaySeconds)) [ |
-                        executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", speakerIP, announcement)
-                    ]
-                }
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", announcement)
+                Thread::sleep(1000)  // Brief pause between speakers
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", announcement)
+                Thread::sleep(1000)
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", announcement)
+                Thread::sleep(1000)
+                executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", announcement)
             ]
         } else {
             logDebug("LaugeReminder", "Event '{}' is too soon or in the past, reminder time would be {}",
