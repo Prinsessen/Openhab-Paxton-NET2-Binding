@@ -1,39 +1,16 @@
 #!/bin/bash
 # ==============================================================================
-# Sonos TTS Script - Download once and serve locally via OpenHAB
+# Sonos TTS Script - Direct SOAP API calls
 # ==============================================================================
 # Usage: sonos_tts.sh <speaker_ip> <message>
 # Plays text-to-speech announcement on Sonos speaker
-# Downloads TTS from Google once (cached), serves via OpenHAB, plays on Sonos
+# Saves and restores volume and audio source
 # ==============================================================================
 
 SPEAKER_IP="$1"
 MESSAGE="$2"
 
-# URL encode the message
-MESSAGE_ENCODED=$(echo -n "$MESSAGE" | jq -sRr @uri)
-
-# Create hash of message for filename (reuse same file for same message)
-MESSAGE_HASH=$(echo -n "$MESSAGE" | md5sum | cut -d' ' -f1)
-FILENAME="tts_${MESSAGE_HASH}.mp3"
-LOCAL_PATH="/etc/openhab/html/${FILENAME}"
-
-# Only download if file doesn't exist (reuse cached files)
-if [ ! -f "${LOCAL_PATH}" ]; then
-    # Use Google Translate TTS (free, no API key needed)
-    TTS_URL="http://translate.google.com/translate_tts?ie=UTF-8&tl=da&client=tw-ob&q=${MESSAGE_ENCODED}"
-    
-    # Download TTS file from Google
-    curl -s -A "Mozilla/5.0" "${TTS_URL}" -o "${LOCAL_PATH}"
-fi
-
-# Get OpenHAB IP address
-OPENHAB_IP=$(hostname -I | awk '{print $1}')
-
-# Create local URL that Sonos can access
-LOCAL_TTS_URL="http://${OPENHAB_IP}:8080/static/${FILENAME}"
-
-# Get current volume and save it
+# Get current volume
 CURRENT_VOLUME=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
   -H "Content-Type: text/xml; charset=utf-8" \
   -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#GetVolume" \
@@ -47,8 +24,22 @@ CURRENT_VOLUME=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/Render
   </s:Body>
 </s:Envelope>" | grep -oP '(?<=CurrentVolume>)[0-9]+')
 
-# Get current transport info (to restore source after TTS)
-CURRENT_URI=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
+# Get current transport state and URI
+TRANSPORT_INFO=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
+  -H "Content-Type: text/xml; charset=utf-8" \
+  -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#GetTransportInfo" \
+  -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+  <s:Body>
+    <u:GetTransportInfo xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
+      <InstanceID>0</InstanceID>
+    </u:GetTransportInfo>
+  </s:Body>
+</s:Envelope>")
+
+CURRENT_STATE=$(echo "$TRANSPORT_INFO" | grep -oP '(?<=CurrentTransportState>)[^<]+')
+
+POSITION_INFO=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
   -H "Content-Type: text/xml; charset=utf-8" \
   -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#GetPositionInfo" \
   -d "<?xml version=\"1.0\" encoding=\"utf-8\"?>
@@ -58,12 +49,12 @@ CURRENT_URI=$(curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTranspo
       <InstanceID>0</InstanceID>
     </u:GetPositionInfo>
   </s:Body>
-</s:Envelope>" | grep -oP '(?<=TrackURI>)[^<]+' | head -1)
+</s:Envelope>")
 
-# Save volume and source URI to temp file for restoration later
-echo "${SPEAKER_IP}:${CURRENT_VOLUME}:${CURRENT_URI}" >> /tmp/sonos_volumes.txt
+CURRENT_URI=$(echo "$POSITION_INFO" | grep -oP '(?<=TrackURI>)[^<]+' | head -1)
+CURRENT_METADATA=$(echo "$POSITION_INFO" | grep -oP '(?<=TrackMetaData>).*?(?=</TrackMetaData>)' | head -1)
 
-# Set volume to 30 to ensure speaker can be heard
+# Set volume to 30 for announcement
 curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
   -H "Content-Type: text/xml; charset=utf-8" \
   -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#SetVolume" \
@@ -78,7 +69,13 @@ curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Contro
   </s:Body>
 </s:Envelope>" > /dev/null
 
-# Send SOAP request to play the local TTS URL
+# URL encode the message
+MESSAGE_ENCODED=$(echo -n "$MESSAGE" | jq -sRr @uri)
+
+# Use Google Translate TTS (free, no API key needed)
+TTS_URL="https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=da&q=${MESSAGE_ENCODED}"
+
+# Send SOAP request to play the TTS URL
 curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
   -H "Content-Type: text/xml; charset=utf-8" \
   -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#SetAVTransportURI" \
@@ -87,7 +84,7 @@ curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
   <s:Body>
     <u:SetAVTransportURI xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
       <InstanceID>0</InstanceID>
-      <CurrentURI>${LOCAL_TTS_URL}</CurrentURI>
+      <CurrentURI>${TTS_URL}</CurrentURI>
       <CurrentURIMetaData></CurrentURIMetaData>
     </u:SetAVTransportURI>
   </s:Body>
@@ -107,13 +104,13 @@ curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
   </s:Body>
 </s:Envelope>" > /dev/null
 
-# Wait for TTS to finish playing (estimate based on message length)
+# Wait for TTS to finish (estimate based on message length)
 MESSAGE_LENGTH=${#MESSAGE}
-PLAY_TIME=$((MESSAGE_LENGTH / 10 + 3))  # Roughly 10 chars per second + 3 second buffer
-sleep ${PLAY_TIME}
+SLEEP_TIME=$((MESSAGE_LENGTH / 10 + 3))
+sleep $SLEEP_TIME
 
 # Restore original volume
-if [ ! -z "$CURRENT_VOLUME" ]; then
+if [ -n "$CURRENT_VOLUME" ]; then
   curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/RenderingControl/Control" \
     -H "Content-Type: text/xml; charset=utf-8" \
     -H "SOAPAction: urn:schemas-upnp-org:service:RenderingControl:1#SetVolume" \
@@ -129,8 +126,8 @@ if [ ! -z "$CURRENT_VOLUME" ]; then
 </s:Envelope>" > /dev/null
 fi
 
-# Restore audio source if it was saved
-if [ ! -z "$CURRENT_URI" ] && [ "$CURRENT_URI" != "NOT_IMPLEMENTED" ]; then
+# Restore original audio source if it was playing something
+if [ -n "$CURRENT_URI" ] && [ "$CURRENT_URI" != "NOT_IMPLEMENTED" ]; then
   curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
     -H "Content-Type: text/xml; charset=utf-8" \
     -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#SetAVTransportURI" \
@@ -140,13 +137,13 @@ if [ ! -z "$CURRENT_URI" ] && [ "$CURRENT_URI" != "NOT_IMPLEMENTED" ]; then
     <u:SetAVTransportURI xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">
       <InstanceID>0</InstanceID>
       <CurrentURI>${CURRENT_URI}</CurrentURI>
-      <CurrentURIMetaData></CurrentURIMetaData>
+      <CurrentURIMetaData>${CURRENT_METADATA}</CurrentURIMetaData>
     </u:SetAVTransportURI>
   </s:Body>
 </s:Envelope>" > /dev/null
-
-  # Start playback if it was a line-in source (TV or regular line-in)
-  if [[ "$CURRENT_URI" == *"x-rincon-stream"* ]] || [[ "$CURRENT_URI" == *"x-sonos-htastream"* ]]; then
+  
+  # Resume playback if it was playing
+  if [ "$CURRENT_STATE" = "PLAYING" ]; then
     curl -s -X POST "http://${SPEAKER_IP}:1400/MediaRenderer/AVTransport/Control" \
       -H "Content-Type: text/xml; charset=utf-8" \
       -H "SOAPAction: urn:schemas-upnp-org:service:AVTransport:1#Play" \
@@ -161,8 +158,5 @@ if [ ! -z "$CURRENT_URI" ] && [ "$CURRENT_URI" != "NOT_IMPLEMENTED" ]; then
 </s:Envelope>" > /dev/null
   fi
 fi
-
-# Clean up old TTS files (older than 1 day) to prevent disk filling
-find /etc/openhab/html/tts_*.mp3 -type f -mtime +1 -delete 2>/dev/null
 
 echo "TTS sent to ${SPEAKER_IP}: ${MESSAGE}"

@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-30 10:15:17
+- Modified: rules/Device_error.rules
+- Modified: rules/lauge_event_reminder.rules
+- Modified: scripts/sonos_error_notify.sh
+- Modified: scripts/sonos_tts.sh
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-30 10:00:07
 - Modified: misc/exec.whitelist
 - Modified: rules/Device_error.rules

@@ -58,11 +58,11 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Nilan Gateway Error", "Nilan Offline, reboot gateway at 10.0.5.101" )
 	logInfo("Device Error - Nilan Gateway Error", "Mailactions says - " + success2)
 	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "Nilan Ventilation", "Systemet er offline, genstart gateway på 10.0.5.101")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "Nilan Ventilation", "Systemet er offline, genstart gateway på 10.0.5.101")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "Nilan Ventilation", "Systemet er offline, genstart gateway på 10.0.5.101")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "Nilan Ventilation", "Systemet er offline, genstart gateway på 10.0.5.101")
+	// Broadcast error to all Sonos speakers with doorbell + volume/source restoration
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.173", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
 end
 
 // *******************************************************************
