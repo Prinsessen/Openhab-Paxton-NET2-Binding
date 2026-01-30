@@ -58,11 +58,11 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "Nilan Gateway Error", "Nilan Offline, reboot gateway at 10.0.5.101" )
 	logInfo("Device Error - Nilan Gateway Error", "Mailactions says - " + success2)
 	
-	// Broadcast error to all Sonos speakers with doorbell + volume/source restoration
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.173", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
+	// Broadcast error via Sonos speakers (Sonos binding handles volume/source restoration)
+	say("Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101", "sonos:PLAY1:koekken")
+	say("Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101", "sonos:PLAY1:badevaerelse")
+	say("Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101", "sonos:PLAY1:livingroom_4")
+	say("Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101", "sonos:PLAY1:sovevaerelse")
 end
 
 // *******************************************************************
@@ -126,11 +126,10 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE ERROR", "Smarthouse Offline, reboot gateway at 192.168.100.86" )
 	logInfo("Device Error - SMARTHOUSE ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "Smarthouse Kirkegade", "Systemet er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "Smarthouse Kirkegade", "Systemet er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "Smarthouse Kirkegade", "Systemet er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "Smarthouse Kirkegade", "Systemet er offline, genstart gateway på 192.168.100.86")
+	// Broadcast error with doorbell + TTS announcement
+	playSound("enhancedjavasound", "doorbell.mp3")
+	Thread::sleep(3000)
+	say("Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86", "enhancedjavasound")
 end
 
 // *******************************************************************
@@ -193,11 +192,10 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMA INVERTER ERROR", "SMA Inverter Offline, reboot gateway at 192.168.100.141" )
 	logInfo("Device Error - SMA INVERTER ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "Solcelle Inverter", "SMA systemet er offline, genstart gateway på 192.168.100.141")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "Solcelle Inverter", "SMA systemet er offline, genstart gateway på 192.168.100.141")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "Solcelle Inverter", "SMA systemet er offline, genstart gateway på 192.168.100.141")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "Solcelle Inverter", "SMA systemet er offline, genstart gateway på 192.168.100.141")
+	// Broadcast error with doorbell + TTS announcement
+	playSound("enhancedjavasound", "doorbell.mp3")
+	Thread::sleep(3000)
+	say("Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141", "enhancedjavasound")
 end
 
 // *******************************************************************
@@ -264,11 +262,10 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "METZ OUTPUT ERROR", "METZ Output Offline, reboot gateway at 10.0.5.100" )
 	logInfo("Device Error - METZ OUTPUT ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "METZ Output Module", "Systemet er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "METZ Output Module", "Systemet er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "METZ Output Module", "Systemet er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "METZ Output Module", "Systemet er offline, genstart gateway på 10.0.5.100")
+	// Broadcast error with doorbell + TTS announcement
+	playSound("enhancedjavasound", "doorbell.mp3")
+	Thread::sleep(3000)
+	say("Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100", "enhancedjavasound")
 end
 
 // *******************************************************************
@@ -331,11 +328,10 @@ then
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "CARBONDIOXIDE SENSOR ERROR", "Carbondioxide Sensor Offline, reboot gateway at 10.0.5.100" )
 	logInfo("Device Error - CARBONDIOXIDE SENSOR ERROR", "Mailactions says - " + success2)
 	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "CO2 Sensor", "Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "CO2 Sensor", "Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "CO2 Sensor", "Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "CO2 Sensor", "Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
+	// Broadcast error with doorbell + TTS announcement
+	playSound("enhancedjavasound", "doorbell.mp3")
+	Thread::sleep(3000)
+	say("Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100", "enhancedjavasound")
 end
 
 // *******************************************************************
@@ -397,11 +393,10 @@ then
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MULTICAL 603 ERROR", "Multical 603 Offline, reboot gateway at 10.0.5.102" )
 	logInfo("Device Error - MULTICAL 603 ERROR", "Mailactions says - " + success2)	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "Multical 603 måler", "Varmemåler er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "Multical 603 måler", "Varmemåler er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "Multical 603 måler", "Varmemåler er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "Multical 603 måler", "Varmemåler er offline, genstart gateway på 192.168.100.86")end
+	// Broadcast error with doorbell + TTS announcement
+	playSound("enhancedjavasound", "doorbell.mp3")
+	Thread::sleep(3000)
+	say("Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 192.168.100.86", "enhancedjavasound")end
 
 // *******************************************************************
 // SMARTHOUSE TERNDRUPVEJ ERROR NOTIFICATION RULE
@@ -462,11 +457,10 @@ then
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "SMARTHOUSE TERNDRUPVEJ ERROR", "Smarthouse Terndrupvej Offline, reboot gateway at 10.0.1.17" )
 	logInfo("Device Error - SMARTHOUSE TERNDRUPVEJ ERROR", "Mailactions says - " + success2)	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "Smarthouse Terndrupvej", "Systemet er offline, genstart gateway på 192.168.100.87")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "Smarthouse Terndrupvej", "Systemet er offline, genstart gateway på 192.168.100.87")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "Smarthouse Terndrupvej", "Systemet er offline, genstart gateway på 192.168.100.87")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "Smarthouse Terndrupvej", "Systemet er offline, genstart gateway på 192.168.100.87")end
+	// Broadcast error with doorbell + TTS announcement
+	playSound("enhancedjavasound", "doorbell.mp3")
+	Thread::sleep(3000)
+	say("Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 192.168.100.87", "enhancedjavasound")end
 
 // *******************************************************************
 // MITSUBISHI LIVINGROOM ERROR NOTIFICATION RULE
@@ -527,8 +521,7 @@ then
     
     val success2 = mailActions.sendMail("20960210@sms.uni-tel.dk", "MITSUBISHI LIVINGROOM OFFLINE", "Mitsubishi Livingroom Offline, reboot gateway at 192.168.100.45" )
     logInfo("Device Error - Mitsubishi Livingroom Error", "Mailactions says - " + success2)	
-	// Broadcast error to all Sonos speakers
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.170", "Varmepumpe Stue", "Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.171", "Varmepumpe Stue", "Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.173", "Varmepumpe Stue", "Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(30), "/etc/openhab/scripts/sonos_error_notify.sh", "192.168.100.177", "Varmepumpe Stue", "Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")end
+	// Broadcast error with doorbell + TTS announcement
+	playSound("enhancedjavasound", "doorbell.mp3")
+	Thread::sleep(3000)
+	say("Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102", "enhancedjavasound")end

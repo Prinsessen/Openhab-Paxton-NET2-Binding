@@ -7,6 +7,15 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-30 10:30:17
+- Modified: rules/Device_error.rules
+- Modified: rules/lauge_event_reminder.rules
+- Added: scripts/generate_tts.py
+- Modified: scripts/sonos_tts.sh
+- Modified: services/addons.cfg
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-30 10:15:17
 - Modified: rules/Device_error.rules
 - Modified: rules/lauge_event_reminder.rules
