@@ -63,6 +63,7 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Nilan Ventilation fejl. Systemet er offline, genstart gateway på 10.0.5.101")
 end
 
 // *******************************************************************
@@ -131,6 +132,7 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Smarthouse Kirkegade fejl. Systemet er offline, genstart gateway på 192.168.100.86")
 end
 
 // *******************************************************************
@@ -198,6 +200,7 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Solcelle Inverter fejl. SMA systemet er offline, genstart gateway på 192.168.100.141")
 end
 
 // *******************************************************************
@@ -269,6 +272,7 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: METZ Output Module fejl. Systemet er offline, genstart gateway på 10.0.5.100")
 end
 
 // *******************************************************************
@@ -336,6 +340,7 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: CO2 Sensor fejl. Luftkvalitets sensor er offline, genstart gateway på 10.0.5.100")
 end
 
 // *******************************************************************
@@ -401,7 +406,9 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 192.168.100.86")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 192.168.100.86")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 192.168.100.86")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 192.168.100.86")end
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 192.168.100.86")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Multical 603 måler fejl. Varmemåler er offline, genstart gateway på 192.168.100.86")
+end
 
 // *******************************************************************
 // SMARTHOUSE TERNDRUPVEJ ERROR NOTIFICATION RULE
@@ -466,7 +473,9 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 192.168.100.87")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 192.168.100.87")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 192.168.100.87")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 192.168.100.87")end
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 192.168.100.87")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Smarthouse Terndrupvej fejl. Systemet er offline, genstart gateway på 192.168.100.87")
+end
 
 // *******************************************************************
 // MITSUBISHI LIVINGROOM ERROR NOTIFICATION RULE
@@ -531,4 +540,6 @@ then
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.170", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.171", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
 	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.174", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
-	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")end
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "192.168.100.177", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
+	executeCommandLine(Duration.ofSeconds(60), "/etc/openhab/scripts/sonos_doorbell_tts.sh", "10.0.1.100", "Advarsel: Varmepumpe Stue fejl. Mitsubishi varmepumpe er offline, genstart gateway på 10.0.5.102")
+end
