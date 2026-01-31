@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-31 18:45:17
+- Deleted: rules/vp_kugle_hue.not working
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-31 18:30:17
 - Modified: rules/TvStue_Rainbow.rules
 - Modified: rules/hue_OFF.rules
