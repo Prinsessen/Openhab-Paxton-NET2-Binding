@@ -15,6 +15,7 @@ Dimmer      Light2_ColorTemp                                                    
 String      Light2_Alert                                                                                              {channel="hue:0210:1:bulb2:alert"}
 Switch      Light2_Effect                                                                                             {channel="hue:0210:1:bulb2:effect"}
 Switch      Light2_ON
+Switch      TvStue_Rainbow_Mode "TV Stue Rainbow Mode"
 
 // Bedroom
 Switch      Light3_Toggle                                                                                             {channel="hue:0210:1:bulb3:color"}

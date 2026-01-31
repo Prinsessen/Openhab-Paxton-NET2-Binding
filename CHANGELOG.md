@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-31 18:15:17
+- Modified: items/hue.items
+- Added: rules/TvStue_Rainbow.rules
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-30 13:00:07
 - Modified: rules/lauge_event_reminder.rules
 - Added: rules/lauge_event_reminder.rules.backup_20260130_125640

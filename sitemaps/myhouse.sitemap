@@ -394,6 +394,7 @@ Frame label="Fordør - Porsevej 19" icon="door-blue" {
 								Setpoint item=Light_GF_Stue_Luceplan label="Luceplan" minValue=0 maxValue=100 step=2
 								Slider item=Light2_Dimmer label="Hue TV Strip [%d %%]"
 								Setpoint item=Light2_Dimmer label="Hue TV Strip [%d %%]" minValue=0 maxValue=100 step=2
+								Switch item=TvStue_Rainbow_Mode label="TV Rainbow Mode" icon="colorlight" mappings=[ON="Start", OFF="Stop"]
 								Slider item=Light4_Dimmer label="Hue Window [%d %%]"
 								Setpoint item=Light4_Dimmer label="Hue Window [%d %%]" minValue=0 maxValue=100 step=2
 								Slider item=Light_GF_VP_HUE_Bulb label="Verner Panton Kugle [%d %%]"
