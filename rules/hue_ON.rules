@@ -75,6 +75,12 @@ when
     // You can also keep your other non-polling triggers here if needed:
     Item Light2_ON changed 
 then
+    // Skip fade if Rainbow Mode is active
+    if (TvStue_Rainbow_Mode.state == ON) {
+        logDebug("rules", "Rainbow mode active - skipping Light2 fade")
+        return
+    }
+    
     // Check if the item we are polling is currently ON
     if (smarthouse_lux.state !== NULL && smarthouse_lux.state == ON) {
         

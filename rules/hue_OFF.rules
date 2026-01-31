@@ -48,6 +48,12 @@ when
     or Item smarthouse_lux changed from ON to OFF
     or Item Light2_ON changed from ON to OFF
 then
+    // Skip fade if Rainbow Mode is active
+    if (TvStue_Rainbow_Mode.state == ON) {
+        logDebug("rules", "Rainbow mode active - skipping Light2 fade-off")
+        return
+    }
+    
     if (Light2_Dimmer.state instanceof Number) {
         val Number current_dimmer_state = (Light2_Dimmer.state as Number)
         percent = ((current_dimmer_state.intValue() / 5) * 5) as Number

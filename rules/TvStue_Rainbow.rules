@@ -59,7 +59,7 @@ rule "TV Stue Rainbow Mode Cycle"
 when
     Item TvStue_Rainbow_Mode received update ON
 then
-    // Only cycle if rainbow mode is ON (not just triggered by update)
+    // Only cycle if rainbow mode is still ON (check state, not just update)
     if (TvStue_Rainbow_Mode.state == ON && currentColorIndex >= 0) {
         // Move to next color in ultra-smooth progression
         currentColorIndex = (currentColorIndex + 1) % rainbowColors.size
@@ -88,10 +88,15 @@ then
         Light2_Color.sendCommand(hue + "," + saturation + "," + currentBrightness)
         logDebug("TvStue_Rainbow", "Rainbow [" + currentColorIndex + "/72] HSB: " + hue + "," + saturation + "," + currentBrightness)
         
-        // Smooth 4-second transitions for full 5-minute rainbow cycle (72 colors × 4 sec = 288 sec ≈ 5 min)
-        rainbowTimer = createTimer(now.plusSeconds(4)) [ |
-            TvStue_Rainbow_Mode.postUpdate(ON)  // Trigger next cycle
-        ]
+        // Smooth 4-second transitions - only schedule if still ON
+        if (TvStue_Rainbow_Mode.state == ON) {
+            rainbowTimer = createTimer(now.plusSeconds(4)) [ |
+                // Double-check state before triggering next cycle
+                if (TvStue_Rainbow_Mode.state == ON) {
+                    TvStue_Rainbow_Mode.postUpdate(ON)
+                }
+            ]
+        }
     }
 end
 
@@ -106,6 +111,10 @@ then
         rainbowTimer.cancel
         logDebug("TvStue_Rainbow", "Stopped rainbow animation")
     }
+    
+    // Turn off the light
+    Light2_Toggle.sendCommand(OFF)
+    logDebug("TvStue_Rainbow", "Turned off TV Stue light")
     
     // Reset animation state
     currentColorIndex = 0

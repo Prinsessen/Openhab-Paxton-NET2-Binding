@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-01-31 18:30:17
+- Modified: rules/TvStue_Rainbow.rules
+- Modified: rules/hue_OFF.rules
+- Modified: rules/hue_ON.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-01-31 18:15:17
 - Modified: items/hue.items
 - Added: rules/TvStue_Rainbow.rules
