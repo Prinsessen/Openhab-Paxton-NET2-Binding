@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-02 10:30:17
+- Modified: rules/kirkegade_leave_lights.rules
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-02 10:15:17
 - Modified: rules/kirkegade_leave_lights.rules
 

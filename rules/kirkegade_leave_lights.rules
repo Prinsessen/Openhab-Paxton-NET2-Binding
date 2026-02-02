@@ -48,6 +48,11 @@ then
             return
         }
         
+        // Skip _Constant items (they are light sensors or control modes, not lights)
+        if (lightName.contains("_Constant")) {
+            return
+        }
+        
         // Check if light is ON (for switches) or brightness > 0 (for dimmers/numbers)
         var shouldSave = false
         var stateValue = ""
