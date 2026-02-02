@@ -1,0 +1,131 @@
+// ============================================================================
+// Kirkegade 50 - Smart Lights On Exit/Enter (Dream Catcher Phone)
+// ============================================================================
+// Automatically manage lights when leaving/entering home via geofence
+// - On EXIT: Save which lights are ON, then turn them OFF
+// - On ENTER: Restore only the lights that were ON when you left
+//
+// Target geofence: "Garage Opener - Kirkegade 50"
+// Controlled lights: All lights in Lights group (excludes outdoor/heating valves)
+// ============================================================================
+
+import java.time.LocalDateTime
+import java.util.Map
+
+// Global variable to store the state of lights when leaving
+var Map<String, String> savedLightStates = null
+var LocalDateTime lastExitTime = null
+
+// ============================================================================
+// RULE 1: Save and Turn OFF Lights When Leaving
+// ============================================================================
+
+rule "Kirkegade Lights - Save State and Turn OFF on Exit"
+when
+    Item Vehicle1_GeofenceEvent changed to "geofenceExit" or
+    Item Vehicle1_GeofenceEvent received update "geofenceExit"
+then
+    // Check if automation is enabled
+    if (Vehicle1_AutoLightsEnabled.state != ON) {
+        logInfo("Kirkegade Lights", "Smart Lights automation is disabled - skipping")
+        return
+    }
+    
+    val geofenceName = Vehicle1_GeofenceName.state.toString
+    
+    // Only act if exiting the correct geofence
+    if (geofenceName == "Garage Opener - Kirkegade 50") {
+        logInfo("Kirkegade Lights", "Dream Catcher exiting geofence - saving light states")
+        
+        // Create a new map to store light states
+        savedLightStates = newHashMap()
+        lastExitTime = LocalDateTime.now
+        
+        // Iterate through all lights in the Lights group
+        Lights.members.forEach[ light |
+            val lightState = light.state
+            val lightName = light.name
+            
+            // Skip Terndrupvej lights (different location)
+            if (lightName.startsWith("Light_Terndrup") || lightName.contains("Terndrupvej")) {
+                logInfo("Kirkegade Lights", "  Skipping Terndrupvej light: " + lightName)
+                return
+            }
+            
+            // Only save lights that are ON
+            if (lightState == ON) {
+                savedLightStates.put(light.name, "ON")
+                logInfo("Kirkegade Lights", "  Saved: " + light.name + " = ON")
+                
+                // Turn off the light
+                light.sendCommand(OFF)
+            }
+        ]
+        
+        val lightsCount = savedLightStates.size
+        logInfo("Kirkegade Lights", "Saved " + lightsCount + " lights that were ON. All lights turned OFF.")
+    }
+end
+
+// ============================================================================
+// RULE 2: Restore Saved Lights When Entering
+// ============================================================================
+
+rule "Kirkegade Lights - Restore ON Lights on Enter"
+when
+    Item Vehicle1_GeofenceEvent changed to "geofenceEnter" or
+    Item Vehicle1_GeofenceEvent received update "geofenceEnter"
+then
+    // Check if automation is enabled
+    if (Vehicle1_AutoLightsEnabled.state != ON) {
+        logInfo("Kirkegade Lights", "Smart Lights automation is disabled - skipping")
+        return
+    }
+    
+    val geofenceName = Vehicle1_GeofenceName.state.toString
+    
+    // Only act if entering the correct geofence
+    if (geofenceName == "Garage Opener - Kirkegade 50") {
+        logInfo("Kirkegade Lights", "Dream Catcher entering geofence - restoring light states")
+        
+        if (savedLightStates !== null && !savedLightStates.isEmpty) {
+            // Calculate time since exit
+            var timeSinceExit = ""
+            if (lastExitTime !== null) {
+                val minutesAway = java.time.Duration.between(lastExitTime, LocalDateTime.now).toMinutes
+                timeSinceExit = " (away for " + minutesAway + " minutes)"
+            }
+            
+            logInfo("Kirkegade Lights", "Restoring " + savedLightStates.size + " lights" + timeSinceExit)
+            
+            // Restore each saved light
+            savedLightStates.keySet.forEach[ lightName |
+                val light = Lights.members.findFirst[ l | l.name == lightName ]
+                
+                if (light !== null) {
+                    logInfo("Kirkegade Lights", "  Restoring: " + lightName + " = ON")
+                    light.sendCommand(ON)
+                } else {
+                    logWarn("Kirkegade Lights", "  Could not find light: " + lightName)
+                }
+            ]
+            
+            logInfo("Kirkegade Lights", "Light restoration complete")
+        } else {
+            logInfo("Kirkegade Lights", "No saved light states found - all lights remain off")
+        }
+    }
+end
+
+// ============================================================================
+// RULE 3: Clear Saved States on System Restart
+// ============================================================================
+
+rule "Kirkegade Lights - Initialize on System Start"
+when
+    System started
+then
+    savedLightStates = null
+    lastExitTime = null
+    logInfo("Kirkegade Lights", "System started - light state memory cleared")
+end

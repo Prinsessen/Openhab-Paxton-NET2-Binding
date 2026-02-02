@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-02 07:45:17
+- Modified: items/traccar.items
+- Added: rules/kirkegade_leave_lights.rules
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-01 07:15:08
 - Modified: rules/vacuum_kitchen.rules
 

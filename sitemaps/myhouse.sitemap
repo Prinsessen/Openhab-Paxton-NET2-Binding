@@ -37,6 +37,7 @@ sitemap myhouse label="Nanna Agesen"
 				Text item=Vehicle1_Activity label="Activity [MAP(activity.map):%s]" icon="gps-motion-teal"
 				Text item=Vehicle1_Protocol label="Protocol [MAP(protocol.map):%s]" icon="gps-protocol-teal"
 				Switch item=Vehicle1_AutoPortEnabled label="Smart Entry" icon="switch-green" mappings=[ON="activ", OFF="inactiv"]
+				Switch item=Vehicle1_AutoLightsEnabled label="Smart Lights" icon="light" mappings=[ON="activ", OFF="inactiv"]
 			}
 			Frame label="Springfield FMM920" {
 				Text item=Vehicle10_Status label="Status [%s]" icon="gps-update-blue"

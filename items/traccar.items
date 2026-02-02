@@ -163,6 +163,9 @@ Group gVehicle1 "Vehicle 694049" <car>
 // Automatic Garage Port Control for Vehicle1
 Switch Vehicle1_AutoPortEnabled "Smart Entry (Dream Catcher)" <switch>
 
+// Automatic Light Control for Vehicle1 at Kirkegade 50
+Switch Vehicle1_AutoLightsEnabled "Smart Lights (Leave/Enter)" <light>
+
 Location Vehicle1_Position "Position" (gVehicle1) {channel="traccar:device:gpsserver:694049:position"}
 Number:Speed Vehicle1_Speed "Speed [%.1f %unit%]" <speed> (gVehicle1) {channel="traccar:device:gpsserver:694049:speed"}
 Number:Angle Vehicle1_Course "Course [%.0f %unit%]" <direction> (gVehicle1) {channel="traccar:device:gpsserver:694049:course"}
