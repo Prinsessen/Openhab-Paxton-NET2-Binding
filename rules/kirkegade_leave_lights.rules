@@ -22,8 +22,7 @@ var LocalDateTime lastExitTime = null
 
 rule "Kirkegade Lights - Save State and Turn OFF on Exit"
 when
-    Item Vehicle1_GeofenceEvent changed to "geofenceExit" or
-    Item Vehicle1_GeofenceEvent received update "geofenceExit"
+    Item Vehicle1_GeofenceName changed from "Garage Opener - Kirkegade 50 "
 then
     // Check if automation is enabled
     if (Vehicle1_AutoLightsEnabled.state != ON) {
@@ -31,11 +30,8 @@ then
         return
     }
     
-    val geofenceName = Vehicle1_GeofenceName.state.toString
-    
-    // Only act if exiting the correct geofence
-    if (geofenceName == "Garage Opener - Kirkegade 50") {
-        logInfo("Kirkegade Lights", "Dream Catcher exiting geofence - saving light states")
+    // We're leaving Kirkegade 50
+        logInfo("Kirkegade Lights", "Dream Catcher exiting Kirkegade 50 - saving light states")
         
         // Create a new map to store light states
         savedLightStates = newHashMap()
@@ -64,7 +60,6 @@ then
         
         val lightsCount = savedLightStates.size
         logInfo("Kirkegade Lights", "Saved " + lightsCount + " lights that were ON. All lights turned OFF.")
-    }
 end
 
 // ============================================================================
@@ -73,8 +68,7 @@ end
 
 rule "Kirkegade Lights - Restore ON Lights on Enter"
 when
-    Item Vehicle1_GeofenceEvent changed to "geofenceEnter" or
-    Item Vehicle1_GeofenceEvent received update "geofenceEnter"
+    Item Vehicle1_GeofenceName changed to "Garage Opener - Kirkegade 50 "
 then
     // Check if automation is enabled
     if (Vehicle1_AutoLightsEnabled.state != ON) {
@@ -82,11 +76,8 @@ then
         return
     }
     
-    val geofenceName = Vehicle1_GeofenceName.state.toString
-    
-    // Only act if entering the correct geofence
-    if (geofenceName == "Garage Opener - Kirkegade 50") {
-        logInfo("Kirkegade Lights", "Dream Catcher entering geofence - restoring light states")
+    // We're entering Kirkegade 50
+    logInfo("Kirkegade Lights", "Dream Catcher entering Kirkegade 50 - restoring light states")
         
         if (savedLightStates !== null && !savedLightStates.isEmpty) {
             // Calculate time since exit
@@ -114,7 +105,6 @@ then
         } else {
             logInfo("Kirkegade Lights", "No saved light states found - all lights remain off")
         }
-    }
 end
 
 // ============================================================================
