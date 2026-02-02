@@ -22,7 +22,7 @@ var LocalDateTime lastExitTime = null
 
 rule "Kirkegade Lights - Save State and Turn OFF on Exit"
 when
-    Item Vehicle1_GeofenceName changed from "Garage Opener - Kirkegade 50 "
+    Item Vehicle1_GeofenceId changed from 1
 then
     // Check if automation is enabled
     if (Vehicle1_AutoLightsEnabled.state != ON) {
@@ -30,36 +30,52 @@ then
         return
     }
     
-    // We're leaving Kirkegade 50
-        logInfo("Kirkegade Lights", "Dream Catcher exiting Kirkegade 50 - saving light states")
+    // We're leaving Kirkegade 50 (geofence ID 1)
+    logInfo("Kirkegade Lights", "Dream Catcher exiting Kirkegade 50 (geofence 1) - saving light states")
+    
+    // Create a new map to store light states
+    savedLightStates = newHashMap()
+    lastExitTime = LocalDateTime.now
+    
+    // Iterate through all lights in the Lights group
+    Lights.members.forEach[ light |
+        val lightState = light.state
+        val lightName = light.name
         
-        // Create a new map to store light states
-        savedLightStates = newHashMap()
-        lastExitTime = LocalDateTime.now
+        // Skip Terndrupvej lights (different location)
+        if (lightName.startsWith("Light_Terndrup") || lightName.contains("Terndrupvej")) {
+            logInfo("Kirkegade Lights", "  Skipping Terndrupvej light: " + lightName)
+            return
+        }
         
-        // Iterate through all lights in the Lights group
-        Lights.members.forEach[ light |
-            val lightState = light.state
-            val lightName = light.name
-            
-            // Skip Terndrupvej lights (different location)
-            if (lightName.startsWith("Light_Terndrup") || lightName.contains("Terndrupvej")) {
-                logInfo("Kirkegade Lights", "  Skipping Terndrupvej light: " + lightName)
-                return
+        // Check if light is ON (for switches) or brightness > 0 (for dimmers/numbers)
+        var shouldSave = false
+        var stateValue = ""
+        
+        if (lightState == ON) {
+            // Switch is ON
+            shouldSave = true
+            stateValue = "ON"
+        } else if (lightState instanceof Number || lightState instanceof DecimalType) {
+            // Dimmer or Number type (including _Constant items) - check if brightness > 0
+            val brightness = (lightState as Number).intValue
+            if (brightness > 0) {
+                shouldSave = true
+                stateValue = brightness.toString
             }
-            
-            // Only save lights that are ON
-            if (lightState == ON) {
-                savedLightStates.put(light.name, "ON")
-                logInfo("Kirkegade Lights", "  Saved: " + light.name + " = ON")
-                
-                // Turn off the light
-                light.sendCommand(OFF)
-            }
-        ]
+        }
         
-        val lightsCount = savedLightStates.size
-        logInfo("Kirkegade Lights", "Saved " + lightsCount + " lights that were ON. All lights turned OFF.")
+        if (shouldSave) {
+            savedLightStates.put(light.name, stateValue)
+            logInfo("Kirkegade Lights", "  Saved: " + light.name + " = " + stateValue)
+            
+            // Turn off the light
+            light.sendCommand(OFF)
+        }
+    ]
+    
+    val lightsCount = savedLightStates.size
+    logInfo("Kirkegade Lights", "Saved " + lightsCount + " lights that were ON. All lights turned OFF.")
 end
 
 // ============================================================================
@@ -68,7 +84,7 @@ end
 
 rule "Kirkegade Lights - Restore ON Lights on Enter"
 when
-    Item Vehicle1_GeofenceName changed to "Garage Opener - Kirkegade 50 "
+    Item Vehicle1_GeofenceId changed to 1
 then
     // Check if automation is enabled
     if (Vehicle1_AutoLightsEnabled.state != ON) {
@@ -76,35 +92,44 @@ then
         return
     }
     
-    // We're entering Kirkegade 50
-    logInfo("Kirkegade Lights", "Dream Catcher entering Kirkegade 50 - restoring light states")
+    // We're entering Kirkegade 50 (geofence ID 1)
+    logInfo("Kirkegade Lights", "Dream Catcher entering Kirkegade 50 (geofence 1) - restoring light states")
+    
+    if (savedLightStates !== null && !savedLightStates.isEmpty) {
+        // Calculate time since exit
+        var timeSinceExit = ""
+        if (lastExitTime !== null) {
+            val minutesAway = java.time.Duration.between(lastExitTime, LocalDateTime.now).toMinutes
+            timeSinceExit = " (away for " + minutesAway + " minutes)"
+        }
         
-        if (savedLightStates !== null && !savedLightStates.isEmpty) {
-            // Calculate time since exit
-            var timeSinceExit = ""
-            if (lastExitTime !== null) {
-                val minutesAway = java.time.Duration.between(lastExitTime, LocalDateTime.now).toMinutes
-                timeSinceExit = " (away for " + minutesAway + " minutes)"
-            }
+        logInfo("Kirkegade Lights", "Restoring " + savedLightStates.size + " lights" + timeSinceExit)
+        
+        // Restore each saved light
+        savedLightStates.keySet.forEach[ lightName |
+            val light = Lights.members.findFirst[ l | l.name == lightName ]
             
-            logInfo("Kirkegade Lights", "Restoring " + savedLightStates.size + " lights" + timeSinceExit)
-            
-            // Restore each saved light
-            savedLightStates.keySet.forEach[ lightName |
-                val light = Lights.members.findFirst[ l | l.name == lightName ]
+            if (light !== null) {
+                val savedValue = savedLightStates.get(lightName)
                 
-                if (light !== null) {
+                // Restore to previous state (ON for switches, or brightness level for dimmers)
+                if (savedValue == "ON") {
                     logInfo("Kirkegade Lights", "  Restoring: " + lightName + " = ON")
                     light.sendCommand(ON)
                 } else {
-                    logWarn("Kirkegade Lights", "  Could not find light: " + lightName)
+                    // Restore dimmer to previous brightness
+                    logInfo("Kirkegade Lights", "  Restoring: " + lightName + " = " + savedValue + "%")
+                    light.sendCommand(savedValue)
                 }
-            ]
-            
-            logInfo("Kirkegade Lights", "Light restoration complete")
-        } else {
-            logInfo("Kirkegade Lights", "No saved light states found - all lights remain off")
-        }
+            } else {
+                logWarn("Kirkegade Lights", "  Could not find light: " + lightName)
+            }
+        ]
+        
+        logInfo("Kirkegade Lights", "Light restoration complete")
+    } else {
+        logInfo("Kirkegade Lights", "No saved light states found - all lights remain off")
+    }
 end
 
 // ============================================================================
