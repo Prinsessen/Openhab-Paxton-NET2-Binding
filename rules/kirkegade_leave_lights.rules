@@ -22,11 +22,18 @@ var LocalDateTime lastExitTime = null
 
 rule "Kirkegade Lights - Save State and Turn OFF on Exit"
 when
-    Item Vehicle1_GeofenceId changed from 1
+    Item Vehicle1_GeofenceEvent changed to "geofenceExit"
 then
     // Check if automation is enabled
     if (Vehicle1_AutoLightsEnabled.state != ON) {
         logInfo("Kirkegade Lights", "Smart Lights automation is disabled - skipping")
+        return
+    }
+    
+    // Check if we're leaving geofence ID 1 (Kirkegade 50)
+    val currentGeofenceId = Vehicle1_GeofenceId.state
+    if (currentGeofenceId != 1) {
+        logInfo("Kirkegade Lights", "Exiting geofence " + currentGeofenceId + " (not Kirkegade) - skipping")
         return
     }
     
@@ -93,11 +100,18 @@ end
 
 rule "Kirkegade Lights - Restore ON Lights on Enter"
 when
-    Item Vehicle1_GeofenceId changed to 1
+    Item Vehicle1_GeofenceEvent changed to "geofenceEnter"
 then
     // Check if automation is enabled
     if (Vehicle1_AutoLightsEnabled.state != ON) {
         logInfo("Kirkegade Lights", "Smart Lights automation is disabled - skipping")
+        return
+    }
+    
+    // Check if we're entering geofence ID 1 (Kirkegade 50)
+    val currentGeofenceId = Vehicle1_GeofenceId.state
+    if (currentGeofenceId != 1) {
+        logInfo("Kirkegade Lights", "Entering geofence " + currentGeofenceId + " (not Kirkegade) - skipping")
         return
     }
     
