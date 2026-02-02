@@ -69,8 +69,12 @@ then
             savedLightStates.put(light.name, stateValue)
             logInfo("Kirkegade Lights", "  Saved: " + light.name + " = " + stateValue)
             
-            // Turn off the light
-            light.sendCommand(OFF)
+            // Turn off the light (use 0 for dimmers/numbers, OFF for switches)
+            if (stateValue == "ON") {
+                light.sendCommand(OFF)
+            } else {
+                light.sendCommand(0)
+            }
         }
     ]
     
