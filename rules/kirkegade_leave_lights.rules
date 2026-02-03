@@ -60,6 +60,12 @@ then
             return
         }
         
+        // Skip outdoor/garden lights (Have group)
+        if (lightName.startsWith("Light_Have") || lightName == "SG_Door") {
+            logInfo("Kirkegade Lights", "  Skipping outdoor light: " + lightName)
+            return
+        }
+        
         // Check if light is ON (for switches) or brightness > 0 (for dimmers/numbers)
         var shouldSave = false
         var stateValue = ""
