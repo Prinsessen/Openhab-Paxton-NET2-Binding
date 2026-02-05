@@ -66,6 +66,18 @@ then
             return
         }
         
+        // Skip TV outlet in bedroom
+        if (lightName == "Light_GF_Sove_TV") {
+            logInfo("Kirkegade Lights", "  Skipping TV outlet: " + lightName)
+            return
+        }
+        
+        // Skip office Luceplan armatur
+        if (lightName == "Light_GC_Kontor_Pendel") {
+            logInfo("Kirkegade Lights", "  Skipping office armatur: " + lightName)
+            return
+        }
+        
         // Check if light is ON (for switches) or brightness > 0 (for dimmers/numbers)
         var shouldSave = false
         var stateValue = ""
