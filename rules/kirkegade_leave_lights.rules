@@ -108,6 +108,86 @@ then
         }
     ]
     
+    // Also handle Hue lights (not in Lights group)
+    // Excluding Light4_Toggle (Living Room Triangle) and Light10_Toggle (Kitchen Hood Accent)
+    
+    // Light1_Toggle - Spisestue
+    if (Light1_Toggle.state == ON) {
+        savedLightStates.put("Light1_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light1_Toggle (Spisestue) = ON")
+        Light1_Toggle.sendCommand(OFF)
+    }
+    
+    // Light2_Toggle - Tvstue
+    if (Light2_Toggle.state == ON) {
+        savedLightStates.put("Light2_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light2_Toggle (Tvstue) = ON")
+        Light2_Toggle.sendCommand(OFF)
+    }
+    
+    // Light3_Toggle - Bedroom
+    if (Light3_Toggle.state == ON) {
+        savedLightStates.put("Light3_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light3_Toggle (Bedroom) = ON")
+        Light3_Toggle.sendCommand(OFF)
+    }
+    
+    // Light5_Toggle - Ensis UP
+    if (Light5_Toggle.state == ON) {
+        savedLightStates.put("Light5_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light5_Toggle (Ensis UP) = ON")
+        Light5_Toggle.sendCommand(OFF)
+    }
+    
+    // Light6_Toggle - Ensis Down
+    if (Light6_Toggle.state == ON) {
+        savedLightStates.put("Light6_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light6_Toggle (Ensis Down) = ON")
+        Light6_Toggle.sendCommand(OFF)
+    }
+    
+    // Light7_Toggle - MOON Maxi
+    if (Light7_Toggle.state == ON) {
+        savedLightStates.put("Light7_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light7_Toggle (MOON Maxi) = ON")
+        Light7_Toggle.sendCommand(OFF)
+    }
+    
+    // Light8_Toggle - MOON Midi
+    if (Light8_Toggle.state == ON) {
+        savedLightStates.put("Light8_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light8_Toggle (MOON Midi) = ON")
+        Light8_Toggle.sendCommand(OFF)
+    }
+    
+    // Light9_Toggle - MOON Mini
+    if (Light9_Toggle.state == ON) {
+        savedLightStates.put("Light9_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light9_Toggle (MOON Mini) = ON")
+        Light9_Toggle.sendCommand(OFF)
+    }
+    
+    // Light13_Toggle - Festivitas
+    if (Light13_Toggle.state == ON) {
+        savedLightStates.put("Light13_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light13_Toggle (Festivitas) = ON")
+        Light13_Toggle.sendCommand(OFF)
+    }
+    
+    // Light14_Toggle - Luceplan Group
+    if (Light14_Toggle.state == ON) {
+        savedLightStates.put("Light14_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light14_Toggle (Luceplan Group) = ON")
+        Light14_Toggle.sendCommand(OFF)
+    }
+    
+    // Light17_Toggle - VP Kugle
+    if (Light17_Toggle.state == ON) {
+        savedLightStates.put("Light17_Toggle", "ON")
+        logInfo("Kirkegade Lights", "  Saved Hue: Light17_Toggle (VP Kugle) = ON")
+        Light17_Toggle.sendCommand(OFF)
+    }
+    
     val lightsCount = savedLightStates.size
     logInfo("Kirkegade Lights", "Saved " + lightsCount + " lights that were ON. All lights turned OFF.")
 end
@@ -148,22 +228,43 @@ then
         
         // Restore each saved light
         savedLightStates.keySet.forEach[ lightName |
-            val light = Lights.members.findFirst[ l | l.name == lightName ]
+            val savedValue = savedLightStates.get(lightName)
             
-            if (light !== null) {
-                val savedValue = savedLightStates.get(lightName)
+            // Check if it's a Hue light or regular light
+            if (lightName.startsWith("Light") && lightName.contains("_Toggle")) {
+                // It's a Hue light - restore using switch statement
+                logInfo("Kirkegade Lights", "  Restoring Hue: " + lightName + " = ON")
                 
-                // Restore to previous state (ON for switches, or brightness level for dimmers)
-                if (savedValue == "ON") {
-                    logInfo("Kirkegade Lights", "  Restoring: " + lightName + " = ON")
-                    light.sendCommand(ON)
-                } else {
-                    // Restore dimmer to previous brightness
-                    logInfo("Kirkegade Lights", "  Restoring: " + lightName + " = " + savedValue + "%")
-                    light.sendCommand(savedValue)
+                switch lightName {
+                    case "Light1_Toggle": Light1_Toggle.sendCommand(ON)
+                    case "Light2_Toggle": Light2_Toggle.sendCommand(ON)
+                    case "Light3_Toggle": Light3_Toggle.sendCommand(ON)
+                    case "Light5_Toggle": Light5_Toggle.sendCommand(ON)
+                    case "Light6_Toggle": Light6_Toggle.sendCommand(ON)
+                    case "Light7_Toggle": Light7_Toggle.sendCommand(ON)
+                    case "Light8_Toggle": Light8_Toggle.sendCommand(ON)
+                    case "Light9_Toggle": Light9_Toggle.sendCommand(ON)
+                    case "Light13_Toggle": Light13_Toggle.sendCommand(ON)
+                    case "Light14_Toggle": Light14_Toggle.sendCommand(ON)
+                    case "Light17_Toggle": Light17_Toggle.sendCommand(ON)
                 }
             } else {
-                logWarn("Kirkegade Lights", "  Could not find light: " + lightName)
+                // It's a regular light - find in Lights group
+                val light = Lights.members.findFirst[ l | l.name == lightName ]
+                
+                if (light !== null) {
+                    // Restore to previous state (ON for switches, or brightness level for dimmers)
+                    if (savedValue == "ON") {
+                        logInfo("Kirkegade Lights", "  Restoring: " + lightName + " = ON")
+                        light.sendCommand(ON)
+                    } else {
+                        // Restore dimmer to previous brightness
+                        logInfo("Kirkegade Lights", "  Restoring: " + lightName + " = " + savedValue + "%")
+                        light.sendCommand(savedValue)
+                    }
+                } else {
+                    logWarn("Kirkegade Lights", "  Could not find light: " + lightName)
+                }
             }
         ]
         
