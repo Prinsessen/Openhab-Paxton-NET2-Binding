@@ -184,6 +184,11 @@ sitemap myhouse label="Nanna Agesen"
 	Frame label="Home Security" {
 			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="security-red"
 			Text item=Alarmsystem_Info icon="security-red"
+			Text label="Body Detection Camera" icon="camera" {
+				Frame label="Live Detections" {
+					Webview url="/static/hikvision_detections.html" height=15
+				}
+			}
 	}
 	Frame label="Temperature and Weather" {
 		Text item=Temperature label="Avg. Temperature" icon="temp-orange"

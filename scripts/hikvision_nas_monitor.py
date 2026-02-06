@@ -77,6 +77,15 @@ def display_image(jpeg_data, timestamp):
         with open(temp_path, 'wb') as f:
             f.write(jpeg_data)
         
+        # Also save to OpenHAB html directory for web serving
+        openhab_path = "/etc/openhab/html/hikvision_latest.jpg"
+        try:
+            with open(openhab_path, 'wb') as f:
+                f.write(jpeg_data)
+            print(f"    {Colors.OKGREEN}✓ Updated web image: {openhab_path}{Colors.ENDC}")
+        except Exception as e:
+            print(f"    {Colors.WARNING}⚠ Could not save to OpenHAB html: {e}{Colors.ENDC}")
+        
         # Try to display using feh (lightweight image viewer) in background
         try:
             subprocess.Popen(['feh', '--geometry', '800x600', '--title', 'Body Detection', temp_path],
