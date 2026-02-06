@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 09:00:18
+- Added: net2-binding.backup_20260206_085502
+- Added: scripts/net2_lockdown.py
+- Deleted: scripts/test_lockdown.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 08:45:08
 - Deleted: scripts/discover_net2_endpoints.py
 - Deleted: scripts/explore_net2_api.py
