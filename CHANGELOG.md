@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 10:00:18
+- Added: scripts/test_wireless_door.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 09:30:18
 - Modified: items/net2.items
 - Modified: net2-binding/CHANGELOG.md
