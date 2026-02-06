@@ -166,12 +166,9 @@ def process_event(event):
     # Update statistics
     event_stats[event['eventType']] += 1
     
-    # Log unknown event types to a file for debugging
-    known_events = ['VMD', 'videoloss', 'tamperdetection', 'linedetection', 'fielddetection', 
-                   'facedetection', 'PIR', 'unattendedBaggage', 'attendedBaggage', 'defocus']
-    if event['eventType'] not in known_events:
-        with open('/tmp/hikvision_unknown_events.log', 'a') as f:
-            f.write(f"{datetime.now()} - Unknown event: {event['eventType']} - State: {event['eventState']}\n")
+    # Log ALL events to file for debugging (temporarily to catch body/face events)
+    with open('/tmp/hikvision_all_events.log', 'a') as f:
+        f.write(f"{datetime.now()} - Event: {event['eventType']} - State: {event['eventState']} - Desc: {event.get('eventDescription', 'N/A')}\n")
     
     # Add to history
     last_events.append(event)
