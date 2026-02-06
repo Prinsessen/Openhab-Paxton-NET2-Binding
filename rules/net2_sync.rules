@@ -35,3 +35,10 @@ when
 then
     Net2_Door5_Action.postUpdate(Net2_Door5_Status.state)
 end
+
+rule "Sync Door 6 Status to Action"
+when
+    Item Net2_Door6_Status changed
+then
+    Net2_Door6_Action.postUpdate(Net2_Door6_Status.state)
+end

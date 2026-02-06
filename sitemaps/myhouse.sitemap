@@ -291,7 +291,7 @@ Frame label="Basement Door - Kirkegade" icon="basement-door-gray" {
 Frame label="Værksted Dør - Wireless" icon="door-blue" {
 		Switch item=Net2_Door6_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="unlock-green"
 		Switch item=Net2_Door6_Status label="Door Physical Status" icon="door-status-cyan" 
-		Switch item=Net2_Door6_ControlTimed label="Timed Door" mappings=[1="Open"] icon="timed-lock-orange"
+		Switch item=Net2_Door6_ControlTimed label="Timed Door" mappings=[15="Open"] icon="timed-lock-orange"
 		Text item=Net2_Door6_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="sensor-green"
  		Default item=Net2_Door6_LastTime label="Last Time Access" icon="activity-time-blue"
 		Default item=Net2_Door6_LastUser label="Last User Access" icon="user-purple"
