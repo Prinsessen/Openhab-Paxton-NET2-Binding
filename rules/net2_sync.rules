@@ -42,3 +42,21 @@ when
 then
     Net2_Door6_Action.postUpdate(Net2_Door6_Status.state)
 end
+
+// Simulate Door 6 status feedback (wireless door doesn't report back)
+rule "Simulate Door 6 Status on Timed Command"
+when
+    Item Net2_Door6_ControlTimed received command
+then
+    val duration = (receivedCommand as Number).intValue
+    
+    // Set status to ON immediately
+    Net2_Door6_Status.postUpdate(ON)
+    Net2_Door6_Action.postUpdate(ON)
+    
+    // Set status back to OFF after the timed duration
+    createTimer(now.plusSeconds(duration), [|
+        Net2_Door6_Status.postUpdate(OFF)
+        Net2_Door6_Action.postUpdate(OFF)
+    ])
+end

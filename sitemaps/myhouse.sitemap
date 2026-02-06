@@ -245,8 +245,8 @@ sitemap myhouse label="Nanna Agesen"
 			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="camera-zoom-blue"
 	}
 Text label="Access Control" icon="key-orange" {
-Frame label="Building Lockdown" icon="lock-red" {
-		Switch item=Net2_Lockdown mappings=[ON="Enable Lockdown", OFF="Disable Lockdown"] label="Building Lockdown Control"
+Frame label="Building Lockdown" icon="shield-red" {
+		Switch item=Net2_Lockdown mappings=[ON="Enable", OFF="Disable"] label="Building Lockdown Control"
 	}
 Frame label="Front Door - Kirkegade" icon="door-blue" {
 		Switch item=Net2_Door1_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="unlock-green" 
@@ -289,9 +289,8 @@ Frame label="Basement Door - Kirkegade" icon="basement-door-gray" {
 		Text item=Net2_Door4_AccessDenied label="Last Access Denied [JS(accessdenied.js):%s]" icon="access-denied-red" visibility=[Net2_Door4_AccessDenied!="NULL"]
 }
 Frame label="Værksted Dør - Wireless" icon="door-blue" {
-		Switch item=Net2_Door6_Action mappings=[ON="Open", OFF="Closed"] label="Control Door" icon="unlock-green"
+		Switch item=Net2_Door6_ControlTimed label="Door Control" mappings=[15="Open"] icon="timed-lock-orange"
 		Switch item=Net2_Door6_Status label="Door Physical Status" icon="door-status-cyan" 
-		Switch item=Net2_Door6_ControlTimed label="Timed Door" mappings=[15="Open"] icon="timed-lock-orange"
 		Text item=Net2_Door6_Status label="Activity [MAP(net2doorstatus.map):%s]" icon="sensor-green"
  		Default item=Net2_Door6_LastTime label="Last Time Access" icon="activity-time-blue"
 		Default item=Net2_Door6_LastUser label="Last User Access" icon="user-purple"
