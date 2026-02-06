@@ -7,6 +7,16 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 08:30:18
+- Added: scripts/deep_dive_net2.py
+- Added: scripts/discover_net2_endpoints.py
+- Added: scripts/explore_net2_api.py
+- Added: scripts/net2_lockdown.py
+- Added: scripts/simulate_lockdown.py
+- Added: scripts/test_lockdown.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-05 17:00:18
 - Modified: things/net2.things
 
