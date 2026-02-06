@@ -67,20 +67,28 @@ def get_door_state(token, door_id):
 
 def control_door_standard(token, door_id):
     """Standard door control method (used by binding for wired doors)"""
-    url = f"{BASE_URL}/doors/{door_id}/control"
+    url = f"{BASE_URL}/commands/door/control"
     headers = {"Authorization": f"Bearer {token}"}
-    data = {"doorCommand": 1}  # 1 = Open
+    data = {
+        "DoorId": door_id,
+        "RelayFunction": {
+            "RelayId": "Relay1",
+            "RelayAction": "TimedOpen",
+            "RelayOpenTime": 5000  # 5 seconds in milliseconds
+        },
+        "LedFlash": 3
+    }
     
     try:
-        response = requests.put(url, headers=headers, json=data, verify=False, timeout=10)
+        response = requests.post(url, headers=headers, json=data, verify=False, timeout=10)
         return {
-            "method": "PUT /doors/{id}/control",
+            "method": "POST /commands/door/control",
             "status_code": response.status_code,
             "response": response.text,
             "success": response.status_code in [200, 202, 204]
         }
     except Exception as e:
-        return {"method": "PUT /doors/{id}/control", "error": str(e)}
+        return {"method": "POST /commands/door/control", "error": str(e)}
 
 def control_door_unlock(token, door_id):
     """Alternative method: /unlock endpoint"""
@@ -182,7 +190,7 @@ def main():
         print(f"\n[5] Testing control methods for {door_id}...")
         
         # Method 1: Standard control (used by binding)
-        print("\n  Method 1: Standard PUT /doors/{id}/control")
+        print("\n  Method 1: POST /commands/door/control")
         result = control_door_standard(token, door_id)
         print(f"  Result: {json.dumps(result, indent=4)}")
         

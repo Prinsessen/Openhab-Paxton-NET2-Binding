@@ -28,4 +28,8 @@ Bridge net2:net2server:server "Net2 Server" [
         doorId=7319051,
         name="Porsevej 19"
     ]
+    Thing door door6 "Værksted Dør - Wireless" [
+        doorId=3962494,
+        name="Værksted Dør"
+    ]
 }

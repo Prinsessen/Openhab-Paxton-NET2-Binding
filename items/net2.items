@@ -58,6 +58,12 @@ String Net2_Door5_LastUser "Last Access User [%s]" { channel="net2:door:server:d
 Number Net2_Door5_ControlTimed "Door 5 Timed Control" { channel="net2:door:server:door5:controlTimed" }
 DateTime Net2_Door5_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:door:server:door5:lastAccessTime" }
 
+Switch Net2_Door6_Action "Door Action - Værksted" { channel="net2:door:server:door6:action" }
+Switch Net2_Door6_Status "Door Status - Værksted" { channel="net2:door:server:door6:status" }
+String Net2_Door6_LastUser "Last Access User [%s]" { channel="net2:door:server:door6:lastAccessUser" }
+Number Net2_Door6_ControlTimed "Door 6 Timed Control - Værksted" { channel="net2:door:server:door6:controlTimed" }
+DateTime Net2_Door6_LastTime "Last Access Time [%1$tF %1$tT]" { channel="net2:door:server:door6:lastAccessTime" }
+
 // ==============================================
 // Entry Log Items (JSON format for UI display)
 // ==============================================
@@ -66,6 +72,7 @@ String Net2_Door2_EntryLog "Entry Log [%s]" { channel="net2:door:server:door2:en
 String Net2_Door3_EntryLog "Entry Log [%s]" { channel="net2:door:server:door3:entryLog" }
 String Net2_Door4_EntryLog "Entry Log [%s]" { channel="net2:door:server:door4:entryLog" }
 String Net2_Door5_EntryLog "Entry Log [%s]" { channel="net2:door:server:door5:entryLog" }
+String Net2_Door6_EntryLog "Entry Log [%s]" { channel="net2:door:server:door6:entryLog" }
 
 // ==============================================
 // Access Denied Items (JSON format for security alerts)
@@ -75,6 +82,7 @@ String Net2_Door2_AccessDenied "Access Denied [%s]" { channel="net2:door:server:
 String Net2_Door3_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door3:accessDenied" }
 String Net2_Door4_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door4:accessDenied" }
 String Net2_Door5_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door5:accessDenied" }
+String Net2_Door6_AccessDenied "Access Denied [%s]" { channel="net2:door:server:door6:accessDenied" }
 
 // ==============================================
 // Entry Log Counter (for InfluxDB - increments on each entry)
@@ -84,6 +92,7 @@ Number Net2_Door2_EntryCount "Entry Count [%d]" <log>
 Number Net2_Door3_EntryCount "Entry Count [%d]" <log>
 Number Net2_Door4_EntryCount "Entry Count [%d]" <log>
 Number Net2_Door5_EntryCount "Entry Count [%d]" <log>
+Number Net2_Door6_EntryCount "Entry Count [%d]" <log>
 
 // ==============================================
 // Entry Log Parsed Fields (for InfluxDB tables with names)
@@ -112,6 +121,11 @@ String Net2_Door5_EntryFirstName "First Name [%s]"
 String Net2_Door5_EntryLastName "Last Name [%s]"
 String Net2_Door5_EntryFullName "Full Name [%s]"
 String Net2_Door5_EntryDoorName "Door Name [%s]"
+
+String Net2_Door6_EntryFirstName "First Name [%s]"
+String Net2_Door6_EntryLastName "Last Name [%s]"
+String Net2_Door6_EntryFullName "Full Name [%s]"
+String Net2_Door6_EntryDoorName "Door Name [%s]"
 
 // ==============================================
 // Add more doors as needed...
