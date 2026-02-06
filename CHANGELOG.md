@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 11:00:17
+- Added: scripts/test_door_handle.py
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 10:45:01
 - Modified: rules/net2_sync.rules
 - Modified: sitemaps/myhouse.sitemap

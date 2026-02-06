@@ -245,7 +245,7 @@ sitemap myhouse label="Nanna Agesen"
 			Setpoint item=WestZoom label="Camera Zoom (In/Out)" minValue=0 maxValue=6 step=0.1 icon="camera-zoom-blue"
 	}
 Text label="Access Control" icon="key-orange" {
-Frame label="Building Lockdown" icon="shield-red" {
+Frame label="Building Lockdown" icon="security-red" {
 		Switch item=Net2_Lockdown mappings=[ON="Enable", OFF="Disable"] label="Building Lockdown Control"
 	}
 Frame label="Front Door - Kirkegade" icon="door-blue" {
