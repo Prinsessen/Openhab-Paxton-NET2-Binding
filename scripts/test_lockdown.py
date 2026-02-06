@@ -7,10 +7,22 @@ Tests the Net2 building lockdown feature. Lockdown is a security feature
 that can lock all doors simultaneously in an emergency.
 
 Usage:
-  python3 test_lockdown.py status              # Check current lockdown status
-  python3 test_lockdown.py enable              # Enable lockdown (locks all doors)
-  python3 test_lockdown.py disable             # Disable lockdown (returns to normal)
-  python3 test_lockdown.py test                # Test with status check before/after
+  python3 test_lockdown.py status                          # Check current lockdown status
+  python3 test_lockdown.py rules                           # Discover trigger/action rules
+  python3 test_lockdown.py enable [trigger_id] [action_id] # Enable lockdown
+  python3 test_lockdown.py disable [trigger_id] [action_id]# Disable lockdown
+  python3 test_lockdown.py test                            # Test with status check before/after
+
+Examples:
+  python3 test_lockdown.py rules
+  python3 test_lockdown.py enable 123 456
+  python3 test_lockdown.py disable
+
+API Endpoint:
+  POST /api/v1/commands/controlLockdown
+  
+  Requires trigger and action rules to be configured in Net2 system.
+  These rules define which doors are affected by lockdown.
 
 Requirements:
   - net2_config.json in same directory with API credentials
@@ -149,123 +161,188 @@ def get_lockdown_status(config, token):
     log("Could not find lockdown status endpoint", Colors.FAIL)
     return {'success': False, 'endpoint': None, 'data': None}
 
-def enable_lockdown(config, token):
+def get_lockdown_rules(config, token):
+    """
+    Get available trigger and action rules for lockdown
+    
+    Returns:
+        dict: Available rules
+    """
+    # Try to find rules endpoints
+    endpoints = [
+        (f"{config['base_url']}/rules", "All Rules"),
+        (f"{config['base_url']}/lockdown/rules", "Lockdown Rules"),
+        (f"{config['base_url']}/triggers", "Trigger Rules"),
+        (f"{config['base_url']}/actions", "Action Rules"),
+    ]
+    
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}"
+    }
+    
+    log("Discovering lockdown rules...", Colors.OKBLUE)
+    
+    results = {}
+    for endpoint, name in endpoints:
+        try:
+            log(f"Checking {name}: {endpoint}")
+            resp = requests.get(endpoint, headers=headers, verify=False, timeout=10)
+            
+            if resp.status_code == 200:
+                data = resp.json()
+                log(f"✓ Found {name}", Colors.OKGREEN)
+                results[name] = data
+                # Print preview
+                if isinstance(data, list) and len(data) > 0:
+                    log(f"  Found {len(data)} items", Colors.OKCYAN)
+                    log(f"  Sample: {json.dumps(data[0] if len(data) > 0 else {}, indent=2)[:200]}...", Colors.OKCYAN)
+            elif resp.status_code == 404:
+                log(f"  Not found (404)", Colors.WARNING)
+        except Exception as e:
+            log(f"  Error: {e}", Colors.WARNING)
+    
+    return results
+
+def enable_lockdown(config, token, trigger_rule_id=None, action_rule_id=None):
     """
     Enable lockdown mode (locks all doors)
+    Uses /api/v1/commands/controlLockdown endpoint
+    
+    Args:
+        trigger_rule_id: Optional trigger rule ID (discovery mode if None)
+        action_rule_id: Optional action rule ID (discovery mode if None)
     
     Returns:
         bool: True if successful
     """
-    # Try command-based approach (standard Net2 API pattern)
-    command_names = [
-        "LockdownEnable",
-        "EnableLockdown", 
-        "Lockdown",
-        "BuildingLockdown",
-        "LockdownOn"
-    ]
+    url = f"{config['base_url']}/commands/controlLockdown"
     
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
     }
     
-    log("Attempting to enable lockdown via command API...", Colors.WARNING)
+    log("Attempting to enable lockdown...", Colors.WARNING)
     
-    for command_name in command_names:
+    # Try different payload structures
+    payloads = []
+    
+    # If specific IDs provided, use them
+    if trigger_rule_id and action_rule_id:
+        payloads.append({
+            "TriggerRuleId": trigger_rule_id,
+            "ActionRuleId": action_rule_id,
+            "lockdown": True
+        })
+    
+    # Discovery mode - try common structures (based on API response showing "lockdown" field)
+    payloads.extend([
+        {"lockdown": True},  # Try this first - API response shows this field name
+        {"Lockdown": True},
+        {"Enabled": True},
+        {"Enable": True},
+        {"State": "Enabled"},
+        {"Action": "Enable"},
+        {"LockdownState": True},
+        {},  # Empty body
+    ])
+    
+    for i, data in enumerate(payloads):
         try:
-            # Standard Net2 command structure
-            data = {
-                "CommandName": command_name,
-                "Input": {
-                    "Enabled": True
-                }
-            }
+            log(f"Trying payload #{i+1}: {json.dumps(data)}")
+            resp = requests.post(url, headers=headers, json=data, verify=False, timeout=10)
             
-            log(f"Trying command: {command_name}")
-            resp = requests.post(
-                f"{config['base_url']}/commands",
-                headers=headers,
-                json=data,
-                verify=False,
-                timeout=10
-            )
-            
-            if resp.status_code in [200, 201]:
-                result = resp.json()
-                log(f"✓ Command accepted: {command_name}", Colors.OKGREEN)
-                log(f"  Command ID: {result.get('Id', 'N/A')}")
-                log(f"  Output: {json.dumps(result.get('Output', {}))}")
+            if resp.status_code in [200, 201, 204]:
+                log(f"✓ Lockdown enabled successfully!", Colors.OKGREEN)
+                if resp.text:
+                    try:
+                        result = resp.json()
+                        log(f"  Response: {json.dumps(result, indent=2)}", Colors.OKCYAN)
+                    except:
+                        log(f"  Response: {resp.text}", Colors.OKCYAN)
                 return True
-            elif resp.status_code == 404:
-                log(f"  Command not found", Colors.WARNING)
             elif resp.status_code == 400:
-                log(f"  Bad request: {resp.text}", Colors.WARNING)
+                log(f"  Bad request (400): {resp.text}", Colors.WARNING)
+            elif resp.status_code == 404:
+                log(f"  Command not found (404)", Colors.FAIL)
+                return False
             else:
                 log(f"  Status code: {resp.status_code}, Response: {resp.text}", Colors.WARNING)
         except Exception as e:
             log(f"  Error: {e}", Colors.WARNING)
     
-    log("Could not enable lockdown", Colors.FAIL)
+    log("Could not enable lockdown - check API documentation for required parameters", Colors.FAIL)
     return False
 
-def disable_lockdown(config, token):
+def disable_lockdown(config, token, trigger_rule_id=None, action_rule_id=None):
     """
     Disable lockdown mode (returns to normal operation)
+    Uses /api/v1/commands/controlLockdown endpoint
+    
+    Args:
+        trigger_rule_id: Optional trigger rule ID
+        action_rule_id: Optional action rule ID
     
     Returns:
         bool: True if successful
     """
-    # Try command-based approach
-    command_names = [
-        "LockdownDisable",
-        "DisableLockdown",
-        "LockdownOff",
-        "BuildingLockdownDisable"
-    ]
+    url = f"{config['base_url']}/commands/controlLockdown"
     
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {token}"
     }
     
-    log("Attempting to disable lockdown via command API...", Colors.OKBLUE)
+    log("Attempting to disable lockdown...", Colors.OKBLUE)
     
-    for command_name in command_names:
+    # Try different payload structures
+    payloads = []
+    
+    # If specific IDs provided, use them
+    if trigger_rule_id and action_rule_id:
+        payloads.append({
+            "TriggerRuleId": trigger_rule_id,
+            "ActionRuleId": action_rule_id,
+            "lockdown": False
+        })
+    
+    # Discovery mode - try common structures (based on API response showing "lockdown" field)
+    payloads.extend([
+        {"lockdown": False},  # Try this first - API response shows this field name
+        {"Lockdown": False},
+        {"Enabled": False},
+        {"Enable": False},
+        {"State": "Disabled"},
+        {"Action": "Disable"},
+        {"LockdownState": False},
+    ])
+    
+    for i, data in enumerate(payloads):
         try:
-            # Standard Net2 command structure
-            data = {
-                "CommandName": command_name,
-                "Input": {
-                    "Enabled": False
-                }
-            }
+            log(f"Trying payload #{i+1}: {json.dumps(data)}")
+            resp = requests.post(url, headers=headers, json=data, verify=False, timeout=10)
             
-            log(f"Trying command: {command_name}")
-            resp = requests.post(
-                f"{config['base_url']}/commands",
-                headers=headers,
-                json=data,
-                verify=False,
-                timeout=10
-            )
-            
-            if resp.status_code in [200, 201]:
-                result = resp.json()
-                log(f"✓ Command accepted: {command_name}", Colors.OKGREEN)
-                log(f"  Command ID: {result.get('Id', 'N/A')}")
-                log(f"  Output: {json.dumps(result.get('Output', {}))}")
+            if resp.status_code in [200, 201, 204]:
+                log(f"✓ Lockdown disabled successfully!", Colors.OKGREEN)
+                if resp.text:
+                    try:
+                        result = resp.json()
+                        log(f"  Response: {json.dumps(result, indent=2)}", Colors.OKCYAN)
+                    except:
+                        log(f"  Response: {resp.text}", Colors.OKCYAN)
                 return True
-            elif resp.status_code == 404:
-                log(f"  Command not found", Colors.WARNING)
             elif resp.status_code == 400:
-                log(f"  Bad request: {resp.text}", Colors.WARNING)
+                log(f"  Bad request (400): {resp.text}", Colors.WARNING)
+            elif resp.status_code == 404:
+                log(f"  Command not found (404)", Colors.FAIL)
+                return False
             else:
                 log(f"  Status code: {resp.status_code}, Response: {resp.text}", Colors.WARNING)
         except Exception as e:
             log(f"  Error: {e}", Colors.WARNING)
     
-    log("Could not disable lockdown", Colors.FAIL)
+    log("Could not disable lockdown - check API documentation for required parameters", Colors.FAIL)
     return False
 
 def test_lockdown_cycle(config, token):
@@ -325,6 +402,10 @@ def main():
     # Get authentication token
     token = get_token(config)
     
+    # Optional trigger/action rule IDs from command line
+    trigger_rule_id = sys.argv[2] if len(sys.argv) > 2 else None
+    action_rule_id = sys.argv[3] if len(sys.argv) > 3 else None
+    
     # Execute command
     if command == 'status':
         status = get_lockdown_status(config, token)
@@ -335,14 +416,23 @@ def main():
         else:
             sys.exit(1)
     
+    elif command == 'rules':
+        rules = get_lockdown_rules(config, token)
+        if rules:
+            print("\n=== Available Lockdown Rules ===")
+            print(json.dumps(rules, indent=2))
+            sys.exit(0)
+        else:
+            sys.exit(1)
+    
     elif command == 'enable':
-        if enable_lockdown(config, token):
+        if enable_lockdown(config, token, trigger_rule_id, action_rule_id):
             sys.exit(0)
         else:
             sys.exit(1)
     
     elif command == 'disable':
-        if disable_lockdown(config, token):
+        if disable_lockdown(config, token, trigger_rule_id, action_rule_id):
             sys.exit(0)
         else:
             sys.exit(1)

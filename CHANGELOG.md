@@ -7,6 +7,15 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 08:45:08
+- Deleted: scripts/discover_net2_endpoints.py
+- Deleted: scripts/explore_net2_api.py
+- Deleted: scripts/net2_lockdown.py
+- Deleted: scripts/simulate_lockdown.py
+- Modified: scripts/test_lockdown.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 08:30:18
 - Added: scripts/deep_dive_net2.py
 - Added: scripts/discover_net2_endpoints.py
