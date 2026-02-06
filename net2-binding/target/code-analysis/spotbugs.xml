@@ -1,2 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<BugCollection version='4.8.6' threshold='high' effort='min'><Error></Error><Project><SrcDir>/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/main/java</SrcDir><SrcDir>/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/target/generated-sources/annotations</SrcDir><SrcDir>/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/src/test/java</SrcDir><SrcDir>/etc/openhab/openhab-addons/bundles/org.openhab.binding.net2/target/generated-test-sources/test-annotations</SrcDir></Project></BugCollection>

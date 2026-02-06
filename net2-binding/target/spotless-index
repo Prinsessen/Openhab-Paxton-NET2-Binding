@@ -1,7 +1,0 @@
-RlA7714DN2pra9C3b8s90KMqVYr2tuZXNWt2647qb3M=
-src/main/feature/feature.xml 2026-01-09T13:45:36.881952587Z
-src/main/java/org/openhab/binding/net2/discovery/Net2DoorDiscoveryService.java 2026-01-09T13:45:36.877952561Z
-src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java 2026-01-09T14:00:24.319719670Z
-src/main/resources/OH-INF/binding/binding.xml 2026-01-09T13:45:36.809952117Z
-src/main/resources/OH-INF/thing/thing-types.xml 2026-01-09T13:45:36.805952091Z
-src/main/resources/OSGI-INF/org.openhab.binding.net2.handler.Net2HandlerFactory.xml 2026-01-09T13:45:36.825952221Z

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<features name="openhab-binding-net2-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
-    <feature name="openhab-binding-net2" description="Paxton Net2 Access Control binding" version="${project.version}">
-        <bundle>mvn:org.openhab.addons.bundles/org.openhab.binding.net2/${project.version}</bundle>
-    </feature>
-</features>
