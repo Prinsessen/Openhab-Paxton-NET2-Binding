@@ -15,6 +15,7 @@
 			<channel id="deleteUser" typeId="deleteUser"/>
 			<channel id="listAccessLevels" typeId="listAccessLevels"/>
 			<channel id="listUsers" typeId="listUsers"/>
+			<channel id="lockdown" typeId="lockdown"/>
 		</channels>
 
 		<config-description>
@@ -153,6 +154,13 @@
 		<description>JSON-formatted denied access event: {"tokenNumber":"4038310","doorName":"Front
 			Door","timestamp":"2026-01-16T17:09:14","doorId":6612642}</description>
 		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="lockdown">
+		<item-type>Switch</item-type>
+		<label>Lockdown</label>
+		<description>Building lockdown control. Send ON to enable lockdown (lock all configured doors), OFF to disable (return
+			to normal operation)</description>
 	</channel-type>
 
 </thing:thing-descriptions>

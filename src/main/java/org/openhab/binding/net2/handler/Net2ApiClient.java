@@ -274,6 +274,33 @@ public class Net2ApiClient {
     }
 
     /**
+     * Control building lockdown
+     *
+     * @param enable true to enable lockdown (lock all configured doors), false to disable
+     * @return true if command accepted
+     */
+    public boolean controlLockdown(boolean enable) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        JsonObject payload = new JsonObject();
+        payload.addProperty("lockdown", enable);
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/commands/controlLockdown"))
+                .POST(HttpRequest.BodyPublishers.ofString(payload.toString()))
+                .header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            logger.info("Lockdown {} successfully", enable ? "enabled" : "disabled");
+            return true;
+        } else {
+            logger.warn("Lockdown control failed. Status: {}, Response: {}", response.statusCode(), response.body());
+            return false;
+        }
+    }
+
+    /**
      * Check if authenticated and token is valid
      */
     public boolean isAuthenticated() {

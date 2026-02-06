@@ -5,6 +5,20 @@ All notable changes to the Paxton Net2 Binding are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2026-02-06
+
+### Added
+- **Building Lockdown Control** (`lockdown` channel)
+  - New bridge channel for emergency lockdown control
+  - Switch channel (ON=enable lockdown, OFF=disable lockdown)
+  - Triggers Net2 lockdown trigger/action rules via API endpoint `/commands/controlLockdown`
+  - Fire-and-forget command execution for immediate response
+  - Requires pre-configured lockdown triggers and actions in Net2 software
+  - Enables emergency lockdown from OpenHAB rules, UI, or external systems
+  - Use cases: Fire alarms, security alerts, after-hours automation
+  - Example integrations: Scheduled lockdowns, security system integration, manual control
+  - Python reference implementation available in scripts/
+
 ## [5.2.0] - 2026-01-16
 
 ### Added

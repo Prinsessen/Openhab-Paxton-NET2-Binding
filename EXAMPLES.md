@@ -30,6 +30,9 @@ String Net2_CreateUser "Create User" { channel="net2:net2server:server:createUse
 String Net2_DeleteUser "Delete User" { channel="net2:net2server:server:deleteUser" }
 String Net2_ListAccessLevels "List Access Levels" { channel="net2:net2server:server:listAccessLevels" }
 String Net2_ListUsers "List Users" { channel="net2:net2server:server:listUsers" }
+
+// Building Lockdown
+Switch Net2_Lockdown "Building Lockdown" { channel="net2:net2server:server:lockdown" }
 ```
 
 ### Sitemap Configuration
@@ -397,6 +400,241 @@ To test the system:
 2. Check OpenHAB logs: `grep "Access DENIED" /var/log/openhab/openhab.log`
 3. Verify email/SMS delivery
 4. Check that the correct door name is reported
+
+## Building Lockdown Control
+
+The lockdown channel enables emergency lockdown control of all configured doors. When lockdown is activated, the Net2 system triggers pre-configured lockdown actions (doors lock/unlock based on configured trigger/action rules).
+
+### Prerequisites
+
+**Net2 Configuration Required:**
+
+Before using the lockdown channel, you must configure lockdown triggers and actions in the Net2 software:
+
+1. **Open Net2 Software** → Configuration → Triggers/Actions
+2. **Create Lockdown Enable Trigger:**
+   - Name: "Lockdown Enable"
+   - Trigger Type: "Lockdown"
+   - Enabled: Yes
+3. **Create Lockdown Disable Trigger:**
+   - Name: "Lockdown Disable"  
+   - Trigger Type: "Lockdown" 
+   - Enabled: Yes
+4. **Configure Actions:**
+   - Add actions to each trigger defining which doors should lock/unlock
+   - Example: Lock all exterior doors during lockdown, unlock all doors when disabled
+
+### Items Configuration
+
+**File: items/net2.items**
+
+```openhab
+// Building lockdown control
+Switch Net2_Lockdown "Building Lockdown" { channel="net2:net2server:server:lockdown" }
+```
+
+### Sitemap Configuration
+
+**File: sitemaps/myhouse.sitemap**
+
+```openhab
+Frame label="Building Lockdown" icon="lock-red" {
+    Switch item=Net2_Lockdown mappings=[ON="Enable Lockdown", OFF="Disable Lockdown"] label="Building Lockdown Control"
+}
+```
+
+### Usage Examples
+
+#### Manual Control via Rules
+
+Enable lockdown manually from a rule:
+
+```openhab
+rule "Enable Lockdown on Fire Alarm"
+when
+    Item FireAlarm changed to ON
+then
+    sendCommand(Net2_Lockdown, ON)
+    logWarn("Net2", "LOCKDOWN ENABLED - Fire alarm triggered")
+end
+```
+
+Disable lockdown after situation resolved:
+
+```openhab
+rule "Disable Lockdown When Safe"
+when
+    Item EmergencyResolved changed to ON
+then
+    sendCommand(Net2_Lockdown, OFF)
+    logInfo("Net2", "Lockdown disabled - Normal operations resumed")
+end
+```
+
+#### Scheduled Lockdown
+
+Automatically enable lockdown outside business hours:
+
+```openhab
+rule "Auto Lockdown After Hours"
+when
+    Time cron "0 0 22 * * ?" // 10 PM daily
+then
+    sendCommand(Net2_Lockdown, ON)
+    logInfo("Net2", "After-hours lockdown enabled")
+end
+
+rule "Auto Unlock Business Hours"
+when
+    Time cron "0 0 7 * * MON-FRI" // 7 AM weekdays
+then
+    sendCommand(Net2_Lockdown, OFF)
+    logInfo("Net2", "Business hours - lockdown disabled")
+end
+```
+
+#### REST API Control
+
+Enable lockdown:
+```bash
+curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" \\
+  -H "Content-Type: text/plain" \\
+  -d "ON"
+```
+
+Disable lockdown:
+```bash
+curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" \\
+  -H "Content-Type: text/plain" \\
+  -d "OFF"
+```
+
+#### Python Script Integration
+
+Example Python script for external control:
+
+```python
+#!/usr/bin/env python3
+import sys
+import requests
+
+OPENHAB_URL = "http://localhost:8080"
+LOCKDOWN_ITEM = "Net2_Lockdown"
+
+def control_lockdown(enable):
+    """Enable or disable building lockdown"""
+    command = "ON" if enable else "OFF"
+    url = f"{OPENHAB_URL}/rest/items/{LOCKDOWN_ITEM}"
+    
+    try:
+        response = requests.post(
+            url,
+            data=command,
+            headers={"Content-Type": "text/plain"},
+            timeout=10
+        )
+        response.raise_for_status()
+        print(f"Lockdown {'enabled' if enable else 'disabled'}")
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: net2_lockdown.py [enable|disable]")
+        sys.exit(1)
+    
+    action = sys.argv[1].lower()
+    if action == "enable":
+        control_lockdown(True)
+    elif action == "disable":
+        control_lockdown(False)
+    else:
+        print("Invalid action. Use 'enable' or 'disable'")
+        sys.exit(1)
+```
+
+#### Integration with Security Systems
+
+Trigger lockdown from external security system:
+
+```openhab
+rule "Lockdown on Intruder Alert"
+when
+    Item SecuritySystem_IntruderAlert changed to ON
+then
+    sendCommand(Net2_Lockdown, ON)
+    
+    // Send notifications
+    val mailActions = getActions("mail", "mail:smtp:samplesmtp")
+    mailActions.sendMail(
+        "security@example.com",
+        "🚨 EMERGENCY LOCKDOWN ACTIVATED",
+        "Building lockdown has been automatically activated due to intruder alert.\\n\\n" +
+        "All configured doors have been locked.\\n" +
+        "Time: " + now.toString() + "\\n\\n" +
+        "Manual override required to disable lockdown."
+    )
+    
+    logError("Net2", "EMERGENCY LOCKDOWN ACTIVATED - Intruder detected")
+end
+```
+
+### Status Monitoring
+
+Monitor lockdown state changes:
+
+```openhab
+rule "Log Lockdown Status Changes"
+when
+    Item Net2_Lockdown changed
+then
+    val state = Net2_Lockdown.state.toString()
+    val message = if (state == "ON") {
+        "⚠️ LOCKDOWN ENABLED - All configured doors locked"
+    } else {
+        "✓ Lockdown disabled - Normal operations resumed"
+    }
+    
+    logInfo("Net2", message)
+    
+    // Optional: Send notification on every state change
+    val mailActions = getActions("mail", "mail:smtp:samplesmtp")
+    mailActions.sendMail(
+        "admin@example.com",
+        "Net2 Lockdown Status Change",
+        message + "\\nTime: " + now.toString()
+    )
+end
+```
+
+### Testing
+
+1. **Test Enable:**
+   ```bash
+   curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" -H "Content-Type: text/plain" -d "ON"
+   ```
+   Verify all configured doors lock
+
+2. **Test Disable:**
+   ```bash
+   curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" -H "Content-Type: text/plain" -d "OFF"
+   ```
+   Verify doors return to normal operation
+
+3. **Check Logs:**
+   ```bash
+   grep -i lockdown /var/log/openhab/openhab.log | tail -20
+   ```
+
+### Important Notes
+
+- **Fire-and-Forget:** Lockdown commands are sent immediately and do not wait for confirmation
+- **Net2 Configuration:** Ensure trigger/action rules are properly configured in Net2 software
+- **Testing:** Always test lockdown behavior in a safe, controlled environment
+- **Emergency Access:** Ensure emergency procedures include manual override methods
+- **State Updates:** The channel state reflects the last command sent, not the actual door states
 
 ### Important Notes
 

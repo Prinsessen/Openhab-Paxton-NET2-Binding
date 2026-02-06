@@ -10,11 +10,27 @@ curl -s http://localhost:8080/rest/items/Net2_Door1_EntryLog | python3 -c "impor
 # View access denied events
 curl -s http://localhost:8080/rest/items/Net2_Door1_AccessDenied | python3 -c "import sys, json; data=json.load(sys.stdin); print(json.dumps(json.loads(data['state']), indent=2))"
 
+# Check lockdown status
+curl -s http://localhost:8080/rest/items/Net2_Lockdown | jq -r '.state'
+
 # Monitor live entries
-tail -f /var/log/openhab/openhab.log | grep -E "Entry log|Access DENIED"
+tail -f /var/log/openhab/openhab.log | grep -E "Entry log|Access DENIED|Lockdown"
 
 # Check bundle status
 echo "habopen" | ssh -p 8101 openhab@localhost "bundle:list | grep net2"
+```
+
+### Quick Lockdown Control
+```bash
+# Enable lockdown
+curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" -H "Content-Type: text/plain" -d "ON"
+
+# Disable lockdown
+curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" -H "Content-Type: text/plain" -d "OFF"
+
+# Python script
+python3 /etc/openhab/scripts/net2_lockdown.py enable
+python3 /etc/openhab/scripts/net2_lockdown.py disable
 ```
 
 ### File Locations (Memory Jogger)
@@ -105,6 +121,13 @@ Token 1234567 denied at Front Door at 17:26:50
 - ✅ **All control methods**: Physical readers, Net2 UI
 - **Real-time**: Instant detection via SignalR LiveEvents
 - **Multi-door**: Timestamp comparison identifies correct door
+
+### Building Lockdown
+- ✅ **Control**: Switch channel (ON=enable, OFF=disable)
+- ✅ **Fire-and-forget**: Immediate command execution
+- **Requires**: Pre-configured trigger/action rules in Net2 software
+- **State**: Reflects last command sent (not actual door states)
+- **Use cases**: Emergency lockdown, scheduled automation, security integration
 
 ## 🔧 Troubleshooting
 
