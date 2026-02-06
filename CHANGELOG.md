@@ -7,6 +7,13 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 18:45:18
+- Deleted: scripts/hikvision_event_stream_monitor.py
+- Deleted: scripts/hikvision_event_stream_monitor_enhanced.py
+- Deleted: scripts/hikvision_webhook_monitor.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 17:45:18
 - Modified: sitemaps/myhouse.sitemap
 
