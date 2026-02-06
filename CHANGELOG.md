@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 13:45:18
+- Added: scripts/hikvision_webhook_monitor.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 11:00:17
 - Added: scripts/test_door_handle.py
 - Modified: sitemaps/myhouse.sitemap
