@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 17:45:18
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 17:30:08
 - Modified: scripts/hikvision_nas_monitor.py
 - Modified: sitemaps/myhouse.sitemap
