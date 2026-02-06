@@ -82,6 +82,12 @@ def display_image(jpeg_data, timestamp):
         try:
             with open(openhab_path, 'wb') as f:
                 f.write(jpeg_data)
+            
+            # Save timestamp in separate file for instant web display
+            timestamp_path = "/etc/openhab/html/hikvision_latest_time.txt"
+            with open(timestamp_path, 'w') as f:
+                f.write(timestamp)
+            
             print(f"    {Colors.OKGREEN}✓ Updated web image: {openhab_path}{Colors.ENDC}")
         except Exception as e:
             print(f"    {Colors.WARNING}⚠ Could not save to OpenHAB html: {e}{Colors.ENDC}")
