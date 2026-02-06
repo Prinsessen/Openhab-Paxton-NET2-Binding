@@ -117,6 +117,7 @@ The Net2 Server bridge exposes the following user-management channels:
 | `deleteUser` | String | WO | Delete a user by ID (e.g., `79`). |
 | `listAccessLevels` | String | WO | Query available access levels. Send any command (e.g., `REFRESH` or `ON`) to trigger. Results logged to `/var/log/openhab/openhab.log` as: `Access levels: [1:Public] [2:Staff] ...` |
 | `listUsers` | String | WO | Query all users in the system. Send any command (e.g., `REFRESH` or `ON`) to trigger. Full JSON payload logged to `/var/log/openhab/openhab.log` with all user details (id, firstName, lastName, PIN, telephone, accessLevel, etc.) |
+| `lockdown` | Switch | RW | Building lockdown control. Send ON to enable lockdown (locks all configured doors), OFF to disable lockdown (returns to normal operation). Triggers Net2 lockdown trigger/action rules. |
 
 ## Example Configuration
 
@@ -143,6 +144,9 @@ String Net2_CreateUser        "Create User"        { channel="net2:net2server:my
 String Net2_DeleteUser        "Delete User"        { channel="net2:net2server:myserver:deleteUser" }
 String Net2_ListAccessLevels  "List Access Levels" { channel="net2:net2server:myserver:listAccessLevels" }
 String Net2_ListUsers         "List Users"         { channel="net2:net2server:myserver:listUsers" }
+
+// Building lockdown
+Switch Net2_Lockdown          "Building Lockdown"  { channel="net2:net2server:myserver:lockdown" }
 ```
 
 ### Usage Examples
@@ -232,6 +236,39 @@ Delete a user by ID:
 ```
 sendCommand(Net2_DeleteUser, "79")
 ```
+
+Enable/disable building lockdown (triggers Net2 trigger/action rules):
+
+**From Rules:**
+```java
+// Enable lockdown
+sendCommand(Net2_Lockdown, ON)
+
+// Disable lockdown
+sendCommand(Net2_Lockdown, OFF)
+```
+
+**From OpenHAB UI:**
+- Navigate to the item `Net2_Lockdown`
+- Switch ON to enable lockdown, OFF to disable
+
+**From REST API:**
+```bash
+# Enable lockdown
+curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" \
+  -H "Content-Type: text/plain" \
+  -d "ON"
+
+# Disable lockdown
+curl -X POST "http://localhost:8080/rest/items/Net2_Lockdown" \
+  -H "Content-Type: text/plain" \
+  -d "OFF"
+```
+
+**Requirements:**
+- Lockdown trigger/action rules must be configured in Net2 software
+- Trigger points should be set up for "Lockdown Enable" and "Lockdown Disable"
+- Actions define which doors lock/unlock during lockdown
 
 ## Rules Example
 

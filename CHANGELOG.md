@@ -7,6 +7,20 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-06 09:30:18
+- Modified: items/net2.items
+- Modified: net2-binding/CHANGELOG.md
+- Modified: net2-binding/EXAMPLES.md
+- Modified: net2-binding/QUICK_REFERENCE.md
+- Modified: net2-binding/README.md
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/Net2BindingConstants.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ApiClient.java
+- Modified: net2-binding/src/main/java/org/openhab/binding/net2/handler/Net2ServerHandler.java
+- Modified: net2-binding/src/main/resources/OH-INF/thing/thing-types.xml
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-06 09:15:19
 - Modified: net2-binding/build.log
 - Deleted: net2-binding/target/checkstyle-cachefile

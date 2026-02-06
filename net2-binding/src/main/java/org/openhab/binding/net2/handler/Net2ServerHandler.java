@@ -82,6 +82,9 @@ public class Net2ServerHandler extends BaseBridgeHandler {
                 case Net2BindingConstants.CHANNEL_LIST_USERS:
                     handleListUsers(command);
                     break;
+                case Net2BindingConstants.CHANNEL_LOCKDOWN:
+                    handleLockdown(command);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -404,5 +407,29 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             return;
         }
         logger.info("Users JSON payload: {}", usersJson);
+    }
+
+    private void handleLockdown(Command command) throws Exception {
+        Net2ApiClient client = apiClient;
+        if (client == null) {
+            logger.error("API client not available");
+            return;
+        }
+
+        if (command instanceof org.openhab.core.library.types.OnOffType) {
+            boolean enable = command == org.openhab.core.library.types.OnOffType.ON;
+            logger.info("Lockdown command received: {}", enable ? "ENABLE" : "DISABLE");
+
+            boolean success = client.controlLockdown(enable);
+            if (success) {
+                logger.info("Lockdown {} successfully", enable ? "enabled" : "disabled");
+                // Update channel state to reflect current status
+                updateState(Net2BindingConstants.CHANNEL_LOCKDOWN, (org.openhab.core.library.types.OnOffType) command);
+            } else {
+                logger.error("Failed to {} lockdown", enable ? "enable" : "disable");
+            }
+        } else {
+            logger.warn("Invalid command type for lockdown channel: {}", command.getClass().getName());
+        }
     }
 }

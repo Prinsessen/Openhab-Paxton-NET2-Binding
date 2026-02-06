@@ -20,6 +20,11 @@ String Net2_ListAccessLevels "List Access Levels [trigger]" { channel="net2:net2
 String Net2_ListUsers "List Users [trigger]" { channel="net2:net2server:server:listUsers" }
 
 // ==============================================
+// Building Lockdown Control
+// ==============================================
+Switch Net2_Lockdown "Building Lockdown" { channel="net2:net2server:server:lockdown" }
+
+// ==============================================
 // Door Items
 // ==============================================
 
