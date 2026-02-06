@@ -155,6 +155,7 @@ def format_event_type(event_type):
         'bodyDetection': '🚶 Body Detection',
         'regionEntrance': '➡️  Region Entrance',
         'regionExiting': '⬅️  Region Exit',
+        'mixedTargetDetection': '👤 Smart Body Detection',
     }
     return event_icons.get(event_type, f'📡 {event_type}')
 
