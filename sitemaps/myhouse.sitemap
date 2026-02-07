@@ -186,7 +186,7 @@ sitemap myhouse label="Nanna Agesen"
 			Text item=Alarmsystem_Info icon="security-red"
 			Text label="Body Detection Camera" icon="body-camera-blue" {
 				Frame label="Live Detections" {
-					Webview url="/static/hikvision_detections.html" height=20
+					Webview url="/static/hikvision_detections.html" height=10
 				}
 				Frame label="Latest Detection" {
 					Text item=Camera_Detection_Camera_Name icon="body-camera-blue"
