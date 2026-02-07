@@ -7,6 +7,42 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-07 09:15:18
+- Renamed: icons/classic/detection-arrow-in-green.svg	icons/classic/body-arrow-in-green.svg
+- Renamed: icons/classic/detection-arrow-out-orange.svg	icons/classic/body-arrow-out-orange.svg
+- Added: icons/classic/body-backpack-teal.svg
+- Added: icons/classic/body-camera-blue.svg
+- Added: icons/classic/body-clock-in-blue.svg
+- Added: icons/classic/body-clock-out-purple.svg
+- Added: icons/classic/body-color-pink.svg
+- Added: icons/classic/body-color-purple.svg
+- Added: icons/classic/body-hat-yellow.svg
+- Added: icons/classic/body-pants-cyan.svg
+- Added: icons/classic/body-shirt-blue.svg
+- Deleted: icons/classic/camera-arrow-enter-green.svg
+- Deleted: icons/classic/camera-arrow-leave-orange.svg
+- Deleted: icons/classic/camera-backpack-teal.svg
+- Deleted: icons/classic/camera-color-bottom-pink.svg
+- Deleted: icons/classic/camera-color-top-purple.svg
+- Deleted: icons/classic/camera-detect-blue.svg
+- Deleted: icons/classic/camera-hat-yellow.svg
+- Deleted: icons/classic/camera-pants-cyan.svg
+- Deleted: icons/classic/camera-shirt-blue.svg
+- Deleted: icons/classic/camera-time-entry-blue.svg
+- Deleted: icons/classic/camera-time-exit-purple.svg
+- Deleted: icons/classic/detection-backpack-teal.svg
+- Deleted: icons/classic/detection-camera-blue.svg
+- Deleted: icons/classic/detection-color-pants-pink.svg
+- Deleted: icons/classic/detection-color-shirt-purple.svg
+- Deleted: icons/classic/detection-hat-yellow.svg
+- Deleted: icons/classic/detection-pants-cyan.svg
+- Deleted: icons/classic/detection-shirt-blue.svg
+- Deleted: icons/classic/detection-time-in-blue.svg
+- Deleted: icons/classic/detection-time-out-purple.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-07 09:00:18
 - Added: icons/classic/camera-arrow-enter-green.svg
 - Added: icons/classic/camera-arrow-leave-orange.svg
