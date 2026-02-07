@@ -34,16 +34,20 @@ def clear_screen():
     os.system('clear')
 
 def extract_last_jpeg(pic_filepath):
-    """Extract the last JPEG image from ATTACHIF .pic file"""
+    """Extract the highest quality (largest) JPEG from the most recent detection in the file"""
     try:
         with open(pic_filepath, 'rb') as f:
+            # Only read last 3MB where newest detections are (avoid reading entire 136MB)
+            file_size = os.path.getsize(pic_filepath)
+            read_size = min(3 * 1024 * 1024, file_size)  # 3MB or file size
+            f.seek(-read_size, 2)  # Seek from end
             data = f.read()
         
         # Find all JPEG markers (SOI: 0xFFD8, EOI: 0xFFD9)
         jpeg_start_marker = b'\xff\xd8\xff'
         jpeg_end_marker = b'\xff\xd9'
         
-        # Find all JPEG images
+        # Find all JPEG images in the tail
         jpegs = []
         pos = 0
         while True:
@@ -59,8 +63,10 @@ def extract_last_jpeg(pic_filepath):
             pos = end + 2
         
         if jpegs:
-            # Return the last (most recent) JPEG
-            return jpegs[-1]
+            # Each detection has 2-3 images. Take the largest from LAST 3 images only
+            # This ensures we get the high-res from the absolute most recent detection
+            recent_jpegs = jpegs[-3:]
+            return max(recent_jpegs, key=len)
         return None
     except Exception as e:
         print(f"Error extracting JPEG: {e}")
