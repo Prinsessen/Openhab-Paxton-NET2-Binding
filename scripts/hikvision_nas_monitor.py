@@ -114,6 +114,17 @@ def extract_analysis_text(image_path):
         # This handles OCR line-wrapping where "Bottom Color" becomes "Bott\nom C    olor"
         text_normalized = re.sub(r'\s+', ' ', text)
         
+        # FIX OCR MISTAKES: Common character misreads in datetime patterns
+        # OCR often reads '0' (zero) as 'O' (letter O) or '7' as '?'
+        text_fixed = text_normalized
+        # Fix "O" followed by 2 digits: "2026-02-O07" → "2026-02-07" (not "007"!)
+        text_fixed = re.sub(r'(\d{4}[-/]\d{2}[-/])O(\d{2})', r'\g<1>\g<2>', text_fixed)
+        # Fix dash followed by O and digit: "-O7" → "-07"
+        text_fixed = re.sub(r'[-/]O(\d)(?!\d)', r'-0\1', text_fixed)  # Only single digit after O
+        # Fix "O?" patterns (with optional space after dash)
+        text_fixed = re.sub(r'[-/]\s*O\?', r'-07', text_fixed)  # "- O?" or "-O?" → "-07"
+        text_fixed = re.sub(r'O\?\s', '07 ', text_fixed)
+        
         # Parse structured data
         data = {}
         
@@ -131,8 +142,8 @@ def extract_analysis_text(image_path):
         if match:
             data['leave_direction'] = match.group(1)
         
-        # Clothing colors - extract ALL color values, assign by context
-        # Look for ANY "Color" (or partial "olor") followed by colon and color name
+        # Clothing colors - IMPROVED: Handle split word "Bottom Color" → "Bottom Co lor:"
+        # Strategy 1: Try to find complete "Color:" patterns
         all_colors = re.findall(r'[Cc]olor\s*:\s*(\w+)', text_normalized, re.IGNORECASE)
         
         if len(all_colors) >= 1:
@@ -142,14 +153,23 @@ def extract_analysis_text(image_path):
         if len(all_colors) >= 2:
             if all_colors[1] not in ['-', 'N/A', 'None']:
                 data['bottom_color'] = all_colors[1]
-        elif len(all_colors) == 1:
-            # If only one color found, might be in format "Black Bott om C olor:Black"
-            # Try extracting color value between "Top Color:" and "Top Type:"
+        
+        # Strategy 2: If bottom_color not found, look for partial matches "lor:" or "olor:"
+        if 'bottom_color' not in data:
+            # Search for "Bottom" followed by any text, then "lor:" (broken "Color:")
+            bottom_match = re.search(r'Bottom[^:]*?(?:Co\s+)?(?:o)?lor\s*:\s*(\w+)', text_normalized, re.IGNORECASE)
+            if bottom_match:
+                color_value = bottom_match.group(1)
+                if color_value not in ['-', 'N/A', 'None', 'Black']:
+                    data['bottom_color'] = color_value
+        
+        # Strategy 3: Fallback - extract from section between "Top Color:" and "Top Type:"
+        if 'bottom_color' not in data:
             section = re.search(r'Top Color.*?Top Type', text_normalized, re.IGNORECASE)
             if section:
                 # Look for second color value in this section (first is top, second is bottom)
                 colors_in_section = re.findall(r':(\w+)', section.group(0))
-                colors_in_section = [c for c in colors_in_section if c not in ['-', 'N/A', 'None', 'No', 'Long', 'Short', 'Sleeve']]
+                colors_in_section = [c for c in colors_in_section if c not in ['-', 'N/A', 'None', 'No', 'Long', 'Short', 'Sleeve', 'Co', 'lor']]
                 if len(colors_in_section) >= 2:
                     data['bottom_color'] = colors_in_section[1]
         
@@ -175,21 +195,18 @@ def extract_analysis_text(image_path):
         if match:
             data['has_hat'] = match.group(1).lower() == 'yes'
         
-        # Entry time
-        match = re.search(r'Entry\s+Time[:\s]+([0-9]{4}[-/][0-9]{2}[-/][0-9]{2}[\s]+[0-9]{2}:[0-9]{2}:[0-9]{2})', text_normalized)
+        # Entry time - Use OCR-fixed text
+        match = re.search(r'Entry\s+Time[:\s]+([0-9]{4}[-/][0-9]{2}[-/][0-9]{2}[\s]+[0-9]{2}:[0-9]{2}:[0-9]{2})', text_fixed)
         if match:
             data['entry_time'] = match.group(1).strip().replace('/', '-')
         
-        # Exit time - OCR often splits this as "2026-0 2 -O7 09:19:45"
-        # Strategy: Find "Exit Time:" and extract all digit groups after it until next label
-        exit_section = re.search(r'Exit\s+Time[:\s]+(.+?)(?:Camera|Device|$)', text_normalized, re.IGNORECASE)
+        # Exit time - Use digit extraction from OCR-fixed text
+        exit_section = re.search(r'Exit\s+Time[:\s]+(.+?)(?:Camera|Device|$)', text_fixed, re.IGNORECASE)
         if exit_section:
             # Extract all digit sequences from the exit time section
             digits = re.findall(r'[0-9]+', exit_section.group(1))
-            # Need at least 6 groups: year, month_part1, month_part2/day_part1, day_part2, hour, min, sec
-            # Or sometimes: year, month, day, hour, min, sec (if lucky)
-            if len(digits) >= 6:
-                # Heuristic: First is always year (4 digits or reconstructed)
+            # Need at least 6 groups: year, month, day (or parts), hour, min, sec
+            if len(digits) >= 5:  # At minimum: year, month, day, HH, MM, SS
                 year_str = digits[0]
                 remaining = digits[1:]
                 
@@ -198,10 +215,7 @@ def extract_analysis_text(image_path):
                     time_parts = remaining[-3:]
                     date_parts = remaining[:-3]
                     
-                    # Reconstruct date from remaining parts (should be 2-4 parts for MM-DD)
-                    # If we have 2 parts: month and day already combined (best case)
-                    # If we have 3 parts: likely "0", "2", "7" for "02-07"
-                    # If we have 4 parts: likely "0", "2", "0", "7" for "02-07"
+                    # Reconstruct date from remaining parts
                     if len(date_parts) == 2:
                         month_str, day_str = date_parts
                     elif len(date_parts) == 3:
