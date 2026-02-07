@@ -1,230 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Refresh" content="60">
-    <title>Kirkegade50 - HIKvision FaceID - ACU 6612642 - Recent Activity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="1800">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Kirkegade50 - HIKvision FaceID - ACU 6612642 - Activity Log</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #2d2e30 0%, #434449 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .header .subtitle {
-            font-size: 1em;
-            opacity: 0.9;
-        }
-        
-        .content {
-            padding: 30px;
-        }
-        
-        .events-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        .events-table th {
-            background: #f8f9fa;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #495057;
-            border-bottom: 2px solid #dee2e6;
-        }
-        
-        .events-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .events-table tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .event-result {
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .result-granted {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .result-denied {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .result-unknown {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #6c757d;
-            font-size: 0.9em;
-            border-top: 1px solid #dee2e6;
-        }
-        
-        .badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            display: inline-block;
-            margin: 20px 0;
-            font-weight: 600;
-        }
-        
-        @media (max-width: 768px) {
-            .events-table {
-                font-size: 0.9em;
-            }
-            
-            .events-table th,
-            .events-table td {
-                padding: 8px;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 0; margin: 0; overflow-x: hidden; }
+        .container { width: 100%; margin: 0; background: white; overflow: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px; text-align: center; }
+        .header h1 { font-size: 0.95em; margin-bottom: 5px; word-wrap: break-word; word-break: break-word; line-height: 1.3; }
+        .header p { font-size: 0.65em; opacity: 0.9; }
+        .content { padding: 8px; }
+        .event-card { background: #f8f9fa; border-left: 4px solid #667eea; margin-bottom: 8px; padding: 8px; border-radius: 4px; word-wrap: break-word; }
+        .event-user { font-weight: bold; font-size: 0.85em; color: #333; margin-bottom: 4px; word-break: break-word; }
+        .event-time { font-size: 0.7em; color: #666; margin-bottom: 4px; }
+        .event-type { font-size: 0.75em; color: #555; margin-bottom: 4px; word-break: break-word; }
+        .event-result { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.7em; display: inline-block; }
+        .result-granted { background: #d4edda; color: #155724; }
+        .result-denied { background: #f8d7da; color: #721c24; }
+        .result-unknown { background: #e2e3e5; color: #383d41; }
+        .footer { background: #f8f9fa; padding: 8px; text-align: center; color: #666; font-size: 0.6em; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🚪 Kirkegade50 - HIKvision FaceID - ACU 6612642</h1>
-            <div class="subtitle">Last 10 Access Events</div>
-            <div class="subtitle">Updated: 05-01-2026 07:01:13</div>
+            <p>Activity Log - 24 events</p>
+            <p style="margin-top: 10px;">Updated: 2026-01-07 10:08:42</p>
         </div>
         
         <div class="content">
-            <div class="badge">Latest Activity</div>
-            
-            <table class="events-table">
-                <thead>
-                    <tr>
-                        <th>User</th>
-                        <th>Timestamp</th>
-                        <th>Event</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                    <tr>
-                        <td><strong>Nanna Sloth Agesen</strong></td>
-                        <td>05-01-2026 06:32:01</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-07 09:28:12</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Anna Fage Sloth Agesen</strong></td>
-                        <td>04-01-2026 14:25:51</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-07 00:12:53</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Andreas Fage Sloth Agesen</strong></td>
-                        <td>04-01-2026 12:52:33</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-07 00:12:43</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Andreas Fage Sloth Agesen</strong></td>
-                        <td>04-01-2026 11:53:38</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-07 00:02:37</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Nanna Sloth Agesen</strong></td>
-                        <td>04-01-2026 10:25:44</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 23:57:52</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Nanna Sloth Agesen</strong></td>
-                        <td>03-01-2026 13:03:12</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 23:55:32</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Nanna Sloth Agesen</strong></td>
-                        <td>03-01-2026 10:34:29</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 23:45:30</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Nanna Sloth Agesen</strong></td>
-                        <td>03-01-2026 10:34:01</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 23:45:00</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Nanna Sloth Agesen</strong></td>
-                        <td>03-01-2026 10:33:30</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 23:34:13</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                    <tr>
-                        <td><strong>Nanna Sloth Agesen</strong></td>
-                        <td>03-01-2026 10:13:48</td>
-                        <td>Adgang godkendt - med kort</td>
-                        <td><span class="event-result result-granted">Access Granted</span></td>
-                    </tr>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 23:14:13</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
 
-                </tbody>
-            </table>
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 22:48:29</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 22:10:39</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 21:44:41</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 21:42:04</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 21:30:55</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 21:28:51</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 20:45:37</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-06 16:04:52</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-05 20:19:07</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-05 20:15:28</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-05 20:09:05</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-05 20:05:55</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-05 19:37:19</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
+            <div class="event-card">
+                <div class="event-user">👤 Nanna Sloth Agesen</div>
+                <div class="event-time">🕐 2026-01-05 18:09:39</div>
+                <div class="event-type">Adgang godkendt - med kort</div>
+                <span class="event-result result-granted">Access Granted</span>
+            </div>
+
         </div>
         
         <div class="footer">
-            Auto-refresh every 60 seconds | OpenHAB Paxton Net2 Integration<br>
+            Auto-refresh every 30 minutes | OpenHAB Paxton Net2 Integration<br>
             Generated by: Nanna Agesen
         </div>
     </div>

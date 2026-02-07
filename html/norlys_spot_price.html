@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-        <meta http-equiv="Content-type" CONTENT="text/html; charset=utf-8">
-        <link rel="stylesheet" type="text/css" href="charts.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Norlys Spot Price</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            background-color: #1e1e1e;
+        }
+        
+        .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            padding: 0;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0;
+            }
+            
+            iframe {
+                transform-origin: top left;
+            }
+        }
+    </style>
 </head>
-
-<div class="container">
-        <iframe src="https://grafana.agesen.dk/d-solo/j7VG8V04z/norlys-spot-price?orgId=1&from=1675206000000&to=1675292399999&panelId=4"></iframe>
+<body>
+    <div class="container">
+        <iframe src="https://grafana.agesen.dk/d-solo/j7VG8V04z/norlys-spot-price?orgId=1&from=1675206000000&to=1675292399999&panelId=4&kiosk"></iframe>
     </div>
+</body>
 </html>

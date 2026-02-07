@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Tracker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            height: 550px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .leaflet-container {
+            background: #ddd;
+        }
+        .leaflet-tile-pane,
+        .leaflet-marker-pane,
+        .leaflet-shadow-pane,
+        .leaflet-overlay-pane {
+            transition: transform 1s ease-out;
+        }
+        #info {
+            padding: 8px 10px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+            font-size: 13px;
+        }
+        .info-row {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 3px;
+        }
+        .info-label {
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+            width: 35px;
+        }
+        .vehicle-name {
+            font-size: 11px;
+            font-weight: normal;
+        }
+        .vehicle-blue {
+            color: #2196F3;
+            font-weight: bold;
+            display: inline-block;
+            min-width: 125px;
+            font-size: 12px;
+        }
+        .vehicle-orange {
+            color: #FF9800;
+            font-weight: bold;
+            display: inline-block;
+            min-width: 125px;
+            font-size: 12px;
+        }
+        .status-online {
+            color: #28a745;
+        }
+        .status-offline {
+            color: #dc3545;
+        }
+        .vehicle-icon-active {
+            filter: drop-shadow(0 0 8px rgba(255, 255, 0, 0.8));
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <div class="info-row">
+            <span class="info-label">Status:</span>
+            <span id="status">Loading...</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Speed:</span>
+            <span id="speed">--</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">GPS:</span>
+            <span id="gps">--</span>
+        </div>
+    </div>
+    <div id="map"></div>
+    
+    <script>
+        // Initialize map centered on Denmark
+        const map = L.map('map').setView([57.0921701, 9.5245017], 13);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Vehicle markers
+        let vehicle1Marker = null;
+        let vehicle10Marker = null;
+        let followedVehicle = null; // 'vehicle1' or 'vehicle10' or null
+        
+        // Rotate map to match vehicle heading
+        function rotateMap(bearing) {
+            const mapContainer = document.getElementById('map');
+            
+            // Get the center point of the map container
+            const rect = mapContainer.getBoundingClientRect();
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Apply rotation to tiles and overlays, but NOT to markers
+            const layersToRotate = [
+                mapContainer.querySelector('.leaflet-tile-pane'),
+                mapContainer.querySelector('.leaflet-shadow-pane'),
+                mapContainer.querySelector('.leaflet-overlay-pane')
+            ];
+            
+            layersToRotate.forEach(layer => {
+                if (layer) {
+                    layer.style.transformOrigin = `${centerX}px ${centerY}px`;
+                    layer.style.transform = `rotate(${-bearing}deg)`;
+                }
+            });
+            
+            // Keep marker pane upright (no rotation)
+            const markerPane = mapContainer.querySelector('.leaflet-marker-pane');
+            if (markerPane) {
+                markerPane.style.transform = 'none';
+            }
+        }
+        
+        // Reset map rotation
+        function resetMapRotation() {
+            const mapContainer = document.getElementById('map');
+            const layers = [
+                mapContainer.querySelector('.leaflet-tile-pane'),
+                mapContainer.querySelector('.leaflet-marker-pane'),
+                mapContainer.querySelector('.leaflet-shadow-pane'),
+                mapContainer.querySelector('.leaflet-overlay-pane')
+            ];
+            
+            layers.forEach(layer => {
+                if (layer) {
+                    layer.style.transform = 'none';
+                }
+            });
+        }
+        
+        // Custom vehicle icons - circles with directional arrows
+        function createCarIcon(rotation = 0, isFollowed = false) {
+            const className = isFollowed ? 'vehicle-icon-active' : '';
+            return L.divIcon({
+                html: `<div style="transform: rotate(${rotation}deg); width: 40px; height: 40px;">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <circle cx="20" cy="20" r="16" fill="#2196F3" stroke="#fff" stroke-width="2"/>
+                        <text x="20" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">P</text>
+                        <path d="M 20 8 L 26 20 L 20 17 L 14 20 Z" fill="#fff"/>
+                    </svg>
+                </div>`,
+                className: className,
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -20]
+            });
+        }
+        
+        function createMotorcycleIcon(rotation = 0, isFollowed = false) {
+            const className = isFollowed ? 'vehicle-icon-active' : '';
+            return L.divIcon({
+                html: `<div style="transform: rotate(${rotation}deg); width: 40px; height: 40px;">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <circle cx="20" cy="20" r="16" fill="#FF9800" stroke="#fff" stroke-width="2"/>
+                        <text x="20" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">S</text>
+                        <path d="M 20 8 L 26 20 L 20 17 L 14 20 Z" fill="#fff"/>
+                    </svg>
+                </div>`,
+                className: className,
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -20]
+            });
+        }
+        
+        // Format date/time
+        function formatDateTime(dateStr) {
+            if (!dateStr) return '--';
+            const date = new Date(dateStr);
+            return date.toLocaleString('da-DK', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+        
+        // Parse location string (format: "lat,lon,alt")
+        function parseLocation(locationStr) {
+            if (!locationStr || locationStr === 'NULL' || locationStr === 'UNDEF') return null;
+            const parts = locationStr.split(',');
+            if (parts.length >= 2) {
+                const lat = parseFloat(parts[0]);
+                const lon = parseFloat(parts[1]);
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    return [lat, lon];
+                }
+            }
+            return null;
+        }
+        
+        // Update vehicle position and info
+        async function updateVehicles() {
+            try {
+                // Fetch both Vehicle1 and Vehicle10
+                const [response1, response10] = await Promise.all([
+                    fetch('/rest/items/gVehicle1?recursive=true'),
+                    fetch('/rest/items/gVehicle10?recursive=true')
+                ]);
+                
+                const data1 = await response1.json();
+                const data10 = await response10.json();
+                
+                // Process Vehicle1 (Dream Catcher - Phone)
+                const items1 = {};
+                if (data1.members) {
+                    data1.members.forEach(item => {
+                        const name = item.name.replace('Vehicle1_', '');
+                        items1[name] = item.state;
+                    });
+                }
+                
+                // Process Vehicle10 (Springfield - Tracker)
+                const items10 = {};
+                if (data10.members) {
+                    data10.members.forEach(item => {
+                        const name = item.name.replace('Vehicle10_', '');
+                        items10[name] = item.state;
+                    });
+                }
+                
+                // Update Vehicle1 marker
+                if (items1.Position) {
+                    const coords = parseLocation(items1.Position);
+                    if (coords) {
+                        const course = items1.Course ? parseFloat(items1.Course) : 0;
+                        const isFollowed = followedVehicle === 'vehicle1';
+                        const icon = createCarIcon(course, isFollowed);
+                        
+                        if (!vehicle1Marker) {
+                            vehicle1Marker = L.marker(coords, {icon: icon}).addTo(map);
+                            vehicle1Marker.on('click', function() {
+                                followedVehicle = followedVehicle === 'vehicle1' ? null : 'vehicle1';
+                                updateVehicles(); // Refresh to update icon styles
+                            });
+                            map.setView(coords, 13);
+                        } else {
+                            vehicle1Marker.setLatLng(coords);
+                            vehicle1Marker.setIcon(icon);
+                            
+                            // Auto-pan map if this vehicle is being followed
+                            if (isFollowed) {
+                                // Smooth pan to vehicle position
+                                map.panTo(coords, {
+                                    animate: true,
+                                    duration: 1.0,
+                                    easeLinearity: 0.25
+                                });
+                            }
+                        }
+                        
+                        // Update popup
+                        let popupContent = '<b>Dream Catcher (Phone)</b><br>';
+                        if (items1.Speed) {
+                            const speedValue = parseFloat(items1.Speed.split(' ')[0]);
+                            popupContent += 'Speed: ' + speedValue.toFixed(1) + ' km/h<br>';
+                        }
+                        if (items1.Status) popupContent += 'Status: ' + items1.Status + '<br>';
+                        if (items1.BatteryLevel) {
+                            const batteryPercent = (parseFloat(items1.BatteryLevel) * 100).toFixed(0);
+                            popupContent += 'Battery: ' + batteryPercent + '%';
+                        }
+                        vehicle1Marker.bindPopup(popupContent);
+                    }
+                }
+                
+                // Update Vehicle10 marker
+                if (items10.Position) {
+                    const coords = parseLocation(items10.Position);
+                    if (coords) {
+                        const course = items10.Course ? parseFloat(items10.Course) : 0;
+                        const isFollowed = followedVehicle === 'vehicle10';
+                        const icon = createMotorcycleIcon(course, isFollowed);
+                        
+                        if (!vehicle10Marker) {
+                            vehicle10Marker = L.marker(coords, {icon: icon}).addTo(map);
+                            vehicle10Marker.on('click', function() {
+                                followedVehicle = followedVehicle === 'vehicle10' ? null : 'vehicle10';
+                                updateVehicles(); // Refresh to update icon styles
+                            });
+                            // Fit bounds to show both vehicles
+                            if (vehicle1Marker) {
+                                const group = L.featureGroup([vehicle1Marker, vehicle10Marker]);
+                                map.fitBounds(group.getBounds().pad(0.1));
+                            }
+                        } else {
+                            vehicle10Marker.setLatLng(coords);
+                            vehicle10Marker.setIcon(icon);
+                            
+                            // Auto-pan map if this vehicle is being followed
+                            if (isFollowed) {
+                                map.panTo(coords, {
+                                    animate: true,
+                                    duration: 1.0,
+                                    easeLinearity: 0.25
+                                });
+                            }
+                        }
+                        
+                        // Update popup
+                        let popupContent = '<b>Springfield (Tracker)</b><br>';
+                        if (items10.Speed) {
+                            const speedValue = parseFloat(items10.Speed.split(' ')[0]);
+                            popupContent += 'Speed: ' + speedValue.toFixed(1) + ' km/h<br>';
+                        }
+                        if (items10.GpsSatellites) {
+                            popupContent += 'GPS Satellites: ' + items10.GpsSatellites + '<br>';
+                        }
+                        if (items10.Status) popupContent += 'Status: ' + items10.Status;
+                        vehicle10Marker.bindPopup(popupContent);
+                    }
+                }
+                
+                // Update info panel (show both vehicles)
+                const status1 = items1.Status ? items1.Status : 'unknown';
+                const status10 = items10.Status ? items10.Status : 'unknown';
+                document.getElementById('status').innerHTML = 
+                    '<span class="vehicle-orange">Springfield: ' + status10 + '</span>' +
+                    ' | ' +
+                    '<span class="vehicle-blue">Phone: ' + status1 + '</span>';
+                
+                // Format speeds with 1 decimal
+                const speed1 = items1.Speed ? parseFloat(items1.Speed.split(' ')[0]).toFixed(1) : '--';
+                const speed10 = items10.Speed ? parseFloat(items10.Speed.split(' ')[0]).toFixed(1) : '--';
+                document.getElementById('speed').innerHTML = 
+                    '<span class="vehicle-orange">Springfield: ' + speed10 + ' km/h</span> | ' +
+                    '<span class="vehicle-blue">Phone: ' + speed1 + ' km/h</span>';
+                
+                // Format GPS satellites (only for Springfield)
+                const gpsSats = items10.GpsSatellites ? items10.GpsSatellites + ' sats' : '--';
+                document.getElementById('gps').innerHTML = 
+                    '<span class="vehicle-orange">Springfield: ' + gpsSats + '</span>';
+                
+            } catch (error) {
+                console.error('Error fetching vehicle data:', error);
+                document.getElementById('status').innerHTML = '<span class="status-offline">Error</span>';
+            }
+        }
+        
+        // Initial update
+        updateVehicles();
+        
+        // Update every 10 seconds
+        setInterval(updateVehicles, 10000);
+    </script>
+</body>
+</html>
