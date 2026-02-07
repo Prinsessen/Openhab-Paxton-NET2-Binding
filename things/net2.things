@@ -1,5 +1,3 @@
-// Alternative Net2 host example: use "prinsessen.agesen.dk" if applicable
-// Last verified: 2026-02-07 - OEM Client bypasses MFA
 Bridge net2:net2server:server "Net2 Server" [
     hostname="net2.agesen.dk",
     port=8443,
