@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-07 10:00:18
+- Added: scripts/README_hikvision_monitor.md
+- Added: scripts/hikvision_monitor_config.example.json
+- Added: scripts/hikvision_monitor_config.json
+- Modified: scripts/hikvision_nas_monitor.py
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-07 09:45:18
 - Modified: scripts/hikvision_nas_monitor.py
 

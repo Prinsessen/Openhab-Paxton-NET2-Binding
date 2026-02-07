@@ -1,0 +1,20 @@
+{
+  "nas": {
+    "mount_path": "/mnt/camera_nas/Camera",
+    "check_interval": 2
+  },
+  "openhab": {
+    "rest_url": "http://localhost:8080/rest/items",
+    "html_path": "/etc/openhab/html"
+  },
+  "ocr": {
+    "tesseract_timeout": 5,
+    "panel_crop_height": 600
+  },
+  "output": {
+    "temp_path": "/tmp",
+    "image_filename": "hikvision_latest.jpg",
+    "json_filename": "hikvision_latest_analysis.json",
+    "timestamp_filename": "hikvision_latest_time.txt"
+  }
+}

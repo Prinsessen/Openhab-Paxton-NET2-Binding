@@ -7,6 +7,7 @@ Extracts and displays detection snapshots
 """
 
 import os
+import sys
 import time
 import subprocess
 import re
@@ -20,10 +21,42 @@ try:
 except ImportError:
     PIL_AVAILABLE = False
 
-# NAS Configuration
-NAS_PATH = "/mnt/camera_nas/Camera"  # Mounted at: \\10.0.5.25\Agesen_Storange4\Camera
-CHECK_INTERVAL = 2  # Check every 2 seconds
-OPENHAB_REST_URL = "http://localhost:8080/rest/items"
+# Load configuration from external file
+def load_config():
+    """Load configuration from JSON file"""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    config_file = os.path.join(script_dir, 'hikvision_monitor_config.json')
+    
+    if not os.path.exists(config_file):
+        print(f"ERROR: Configuration file not found: {config_file}")
+        print(f"Please create it from the example: hikvision_monitor_config.example.json")
+        sys.exit(1)
+    
+    try:
+        with open(config_file, 'r') as f:
+            config = json.load(f)
+        return config
+    except json.JSONDecodeError as e:
+        print(f"ERROR: Invalid JSON in config file: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"ERROR: Could not load config file: {e}")
+        sys.exit(1)
+
+# Load configuration
+CONFIG = load_config()
+
+# Extract configuration values
+NAS_PATH = CONFIG['nas']['mount_path']
+CHECK_INTERVAL = CONFIG['nas']['check_interval']
+OPENHAB_REST_URL = CONFIG['openhab']['rest_url']
+OPENHAB_HTML_PATH = CONFIG['openhab']['html_path']
+OCR_TIMEOUT = CONFIG['ocr']['tesseract_timeout']
+OCR_PANEL_HEIGHT = CONFIG['ocr']['panel_crop_height']
+TEMP_PATH = CONFIG['output']['temp_path']
+IMAGE_FILENAME = CONFIG['output']['image_filename']
+JSON_FILENAME = CONFIG['output']['json_filename']
+TIMESTAMP_FILENAME = CONFIG['output']['timestamp_filename']
 
 # Track file sizes (not just existence)
 file_sizes = {}
@@ -91,13 +124,13 @@ def extract_analysis_text(image_path):
         img = Image.open(image_path)
         width, height = img.size
         
-        # Analysis panel is typically in bottom 600 pixels
-        panel_height = 600
+        # Analysis panel is typically in bottom pixels (configurable)
+        panel_height = OCR_PANEL_HEIGHT
         crop_box = (0, height - panel_height, width, height)
         panel = img.crop(crop_box)
         
         # Save cropped panel temporarily
-        panel_path = '/tmp/ocr_panel.jpg'
+        panel_path = os.path.join(TEMP_PATH, 'ocr_panel.jpg')
         panel.save(panel_path)
         
         # Run tesseract OCR
@@ -105,7 +138,7 @@ def extract_analysis_text(image_path):
             ['tesseract', panel_path, 'stdout'],
             capture_output=True,
             text=True,
-            timeout=5
+            timeout=OCR_TIMEOUT
         )
         
         text = result.stdout
@@ -160,7 +193,7 @@ def extract_analysis_text(image_path):
             bottom_match = re.search(r'Bottom[^:]*?(?:Co\s+)?(?:o)?lor\s*:\s*(\w+)', text_normalized, re.IGNORECASE)
             if bottom_match:
                 color_value = bottom_match.group(1)
-                if color_value not in ['-', 'N/A', 'None', 'Black']:
+                if color_value not in ['-', 'N/A', 'None']:
                     data['bottom_color'] = color_value
         
         # Strategy 3: Fallback - extract from section between "Top Color:" and "Top Type:"
@@ -305,18 +338,18 @@ def display_image(jpeg_data, timestamp):
     
     try:
         # Save to temp file
-        temp_path = f"/tmp/hikvision_detection_{timestamp.replace(':', '-')}.jpg"
+        temp_path = os.path.join(TEMP_PATH, f"hikvision_detection_{timestamp.replace(':', '-')}.jpg")
         with open(temp_path, 'wb') as f:
             f.write(jpeg_data)
         
         # Also save to OpenHAB html directory for web serving
-        openhab_path = "/etc/openhab/html/hikvision_latest.jpg"
+        openhab_path = os.path.join(OPENHAB_HTML_PATH, IMAGE_FILENAME)
         try:
             with open(openhab_path, 'wb') as f:
                 f.write(jpeg_data)
             
             # Save timestamp in separate file for instant web display
-            timestamp_path = "/etc/openhab/html/hikvision_latest_time.txt"
+            timestamp_path = os.path.join(OPENHAB_HTML_PATH, TIMESTAMP_FILENAME)
             with open(timestamp_path, 'w') as f:
                 f.write(timestamp + '\n')
             
@@ -326,11 +359,16 @@ def display_image(jpeg_data, timestamp):
             analysis = extract_analysis_text(openhab_path)
             if analysis:
                 # Save as JSON
-                json_path = "/etc/openhab/html/hikvision_latest_analysis.json"
+                json_path = os.path.join(OPENHAB_HTML_PATH, JSON_FILENAME)
                 with open(json_path, 'w') as f:
                     json.dump(analysis, f, indent=2)
                 
                 print(f"    {Colors.OKGREEN}✓ Extracted analysis metadata{Colors.ENDC}")
+                
+                # Update timestamp file with ACTUAL capture time from camera overlay
+                if 'capture_time' in analysis:
+                    with open(timestamp_path, 'w') as f:
+                        f.write(analysis['capture_time'] + '\n')
                 
                 # Update OpenHAB items
                 update_openhab_items(analysis)
@@ -354,16 +392,17 @@ def display_image(jpeg_data, timestamp):
             # feh not available, just save the file
             pass
         
-        return temp_path
+        return (temp_path, analysis if 'analysis' in locals() else None)
     except Exception as e:
         print(f"Error saving image: {e}")
-        return None
+        return (None, None)
 
 def check_nas_folder():
     """Check .pic files for size changes (new detections added)"""
     if not os.path.exists(NAS_PATH):
         print(f"{Colors.FAIL}NAS path not mounted: {NAS_PATH}{Colors.ENDC}")
-        print(f"Mount with: sudo mount -t cifs //10.0.5.25/Agesen_Storange4 /mnt/camera_nas -o username=Nanna,password=<pass>,vers=3.0")
+        print(f"Please mount the NAS share first. See README_hikvision_monitor.md for instructions.")
+        print(f"Example: sudo mount -t cifs //YOUR_NAS_IP/YOUR_SHARE {os.path.dirname(NAS_PATH)} -o credentials=/etc/camera_nas_credentials,vers=3.0")
         return []
     
     size_changes = []
@@ -405,18 +444,28 @@ def print_detection(filename, filepath, mtime, size_diff, current_size):
     print(f"\n{Colors.WARNING}Extracting detection snapshot...{Colors.ENDC}")
     jpeg_data = extract_last_jpeg(filepath)
     image_path = None
+    analysis = None
     if jpeg_data:
-        image_path = display_image(jpeg_data, timestamp)
+        image_path, analysis = display_image(jpeg_data, timestamp)
         if image_path:
             print(f"{Colors.OKGREEN}✓ Snapshot saved: {image_path}{Colors.ENDC}")
         else:
             print(f"{Colors.FAIL}✗ Failed to save snapshot{Colors.ENDC}")
     
+    # Use actual capture time from camera overlay if available
+    display_time = timestamp
+    if analysis and 'capture_time' in analysis:
+        # Parse capture_time format: "02-07-2026 09:43:23" → "09:43:23"
+        capture_time_parts = analysis['capture_time'].split()
+        if len(capture_time_parts) >= 2:
+            display_time = capture_time_parts[1]
+            last_detection_time = display_time
+    
     clear_screen()
     print("\n" + "="*80)
     print(f"{Colors.BG_GREEN}{Colors.BLACK}  🔔 {detection_type} DETECTED! 🔔  {Colors.ENDC}")
     print("="*80)
-    print(f"\n⏰ Detection Time: {timestamp}")
+    print(f"\n⏰ Detection Time: {display_time}")
     print(f"📁 Container File: {filename}")
     print(f"📂 Path: {filepath}")
     print(f"📊 File grew by: {size_diff / 1024:.1f} KB (new snapshot added)")
