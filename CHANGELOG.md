@@ -7,6 +7,33 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-07 09:00:18
+- Added: icons/classic/camera-arrow-enter-green.svg
+- Added: icons/classic/camera-arrow-leave-orange.svg
+- Added: icons/classic/camera-backpack-teal.svg
+- Added: icons/classic/camera-color-bottom-pink.svg
+- Added: icons/classic/camera-color-top-purple.svg
+- Added: icons/classic/camera-detect-blue.svg
+- Added: icons/classic/camera-hat-yellow.svg
+- Added: icons/classic/camera-pants-cyan.svg
+- Added: icons/classic/camera-shirt-blue.svg
+- Added: icons/classic/camera-time-entry-blue.svg
+- Added: icons/classic/camera-time-exit-purple.svg
+- Added: icons/classic/detection-arrow-in-green.svg
+- Added: icons/classic/detection-arrow-out-orange.svg
+- Added: icons/classic/detection-backpack-teal.svg
+- Added: icons/classic/detection-camera-blue.svg
+- Added: icons/classic/detection-color-pants-pink.svg
+- Added: icons/classic/detection-color-shirt-purple.svg
+- Added: icons/classic/detection-hat-yellow.svg
+- Added: icons/classic/detection-pants-cyan.svg
+- Added: icons/classic/detection-shirt-blue.svg
+- Added: icons/classic/detection-time-in-blue.svg
+- Added: icons/classic/detection-time-out-purple.svg
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-07 08:45:18
 - Added: items/hikvision_detection.items
 - Modified: scripts/__pycache__/hikvision_nas_monitor.cpython-313.pyc

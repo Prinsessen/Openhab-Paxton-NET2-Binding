@@ -184,22 +184,28 @@ sitemap myhouse label="Nanna Agesen"
 	Frame label="Home Security" {
 			Switch item=Alarm_System_Arm_Disarm mappings=[ON=On, OFF=Off] icon="security-red"
 			Text item=Alarmsystem_Info icon="security-red"
-			Text label="Body Detection Camera" icon="camera" {
+			Text label="Body Detection Camera" icon="detection-camera-blue" {
 				Frame label="Live Detections" {
 					Webview url="/static/hikvision_detections.html" height=20
 				}
-				Frame label="Detection Details" {
-					Text item=Camera_Detection_Enter_Direction icon="arrow"
-					Text item=Camera_Detection_Leave_Direction icon="arrow"
-					Text item=Camera_Detection_Top_Type icon="text"
-					Text item=Camera_Detection_Top_Color icon="colorpicker"
-					Text item=Camera_Detection_Bottom_Type icon="text"
-					Text item=Camera_Detection_Bottom_Color icon="colorpicker"
-					Switch item=Camera_Detection_Has_Backpack icon="backpack"
-					Switch item=Camera_Detection_Has_Hat icon="sun"
-					Text item=Camera_Detection_Entry_Time icon="time"
-					Text item=Camera_Detection_Exit_Time icon="time"
-					Text item=Camera_Detection_Camera_Name icon="camera"
+				Frame label="Latest Detection" {
+					Text item=Camera_Detection_Camera_Name icon="detection-camera-blue"
+					Text item=Camera_Detection_Entry_Time icon="detection-time-in-blue" label="Entry Time [%1$tH:%1$tM:%1$tS]"
+					Text item=Camera_Detection_Exit_Time icon="detection-time-out-purple" label="Exit Time [%1$tH:%1$tM:%1$tS]"
+				}
+				Frame label="Movement" {
+					Text item=Camera_Detection_Enter_Direction icon="detection-arrow-in-green" label="Entered from [%s]"
+					Text item=Camera_Detection_Leave_Direction icon="detection-arrow-out-orange" label="Left towards [%s]"
+				}
+				Frame label="Clothing" {
+					Text item=Camera_Detection_Top_Type icon="detection-shirt-blue" label="Top: [%s]" labelcolor=[Camera_Detection_Top_Type=="NULL"="silver"]
+					Text item=Camera_Detection_Top_Color icon="detection-color-shirt-purple" label="Color: [%s]" labelcolor=[Camera_Detection_Top_Color=="NULL"="silver"]
+					Text item=Camera_Detection_Bottom_Type icon="detection-pants-cyan" label="Bottom: [%s]" labelcolor=[Camera_Detection_Bottom_Type=="NULL"="silver"]
+					Text item=Camera_Detection_Bottom_Color icon="detection-color-pants-pink" label="Color: [%s]" labelcolor=[Camera_Detection_Bottom_Color=="NULL"="silver"]
+				}
+				Frame label="Accessories" {
+					Switch item=Camera_Detection_Has_Backpack icon="detection-backpack-teal" label="Backpack" mappings=[ON="Yes", OFF="No"]
+					Switch item=Camera_Detection_Has_Hat icon="detection-hat-yellow" label="Hat/Cap" mappings=[ON="Yes", OFF="No"]
 				}
 			}
 	}
