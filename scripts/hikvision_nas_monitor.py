@@ -110,64 +110,118 @@ def extract_analysis_text(image_path):
         
         text = result.stdout
         
+        # CRITICAL: Normalize text by collapsing all whitespace (including newlines) to single spaces
+        # This handles OCR line-wrapping where "Bottom Color" becomes "Bott\nom C    olor"
+        text_normalized = re.sub(r'\s+', ' ', text)
+        
         # Parse structured data
         data = {}
         
         # Capture Time
-        match = re.search(r'Capture [Tt]ime[:\s]+([0-9\-: ]+)', text)
+        match = re.search(r'Capture [Tt]ime[:\s]+([0-9\-: ]+)', text_normalized)
         if match:
             data['capture_time'] = match.group(1).strip()
         
         # Movement direction
-        match = re.search(r'Enter[:\s]+(\w+)', text)
+        match = re.search(r'Enter[:\s]+(\w+)', text_normalized)
         if match:
             data['enter_direction'] = match.group(1)
         
-        match = re.search(r'Leave[:\s]+(\w+)', text)
+        match = re.search(r'Leave[:\s]+(\w+)', text_normalized)
         if match:
             data['leave_direction'] = match.group(1)
         
-        # Clothing attributes
-        match = re.search(r'Top Color[:\s]+(\w+)', text)
-        if match:
-            data['top_color'] = match.group(1)
+        # Clothing colors - extract ALL color values, assign by context
+        # Look for ANY "Color" (or partial "olor") followed by colon and color name
+        all_colors = re.findall(r'[Cc]olor\s*:\s*(\w+)', text_normalized, re.IGNORECASE)
         
-        match = re.search(r'Bottom Color[:\s]+(\w+)', text)
-        if match:
-            data['bottom_color'] = match.group(1)
+        if len(all_colors) >= 1:
+            if all_colors[0] not in ['-', 'N/A', 'None']:
+                data['top_color'] = all_colors[0]
         
-        match = re.search(r'Top Type[:\s]+([\w ]+?)(?:Bottom|Backpack|\n)', text)
+        if len(all_colors) >= 2:
+            if all_colors[1] not in ['-', 'N/A', 'None']:
+                data['bottom_color'] = all_colors[1]
+        elif len(all_colors) == 1:
+            # If only one color found, might be in format "Black Bott om C olor:Black"
+            # Try extracting color value between "Top Color:" and "Top Type:"
+            section = re.search(r'Top Color.*?Top Type', text_normalized, re.IGNORECASE)
+            if section:
+                # Look for second color value in this section (first is top, second is bottom)
+                colors_in_section = re.findall(r':(\w+)', section.group(0))
+                colors_in_section = [c for c in colors_in_section if c not in ['-', 'N/A', 'None', 'No', 'Long', 'Short', 'Sleeve']]
+                if len(colors_in_section) >= 2:
+                    data['bottom_color'] = colors_in_section[1]
+        
+        # Clothing types
+        match = re.search(r'Top\s+Type[:\s]+([\w ]+?)(?:Bottom|Backpack|\n)', text_normalized)
         if match:
             data['top_type'] = match.group(1).strip()
         
-        match = re.search(r'Bottom Type[:\s]+([\w ]+?)(?:Backpack|Carrying|\n)', text)
+        match = re.search(r'Bottom\s+Type[:\s]+([\w ]+?)(?:Backpack|Carrying|\n)', text_normalized)
         if match:
             data['bottom_type'] = match.group(1).strip()
         
         # Accessories
-        match = re.search(r'Backpack or Not[:\s]+(\w+)', text)
+        match = re.search(r'Backpack\s+or\s+Not[:\s]+(\w+)', text_normalized)
         if match:
             data['has_backpack'] = match.group(1).lower() == 'yes'
         
-        match = re.search(r'Carrying Things or Not[:\s]+(\w+)', text)
+        match = re.search(r'Carrying\s+Things\s+or\s+Not[:\s]+(\w+)', text_normalized)
         if match:
             data['carrying_things'] = match.group(1).lower() == 'yes'
         
-        match = re.search(r'Hat or Not[:\s]+(\w+)', text)
+        match = re.search(r'Hat\s+or\s+Not[:\s]+(\w+)', text_normalized)
         if match:
             data['has_hat'] = match.group(1).lower() == 'yes'
         
-        # Entry/Exit times
-        match = re.search(r'Entry Time[:\s]+([0-9\-: ]+)', text)
+        # Entry time
+        match = re.search(r'Entry\s+Time[:\s]+([0-9]{4}[-/][0-9]{2}[-/][0-9]{2}[\s]+[0-9]{2}:[0-9]{2}:[0-9]{2})', text_normalized)
         if match:
-            data['entry_time'] = match.group(1).strip()
+            data['entry_time'] = match.group(1).strip().replace('/', '-')
         
-        match = re.search(r'Exit Time[:\s]+([0-9\-: ]+)', text)
-        if match:
-            data['exit_time'] = match.group(1).strip()
+        # Exit time - OCR often splits this as "2026-0 2 -O7 09:19:45"
+        # Strategy: Find "Exit Time:" and extract all digit groups after it until next label
+        exit_section = re.search(r'Exit\s+Time[:\s]+(.+?)(?:Camera|Device|$)', text_normalized, re.IGNORECASE)
+        if exit_section:
+            # Extract all digit sequences from the exit time section
+            digits = re.findall(r'[0-9]+', exit_section.group(1))
+            # Need at least 6 groups: year, month_part1, month_part2/day_part1, day_part2, hour, min, sec
+            # Or sometimes: year, month, day, hour, min, sec (if lucky)
+            if len(digits) >= 6:
+                # Heuristic: First is always year (4 digits or reconstructed)
+                year_str = digits[0]
+                remaining = digits[1:]
+                
+                # Last 3 are always HH:MM:SS
+                if len(remaining) >= 3:
+                    time_parts = remaining[-3:]
+                    date_parts = remaining[:-3]
+                    
+                    # Reconstruct date from remaining parts (should be 2-4 parts for MM-DD)
+                    # If we have 2 parts: month and day already combined (best case)
+                    # If we have 3 parts: likely "0", "2", "7" for "02-07"
+                    # If we have 4 parts: likely "0", "2", "0", "7" for "02-07"
+                    if len(date_parts) == 2:
+                        month_str, day_str = date_parts
+                    elif len(date_parts) == 3:
+                        # Combine first two for month: "0" + "2" = "02"
+                        month_str = date_parts[0] + date_parts[1] if int(date_parts[0]) == 0 else date_parts[0]
+                        day_str = date_parts[2]
+                    elif len(date_parts) == 4:
+                        # Combine pairs: "0"+"2" and "0"+"7"
+                        month_str = date_parts[0] + date_parts[1]
+                        day_str = date_parts[2] + date_parts[3]
+                    else:
+                        # Fallback: use what we have
+                        month_str = date_parts[0] if len(date_parts) > 0 else "01"
+                        day_str = date_parts[1] if len(date_parts) > 1 else "01"
+                    
+                    # Format the exit time
+                    data['exit_time'] = f"{year_str}-{month_str.zfill(2)}-{day_str.zfill(2)} {time_parts[0].zfill(2)}:{time_parts[1].zfill(2)}:{time_parts[2].zfill(2)}"
         
         # Camera info
-        match = re.search(r'Device No\.[:\s]+([\w ]+)', text)
+        match = re.search(r'Device\s+No\.[:\s]+([\w ]+)', text_normalized)
         if match:
             data['camera'] = match.group(1).strip()
         
