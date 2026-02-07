@@ -7,6 +7,12 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-07 15:00:01
+- Modified: items/hikvision_detection.items
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-07 14:00:18
 - Modified: hikvision-monitor
 - Modified: things/net2.things

@@ -190,6 +190,7 @@ sitemap myhouse label="Nanna Agesen"
 				}
 				Frame label="Latest Detection" {
 					Text item=Camera_Detection_Camera_Name icon="body-camera-blue"
+					Text item=Camera_Detection_Capture_Time icon="body-time-teal" label="Capture Time [%1$tH:%1$tM:%1$tS]"
 					Text item=Camera_Detection_Entry_Time icon="body-clock-in-blue" label="Entry Time [%1$tH:%1$tM:%1$tS]"
 					Text item=Camera_Detection_Exit_Time icon="body-clock-out-purple" label="Exit Time [%1$tH:%1$tM:%1$tS]"
 				}
@@ -205,6 +206,7 @@ sitemap myhouse label="Nanna Agesen"
 				}
 				Frame label="Accessories" {
 					Switch item=Camera_Detection_Has_Backpack icon="body-backpack-teal" label="Backpack" mappings=[ON="Yes", OFF="No"]
+					Switch item=Camera_Detection_Carrying_Things icon="body-bag-brown" label="Carrying Things" mappings=[ON="Yes", OFF="No"]
 					Switch item=Camera_Detection_Has_Hat icon="body-hat-yellow" label="Hat/Cap" mappings=[ON="Yes", OFF="No"]
 				}
 			}

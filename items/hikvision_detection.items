@@ -1,6 +1,7 @@
 // Hikvision Body Detection Analysis Items
 Group gHikvisionDetection "Camera Detection" <camera>
 
+DateTime Camera_Detection_Capture_Time "Capture Time [%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS]" <time> (gHikvisionDetection)
 String Camera_Detection_Enter_Direction "Entry Direction [%s]" <arrow> (gHikvisionDetection)
 String Camera_Detection_Leave_Direction "Exit Direction [%s]" <arrow> (gHikvisionDetection)
 String Camera_Detection_Top_Color "Top Clothing Color [%s]" <colorpicker> (gHikvisionDetection)
@@ -8,6 +9,7 @@ String Camera_Detection_Bottom_Color "Bottom Clothing Color [%s]" <colorpicker> 
 String Camera_Detection_Top_Type "Top Clothing Type [%s]" <text> (gHikvisionDetection)
 String Camera_Detection_Bottom_Type "Bottom Clothing Type [%s]" <text> (gHikvisionDetection)
 Switch Camera_Detection_Has_Backpack "Backpack Detected" <backpack> (gHikvisionDetection)
+Switch Camera_Detection_Carrying_Things "Carrying Things" <suitcase> (gHikvisionDetection)
 Switch Camera_Detection_Has_Hat "Hat Detected" <sun> (gHikvisionDetection)
 DateTime Camera_Detection_Entry_Time "Entry Time [%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS]" <time> (gHikvisionDetection)
 DateTime Camera_Detection_Exit_Time "Exit Time [%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS]" <time> (gHikvisionDetection)
