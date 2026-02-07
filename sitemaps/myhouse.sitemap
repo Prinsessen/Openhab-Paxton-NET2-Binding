@@ -188,6 +188,19 @@ sitemap myhouse label="Nanna Agesen"
 				Frame label="Live Detections" {
 					Webview url="/static/hikvision_detections.html" height=20
 				}
+				Frame label="Detection Details" {
+					Text item=Camera_Detection_Enter_Direction icon="arrow"
+					Text item=Camera_Detection_Leave_Direction icon="arrow"
+					Text item=Camera_Detection_Top_Type icon="text"
+					Text item=Camera_Detection_Top_Color icon="colorpicker"
+					Text item=Camera_Detection_Bottom_Type icon="text"
+					Text item=Camera_Detection_Bottom_Color icon="colorpicker"
+					Switch item=Camera_Detection_Has_Backpack icon="backpack"
+					Switch item=Camera_Detection_Has_Hat icon="sun"
+					Text item=Camera_Detection_Entry_Time icon="time"
+					Text item=Camera_Detection_Exit_Time icon="time"
+					Text item=Camera_Detection_Camera_Name icon="camera"
+				}
 			}
 	}
 	Frame label="Temperature and Weather" {

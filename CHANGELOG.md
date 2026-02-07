@@ -7,6 +7,14 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-07 08:45:18
+- Added: items/hikvision_detection.items
+- Modified: scripts/__pycache__/hikvision_nas_monitor.cpython-313.pyc
+- Modified: scripts/hikvision_nas_monitor.py
+- Modified: sitemaps/myhouse.sitemap
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-07 08:15:18
 - Added: scripts/__pycache__/hikvision_nas_monitor.cpython-313.pyc
 - Modified: scripts/hikvision_nas_monitor.py

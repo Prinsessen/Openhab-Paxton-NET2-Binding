@@ -9,12 +9,21 @@ Extracts and displays detection snapshots
 import os
 import time
 import subprocess
+import re
+import json
+import requests
 from datetime import datetime
 from collections import defaultdict
+try:
+    from PIL import Image
+    PIL_AVAILABLE = True
+except ImportError:
+    PIL_AVAILABLE = False
 
 # NAS Configuration
 NAS_PATH = "/mnt/camera_nas/Camera"  # Mounted at: \\10.0.5.25\Agesen_Storange4\Camera
 CHECK_INTERVAL = 2  # Check every 2 seconds
+OPENHAB_REST_URL = "http://localhost:8080/rest/items"
 
 # Track file sizes (not just existence)
 file_sizes = {}
@@ -72,6 +81,155 @@ def extract_last_jpeg(pic_filepath):
         print(f"Error extracting JPEG: {e}")
         return None
 
+def extract_analysis_text(image_path):
+    """Extract person analysis text from detection image using OCR"""
+    if not PIL_AVAILABLE:
+        return None
+    
+    try:
+        # Load image and crop bottom section (analysis panel)
+        img = Image.open(image_path)
+        width, height = img.size
+        
+        # Analysis panel is typically in bottom 600 pixels
+        panel_height = 600
+        crop_box = (0, height - panel_height, width, height)
+        panel = img.crop(crop_box)
+        
+        # Save cropped panel temporarily
+        panel_path = '/tmp/ocr_panel.jpg'
+        panel.save(panel_path)
+        
+        # Run tesseract OCR
+        result = subprocess.run(
+            ['tesseract', panel_path, 'stdout'],
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        
+        text = result.stdout
+        
+        # Parse structured data
+        data = {}
+        
+        # Capture Time
+        match = re.search(r'Capture [Tt]ime[:\s]+([0-9\-: ]+)', text)
+        if match:
+            data['capture_time'] = match.group(1).strip()
+        
+        # Movement direction
+        match = re.search(r'Enter[:\s]+(\w+)', text)
+        if match:
+            data['enter_direction'] = match.group(1)
+        
+        match = re.search(r'Leave[:\s]+(\w+)', text)
+        if match:
+            data['leave_direction'] = match.group(1)
+        
+        # Clothing attributes
+        match = re.search(r'Top Color[:\s]+(\w+)', text)
+        if match:
+            data['top_color'] = match.group(1)
+        
+        match = re.search(r'Bottom Color[:\s]+(\w+)', text)
+        if match:
+            data['bottom_color'] = match.group(1)
+        
+        match = re.search(r'Top Type[:\s]+([\w ]+?)(?:Bottom|Backpack|\n)', text)
+        if match:
+            data['top_type'] = match.group(1).strip()
+        
+        match = re.search(r'Bottom Type[:\s]+([\w ]+?)(?:Backpack|Carrying|\n)', text)
+        if match:
+            data['bottom_type'] = match.group(1).strip()
+        
+        # Accessories
+        match = re.search(r'Backpack or Not[:\s]+(\w+)', text)
+        if match:
+            data['has_backpack'] = match.group(1).lower() == 'yes'
+        
+        match = re.search(r'Carrying Things or Not[:\s]+(\w+)', text)
+        if match:
+            data['carrying_things'] = match.group(1).lower() == 'yes'
+        
+        match = re.search(r'Hat or Not[:\s]+(\w+)', text)
+        if match:
+            data['has_hat'] = match.group(1).lower() == 'yes'
+        
+        # Entry/Exit times
+        match = re.search(r'Entry Time[:\s]+([0-9\-: ]+)', text)
+        if match:
+            data['entry_time'] = match.group(1).strip()
+        
+        match = re.search(r'Exit Time[:\s]+([0-9\-: ]+)', text)
+        if match:
+            data['exit_time'] = match.group(1).strip()
+        
+        # Camera info
+        match = re.search(r'Device No\.[:\s]+([\w ]+)', text)
+        if match:
+            data['camera'] = match.group(1).strip()
+        
+        return data if data else None
+        
+    except Exception as e:
+        print(f"    {Colors.WARNING}⚠ OCR extraction failed: {e}{Colors.ENDC}")
+        return None
+
+def update_openhab_items(analysis):
+    """Update OpenHAB items with detection analysis data"""
+    if not analysis:
+        return
+    
+    # Mapping from analysis keys to OpenHAB item names
+    item_mapping = {
+        'enter_direction': 'Camera_Detection_Enter_Direction',
+        'leave_direction': 'Camera_Detection_Leave_Direction',
+        'top_color': 'Camera_Detection_Top_Color',
+        'bottom_color': 'Camera_Detection_Bottom_Color',
+        'top_type': 'Camera_Detection_Top_Type',
+        'bottom_type': 'Camera_Detection_Bottom_Type',
+        'has_backpack': 'Camera_Detection_Has_Backpack',
+        'has_hat': 'Camera_Detection_Has_Hat',
+        'entry_time': 'Camera_Detection_Entry_Time',
+        'exit_time': 'Camera_Detection_Exit_Time',
+        'camera': 'Camera_Detection_Camera_Name'
+    }
+    
+    headers = {'Content-Type': 'text/plain'}
+    updated_count = 0
+    
+    for key, item_name in item_mapping.items():
+        if key not in analysis:
+            continue
+        
+        value = analysis[key]
+        
+        # Convert boolean to ON/OFF for Switch items
+        if isinstance(value, bool):
+            value = 'ON' if value else 'OFF'
+        # Convert datetime strings to ISO format for DateTime items
+        elif key in ['entry_time', 'exit_time'] and value:
+            try:
+                # Parse the datetime string and convert to ISO format
+                dt = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
+                value = dt.isoformat()
+            except:
+                pass  # Keep original if parsing fails
+        
+        # Update item via REST API
+        try:
+            url = f"{OPENHAB_REST_URL}/{item_name}/state"
+            response = requests.put(url, data=str(value), headers=headers, timeout=2)
+            if response.status_code == 202:
+                updated_count += 1
+        except Exception as e:
+            pass  # Silently fail for individual items
+    
+    if updated_count > 0:
+        print(f"    {Colors.OKGREEN}✓ Updated {updated_count} OpenHAB items{Colors.ENDC}")
+
 def display_image(jpeg_data, timestamp):
     """Save JPEG and display using system viewer"""
     if not jpeg_data:
@@ -95,6 +253,28 @@ def display_image(jpeg_data, timestamp):
                 f.write(timestamp + '\n')
             
             print(f"    {Colors.OKGREEN}✓ Updated web image: {openhab_path}{Colors.ENDC}")
+            
+            # Extract and save analysis text
+            analysis = extract_analysis_text(openhab_path)
+            if analysis:
+                # Save as JSON
+                json_path = "/etc/openhab/html/hikvision_latest_analysis.json"
+                with open(json_path, 'w') as f:
+                    json.dump(analysis, f, indent=2)
+                
+                print(f"    {Colors.OKGREEN}✓ Extracted analysis metadata{Colors.ENDC}")
+                
+                # Update OpenHAB items
+                update_openhab_items(analysis)
+                
+                # Print key info
+                if 'top_type' in analysis and 'bottom_type' in analysis:
+                    print(f"      Clothing: {analysis.get('top_type', 'Unknown')} / {analysis.get('bottom_type', 'Unknown')}")
+                if 'top_color' in analysis and 'bottom_color' in analysis:
+                    print(f"      Colors: {analysis.get('top_color', 'Unknown')} / {analysis.get('bottom_color', 'Unknown')}")
+                if 'enter_direction' in analysis or 'leave_direction' in analysis:
+                    print(f"      Movement: Enter {analysis.get('enter_direction', 'Unknown')}, Leave {analysis.get('leave_direction', 'Unknown')}")
+            
         except Exception as e:
             print(f"    {Colors.WARNING}⚠ Could not save to OpenHAB html: {e}{Colors.ENDC}")
         
