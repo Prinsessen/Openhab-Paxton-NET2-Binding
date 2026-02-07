@@ -3,7 +3,7 @@ Bridge net2:net2server:server "Net2 Server" [
     hostname="net2.agesen.dk",
     port=8443,
     username="OEM Client",
-    password="remote110",
+    password="Jejboapj110",
     clientId="00aab996-6439-4f16-89b4-6c0cc851e8f3",
     tlsVerification=true,
     refreshInterval=600
