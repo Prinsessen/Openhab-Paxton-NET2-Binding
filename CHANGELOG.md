@@ -7,6 +7,11 @@ and this project adheres to semantic versioning for configuration changes.
 
 ## [Unreleased]
 
+### Auto-updated - 2026-02-07 10:45:18
+- Modified: hikvision-monitor
+
+## [Unreleased]
+
 ### Auto-updated - 2026-02-07 10:30:08
 - Added: hikvision-monitor
 - Deleted: scripts/README_hikvision_monitor.md
