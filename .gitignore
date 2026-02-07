@@ -1,2 +1,7 @@
 scripts/net2_config.json
 /hikvision-monitor
+
+# Auto-generated hikvision detection files
+html/hikvision_latest.jpg
+html/hikvision_latest_analysis.json
+html/hikvision_latest_time.txt
