@@ -118,6 +118,7 @@ The Net2 Server bridge exposes the following user-management channels:
 | `listAccessLevels` | String | WO | Query available access levels. Send any command (e.g., `REFRESH` or `ON`) to trigger. Results logged to `/var/log/openhab/openhab.log` as: `Access levels: [1:Public] [2:Staff] ...` |
 | `listUsers` | String | WO | Query all users in the system. Send any command (e.g., `REFRESH` or `ON`) to trigger. Full JSON payload logged to `/var/log/openhab/openhab.log` with all user details (id, firstName, lastName, PIN, telephone, accessLevel, etc.) |
 | `lockdown` | Switch | RW | Building lockdown control. Send ON to enable lockdown (locks all configured doors), OFF to disable lockdown (returns to normal operation). Triggers Net2 lockdown trigger/action rules. |
+| `activityReport` | String | RO | Last activity report update timestamp. Generates HTML report at `/static/net2_activity.html` on each refresh cycle (last 24h of access events grouped by door). |
 
 ## Example Configuration
 
@@ -147,6 +148,9 @@ String Net2_ListUsers         "List Users"         { channel="net2:net2server:my
 
 // Building lockdown
 Switch Net2_Lockdown          "Building Lockdown"  { channel="net2:net2server:myserver:lockdown" }
+
+// Activity report
+String Net2_ActivityReport    "Activity Report [%s]" { channel="net2:net2server:myserver:activityReport" }
 ```
 
 ### Usage Examples
@@ -343,6 +347,7 @@ The binding uses a hybrid synchronization approach for reliable door state track
 - **List Doors**: `GET /api/v1/doors`
 - **User Management**: `GET /api/v1/users`, `POST /api/v1/users`, `DELETE /api/v1/users/{id}`
 - **Access Levels**: `GET /api/v1/accesslevels`
+- **Events**: `GET /api/v1/events?startDate=&endDate=&pageSize=1000` (used for activity report)
 - **SignalR Hub**: `wss://host:port/signalr` (LiveEvents hub)
 
 ## Security Considerations
@@ -399,6 +404,22 @@ This guide includes:
 - All Grafana transformation steps with exact settings
 - Troubleshooting common issues
 - Advanced features (time range variables, door filters, alerts)
+
+### Activity Report
+
+The binding generates an HTML activity report showing the last 24 hours of access events grouped by door. The report is written to `/etc/openhab/html/net2_activity.html` (accessible at `/static/net2_activity.html`) and is updated on each refresh cycle.
+
+**Features:**
+- Events fetched from Net2 `/events` API endpoint
+- Grouped by door with color-coded results (green=granted, red=denied, gray=unknown)
+- Summary stats: total events, access granted, access denied, unique users
+- Mobile-friendly responsive design
+- Replaces the legacy `net2_user_activity_daemon.py` Python service
+
+**Embed in sitemap:**
+```openhab
+Webview url="/static/net2_activity.html" height=100
+```
 
 ### Other Documentation Files
 - **[EXAMPLES.md](EXAMPLES.md)** - Complete configuration examples and use cases

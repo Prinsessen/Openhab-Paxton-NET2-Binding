@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [5.2.0] - 2026-03-07
 
+### Added
+- **Activity Report** (`activityReport` channel)
+  - New bridge channel that generates an HTML activity report on each refresh cycle
+  - Fetches last 24 hours of access events from Net2 `/events` API endpoint
+  - Groups events by door with color-coded results (granted/denied/unknown)
+  - Summary stats bar showing total events, access granted, access denied, unique users
+  - Mobile-friendly responsive HTML output at `/static/net2_activity.html`
+  - Auto-refreshes on each polling interval (default: every 10 minutes)
+  - Channel state shows last report update timestamp (dd.MM.yyyy HH:mm:ss)
+  - Replaces external `net2_user_activity_daemon.py` — no separate Python service needed
+  - Embeddable in sitemaps via `Webview url="/static/net2_activity.html"`
+  - New `Net2ActivityReportGenerator` class (~320 lines) and `getEvents()` API method
+
 ### Fixed
 - **DoorHandler logging** - Changed TEST LOG message from `logger.error` to `logger.debug` in `Net2DoorHandler.handleDoorControlTimed()` to prevent ERROR-level log pollution on every timed door command
 

@@ -20,6 +20,18 @@ tail -f /var/log/openhab/openhab.log | grep -E "Entry log|Access DENIED|Lockdown
 echo "habopen" | ssh -p 8101 openhab@localhost "bundle:list | grep net2"
 ```
 
+### Activity Report
+```bash
+# Check if report was generated
+ls -la /etc/openhab/html/net2_activity.html
+
+# View in browser
+curl -s http://localhost:8080/static/net2_activity.html | head -20
+
+# Check last report update
+curl -s http://localhost:8080/rest/items/Net2_ActivityReport | python3 -c "import sys,json; print(json.load(sys.stdin)['state'])"
+```
+
 ### Quick Lockdown Control
 ```bash
 # Enable lockdown
@@ -108,6 +120,7 @@ Token 1234567 denied at Front Door at 17:26:50
 | **PROJECT_CONTEXT.md** | Full project state |
 | **DEPLOYMENT_STATUS.md** | Deployment checklist |
 | **EXAMPLES.md** | Configuration examples |
+| **CHANGELOG.md** | Version history and changes |
 
 ## ⚠️ Important Behaviors
 
@@ -158,6 +171,6 @@ See **ENTRY_LOGGING.md** section "Grafana Integration" for:
 
 ---
 
-**Last Updated**: January 10, 2026 - 19:00  
+**Last Updated**: March 7, 2026  
 **Status**: ✅ Fully operational  
 **Version**: 5.2.0-SNAPSHOT
