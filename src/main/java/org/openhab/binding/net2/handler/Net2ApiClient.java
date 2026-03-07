@@ -21,6 +21,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
@@ -558,6 +559,38 @@ public class Net2ApiClient {
         json.append("],\"individualPermissions\":[]}");
 
         return replaceUserDoorPermissionSet(userId, json.toString());
+    }
+
+    /**
+     * Retrieve access events from the Net2 API for the specified number of hours.
+     *
+     * @param hours number of hours to look back
+     * @return JSON response body as string, or empty string on failure
+     */
+    public String getEvents(int hours) throws IOException, InterruptedException {
+        ensureTokenValid();
+
+        ZonedDateTime endTime = ZonedDateTime.now(ZoneOffset.UTC);
+        ZonedDateTime startTime = endTime.minusHours(hours);
+
+        String startDate = startTime.format(DateTimeFormatter.ISO_INSTANT);
+        String endDate = endTime.format(DateTimeFormatter.ISO_INSTANT);
+
+        String query = "startDate=" + URLEncoder.encode(startDate, java.nio.charset.StandardCharsets.UTF_8)
+                + "&endDate=" + URLEncoder.encode(endDate, java.nio.charset.StandardCharsets.UTF_8) + "&pageSize=1000";
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(baseUrl + "/events?" + query)).GET()
+                .header("Authorization", "Bearer " + accessToken).build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            logger.debug("Retrieved events for last {} hours", hours);
+            return response.body();
+        } else {
+            logger.warn("Failed to retrieve events. Status: {}", response.statusCode());
+            return "";
+        }
     }
 
     /**

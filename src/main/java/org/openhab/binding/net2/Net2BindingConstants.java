@@ -48,6 +48,9 @@ public class Net2BindingConstants {
     // Security channels
     public static final String CHANNEL_LOCKDOWN = "lockdown";
 
+    // Activity report channel (on bridge)
+    public static final String CHANNEL_ACTIVITY_REPORT = "activityReport";
+
     public static final String CHANNEL_DOOR_CONTROL_TIMED = "controlTimed";
     // SignalR hub
     public static final String SIGNALR_HUB_PATH = "/eventHubLocal";

@@ -51,6 +51,7 @@ public class Net2ServerHandler extends BaseBridgeHandler {
     private @Nullable ScheduledFuture<?> refreshJob;
     private @Nullable Net2ApiClient apiClient;
     private @Nullable Net2SignalRClient signalRClient;
+    private final Net2ActivityReportGenerator activityReportGenerator = new Net2ActivityReportGenerator();
 
     public Net2ServerHandler(Bridge bridge) {
         super(bridge);
@@ -251,6 +252,17 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
             if (getThing().getStatus() != ThingStatus.ONLINE) {
                 updateStatus(ThingStatus.ONLINE);
+            }
+
+            // Generate activity report HTML
+            try {
+                if (activityReportGenerator.generateReport(client)) {
+                    logger.debug("Activity report updated successfully");
+                    updateState(Net2BindingConstants.CHANNEL_ACTIVITY_REPORT, new StringType(java.time.LocalDateTime
+                            .now().format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))));
+                }
+            } catch (Exception re) {
+                logger.debug("Activity report generation failed", re);
             }
         } catch (Exception e) {
             logger.debug("Error refreshing door status", e);

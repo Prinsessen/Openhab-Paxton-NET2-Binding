@@ -16,6 +16,7 @@
 			<channel id="listAccessLevels" typeId="listAccessLevels"/>
 			<channel id="listUsers" typeId="listUsers"/>
 			<channel id="lockdown" typeId="lockdown"/>
+			<channel id="activityReport" typeId="activityReport"/>
 		</channels>
 
 		<config-description>
@@ -161,6 +162,14 @@
 		<label>Lockdown</label>
 		<description>Building lockdown control. Send ON to enable lockdown (lock all configured doors), OFF to disable (return
 			to normal operation)</description>
+	</channel-type>
+
+	<channel-type id="activityReport">
+		<item-type>String</item-type>
+		<label>Activity Report</label>
+		<description>Generates an HTML activity report at /static/net2_activity.html on each refresh cycle. State shows last
+			update timestamp.</description>
+		<state readOnly="true"/>
 	</channel-type>
 
 </thing:thing-descriptions>
