@@ -124,6 +124,13 @@ Token 1234567 denied at Front Door at 17:26:50
 
 ## ⚠️ Important Behaviors
 
+### Momentary Relay Doors (Garage Ports)
+- Both `holdDoorOpen` and `closeDoor` API calls **pulse** the relay (toggle)
+- `controlTimed` also pulses — any spurious command toggles the door
+- **Bug fixed (2026-03-07):** `REFRESH` on startup was falling through `controlTimed` → parsed as default 1s open → pulsed the garage relay on every restart
+- **Fix:** `handleCommand()` now filters `RefreshType` before dispatch
+- **Verify fix is active:** `grep "Ignoring REFRESH command" /var/log/openhab/openhab.log`
+
 ### Entry Logging
 - ✅ **Triggers**: Physical badge/card access (userName present)
 - ❌ **Does NOT trigger**: Remote UI openings (userName is null)

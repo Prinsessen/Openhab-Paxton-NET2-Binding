@@ -379,6 +379,15 @@ The binding uses a hybrid synchronization approach for reliable door state track
 - Verify SignalR connection: Look for "Subscribed to door events for door ID" in logs
 - Check door relay status in API response: `doorRelayOpen` field should match UI state
 
+### ⚠️ Momentary relay doors (garage ports)
+
+Doors with **momentary/pulse relays** (e.g. garage doors) behave differently from standard electric strikes:
+- Both `holdDoorOpen` and `closeDoor` API calls **pulse** the relay and **toggle** the physical door state
+- The `controlTimed` channel sends a `TimedOpen` API command, which also pulses the relay
+- **Any unintended command will toggle the door** — there is no idempotent "open" or "close"
+
+**Fixed in 5.2.0 (2026-03-07):** A critical bug caused such doors to toggle on every OpenHAB restart. During startup, the framework sends `REFRESH` to all channels. The `controlTimed` handler received `"REFRESH"`, failed to parse it as a number, fell back to the default 1-second timed open, and pulsed the relay. The fix filters `RefreshType` commands at the top of `handleCommand()` before any channel dispatch.
+
 ## Building from Source
 
 Prerequisites:

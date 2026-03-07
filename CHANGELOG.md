@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - New `Net2ActivityReportGenerator` class (~320 lines) and `getEvents()` API method
 
 ### Fixed
+- **CRITICAL: Garage door toggling on startup** — During OpenHAB startup, the framework sends `REFRESH` commands to all linked channels. The `controlTimed` channel handler (`handleDoorControlTimed()`) did not filter `RefreshType`, so the `"REFRESH"` string fell through to the numeric parser, threw `NumberFormatException`, and defaulted to a **1-second TimedOpen**. For doors with momentary relays (e.g. garage port), this pulsed the relay and **toggled the physical door on every restart**. Fix: added `RefreshType` guard at the top of `handleCommand()` to silently ignore `REFRESH` before any channel dispatch. Discovered from log evidence:
+  ```
+  2026-03-04 14:52:25.248 Sending advanced door control payload:
+    {"DoorId":7242929,"RelayFunction":{"RelayId":"Relay1","RelayAction":"TimedOpen","RelayOpenTime":1000},"LedFlash":3}
+  ```
 - **DoorHandler logging** - Changed TEST LOG message from `logger.error` to `logger.debug` in `Net2DoorHandler.handleDoorControlTimed()` to prevent ERROR-level log pollution on every timed door command
 
 ### Changed
