@@ -142,7 +142,7 @@ public class Net2DoorHandler extends BaseThingHandler {
     }
 
     private void handleDoorControlTimed(Command command) throws Exception {
-        logger.error("TEST LOG Net2DoorHandler: handleDoorControlTimed triggered with command: {}", command);
+        logger.debug("TEST LOG Net2DoorHandler: handleDoorControlTimed triggered with command: {}", command);
         Net2ServerHandler bridge = bridgeHandler;
         if (bridge == null) {
             logger.error("Bridge handler not available");
