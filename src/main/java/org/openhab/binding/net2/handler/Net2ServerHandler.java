@@ -204,6 +204,14 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             signalRClient = newClient;
 
             newClient.connect();
+
+            // Verify connection actually succeeded before declaring victory
+            if (!newClient.isConnected()) {
+                logger.warn("SignalR connection failed (server may still be starting) — scheduling retry");
+                scheduleSignalRReconnect(config);
+                return;
+            }
+
             newClient.subscribeToEvents();
 
             // Reset reconnect attempts on successful connection
@@ -211,7 +219,7 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             cancelSignalRReconnect();
             logger.info("SignalR connected and subscribed successfully");
         } catch (Exception e) {
-            logger.debug("SignalR startup failed", e);
+            logger.warn("SignalR startup failed — scheduling retry", e);
             scheduleSignalRReconnect(config);
         }
     }
@@ -242,8 +250,20 @@ public class Net2ServerHandler extends BaseBridgeHandler {
 
         signalRReconnectJob = scheduler.schedule(() -> {
             Net2ApiClient client = apiClient;
-            if (client == null || !client.isAuthenticated()) {
-                logger.debug("API client not ready for SignalR reconnect, will retry");
+            if (client == null) {
+                logger.debug("API client not initialized for SignalR reconnect, will retry");
+                scheduleSignalRReconnect(config);
+                return;
+            }
+            // Force re-authentication to get a fresh token (server restart invalidates old tokens)
+            try {
+                if (!client.authenticate()) {
+                    logger.warn("Re-authentication failed during SignalR reconnect — scheduling retry");
+                    scheduleSignalRReconnect(config);
+                    return;
+                }
+            } catch (Exception e) {
+                logger.warn("Re-authentication error during SignalR reconnect — scheduling retry", e);
                 scheduleSignalRReconnect(config);
                 return;
             }

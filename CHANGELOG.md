@@ -5,7 +5,7 @@ All notable changes to the Paxton Net2 Binding are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [5.2.0] - 2026-04-20
+## [5.2.1] - 2026-04-20
 
 ### Fixed
 - **SignalR auto-reconnect after Net2 server restart or network outage** — Previously, if the Net2 server was restarted or a network disruption occurred, the SignalR WebSocket connection would die silently (`onClose`/`onError` set `connected=false`) but nothing triggered a reconnection. API polling continued to work, but real-time door events via SignalR were lost until a full binding restart. The fix adds:
@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Backoff counter reset on successful reconnect
   - Safety-net in `refreshDoorStatus()` — if the periodic API poll finds SignalR dead with no reconnect job scheduled, it triggers one immediately
   - All door subscriptions are re-established after successful reconnect via existing `onSignalRConnected` callback
+- **SignalR reconnect falsely reported success on failed connection** — `startSignalR()` logged "connected and subscribed successfully" and reset backoff even when `connect()` failed (e.g. 502 during Net2 startup). Now checks `isConnected()` after `connect()` and schedules retry if not actually connected.
+- **Token invalidation after Net2 server restart** — After a Net2 restart, the old OAuth token becomes invalid but the binding still considered it valid (not yet expired by time). Reconnect attempts failed with 401. Now forces re-authentication before each SignalR reconnect attempt to ensure a fresh token.
 
 ## [5.2.0] - 2026-03-07
 
