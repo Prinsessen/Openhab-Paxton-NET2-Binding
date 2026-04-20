@@ -5,6 +5,17 @@ All notable changes to the Paxton Net2 Binding are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2026-04-20
+
+### Fixed
+- **SignalR auto-reconnect after Net2 server restart or network outage** — Previously, if the Net2 server was restarted or a network disruption occurred, the SignalR WebSocket connection would die silently (`onClose`/`onError` set `connected=false`) but nothing triggered a reconnection. API polling continued to work, but real-time door events via SignalR were lost until a full binding restart. The fix adds:
+  - `onDisconnectedCallback` in `Net2SignalRClient` — fires on WebSocket close/error (only on connected→disconnected transition to avoid duplicates)
+  - `onSignalRDisconnected()` in `Net2ServerHandler` — schedules automatic reconnection with exponential backoff (30s → 60s → 120s → 240s → 300s cap)
+  - Old SignalR client cleanup before creating new connection
+  - Backoff counter reset on successful reconnect
+  - Safety-net in `refreshDoorStatus()` — if the periodic API poll finds SignalR dead with no reconnect job scheduled, it triggers one immediately
+  - All door subscriptions are re-established after successful reconnect via existing `onSignalRConnected` callback
+
 ## [5.2.0] - 2026-03-07
 
 ### Added

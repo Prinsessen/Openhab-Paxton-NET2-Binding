@@ -49,9 +49,13 @@ public class Net2ServerHandler extends BaseBridgeHandler {
     private final Logger logger = LoggerFactory.getLogger(Net2ServerHandler.class);
 
     private @Nullable ScheduledFuture<?> refreshJob;
+    private @Nullable ScheduledFuture<?> signalRReconnectJob;
     private @Nullable Net2ApiClient apiClient;
     private @Nullable Net2SignalRClient signalRClient;
     private final Net2ActivityReportGenerator activityReportGenerator = new Net2ActivityReportGenerator();
+    private int signalRReconnectAttempts = 0;
+    private static final int SIGNALR_MAX_RECONNECT_DELAY_SECONDS = 300;
+    private static final int SIGNALR_INITIAL_RECONNECT_DELAY_SECONDS = 30;
 
     public Net2ServerHandler(Bridge bridge) {
         super(bridge);
@@ -161,6 +165,8 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             refreshJob = null;
         }
 
+        cancelSignalRReconnect();
+
         if (apiClient != null) {
             apiClient.close();
         }
@@ -176,20 +182,81 @@ public class Net2ServerHandler extends BaseBridgeHandler {
             return;
         }
 
+        // Clean up previous client if any
+        if (signalRClient != null) {
+            try {
+                signalRClient.disconnect();
+            } catch (Exception e) {
+                logger.debug("Error disconnecting old SignalR client", e);
+            }
+            signalRClient = null;
+        }
+
         try {
             String token = client.getValidAccessToken();
             boolean verify = config.tlsVerification != null ? config.tlsVerification : true;
             Net2SignalRClient newClient = new Net2SignalRClient(client.getServerRootUri(), token, verify);
             newClient.setEventConsumer(this::handleSignalREvent);
             newClient.setOnConnectedCallback(this::onSignalRConnected);
+            newClient.setOnDisconnectedCallback(this::onSignalRDisconnected);
 
             // Assign before connecting so callback can access it
             signalRClient = newClient;
 
             newClient.connect();
             newClient.subscribeToEvents();
+
+            // Reset reconnect attempts on successful connection
+            signalRReconnectAttempts = 0;
+            cancelSignalRReconnect();
+            logger.info("SignalR connected and subscribed successfully");
         } catch (Exception e) {
             logger.debug("SignalR startup failed", e);
+            scheduleSignalRReconnect(config);
+        }
+    }
+
+    /**
+     * Called when SignalR WebSocket disconnects (server restart, network outage, etc.).
+     * Schedules an automatic reconnection with exponential backoff.
+     */
+    private void onSignalRDisconnected() {
+        logger.warn("SignalR disconnected — scheduling automatic reconnection");
+        Net2ServerConfiguration config = getConfigAs(Net2ServerConfiguration.class);
+        scheduleSignalRReconnect(config);
+    }
+
+    /**
+     * Schedule a SignalR reconnection attempt with exponential backoff.
+     * Delay: 30s, 60s, 120s, 240s, 300s (capped at 5 minutes).
+     */
+    private void scheduleSignalRReconnect(Net2ServerConfiguration config) {
+        cancelSignalRReconnect();
+
+        int delay = Math.min(
+                SIGNALR_INITIAL_RECONNECT_DELAY_SECONDS * (1 << signalRReconnectAttempts),
+                SIGNALR_MAX_RECONNECT_DELAY_SECONDS);
+        signalRReconnectAttempts++;
+
+        logger.info("SignalR reconnect attempt {} scheduled in {} seconds", signalRReconnectAttempts, delay);
+
+        signalRReconnectJob = scheduler.schedule(() -> {
+            Net2ApiClient client = apiClient;
+            if (client == null || !client.isAuthenticated()) {
+                logger.debug("API client not ready for SignalR reconnect, will retry");
+                scheduleSignalRReconnect(config);
+                return;
+            }
+            logger.info("Attempting SignalR reconnection (attempt {})", signalRReconnectAttempts);
+            startSignalR(client, config);
+        }, delay, TimeUnit.SECONDS);
+    }
+
+    private void cancelSignalRReconnect() {
+        ScheduledFuture<?> job = signalRReconnectJob;
+        if (job != null) {
+            job.cancel(false);
+            signalRReconnectJob = null;
         }
     }
 
@@ -233,7 +300,15 @@ public class Net2ServerHandler extends BaseBridgeHandler {
         try {
             String statusResponse = client.getDoorStatus();
             logger.debug("refreshDoorStatus: Got API response: {}", statusResponse);
-            // Note: SignalR is started once during initialization, not on every refresh
+
+            // Safety net: check if SignalR is down and no reconnect is scheduled
+            Net2SignalRClient sr = signalRClient;
+            if ((sr == null || !sr.isConnected()) && signalRReconnectJob == null) {
+                logger.info("SignalR found disconnected during API poll — triggering reconnect");
+                Net2ServerConfiguration config = getConfigAs(Net2ServerConfiguration.class);
+                startSignalR(client, config);
+            }
+
             JsonElement element = JsonParser.parseString(statusResponse);
 
             if (element.isJsonArray()) {

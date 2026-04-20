@@ -324,6 +324,14 @@ The binding uses a hybrid synchronization approach for reliable door state track
 - Reads actual door relay status (`doorRelayOpen` field)
 - Updates both `action` and `status` channels with current state
 - Provides fallback synchronization if SignalR disconnects
+- **Safety-net**: If API poll detects SignalR is disconnected with no reconnect scheduled, triggers reconnect immediately
+
+**SignalR Auto-Reconnect:**
+- Automatic reconnection when WebSocket drops (Net2 server restart, network outage)
+- Exponential backoff: 30s → 60s → 120s → 240s → 300s (capped at 5 minutes)
+- Re-subscribes all door-specific events after successful reconnect
+- Backoff resets on successful connection
+- Logs all reconnect attempts at INFO level for monitoring
 
 **Why Hybrid Approach?**
 - SignalR provides instant updates via `DoorStatusEvents` with `doorRelayOpen` field

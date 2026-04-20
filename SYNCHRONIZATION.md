@@ -98,8 +98,50 @@ The Net2 binding implements a **hybrid synchronization system** that combines Si
 // Net2ServerHandler.java
 signalRClient = new Net2SignalRClient(config.hostname, config.port, ...);
 signalRClient.setOnConnectedCallback(this::onSignalRConnected);
+signalRClient.setOnDisconnectedCallback(this::onSignalRDisconnected);
 signalRClient.connect();
 ```
+
+**Automatic Reconnection (added 2026-04-20):**
+
+When the SignalR WebSocket drops (Net2 server restart, network outage), the binding
+automatically reconnects with exponential backoff:
+
+```java
+// Net2SignalRClient.java — notifies server handler on disconnect
+@Override
+public CompletionStage<?> onClose(WebSocket socket, int statusCode, String reason) {
+    boolean wasConnected = connected.getAndSet(false);
+    if (wasConnected) {
+        notifyDisconnected();  // triggers onDisconnectedCallback
+    }
+    return Listener.super.onClose(socket, statusCode, reason);
+}
+
+// Net2ServerHandler.java — schedules reconnect with backoff
+private void onSignalRDisconnected() {
+    logger.warn("SignalR disconnected — scheduling automatic reconnection");
+    scheduleSignalRReconnect(config);
+}
+
+private void scheduleSignalRReconnect(Net2ServerConfiguration config) {
+    // Exponential backoff: 30s, 60s, 120s, 240s, 300s (capped)
+    int delay = Math.min(30 * (1 << reconnectAttempts), 300);
+    signalRReconnectJob = scheduler.schedule(() -> {
+        startSignalR(client, config);  // cleans up old client, creates new connection
+    }, delay, TimeUnit.SECONDS);
+}
+```
+
+**Reconnect flow:**
+1. WebSocket `onClose` / `onError` fires
+2. `Net2SignalRClient` sets `connected=false`, calls `onDisconnectedCallback`
+3. `Net2ServerHandler.onSignalRDisconnected()` schedules reconnect
+4. After delay, `startSignalR()` disconnects old client, creates new `Net2SignalRClient`
+5. On success: subscribes to events, resets backoff, calls `onSignalRConnected()`
+6. `onSignalRConnected()` re-subscribes all door handlers
+7. Safety-net: `refreshDoorStatus()` API poll also checks SignalR state
+
 
 **Door Subscription Callback:**
 ```java

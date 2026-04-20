@@ -68,6 +68,7 @@ public class Net2SignalRClient implements Listener {
     private @Nullable WebSocket webSocket;
     private @Nullable BiConsumer<String, JsonObject> eventConsumer;
     private @Nullable Runnable onConnectedCallback;
+    private @Nullable Runnable onDisconnectedCallback;
 
     public Net2SignalRClient(URI serverRoot, String accessToken, boolean tlsVerification) {
         this.hubBaseUri = serverRoot.resolve(Net2BindingConstants.SIGNALR_HUB_PATH);
@@ -81,6 +82,10 @@ public class Net2SignalRClient implements Listener {
 
     public void setOnConnectedCallback(Runnable callback) {
         this.onConnectedCallback = callback;
+    }
+
+    public void setOnDisconnectedCallback(Runnable callback) {
+        this.onDisconnectedCallback = callback;
     }
 
     /**
@@ -190,16 +195,33 @@ public class Net2SignalRClient implements Listener {
 
     @Override
     public CompletionStage<?> onClose(@Nullable WebSocket socket, int statusCode, @Nullable String reason) {
-        connected.set(false);
+        boolean wasConnected = connected.getAndSet(false);
         logger.info("SignalR connection closed: {} - {}", statusCode, reason);
+        if (wasConnected) {
+            notifyDisconnected();
+        }
         return Listener.super.onClose(socket, statusCode, reason);
     }
 
     @Override
     public void onError(@Nullable WebSocket socket, @Nullable Throwable error) {
+        boolean wasConnected = connected.getAndSet(false);
         logger.warn("SignalR connection error", error);
-        connected.set(false);
+        if (wasConnected) {
+            notifyDisconnected();
+        }
         Listener.super.onError(socket, error);
+    }
+
+    private void notifyDisconnected() {
+        Runnable callback = onDisconnectedCallback;
+        if (callback != null) {
+            try {
+                callback.run();
+            } catch (Exception e) {
+                logger.debug("Error in disconnect callback", e);
+            }
+        }
     }
 
     public void disconnect() {
